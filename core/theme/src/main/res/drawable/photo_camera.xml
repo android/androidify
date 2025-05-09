@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright 2025 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          https://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="39dp"
+    android:height="36dp"
+    android:viewportWidth="39"
+    android:viewportHeight="36">
+  <path
+      android:pathData="m19.516,27.991c2.231,-0 4.094,-0.749 5.592,-2.246 1.528,-1.528 2.292,-3.407 2.291,-5.638 -0,-2.231 -0.764,-4.094 -2.292,-5.592 -1.497,-1.497 -3.361,-2.246 -5.592,-2.246 -2.231,0 -4.11,0.749 -5.637,2.246 -1.497,1.497 -2.246,3.361 -2.246,5.592 0,2.231 0.749,4.11 2.246,5.637 1.528,1.497 3.407,2.246 5.637,2.246zM19.516,25.103c-1.436,0 -2.628,-0.474 -3.575,-1.421 -0.917,-0.947 -1.375,-2.139 -1.375,-3.575 -0,-1.406 0.458,-2.582 1.375,-3.529 0.947,-0.947 2.139,-1.421 3.575,-1.421 1.406,0 2.582,0.474 3.529,1.421 0.947,0.947 1.421,2.124 1.421,3.529 0,1.436 -0.474,2.628 -1.421,3.575 -0.947,0.947 -2.124,1.421 -3.529,1.421zM4.071,34.683C3.307,34.683 2.635,34.393 2.054,33.812 1.474,33.232 1.183,32.56 1.183,31.796L1.182,8.512C1.182,7.779 1.473,7.122 2.053,6.542 2.634,5.93 3.306,5.625 4.07,5.625l6.6,-0 3.346,-3.942 11,-0 3.346,3.942 6.6,-0c0.733,-0 1.39,0.306 1.971,0.917 0.611,0.581 0.917,1.237 0.917,1.971l0.001,23.283c0,0.764 -0.306,1.436 -0.917,2.017 -0.581,0.58 -1.237,0.871 -1.971,0.871zM4.071,31.796 L34.962,31.795 34.962,8.511 27.033,8.511 23.686,4.57 15.345,4.57 11.999,8.512 4.07,8.512z"
+      android:fillColor="#f1f3f4"/>
+</vector>

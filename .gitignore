@@ -1,0 +1,12 @@
+/.gradle/buildOutputCleanup/*
+/.idea/*
+/.gradle/*
+/build
+/local.properties
+.DS_Store
+/.kotlin/
+/app/release.keystore
+/baselineprofile/build/*
+/app/src/release/generated/*
+/core/build/
+/feature/build/

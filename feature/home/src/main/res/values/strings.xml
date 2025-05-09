@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright 2025 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          https://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources>
+    <string name="about_message">Turning your selfie into a unique Android Bot is quick and easy, powered by Google AI. Here\'s a peek behind the curtain:</string>
+    <string name="about_step1_label">Share a selfie and Gemini Flash instantly analyzes it, creating a comprehensive description that captures key details like your accessories, clothing and overall style.</string>
+    <string name="about_step1_title">Choose a photo</string>
+    <string name="about_step2_label">Our specially fine tuned imagen model uses the detailed description from Gemini Flash to generate a personalized Android Bot that reflects your unique look in the iconic Android style. </string>
+    <string name="about_step2_title">AI Creates your bot</string>
+    <string name="about_step3_label">Before you meet your bot, ShieldGemma evaluates the generated image to ensure it meets safety guidelines. Once approved, your one-of-a-kind Android bot is revealed, ready for you to share. </string>
+    <string name="about_step3_title">Bot Reveal and Safety Check</string>
+    <string name="about_back_content_description">Back</string>
+    <string name="create_a_prompt">Create a prompt</string>
+    <string name="start_with_photo">Start with photo</string>
+    <string name="customize_your_own">Customize your own\n</string>
+    <string name="into_an_android_bot">\n\nAndroid bot</string>
+    <string name="home_button_label">Let\'s Go</string>
+    <string name="check_back_later">Check back later.</string>
+    <string name="app_is_under_construction">App is under construction.</string>
+    <string name="how_it_works">How it works</string>
+    <string name="instruction_video_transcript">Upload your photo, make sure it\'s accessorized, good quality, and click let\'s go</string>
+    <string name="play">Play</string>
+    <string name="pause">Pause</string>
+    <string name="terms">Terms</string>
+    <string name="privacy">Privacy</string>
+</resources>
