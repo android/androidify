@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright 2025 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          https://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources>
+    <string name="choose_my_bot_color">Choose my bot color</string>
+    <string name="photo_picker_title">Take or\nchoose a photo</string>
+    <string name="photo_picker_description">File must be JPG or PNG and 15MB or less</string>
+    <string name="photo_picker_choose_photo_label">Choose photo</string>
+    <string name="take_picture_content_description">Take picture</string>
+    <string name="generating_your_bot">Generating your bot…</string>
+    <string name="bot_color_button">Bot color</string>
+    <string name="cancel">Cancel</string>
+    <string name="cd_bot_color_selected">selected</string>
+    <string name="cd_choose_photo">Choose photo</string> <!-- Reusing photo_picker_choose_photo_label might be better, but adding for clarity -->
+    <string name="cd_retake_photo">Retake photo</string>
+    <string name="cd_selected_image">selected image</string>
+    <string name="color_name_android_green">Android Green</string>
+    <string name="color_name_blue_ice">Blue ice</string>
+    <string name="color_name_braided_blue">Braided blue</string>
+    <string name="color_name_bubblegum_pink">Bubblegum pink</string>
+    <string name="color_name_chrome">Chrome</string>
+    <string name="color_name_cloud_gray">Cloud gray</string>
+    <string name="color_name_dark_iridescent">Dark iridescent</string>
+    <string name="color_name_flame_orange">Flame orange</string>
+    <string name="color_name_gray_blue_dot">Gray and Blue dots</string>
+    <string name="color_name_gray_suede">Gray suede</string>
+    <string name="color_name_green_camo">Green camo</string>
+    <string name="color_name_honey_yellow">Honey yellow</string>
+    <string name="color_name_hot_pink">Hot pink</string>
+    <string name="color_name_leopard">Leopard</string>
+    <string name="color_name_monk_01">Monk tone 01</string>
+    <string name="color_name_monk_02">Monk tone 02</string>
+    <string name="color_name_monk_03">Monk tone 03</string>
+    <string name="color_name_monk_04">Monk tone 04</string>
+    <string name="color_name_monk_05">Monk tone 05</string>
+    <string name="color_name_monk_06">Monk tone 06</string>
+    <string name="color_name_monk_07">Monk tone 07</string>
+    <string name="color_name_monk_08">Monk tone 08</string>
+    <string name="color_name_monk_09">Monk tone 09</string>
+    <string name="color_name_monk_10">Monk tone 10</string>
+    <string name="color_name_ocean_blue">Ocean blue</string>
+    <string name="color_name_pastel_ombre">Pastel ombre</string>
+    <string name="color_name_tangerine">Tangerine</string>
+    <string name="color_name_ultra_purple">Ultra purple</string>
+    <string name="color_name_woodgrain">Woodgrain</string>
+    <string name="error_image_generation_detailed_description">Provide a more detailed description about your bot, include hair color, clothes and accessories.</string>
+    <string name="error_image_generation_full_body">Image is not a picture of a person.</string>
+    <string name="error_image_generation_not_enough_detail">Image does not have enough detail.</string>
+    <string name="error_image_generation_policy_violation">Androidify can\'t complete this edit. Try a different input.</string>
+    <string name="error_image_generation_other">Image failed to generate.</string>
+    <string name="error_image_generation_generic">An error occurred whilst uploading, try again later.</string>
+    <string name="error_image_generation_no_image_or_prompt">Choose an image or use a prompt instead.</string>
+    <string name="error_no_internet">No internet connection, please check your connection and try again.</string>
+    <string name="headline_my_bot_is">My bot is…</string>
+    <string name="prompt_type_photo">Photo</string>
+    <string name="prompt_type_text">Prompt</string>
+    <string name="start_transformation_button">Start transformation</string>
+    <string name="transform_button">Transform</string>
+    <string name="write_me_a_prompt">Help me write</string>
+    <string name="writing">Writing…</string>
+    <string name="prompt_text_hint">Describe clothing, accessories, hairstyles, or any unique traits to make your bot a reflection of yourself.</string>
+    <string name="error_provide_more_descriptive_bot">Provide a more detailed description about your bot, include hair color, clothes and accessories.</string>
+    <string name="error_connectivity">No internet connection, please check your connection and try again.</string>
+    <string name="error_upload_generic">An error occurred whilst uploading, try again later.</string>
+    <string name="error_image_validation">The image is not a valid picture of a person.</string>
+    <string name="error_choose_image_prompt">Choose an image or use a prompt instead.</string>
+    <string-array name="generation_prompts">
+        <item>Oh, this one is going to be nice…</item>
+        <item>Now… onto the spray paint</item>
+        <item>Great! Now let\'s try this on</item>
+        <item>Wait, wait just one last touch…</item>
+        <item>Yep, looking good!</item>
+        <item>Aha… even better…</item>
+        <item>Just the final touches now…</item>
+    </string-array>
+</resources>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright 2025 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          https://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="192"
+    android:viewportHeight="192">
+  <path
+      android:pathData="M183.65,95.66c-12.07,0 -23.22,-2.29 -33.83,-6.79 -10.62,-4.65 -19.98,-11 -27.83,-18.85 -7.85,-7.85 -14.19,-17.22 -18.85,-27.83 -4.51,-10.61 -6.79,-21.77 -6.79,-33.84 0,-0.19 -0.15,-0.35 -0.35,-0.35s-0.35,0.16 -0.35,0.35c0,12.07 -2.36,23.22 -7.01,33.84 -4.51,10.62 -10.78,19.98 -18.63,27.83 -7.85,7.85 -17.22,14.19 -27.83,18.85 -10.61,4.51 -21.77,6.79 -33.84,6.79 -0.19,0 -0.35,0.16 -0.35,0.35s0.16,0.35 0.35,0.35c12.07,0 23.22,2.36 33.84,7.01 10.62,4.51 19.98,10.78 27.83,18.63 7.85,7.85 14.12,17.22 18.63,27.84 4.65,10.61 7.01,21.76 7.01,33.83 0,0.19 0.16,0.35 0.35,0.35s0.35,-0.15 0.35,-0.35c0,-12.07 2.28,-23.22 6.79,-33.83 4.65,-10.62 10.99,-19.98 18.85,-27.84 7.85,-7.85 17.21,-14.12 27.83,-18.63 10.61,-4.65 21.76,-7.01 33.83,-7.01 0.19,0 0.35,-0.15 0.35,-0.35s-0.16,-0.35 -0.35,-0.35Z"
+      android:strokeWidth="0">
+    <aapt:attr name="android:fillColor">
+      <gradient 
+          android:startX="63.88"
+          android:startY="123.08"
+          android:endX="143.5"
+          android:endY="55.95"
+          android:type="linear">
+        <item android:offset="0" android:color="#FF217BFE"/>
+        <item android:offset="0.27" android:color="#FF078EFB"/>
+        <item android:offset="0.78" android:color="#FFA190FF"/>
+        <item android:offset="1" android:color="#FFBD99FE"/>
+      </gradient>
+    </aapt:attr>
+  </path>
+</vector>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright 2025 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          https://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources>
+    <string name="camera_permission_grant_button">Grant camera permission</string>
+    <string name="camera_permission_rationale">Grant permission to access the Camera to enable this experience.</string>
+    <string name="camera_result_image_description">uploaded image</string>
+    <string name="camera_zoom_in_button">+</string>
+    <string name="camera_zoom_out_button">-</string>
+    <string name="camera_zoom_suffix">X</string>
+    <string name="cd_capture_button">Capture</string>
+    <string name="flip_camera_direction">Flip camera direction</string>
+    <string name="rear_camera_description">Enable Rear Camera</string>
+    <string name="camera_guide_text_label">Use guides to frame yourself for the perfect Bot</string>
+
+    <string-array name="camera_result_compliments">
+        <item>Great shot!</item>
+        <item>Looking good</item>
+        <item>What a shot...</item>
+        <item>That\'s a beaut!</item>
+        <item>Love your outfit!</item>
+        <item>Dazzle them with your charm</item>
+    </string-array>
+</resources>
