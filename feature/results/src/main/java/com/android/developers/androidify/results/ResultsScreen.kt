@@ -214,7 +214,7 @@ fun ResultsScreenContents(
     verboseLayout: Boolean = allowsFullContent(),
     downloadClicked: () -> Unit,
     shareClicked: () -> Unit,
-    defaultSelectedResult: ResultOption = ResultOption.ResultImage
+    defaultSelectedResult: ResultOption = ResultOption.ResultImage,
 ) {
     ResultsBackground()
     val showResult = state.value.resultImageBitmap != null
