@@ -53,7 +53,7 @@ jobs:
           file_pattern: '**/*.kt **/*.kts **/*.java **/*.xml'
 
       - name: Verify Screenshot Tests (AndroidX)
-        run: ./gradlew verifyDebugAndroidTestScreenshot
+        run: ./gradlew validateDebugScreenshotTest
 
       - name: Run local unit tests
         run: ./gradlew testDebugUnitTest 

@@ -324,10 +324,15 @@ fun ResultsScreenContents(
 
 @Composable
 private fun BackgroundRandomQuotes(verboseLayout: Boolean = true) {
+    val locaInspectionMode = LocalInspectionMode.current
     Box(modifier = Modifier.fillMaxSize()) {
         val listResultCompliments = stringArrayResource(R.array.list_compliments)
         val randomQuote = remember {
-            listResultCompliments.random()
+            if (locaInspectionMode) {
+                listResultCompliments.first()
+            } else {
+                listResultCompliments.random()
+            }
         }
         // Disable animation in tests
         val iterations = if (LocalInspectionMode.current) 0 else 100
@@ -342,7 +347,11 @@ private fun BackgroundRandomQuotes(verboseLayout: Boolean = true) {
         if (verboseLayout) {
             val listMinusOther = listResultCompliments.asList().minus(randomQuote)
             val randomQuote2 = remember {
-                listMinusOther.random()
+                if (locaInspectionMode) {
+                    listMinusOther.first()
+                } else {
+                    listMinusOther.random()
+                }
             }
             Text(
                 randomQuote2,
