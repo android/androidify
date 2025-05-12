@@ -19,16 +19,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.android.developers.androidify.theme.AndroidifyTheme
 import com.android.developers.androidify.theme.SharedElementContextPreview
+import com.android.developers.androidify.util.AdaptivePreview
+import com.android.developers.androidify.util.isAtLeastMedium
 
 class HomeScreenScreenshotTest {
 
+    @AdaptivePreview
     @Preview(showBackground = true)
     @Composable
     fun HomeScreenScreenshot() {
         AndroidifyTheme {
             SharedElementContextPreview {
                 HomeScreenContents(
-                    isMediumWindowSize = false,
+                    isMediumWindowSize = isAtLeastMedium(),
                     onClickLetsGo = { },
                     onAboutClicked = {},
                     videoLink = "",
