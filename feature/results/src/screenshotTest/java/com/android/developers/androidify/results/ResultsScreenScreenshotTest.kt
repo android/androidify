@@ -21,7 +21,6 @@ import android.graphics.Color
 import android.graphics.LinearGradient
 import android.graphics.Paint
 import android.graphics.Shader
-import android.net.Uri // Added import for Uri
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -88,7 +87,6 @@ class ResultsScreenScreenshotTest {
         }
     }
 
-
     @Preview(showBackground = true)
     @Composable
     fun ResultsScreen_OriginalInputPreview() {
@@ -98,7 +96,7 @@ class ResultsScreenScreenshotTest {
                 ResultState(
                     resultImageBitmap = mockBitmap,
                     promptText = "wearing a hat with straw hair",
-                )
+                ),
             )
         }
         CompositionLocalProvider(value = LocalInspectionMode provides true) {
@@ -109,7 +107,7 @@ class ResultsScreenScreenshotTest {
                     verboseLayout = true,
                     downloadClicked = {},
                     shareClicked = {},
-                    defaultSelectedResult = ResultOption.OriginalInput // Set the non-default option
+                    defaultSelectedResult = ResultOption.OriginalInput, // Set the non-default option
                 )
             }
         }
@@ -123,8 +121,13 @@ class ResultsScreenScreenshotTest {
         val canvas = Canvas(mockBitmap)
         val paint = Paint()
         val gradient = LinearGradient(
-            0f, 0f, width.toFloat(), height.toFloat(),
-            Color.RED, Color.BLUE, Shader.TileMode.CLAMP
+            0f,
+            0f,
+            width.toFloat(),
+            height.toFloat(),
+            Color.RED,
+            Color.BLUE,
+            Shader.TileMode.CLAMP,
         )
         paint.shader = gradient
         canvas.drawRect(0f, 0f, width.toFloat(), height.toFloat(), paint)
