@@ -214,11 +214,12 @@ fun ResultsScreenContents(
     verboseLayout: Boolean = allowsFullContent(),
     downloadClicked: () -> Unit,
     shareClicked: () -> Unit,
+    defaultSelectedResult: ResultOption = ResultOption.ResultImage
 ) {
     ResultsBackground()
     val showResult = state.value.resultImageBitmap != null
     var selectedResultOption by remember {
-        mutableStateOf(ResultOption.ResultImage)
+        mutableStateOf(defaultSelectedResult)
     }
     val wasPromptUsed = state.value.originalImageUrl == null
     val promptToolbar = @Composable { modifier: Modifier ->

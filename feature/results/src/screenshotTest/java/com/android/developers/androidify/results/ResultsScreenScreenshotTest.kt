@@ -21,6 +21,7 @@ import android.graphics.Color
 import android.graphics.LinearGradient
 import android.graphics.Paint
 import android.graphics.Shader
+import android.net.Uri // Added import for Uri
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -30,12 +31,92 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.android.developers.androidify.theme.AndroidifyTheme
+import com.android.developers.androidify.util.AdaptivePreview
+import com.android.developers.androidify.util.SmallPhonePreview
 
 class ResultsScreenScreenshotTest {
 
+    @AdaptivePreview
     @Preview(showBackground = true)
     @Composable
-    fun ResultsScreenScreenshot() {
+    fun ResultsScreen_AdaptivePreview() {
+        val mockBitmap = createMockBitmap()
+        val state = remember {
+            mutableStateOf(
+                ResultState(
+                    resultImageBitmap = mockBitmap,
+                    promptText = "wearing a hat with straw hair",
+                ),
+            )
+        }
+        CompositionLocalProvider(value = LocalInspectionMode provides true) {
+            AndroidifyTheme {
+                ResultsScreenContents(
+                    contentPadding = PaddingValues(0.dp),
+                    state = state,
+                    verboseLayout = true, // Replicates ResultsScreenPreview
+                    downloadClicked = {},
+                    shareClicked = {},
+                )
+            }
+        }
+    }
+
+    @SmallPhonePreview
+    @Preview(showBackground = true)
+    @Composable
+    fun ResultsScreen_SmallPreview() {
+        val mockBitmap = createMockBitmap()
+        val state = remember {
+            mutableStateOf(
+                ResultState(
+                    resultImageBitmap = mockBitmap,
+                    promptText = "wearing a hat with straw hair",
+                ),
+            )
+        }
+        CompositionLocalProvider(value = LocalInspectionMode provides true) {
+            AndroidifyTheme {
+                ResultsScreenContents(
+                    contentPadding = PaddingValues(0.dp),
+                    state = state,
+                    verboseLayout = false, // Replicates ResultsScreenPreviewSmall
+                    downloadClicked = {},
+                    shareClicked = {},
+                )
+            }
+        }
+    }
+
+
+    @Preview(showBackground = true)
+    @Composable
+    fun ResultsScreen_OriginalInputPreview() {
+        val mockBitmap = createMockBitmap()
+        val state = remember {
+            mutableStateOf(
+                ResultState(
+                    resultImageBitmap = mockBitmap,
+                    promptText = "wearing a hat with straw hair",
+                )
+            )
+        }
+        CompositionLocalProvider(value = LocalInspectionMode provides true) {
+            AndroidifyTheme {
+                ResultsScreenContents(
+                    contentPadding = PaddingValues(0.dp),
+                    state = state,
+                    verboseLayout = true,
+                    downloadClicked = {},
+                    shareClicked = {},
+                    defaultSelectedResult = ResultOption.OriginalInput // Set the non-default option
+                )
+            }
+        }
+    }
+
+    // Helper function to create a consistent mock bitmap
+    private fun createMockBitmap(): Bitmap {
         val width = 200
         val height = 200
         val mockBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
@@ -47,25 +128,6 @@ class ResultsScreenScreenshotTest {
         )
         paint.shader = gradient
         canvas.drawRect(0f, 0f, width.toFloat(), height.toFloat(), paint)
-
-        val state = remember {
-            mutableStateOf(
-                ResultState(
-                    resultImageBitmap = mockBitmap,
-                    promptText = "a test prompt",
-                ),
-            )
-        }
-        CompositionLocalProvider(value = LocalInspectionMode provides true) {
-            AndroidifyTheme {
-                ResultsScreenContents(
-                    contentPadding = PaddingValues(0.dp),
-                    state = state,
-                    verboseLayout = false,
-                    downloadClicked = {},
-                    shareClicked = {},
-                )
-            }
-        }
+        return mockBitmap
     }
 }
