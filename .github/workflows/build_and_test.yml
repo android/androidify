@@ -87,9 +87,6 @@ jobs:
     needs: build_test_lint # Run after the build job
     runs-on: ubuntu-latest # GMD requires Linux runner with KVM
     timeout-minutes: 60
-    strategy:
-      matrix:
-        api-level: [34] 
 
     steps:
       - name: Delete unnecessary tools 🔧
@@ -126,14 +123,12 @@ jobs:
         run: chmod +x gradlew
 
       - name: Run instrumentation tests (Gradle Managed Device)
-        # Assumes GMD device name 'pixel6Api${{ matrix.api-level }}' and task name accordingly.
-        # Adjust the task name if your GMD configuration is different (e.g., includes module name like :app:).
-        run: ./gradlew pixel6Api${{ matrix.api-level }}DebugAndroidTest --info
+        run: ./gradlew pixel5DebugAndroidTest
 
       - name: Upload test reports
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
-          name: test-reports-gmd-api-${{ matrix.api-level }}
+          name: test-reports-gmd-pixel5
           # GMD reports are typically in a path like this, adjust if needed
           path: '**/build/outputs/androidTest-results/managedDevice/'

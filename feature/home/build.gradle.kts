@@ -43,6 +43,17 @@ android {
     }
 
     experimentalProperties["android.experimental.enableScreenshotTest"] = true
+
+    testOptions {
+        targetSdk = 36
+        managedDevices.allDevices {
+            create("pixel5", com.android.build.api.dsl.ManagedVirtualDevice::class.java) {
+                device = "Pixel 5"
+                apiLevel = 30
+                systemImageSource = "aosp"
+            }
+        }
+    }
 }
 
 dependencies {
