@@ -19,6 +19,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.composeScreenshot)
 }
 
 android {
@@ -41,6 +42,9 @@ android {
     buildFeatures {
         compose = true
     }
+
+    experimentalProperties["android.experimental.enableScreenshotTest"] = true
+
     testOptions {
         targetSdk = 36
     }
