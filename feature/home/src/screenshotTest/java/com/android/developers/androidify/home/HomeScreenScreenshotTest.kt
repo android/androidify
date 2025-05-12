@@ -35,7 +35,7 @@ class HomeScreenScreenshotTest {
                     onClickLetsGo = { },
                     onAboutClicked = {},
                     videoLink = "",
-                    dancingBotLink = ""
+                    dancingBotLink = "",
                 )
             }
         }

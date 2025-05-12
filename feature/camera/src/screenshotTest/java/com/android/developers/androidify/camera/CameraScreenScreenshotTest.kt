@@ -15,6 +15,7 @@
  */
 package com.android.developers.androidify.camera
 
+import android.graphics.Rect
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,7 +35,7 @@ class CameraScreenScreenshotTest {
         override val orientation: FoldingFeature.Orientation,
         override val occlusionType: FoldingFeature.OcclusionType = FoldingFeature.OcclusionType.NONE,
         override val isSeparating: Boolean = true,
-        override val bounds: android.graphics.Rect = android.graphics.Rect()
+        override val bounds: Rect = Rect(),
     ) : FoldingFeature
 
     @Preview(showBackground = true, name = "Default State")
@@ -49,10 +50,10 @@ class CameraScreenScreenshotTest {
                                 colors = listOf(
                                     Color.Red,
                                     Color.Green,
-                                    Color.Blue
-                                )
-                            )
-                        )
+                                    Color.Blue,
+                                ),
+                            ),
+                        ),
                     )
                 },
                 detectedPose = true,
@@ -145,7 +146,7 @@ class CameraScreenScreenshotTest {
     fun CameraScreenTabletopScreenshot() {
         val tabletopFoldingFeature = MockFoldingFeature(
             state = FoldingFeature.State.HALF_OPENED,
-            orientation = FoldingFeature.Orientation.HORIZONTAL
+            orientation = FoldingFeature.Orientation.HORIZONTAL,
         )
         AndroidifyTheme {
             StatelessCameraPreviewContent(
@@ -157,7 +158,7 @@ class CameraScreenScreenshotTest {
                 zoomLevel = { 1f },
                 onChangeZoomLevel = {},
                 requestCaptureImage = {},
-                foldingFeature = tabletopFoldingFeature // Changed
+                foldingFeature = tabletopFoldingFeature, // Changed
             )
         }
     }
@@ -205,10 +206,10 @@ class CameraScreenScreenshotTest {
                     colors = listOf(
                         Color(0xFFFF0000),
                         Color(0xFF7D299B),
-                        Color(0xFF1854CC)
-                    )
-                )
-            )
+                        Color(0xFF1854CC),
+                    ),
+                ),
+            ),
         )
     }
 }
