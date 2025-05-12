@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <initializer
+        android:name="com.android.developers.androidify.startup.FirebaseAppCheckInitializer" />
+    <initializer
+        android:name="com.android.developers.androidify.startup.FirebaseRemoteConfigInitializer" />
+</resources>
