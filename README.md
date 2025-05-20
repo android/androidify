@@ -36,7 +36,7 @@ The app combines a variety of different Google technologies, such as:
 [`remote_config_defaults.xml`](core/network/src/main/res/xml/remote_config_defaults.xml)
 
 4. If you'd like to change the font that the app renders with, an optional spec can be placed in
-   `~/gradlew/gradle.properties` file:
+   the project's `gradle.properties` file:
 
 ```
 fontName="Roboto Flex"
