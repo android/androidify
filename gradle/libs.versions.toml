@@ -1,6 +1,6 @@
 [versions]
 # build
-agp = "8.9.1"
+agp = "8.10.0"
 compileSdk = "36"
 leakcanaryAndroid = "2.14"
 minSdk = "26"
