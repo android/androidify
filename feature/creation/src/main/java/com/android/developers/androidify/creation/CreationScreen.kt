@@ -402,7 +402,7 @@ private fun MainCreationPane(
         modifier = modifier,
     ) {
         val spatialSpec = MaterialTheme.motionScheme.slowSpatialSpec<Float>()
-        val pagerState = rememberPagerState(0) { PromptType.entries.size }
+        val pagerState = rememberPagerState(uiState.selectedPromptOption.ordinal) { PromptType.entries.size }
         val focusManager = LocalFocusManager.current
         LaunchedEffect(uiState.selectedPromptOption) {
             launch {
