@@ -165,14 +165,20 @@ class CameraViewModel
         }
 
         job.invokeOnCompletion { cause ->
-            if (cause == null) {
-                cont.resume(Unit)
-            } else {
-                cont.resumeWithException(cause)
+            if (cont.isActive) {
+                if (cause == null) {
+                    cont.resume(Unit)
+                } else {
+                    cont.resumeWithException(cause)
+                }
             }
         }
 
-        cont.invokeOnCancellation { job.cancel() }
+        cont.invokeOnCancellation {
+            if (job.isActive) {
+                job.cancel()
+            }
+        }
     }
 
     fun captureImage() {
