@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "abc",
-    "project_id": "YourProjectId",
-    "storage_bucket": "abc"
+    "project_number": "823911350054",
+    "project_id": "getnuri",
+    "storage_bucket": "getnuri.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "APlaceholderAPIKeyWith-ThirtyNineCharsX",
+        "mobilesdk_app_id": "1:823911350054:android:4442c53daa0724fa358be7",
         "android_client_info": {
-          "package_name": "com.android.developers.androidify"
+          "package_name": "getnuri.app"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "APlaceholderAPIKeyWith-ThirtyNineCharsX"
+          "current_key": "AIzaSyAf-FUGTiqFOEDMUwEmj71QV05TU1e0Hms"
         }
       ],
       "services": {
