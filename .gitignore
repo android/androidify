@@ -10,3 +10,4 @@
 /app/src/release/generated/*
 /core/build/
 /feature/build/
+/app/google-services.json
