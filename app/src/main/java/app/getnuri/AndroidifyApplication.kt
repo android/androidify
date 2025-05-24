@@ -16,24 +16,25 @@
 package app.getnuri
 
 import android.app.Application
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.content.pm.ApplicationInfo
+import android.os.Build
 import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy.Builder
+import app.getnuri.background.FEEDBACK_CHANNEL_ID
 import coil3.ImageLoader
 import coil3.PlatformContext
 import coil3.SingletonImageLoader
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
+
 @HiltAndroidApp
 class AndroidifyApplication : Application(), SingletonImageLoader.Factory {
 
     @Inject
     lateinit var imageLoader: dagger.Lazy<ImageLoader>
-
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.os.Build
-import app.getnuri.background.FEEDBACK_CHANNEL_ID // Import the constant
 
     override fun onCreate() {
         super.onCreate()

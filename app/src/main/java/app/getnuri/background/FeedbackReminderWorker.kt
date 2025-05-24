@@ -1,3 +1,8 @@
+@file:OptIn(
+    androidx.compose.material3.ExperimentalMaterial3Api::class,
+    androidx.compose.material3.ExperimentalMaterial3ExpressiveApi::class
+)
+
 package app.getnuri.background
 
 import android.app.NotificationChannel
@@ -55,7 +60,7 @@ class FeedbackReminderWorker(
         )
 
         val notification = NotificationCompat.Builder(applicationContext, FEEDBACK_CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_launcher_foreground) // Replace with a proper icon
+            .setSmallIcon(R.drawable.ic_launcher_monochrome) // Use available icon
             .setContentTitle("Nuri Meal Feedback")
             .setContentText("How are you feeling after your meal? Tap to give feedback.")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
