@@ -33,3 +33,22 @@ object Camera : NavigationRoute
 
 @Serializable
 object About : NavigationRoute
+
+// New Nuri meal tracking routes
+@Serializable
+object MealTrackingChoice : NavigationRoute
+
+@Serializable
+object MealPhotoCapture : NavigationRoute
+
+@Serializable
+data class MealPhotoConfirmation(val imageUri: String) : NavigationRoute
+
+@Serializable
+object MealTextEntry : NavigationRoute
+
+@Serializable
+object MealHistory : NavigationRoute
+
+@Serializable
+data class FeedbackEntry(val mealId: Long) : NavigationRoute

@@ -32,7 +32,7 @@ rootProject.name = "Androidify"
 include(":app")
 
 include(":feature")
-include(":feature:nuri-creation")
+// include(":feature:nuri-creation")
 include(":feature:camera")
 include(":feature:creation")
 include(":feature:home")
@@ -45,4 +45,5 @@ include(":core:theme")
 include(":core:testing")
 include(":benchmark")
 
-include(":feature:feedback")
+// include(":feature:feedback")
+include(":feature:history")

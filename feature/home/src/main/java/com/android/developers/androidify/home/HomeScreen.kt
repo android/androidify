@@ -121,6 +121,7 @@ fun HomeScreen(
     isMediumWindowSize: Boolean = isAtLeastMedium(),
     onClickLetsGo: (IntOffset) -> Unit = {},
     onAboutClicked: () -> Unit = {},
+    onHistoryClicked: () -> Unit = {},
 ) {
     val state = homeScreenViewModel.state.collectAsStateWithLifecycle()
     if (!state.value.isAppActive) {
@@ -132,6 +133,7 @@ fun HomeScreen(
             isMediumWindowSize,
             onClickLetsGo,
             onAboutClicked,
+            onHistoryClicked,
         )
     }
 }
@@ -143,6 +145,7 @@ fun HomeScreenContents(
     isMediumWindowSize: Boolean,
     onClickLetsGo: (IntOffset) -> Unit,
     onAboutClicked: () -> Unit,
+    onHistoryClicked: () -> Unit,
 ) {
     Box {
         SquiggleBackground()
@@ -179,19 +182,43 @@ fun HomeScreenContents(
                             .align(Alignment.CenterVertically),
                     ) {
                         MainHomeContent(dancingBotLink)
-                        HomePageButton(
+                        
+                        Column(
                             modifier = Modifier
-                                .onLayoutRectChanged {
-                                    positionButtonClick = it.boundsInWindow.center
-                                }
                                 .align(Alignment.BottomCenter)
-                                .padding(bottom = 16.dp)
-                                .height(64.dp)
-                                .width(220.dp),
-                            onClick = {
-                                onClickLetsGo(positionButtonClick)
-                            },
-                        )
+                                .padding(bottom = 16.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            HomePageButton(
+                                modifier = Modifier
+                                    .onLayoutRectChanged {
+                                        positionButtonClick = it.boundsInWindow.center
+                                    }
+                                    .height(64.dp)
+                                    .width(220.dp),
+                                onClick = {
+                                    onClickLetsGo(positionButtonClick)
+                                },
+                            )
+                            
+                            Spacer(modifier = Modifier.height(8.dp))
+                            
+                            // Secondary action button - View History  
+                            Button(
+                                onClick = onHistoryClicked,
+                                modifier = Modifier
+                                    .height(48.dp)
+                                    .width(160.dp),
+                                colors = ButtonDefaults.outlinedButtonColors(),
+                            ) {
+                                Text(
+                                    stringResource(R.string.home_button_history),
+                                    style = MaterialTheme.typography.titleMedium.copy(
+                                        fontWeight = FontWeight(600),
+                                    ),
+                                )
+                            }
+                        }
                     }
                 }
             } else {
@@ -200,6 +227,7 @@ fun HomeScreenContents(
                     dancingBotLink,
                     onClickLetsGo,
                     onAboutClicked,
+                    onHistoryClicked,
                 )
             }
         }
@@ -212,6 +240,7 @@ private fun CompactPager(
     dancingBotLink: String?,
     onClick: (IntOffset) -> Unit,
     onAboutClicked: () -> Unit,
+    onHistoryClicked: () -> Unit,
 ) {
     val pagerState = rememberPagerState(pageCount = { 2 })
 
@@ -278,12 +307,14 @@ private fun CompactPager(
         var buttonPosition by remember {
             mutableStateOf(IntOffset.Zero)
         }
+        
+        // Main action button
         HomePageButton(
             modifier = Modifier
                 .onLayoutRectChanged {
                     buttonPosition = it.boundsInWindow.center
                 }
-                .padding(bottom = 16.dp)
+                .padding(bottom = 8.dp)
                 .height(64.dp)
                 .width(220.dp),
             colors = ButtonDefaults.buttonColors()
@@ -292,6 +323,23 @@ private fun CompactPager(
                 onClick(buttonPosition)
             },
         )
+        
+        // Secondary action button - View History
+        Button(
+            onClick = onHistoryClicked,
+            modifier = Modifier
+                .padding(bottom = 16.dp)
+                .height(48.dp)
+                .width(160.dp),
+            colors = ButtonDefaults.outlinedButtonColors(),
+        ) {
+            Text(
+                stringResource(R.string.home_button_history),
+                style = MaterialTheme.typography.titleMedium.copy(
+                    fontWeight = FontWeight(600),
+                ),
+            )
+        }
     }
 }
 
@@ -336,6 +384,7 @@ private fun HomeScreenPhonePreview() {
             videoLink = "",
             dancingBotLink = "https://services.google.com/fh/files/misc/android_dancing.gif",
             onAboutClicked = {},
+            onHistoryClicked = {},
         )
     }
 }
@@ -351,6 +400,7 @@ private fun HomeScreenLargeScreensPreview() {
             videoLink = "",
             dancingBotLink = "https://services.google.com/fh/files/misc/android_dancing.gif",
             onAboutClicked = {},
+            onHistoryClicked = {},
         )
     }
 }

@@ -39,7 +39,14 @@ import app.getnuri.camera.CameraPreviewScreen
 import app.getnuri.creation.CreationScreen
 import app.getnuri.home.AboutScreen
 import app.getnuri.home.HomeScreen
+import app.getnuri.home.MealTrackingChoiceScreen
 import app.getnuri.theme.transitions.ColorSplashTransitionScreen
+// import app.getnuri.feature.nuri_creation.photo.capture.MealPhotoCaptureScreen
+// import app.getnuri.feature.nuri_creation.photo.confirm.MealPhotoConfirmationScreen
+// import app.getnuri.feature.nuri_creation.text.entry.MealTextEntryScreen
+import app.getnuri.feature.history.MealHistoryScreen
+// import app.getnuri.feature.feedback.entry.FeedbackEntryScreen
+import android.net.Uri
 
 @ExperimentalMaterial3ExpressiveApi
 @Composable
@@ -83,6 +90,9 @@ fun MainNavigation() {
                     onAboutClicked = {
                         backStack.add(About)
                     },
+                    onHistoryClicked = {
+                        backStack.add(MealHistory)
+                    },
                 )
             }
             entry<Camera> {
@@ -116,6 +126,42 @@ fun MainNavigation() {
                     },
                 )
             }
+            
+            // New Nuri meal tracking entries
+            entry<MealTrackingChoice> {
+                MealTrackingChoiceScreen(
+                    onPhotoChoice = {
+                        // TODO: Navigate to photo capture when ready
+                        // backStack.add(MealPhotoCapture)
+                    },
+                    onTextChoice = {
+                        // TODO: Navigate to text entry when ready
+                        // backStack.add(MealTextEntry)
+                    },
+                    onBackPressed = {
+                        backStack.removeLastOrNull()
+                    }
+                )
+            }
+            
+            entry<MealHistory> {
+                MealHistoryScreen(
+                    onBackPressed = {
+                        backStack.removeLastOrNull()
+                    }
+                )
+            }
+            
+            /*
+            entry<FeedbackEntry> { feedbackRoute ->
+                FeedbackEntryScreen(
+                    mealId = feedbackRoute.mealId,
+                    onFeedbackSubmitted = {
+                        backStack.removeLastOrNull()
+                    }
+                )
+            }
+            */
         },
     )
     if (showSplash) {
@@ -125,7 +171,7 @@ fun MainNavigation() {
                 showSplash = false
             },
             onTransitionMidpoint = {
-                backStack.add(Create(fileName = null))
+                backStack.add(MealTrackingChoice)
             },
         )
     }

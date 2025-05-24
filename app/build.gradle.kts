@@ -133,6 +133,11 @@ dependencies {
     implementation(project(":feature:creation"))
     implementation(project(":feature:home"))
     implementation(project(":feature:results"))
+    
+    // New Nuri meal tracking features
+    // implementation(project(":feature:nuri-creation"))
+    // implementation(project(":feature:feedback"))
+    implementation(project(":feature:history"))
 
     implementation(project(":core:theme"))
 

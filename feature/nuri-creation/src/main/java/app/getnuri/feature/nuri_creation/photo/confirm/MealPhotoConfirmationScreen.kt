@@ -38,8 +38,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.rememberAsyncImagePainter
-import coil.request.ImageRequest
+import coil3.compose.rememberAsyncImagePainter
+import coil3.request.ImageRequest
 
 // Navigation comment:
 // This screen is reached after a photo is captured in MealPhotoCaptureScreen.
@@ -102,7 +102,6 @@ fun MealPhotoConfirmationScreen(
                     painter = rememberAsyncImagePainter(
                         ImageRequest.Builder(LocalContext.current)
                             .data(currentImageUriForDisplay)
-                            .crossfade(true)
                             .build()
                     ),
                     contentDescription = "Captured meal photo",

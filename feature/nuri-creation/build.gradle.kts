@@ -49,6 +49,7 @@ dependencies {
     implementation(project(":core:theme"))
     implementation(project(":core:util"))
     implementation(project(":feature:camera")) // Dependency for CameraPreviewScreen
+    implementation(project(":data")) // For NuriMealAnalyzer, MealDao, etc.
 
     implementation(libs.androidx.compose.foundation)
     implementation(libs.androidx.compose.foundation.layout)
@@ -72,6 +73,9 @@ dependencies {
 
     // Accompanist Permissions (if CameraPreviewScreen or this module needs it directly)
     implementation(libs.accompanist.permissions)
+
+    // WorkManager for scheduling feedback reminders
+    implementation(libs.androidx.work.runtime.ktx)
 
     // Testing Dependencies
     testImplementation(libs.junit)
