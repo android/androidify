@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.developers.androidify
+package app.getnuri.getnuri
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -23,7 +23,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import com.android.developers.androidify.navigation.MainNavigation
+import app.getnuri.getnuri.navigation.MainNavigation
 import com.android.developers.androidify.theme.AndroidifyTheme
 import dagger.hilt.android.AndroidEntryPoint
 
