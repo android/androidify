@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.developers.androidify.camera
+package app.getnuri.camera
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -39,14 +39,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
-import com.android.developers.androidify.theme.AndroidifyTheme
-import com.android.developers.androidify.theme.TertiaryContainer
-import com.android.developers.androidify.util.FoldablePreviewParameters
-import com.android.developers.androidify.util.FoldablePreviewParametersProvider
-import com.android.developers.androidify.util.allowsFullContent
-import com.android.developers.androidify.util.isAtLeastMedium
-import com.android.developers.androidify.util.shouldShowTabletopLayout
-import com.android.developers.androidify.util.supportsTabletop
+import app.getnuri.theme.AndroidifyTheme
+import app.getnuri.theme.TertiaryContainer
+import app.getnuri.util.FoldablePreviewParameters
+import app.getnuri.util.FoldablePreviewParametersProvider
+import app.getnuri.util.allowsFullContent
+import app.getnuri.util.isAtLeastMedium
+import app.getnuri.util.shouldShowTabletopLayout
+import app.getnuri.util.supportsTabletop
 
 @Composable
 internal fun CameraLayout(

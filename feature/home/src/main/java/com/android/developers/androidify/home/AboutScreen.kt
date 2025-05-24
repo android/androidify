@@ -15,7 +15,7 @@
  */
 @file:OptIn(ExperimentalSharedTransitionApi::class, ExperimentalMaterial3ExpressiveApi::class)
 
-package com.android.developers.androidify.home
+package app.getnuri.home
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.background
@@ -55,15 +55,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation3.ui.LocalNavAnimatedContentScope
-import com.android.developers.androidify.theme.AndroidifyTheme
-import com.android.developers.androidify.theme.LocalSharedTransitionScope
-import com.android.developers.androidify.theme.SharedElementContextPreview
-import com.android.developers.androidify.theme.SharedElementKey
-import com.android.developers.androidify.theme.components.SecondaryOutlinedButton
-import com.android.developers.androidify.theme.sharedBoundsReveal
-import com.android.developers.androidify.util.LargeScreensPreview
-import com.android.developers.androidify.util.PhonePreview
-import com.android.developers.androidify.util.isAtLeastMedium
+import app.getnuri.theme.AndroidifyTheme
+import app.getnuri.theme.LocalSharedTransitionScope
+import app.getnuri.theme.SharedElementContextPreview
+import app.getnuri.theme.SharedElementKey
+import app.getnuri.theme.components.SecondaryOutlinedButton
+import app.getnuri.theme.sharedBoundsReveal
+import app.getnuri.util.LargeScreensPreview
+import app.getnuri.util.PhonePreview
+import app.getnuri.util.isAtLeastMedium
 
 @PhonePreview
 @Composable
@@ -104,7 +104,7 @@ fun AboutScreen(
                     },
                 ) {
                     Icon(
-                        rememberVectorPainter(ImageVector.vectorResource(com.android.developers.androidify.theme.R.drawable.rounded_close_24)),
+                        rememberVectorPainter(ImageVector.vectorResource(app.getnuri.theme.R.drawable.rounded_close_24)),
                         contentDescription = stringResource(R.string.about_back_content_description),
                     )
                 }

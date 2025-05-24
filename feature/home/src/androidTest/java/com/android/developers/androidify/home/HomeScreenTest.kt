@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.developers.androidify.home
+package app.getnuri.home
 
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
@@ -26,7 +26,7 @@ import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeLeft
 import androidx.compose.ui.unit.IntOffset
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.android.developers.androidify.theme.SharedElementContextPreview
+import app.getnuri.theme.SharedElementContextPreview
 import junit.framework.TestCase.assertTrue
 import org.junit.Rule
 import org.junit.Test

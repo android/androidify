@@ -38,7 +38,7 @@ plugins {
 }
 
 android {
-    namespace = "com.android.developers.androidify.benchmark"
+    namespace = "app.getnuri.benchmark"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     compileOptions {

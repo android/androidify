@@ -15,7 +15,7 @@
  */
 @file:OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3ExpressiveApi::class)
 
-package com.android.developers.androidify.creation
+package app.getnuri.creation
 
 import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.foundation.Image

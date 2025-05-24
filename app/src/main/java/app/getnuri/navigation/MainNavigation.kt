@@ -15,7 +15,7 @@
  */
 @file:OptIn(ExperimentalSharedTransitionApi::class)
 
-package app.getnuri.getnuri.navigation
+package app.getnuri.navigation
 
 import androidx.compose.animation.ContentTransform
 import androidx.compose.animation.ExperimentalSharedTransitionApi
@@ -35,11 +35,11 @@ import androidx.navigation3.runtime.entry
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
-import com.android.developers.androidify.camera.CameraPreviewScreen
-import com.android.developers.androidify.creation.CreationScreen
-import com.android.developers.androidify.home.AboutScreen
-import com.android.developers.androidify.home.HomeScreen
-import com.android.developers.androidify.theme.transitions.ColorSplashTransitionScreen
+import app.getnuri.camera.CameraPreviewScreen
+import app.getnuri.creation.CreationScreen
+import app.getnuri.home.AboutScreen
+import app.getnuri.home.HomeScreen
+import app.getnuri.theme.transitions.ColorSplashTransitionScreen
 
 @ExperimentalMaterial3ExpressiveApi
 @Composable

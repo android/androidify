@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.developers.androidify.camera
+package app.getnuri.camera
 
 import android.graphics.Rect
 import androidx.compose.foundation.background
@@ -25,7 +25,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.window.layout.FoldingFeature
-import com.android.developers.androidify.theme.AndroidifyTheme
+import app.getnuri.theme.AndroidifyTheme
 
 class CameraScreenScreenshotTest {
 

@@ -15,7 +15,7 @@
  */
 @file:OptIn(ExperimentalMaterial3ExpressiveApi::class)
 
-package com.android.developers.androidify.camera
+package app.getnuri.camera
 
 import android.Manifest
 import android.net.Uri
@@ -60,12 +60,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleStartEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.window.layout.FoldingFeature
-import com.android.developers.androidify.theme.LocalSharedTransitionScope
-import com.android.developers.androidify.theme.SharedElementKey
-import com.android.developers.androidify.theme.sharedBoundsRevealWithShapeMorph
-import com.android.developers.androidify.theme.sharedBoundsWithDefaults
-import com.android.developers.androidify.util.calculateCorrectAspectRatio
-import com.android.developers.androidify.util.isTableTopPosture
+import app.getnuri.theme.LocalSharedTransitionScope
+import app.getnuri.theme.SharedElementKey
+import app.getnuri.theme.sharedBoundsRevealWithShapeMorph
+import app.getnuri.theme.sharedBoundsWithDefaults
+import app.getnuri.util.calculateCorrectAspectRatio
+import app.getnuri.util.isTableTopPosture
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState

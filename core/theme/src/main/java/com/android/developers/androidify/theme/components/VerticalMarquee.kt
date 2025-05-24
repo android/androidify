@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.developers.androidify.theme.components
+package app.getnuri.theme.components
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationSpec
@@ -58,13 +58,13 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.constrainHeight
 import androidx.compose.ui.unit.dp
-import com.android.developers.androidify.theme.components.FixedMotionDurationScale.scaleFactor
-import com.android.developers.androidify.theme.components.MarqueeAnimationMode.Companion.Immediately
-import com.android.developers.androidify.theme.components.MarqueeAnimationMode.Companion.WhileFocused
-import com.android.developers.androidify.theme.components.MarqueeDefaults.Iterations
-import com.android.developers.androidify.theme.components.MarqueeDefaults.RepeatDelayMillis
-import com.android.developers.androidify.theme.components.MarqueeDefaults.Spacing
-import com.android.developers.androidify.theme.components.MarqueeDefaults.Velocity
+import app.getnuri.theme.components.FixedMotionDurationScale.scaleFactor
+import app.getnuri.theme.components.MarqueeAnimationMode.Companion.Immediately
+import app.getnuri.theme.components.MarqueeAnimationMode.Companion.WhileFocused
+import app.getnuri.theme.components.MarqueeDefaults.Iterations
+import app.getnuri.theme.components.MarqueeDefaults.RepeatDelayMillis
+import app.getnuri.theme.components.MarqueeDefaults.Spacing
+import app.getnuri.theme.components.MarqueeDefaults.Velocity
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

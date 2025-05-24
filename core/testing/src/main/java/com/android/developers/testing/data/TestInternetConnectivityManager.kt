@@ -15,7 +15,7 @@
  */
 package com.android.developers.testing.data
 
-import com.android.developers.androidify.data.InternetConnectivityManager
+import app.getnuri.data.InternetConnectivityManager
 
 /**
  * Test implementation of [InternetConnectivityManager].

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.developers.androidify.camera
+package app.getnuri.camera
 
 import android.content.Context
 import androidx.activity.ComponentActivity

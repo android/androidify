@@ -19,7 +19,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import androidx.core.graphics.createBitmap
 import androidx.core.net.toUri
-import com.android.developers.androidify.data.ImageGenerationRepository
+import app.getnuri.data.ImageGenerationRepository
 import java.io.File
 
 class FakeImageGenerationRepository : ImageGenerationRepository {

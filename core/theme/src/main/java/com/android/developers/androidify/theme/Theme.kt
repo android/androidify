@@ -15,7 +15,7 @@
  */
 @file:OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalSharedTransitionApi::class)
 
-package com.android.developers.androidify.theme
+package app.getnuri.theme
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout

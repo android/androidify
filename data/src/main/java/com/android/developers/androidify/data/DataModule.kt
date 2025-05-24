@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.developers.androidify.data
+package app.getnuri.data
 
 import android.content.Context
-import com.android.developers.androidify.RemoteConfigDataSource
-import com.android.developers.androidify.RemoteConfigDataSourceImpl
-import com.android.developers.androidify.util.LocalFileProvider
-import com.android.developers.androidify.util.LocalFileProviderImpl
-import com.android.developers.androidify.vertexai.FirebaseAiDataSource
-import com.android.developers.androidify.vertexai.FirebaseAiDataSourceImpl
+import app.getnuri.RemoteConfigDataSource
+import app.getnuri.RemoteConfigDataSourceImpl
+import app.getnuri.util.LocalFileProvider
+import app.getnuri.util.LocalFileProviderImpl
+import app.getnuri.vertexai.FirebaseAiDataSource
+import app.getnuri.vertexai.FirebaseAiDataSourceImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

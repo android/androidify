@@ -15,7 +15,7 @@
  */
 package com.android.developers.testing.repository
 
-import com.android.developers.androidify.data.TextGenerationRepository
+import app.getnuri.data.TextGenerationRepository
 
 class TestTextGenerationRepository : TextGenerationRepository {
     override suspend fun initialize() {

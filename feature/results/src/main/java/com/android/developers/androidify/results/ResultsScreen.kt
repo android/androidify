@@ -15,7 +15,7 @@
  */
 @file:OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalPermissionsApi::class)
 
-package com.android.developers.androidify.results
+package app.getnuri.results
 
 import android.Manifest
 import android.graphics.Bitmap
@@ -69,14 +69,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.android.developers.androidify.theme.AndroidifyTheme
-import com.android.developers.androidify.theme.components.AndroidifyTopAppBar
-import com.android.developers.androidify.theme.components.PrimaryButton
-import com.android.developers.androidify.theme.components.ResultsBackground
-import com.android.developers.androidify.util.AdaptivePreview
-import com.android.developers.androidify.util.SmallPhonePreview
-import com.android.developers.androidify.util.allowsFullContent
-import com.android.developers.androidify.util.isAtLeastMedium
+import app.getnuri.theme.AndroidifyTheme
+import app.getnuri.theme.components.AndroidifyTopAppBar
+import app.getnuri.theme.components.PrimaryButton
+import app.getnuri.theme.components.ResultsBackground
+import app.getnuri.util.AdaptivePreview
+import app.getnuri.util.SmallPhonePreview
+import app.getnuri.util.allowsFullContent
+import app.getnuri.util.isAtLeastMedium
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
@@ -366,7 +366,7 @@ private fun BotActionsButtonRow(
                 Row {
                     Icon(
                         ImageVector
-                            .vectorResource(com.android.developers.androidify.theme.R.drawable.sharp_share_24),
+                            .vectorResource(app.getnuri.theme.R.drawable.sharp_share_24),
                         contentDescription = null, // decorative element
                     )
                     Spacer(modifier = Modifier.width(8.dp))

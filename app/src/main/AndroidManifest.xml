@@ -57,13 +57,13 @@
             android:exported="false"
             tools:node="merge">
             <meta-data
-                android:name="com.android.developers.androidify.startup.FirebaseAppInitializer"
+                android:name="app.getnuri.startup.FirebaseAppInitializer"
                 android:value="androidx.startup" />
             <meta-data
-                android:name="com.android.developers.androidify.startup.FirebaseAppCheckInitializer"
+                android:name="app.getnuri.startup.FirebaseAppCheckInitializer"
                 android:value="androidx.startup" />
             <meta-data
-                android:name="com.android.developers.androidify.startup.FirebaseRemoteConfigInitializer"
+                android:name="app.getnuri.startup.FirebaseRemoteConfigInitializer"
                 android:value="androidx.startup" />
         </provider>
         <activity

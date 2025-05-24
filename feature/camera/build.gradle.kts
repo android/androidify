@@ -23,7 +23,7 @@ plugins {
 }
 
 android {
-    namespace = "com.android.developers.androidify.camera"
+    namespace = "app.getnuri.camera"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {

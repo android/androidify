@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.developers.androidify.camera
+package app.getnuri.camera
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationSpec

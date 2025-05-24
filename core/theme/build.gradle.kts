@@ -21,7 +21,7 @@ plugins {
 val fontName = properties["fontName"] as String?
 
 android {
-    namespace = "com.android.developers.androidify.theme"
+    namespace = "app.getnuri.theme"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {

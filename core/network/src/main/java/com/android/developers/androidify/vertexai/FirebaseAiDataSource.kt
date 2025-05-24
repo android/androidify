@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.developers.androidify.vertexai
+package app.getnuri.vertexai
 
 import android.graphics.Bitmap
-import com.android.developers.androidify.RemoteConfigDataSource
-import com.android.developers.androidify.model.GeneratedPrompt
-import com.android.developers.androidify.model.ImageValidationError
-import com.android.developers.androidify.model.ValidatedDescription
-import com.android.developers.androidify.model.ValidatedImage
+import app.getnuri.RemoteConfigDataSource
+import app.getnuri.model.GeneratedPrompt
+import app.getnuri.model.ImageValidationError
+import app.getnuri.model.ValidatedDescription
+import app.getnuri.model.ValidatedImage
 import com.google.firebase.Firebase
 import com.google.firebase.ai.GenerativeModel
 import com.google.firebase.ai.ImagenModel

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.developers.androidify.home
+package app.getnuri.home
 
 import androidx.annotation.OptIn
 import androidx.compose.animation.animateColorAsState
@@ -103,15 +103,15 @@ import androidx.media3.ui.compose.PlayerSurface
 import androidx.media3.ui.compose.SURFACE_TYPE_TEXTURE_VIEW
 import androidx.media3.ui.compose.state.rememberPlayPauseButtonState
 import coil3.compose.AsyncImage
-import com.android.developers.androidify.theme.Blue
-import com.android.developers.androidify.theme.SharedElementContextPreview
-import com.android.developers.androidify.theme.components.AndroidifyTopAppBar
-import com.android.developers.androidify.theme.components.AndroidifyTranslucentTopAppBar
-import com.android.developers.androidify.theme.components.SquiggleBackground
-import com.android.developers.androidify.util.LargeScreensPreview
-import com.android.developers.androidify.util.PhonePreview
-import com.android.developers.androidify.util.isAtLeastMedium
-import com.android.developers.androidify.theme.R as ThemeR
+import app.getnuri.theme.Blue
+import app.getnuri.theme.SharedElementContextPreview
+import app.getnuri.theme.components.AndroidifyTopAppBar
+import app.getnuri.theme.components.AndroidifyTranslucentTopAppBar
+import app.getnuri.theme.components.SquiggleBackground
+import app.getnuri.util.LargeScreensPreview
+import app.getnuri.util.PhonePreview
+import app.getnuri.util.isAtLeastMedium
+import app.getnuri.theme.R as ThemeR
 
 @ExperimentalMaterial3ExpressiveApi
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)

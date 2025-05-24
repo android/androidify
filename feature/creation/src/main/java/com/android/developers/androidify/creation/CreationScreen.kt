@@ -20,7 +20,7 @@
     ExperimentalMaterial3Api::class,
 )
 
-package com.android.developers.androidify.creation
+package app.getnuri.creation
 
 import android.net.Uri
 import androidx.activity.compose.BackHandler
@@ -125,31 +125,31 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
-import com.android.developers.androidify.results.ResultsScreen
-import com.android.developers.androidify.theme.AndroidifyTheme
-import com.android.developers.androidify.theme.LimeGreen
-import com.android.developers.androidify.theme.LocalSharedTransitionScope
-import com.android.developers.androidify.theme.Primary90
-import com.android.developers.androidify.theme.R
-import com.android.developers.androidify.theme.Secondary
-import com.android.developers.androidify.theme.SharedElementKey
-import com.android.developers.androidify.theme.components.AndroidifyTopAppBar
-import com.android.developers.androidify.theme.components.GradientAssistElevatedChip
-import com.android.developers.androidify.theme.components.PrimaryButton
-import com.android.developers.androidify.theme.components.ScaleIndicationNodeFactory
-import com.android.developers.androidify.theme.components.SecondaryOutlinedButton
-import com.android.developers.androidify.theme.components.SquiggleBackground
-import com.android.developers.androidify.theme.components.gradientChipColorDefaults
-import com.android.developers.androidify.theme.components.infinitelyAnimatingLinearGradient
-import com.android.developers.androidify.theme.sharedBoundsRevealWithShapeMorph
-import com.android.developers.androidify.theme.sharedBoundsWithDefaults
-import com.android.developers.androidify.util.AnimatedTextField
-import com.android.developers.androidify.util.LargeScreensPreview
-import com.android.developers.androidify.util.dashedRoundedRectBorder
-import com.android.developers.androidify.util.isAtLeastMedium
+import app.getnuri.results.ResultsScreen
+import app.getnuri.theme.AndroidifyTheme
+import app.getnuri.theme.LimeGreen
+import app.getnuri.theme.LocalSharedTransitionScope
+import app.getnuri.theme.Primary90
+import app.getnuri.theme.R
+import app.getnuri.theme.Secondary
+import app.getnuri.theme.SharedElementKey
+import app.getnuri.theme.components.AndroidifyTopAppBar
+import app.getnuri.theme.components.GradientAssistElevatedChip
+import app.getnuri.theme.components.PrimaryButton
+import app.getnuri.theme.components.ScaleIndicationNodeFactory
+import app.getnuri.theme.components.SecondaryOutlinedButton
+import app.getnuri.theme.components.SquiggleBackground
+import app.getnuri.theme.components.gradientChipColorDefaults
+import app.getnuri.theme.components.infinitelyAnimatingLinearGradient
+import app.getnuri.theme.sharedBoundsRevealWithShapeMorph
+import app.getnuri.theme.sharedBoundsWithDefaults
+import app.getnuri.util.AnimatedTextField
+import app.getnuri.util.LargeScreensPreview
+import app.getnuri.util.dashedRoundedRectBorder
+import app.getnuri.util.isAtLeastMedium
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import com.android.developers.androidify.creation.R as CreationR
+import app.getnuri.creation.R as CreationR
 
 @Composable
 fun CreationScreen(

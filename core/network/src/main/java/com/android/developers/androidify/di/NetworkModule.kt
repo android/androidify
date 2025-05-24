@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.developers.androidify.di
+package app.getnuri.di
 
 import android.content.Context
 import android.os.Build.VERSION.SDK_INT
@@ -23,7 +23,7 @@ import coil3.gif.GifDecoder
 import coil3.network.okhttp.OkHttpNetworkFetcherFactory
 import coil3.request.CachePolicy
 import coil3.request.crossfade
-import com.android.developers.androidify.network.BuildConfig
+import app.getnuri.network.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

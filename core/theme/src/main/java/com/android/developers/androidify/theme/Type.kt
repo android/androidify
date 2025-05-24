@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.developers.androidify.theme
+package app.getnuri.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
@@ -26,7 +26,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.sp
-import com.android.developers.androidify.theme.BuildConfig
+import app.getnuri.theme.BuildConfig
 
 val provider = GoogleFont.Provider(
     providerAuthority = "com.google.android.gms.fonts",

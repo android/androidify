@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.developers.androidify.startup
+package app.getnuri.startup
 
 import android.content.Context
 import android.util.Log
 import androidx.startup.Initializer
-import com.android.developers.androidify.network.R
+import app.getnuri.network.R
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.remoteConfig

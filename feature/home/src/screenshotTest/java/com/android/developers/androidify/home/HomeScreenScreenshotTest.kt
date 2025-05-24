@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.developers.androidify.home
+package app.getnuri.home
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.android.developers.androidify.theme.AndroidifyTheme
-import com.android.developers.androidify.theme.SharedElementContextPreview
-import com.android.developers.androidify.util.AdaptivePreview
-import com.android.developers.androidify.util.isAtLeastMedium
+import app.getnuri.theme.AndroidifyTheme
+import app.getnuri.theme.SharedElementContextPreview
+import app.getnuri.util.AdaptivePreview
+import app.getnuri.util.isAtLeastMedium
 
 class HomeScreenScreenshotTest {
 

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.developers.androidify.creation
+package app.getnuri.creation
 
 import androidx.compose.animation.core.EaseOutQuint
 import androidx.compose.animation.core.LinearEasing
@@ -69,16 +69,16 @@ import androidx.compose.ui.tooling.preview.Devices.PIXEL_3A_XL
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
-import com.android.developers.androidify.theme.AndroidifyTheme
-import com.android.developers.androidify.theme.components.AndroidifyTopAppBar
-import com.android.developers.androidify.theme.components.PrimaryButton
-import com.android.developers.androidify.util.KeepScreenOn
-import com.android.developers.androidify.util.LargeScreensPreview
-import com.android.developers.androidify.util.SmallPhonePreview
-import com.android.developers.androidify.util.isAtLeastMedium
+import app.getnuri.theme.AndroidifyTheme
+import app.getnuri.theme.components.AndroidifyTopAppBar
+import app.getnuri.theme.components.PrimaryButton
+import app.getnuri.util.KeepScreenOn
+import app.getnuri.util.LargeScreensPreview
+import app.getnuri.util.SmallPhonePreview
+import app.getnuri.util.isAtLeastMedium
 import kotlinx.coroutines.delay
 import kotlin.math.roundToInt
-import com.android.developers.androidify.creation.R as CreationR
+import app.getnuri.creation.R as CreationR
 
 @Composable
 fun LoadingScreen(
@@ -137,7 +137,7 @@ private fun LoadingScreenContents(
 
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            stringResource(com.android.developers.androidify.creation.R.string.generating_your_bot),
+            stringResource(app.getnuri.creation.R.string.generating_your_bot),
             style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Normal),
             modifier = Modifier.semantics {
                 liveRegion = LiveRegionMode.Polite

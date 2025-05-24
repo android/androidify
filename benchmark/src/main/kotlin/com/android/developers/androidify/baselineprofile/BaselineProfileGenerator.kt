@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.developers.androidify.baselineprofile
+package app.getnuri.baselineprofile
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -38,7 +38,7 @@ class BaselineProfileGenerator {
     fun generate() {
         // The application id for the running build variant is read from the instrumentation arguments.
         rule.collect(
-            packageName = "com.android.developers.androidify",
+            packageName = "app.getnuri",
             // See: https://d.android.com/topic/performance/baselineprofiles/dex-layout-optimizations
             stableIterations = 3,
             includeInStartupProfile = true,

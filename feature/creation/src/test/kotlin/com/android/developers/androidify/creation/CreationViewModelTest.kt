@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.developers.androidify.creation
+package app.getnuri.creation
 
 import android.net.Uri
 import androidx.compose.material3.SnackbarHostState
-import com.android.developers.androidify.data.InsufficientInformationException
+import app.getnuri.data.InsufficientInformationException
 import com.android.developers.testing.data.TestFileProvider
 import com.android.developers.testing.data.TestInternetConnectivityManager
 import com.android.developers.testing.repository.FakeImageGenerationRepository

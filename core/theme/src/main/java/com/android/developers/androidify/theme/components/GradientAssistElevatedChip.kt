@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.developers.androidify.theme.components
+package app.getnuri.theme.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -66,7 +66,7 @@ import androidx.compose.ui.util.fastFirst
 import androidx.compose.ui.util.fastFirstOrNull
 import androidx.compose.ui.util.fastMaxOfOrNull
 import androidx.compose.ui.util.fastSumBy
-import com.android.developers.androidify.util.dpToPx
+import app.getnuri.util.dpToPx
 
 @Composable
 fun gradientChipColorDefaults(): GradientChipColors = GradientChipColors(

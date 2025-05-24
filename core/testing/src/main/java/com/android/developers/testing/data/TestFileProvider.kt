@@ -17,7 +17,7 @@ package com.android.developers.testing.data
 
 import android.graphics.Bitmap
 import android.net.Uri
-import com.android.developers.androidify.util.LocalFileProvider
+import app.getnuri.util.LocalFileProvider
 import java.io.File
 /**
  * A test implementation of [LocalFileProvider].

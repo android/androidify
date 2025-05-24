@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.developers.androidify.creation
+package app.getnuri.creation
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -24,15 +24,15 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.developers.androidify.data.ImageDescriptionFailedGenerationException
-import com.android.developers.androidify.data.ImageGenerationRepository
-import com.android.developers.androidify.data.ImageValidationError
-import com.android.developers.androidify.data.ImageValidationException
-import com.android.developers.androidify.data.InsufficientInformationException
-import com.android.developers.androidify.data.InternetConnectivityManager
-import com.android.developers.androidify.data.NoInternetException
-import com.android.developers.androidify.data.TextGenerationRepository
-import com.android.developers.androidify.util.LocalFileProvider
+import app.getnuri.data.ImageDescriptionFailedGenerationException
+import app.getnuri.data.ImageGenerationRepository
+import app.getnuri.data.ImageValidationError
+import app.getnuri.data.ImageValidationException
+import app.getnuri.data.InsufficientInformationException
+import app.getnuri.data.InternetConnectivityManager
+import app.getnuri.data.NoInternetException
+import app.getnuri.data.TextGenerationRepository
+import app.getnuri.util.LocalFileProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher

@@ -22,7 +22,7 @@ plugins {
 }
 
 android {
-    namespace = "com.android.developers.androidify.testing"
+    namespace = "app.getnuri.testing"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {

@@ -23,7 +23,7 @@ plugins {
 }
 
 android {
-    namespace = "com.android.developers.androidify.creation"
+    namespace = "app.getnuri.creation"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
 

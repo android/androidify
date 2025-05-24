@@ -44,11 +44,11 @@ fun loadProperties(filePath: String): Properties {
 val localProperties = loadProperties(rootProject.file("local.properties").absolutePath)
 
 android {
-    namespace = "com.android.developers.androidify"
+    namespace = "app.getnuri"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "com.android.developers.androidify"
+        applicationId = "app.getnuri"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = 36
         versionCode = 1

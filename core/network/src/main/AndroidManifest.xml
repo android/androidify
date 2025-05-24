@@ -23,12 +23,12 @@
             android:exported="false"
             tools:node="merge">
             <!-- Core Firebase App Initialization -->
-            <meta-data android:name="com.android.developers.androidify.startup.FirebaseAppInitializer"
+            <meta-data android:name="app.getnuri.startup.FirebaseAppInitializer"
                 android:value="androidx.startup" />
             <!-- Other Firebase Initializers -->
-            <meta-data android:name="com.android.developers.androidify.startup.FirebaseAppCheckInitializer"
+            <meta-data android:name="app.getnuri.startup.FirebaseAppCheckInitializer"
                 android:value="androidx.startup" />
-            <meta-data android:name="com.android.developers.androidify.startup.FirebaseRemoteConfigInitializer"
+            <meta-data android:name="app.getnuri.startup.FirebaseRemoteConfigInitializer"
                 android:value="androidx.startup" />
         </provider>
     </application>

@@ -15,7 +15,7 @@
  */
 @file:OptIn(ExperimentalSerializationApi::class)
 
-package app.getnuri.getnuri.navigation
+package app.getnuri.navigation
 
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable

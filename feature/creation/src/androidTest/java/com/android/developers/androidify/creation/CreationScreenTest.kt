@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.developers.androidify.creation
+package app.getnuri.creation
 
 import android.net.Uri
 import androidx.activity.ComponentActivity
@@ -27,7 +27,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.android.developers.androidify.theme.SharedElementContextPreview
+import app.getnuri.theme.SharedElementContextPreview
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -129,7 +129,7 @@ class CreationScreenTest {
 
     @Test
     fun photoPrompt_showsImagePreview_whenUriIsNotNull() {
-        val imageUri = Uri.parse("android.resource://com.android.developers.androidify.creation/drawable/test_image")
+        val imageUri = Uri.parse("android.resource://app.getnuri.creation/drawable/test_image")
         val selectedImageDesc = composeTestRule.activity.getString(R.string.cd_selected_image)
         val retakeButtonDesc = composeTestRule.activity.getString(R.string.cd_retake_photo)
         val choosePhotoButtonText = composeTestRule.activity.getString(R.string.photo_picker_choose_photo_label)

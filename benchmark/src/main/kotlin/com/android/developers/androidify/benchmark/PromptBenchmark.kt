@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.developers.androidify.benchmark
+package app.getnuri.benchmark
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -28,8 +28,8 @@ import androidx.benchmark.macro.junit4.MacrobenchmarkRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.uiautomator.textAsString
 import androidx.test.uiautomator.uiAutomator
-import com.android.developers.androidify.classInitMetric
-import com.android.developers.androidify.jitCompilationMetric
+import app.getnuri.classInitMetric
+import app.getnuri.jitCompilationMetric
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -53,7 +53,7 @@ class PromptBenchmark {
     @OptIn(ExperimentalMetricApi::class)
     private fun promptBenchmark(compilationMode: CompilationMode) {
         benchmarkRule.measureRepeated(
-            packageName = "com.android.developers.androidify",
+            packageName = "app.getnuri",
             compilationMode = compilationMode,
             metrics = listOf(
                 StartupTimingMetric(),

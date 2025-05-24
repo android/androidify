@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.developers.androidify.camera
+package app.getnuri.camera
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.indication
@@ -42,13 +42,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.android.developers.androidify.theme.AndroidifyTheme
-import com.android.developers.androidify.theme.LimeGreen
-import com.android.developers.androidify.theme.Primary
-import com.android.developers.androidify.theme.Primary80
-import com.android.developers.androidify.theme.Primary90
-import com.android.developers.androidify.theme.Secondary
-import com.android.developers.androidify.theme.components.ScaleIndicationNodeFactory
+import app.getnuri.theme.AndroidifyTheme
+import app.getnuri.theme.LimeGreen
+import app.getnuri.theme.Primary
+import app.getnuri.theme.Primary80
+import app.getnuri.theme.Primary90
+import app.getnuri.theme.Secondary
+import app.getnuri.theme.components.ScaleIndicationNodeFactory
 
 @Preview
 @Composable

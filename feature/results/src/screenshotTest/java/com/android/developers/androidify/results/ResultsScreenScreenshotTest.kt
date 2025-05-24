@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.developers.androidify.results
+package app.getnuri.results
 
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -29,9 +29,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.android.developers.androidify.theme.AndroidifyTheme
-import com.android.developers.androidify.util.AdaptivePreview
-import com.android.developers.androidify.util.SmallPhonePreview
+import app.getnuri.theme.AndroidifyTheme
+import app.getnuri.util.AdaptivePreview
+import app.getnuri.util.SmallPhonePreview
 
 class ResultsScreenScreenshotTest {
 

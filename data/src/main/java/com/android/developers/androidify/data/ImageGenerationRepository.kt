@@ -13,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.developers.androidify.data
+package app.getnuri.data
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Log
-import com.android.developers.androidify.RemoteConfigDataSource
-import com.android.developers.androidify.model.ValidatedDescription
-import com.android.developers.androidify.model.ValidatedImage
-import com.android.developers.androidify.util.LocalFileProvider
-import com.android.developers.androidify.vertexai.FirebaseAiDataSource
+import app.getnuri.RemoteConfigDataSource
+import app.getnuri.model.ValidatedDescription
+import app.getnuri.model.ValidatedImage
+import app.getnuri.util.LocalFileProvider
+import app.getnuri.vertexai.FirebaseAiDataSource
 import java.io.File
 import java.util.UUID
 import javax.inject.Inject

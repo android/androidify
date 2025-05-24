@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.developers.androidify.theme.components
+package app.getnuri.theme.components
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.background
@@ -45,10 +45,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.android.developers.androidify.theme.LocalSharedTransitionScope
-import com.android.developers.androidify.theme.R
-import com.android.developers.androidify.theme.SharedElementKey
-import com.android.developers.androidify.theme.sharedBoundsReveal
+import app.getnuri.theme.LocalSharedTransitionScope
+import app.getnuri.theme.R
+import app.getnuri.theme.SharedElementKey
+import app.getnuri.theme.sharedBoundsReveal
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)

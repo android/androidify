@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.developers.androidify.camera
+package app.getnuri.camera
 
 import androidx.camera.compose.CameraXViewfinder
 import androidx.camera.core.SurfaceRequest
@@ -39,9 +39,9 @@ import androidx.compose.ui.graphics.Matrix
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.round
-import com.android.developers.androidify.theme.Error
-import com.android.developers.androidify.theme.LimeGreen
-import com.android.developers.androidify.theme.Surface
+import app.getnuri.theme.Error
+import app.getnuri.theme.LimeGreen
+import app.getnuri.theme.Surface
 
 private val TAP_TO_FOCUS_INDICATOR_SIZE = 48.dp
 

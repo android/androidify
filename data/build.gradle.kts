@@ -22,7 +22,7 @@ plugins {
 }
 
 android {
-    namespace = "com.android.developers.androidify.data"
+    namespace = "app.getnuri.data"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {

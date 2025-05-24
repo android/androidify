@@ -15,7 +15,7 @@
  */
 @file:OptIn(ExperimentalCoroutinesApi::class)
 
-package com.android.developers.androidify.results
+package app.getnuri.results
 
 import android.graphics.Bitmap
 import android.net.Uri

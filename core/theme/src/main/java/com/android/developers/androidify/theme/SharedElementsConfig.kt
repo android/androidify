@@ -15,7 +15,7 @@
  */
 @file:OptIn(ExperimentalSharedTransitionApi::class, ExperimentalMaterial3ExpressiveApi::class)
 
-package com.android.developers.androidify.theme
+package app.getnuri.theme
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedContent
@@ -63,7 +63,7 @@ import androidx.graphics.shapes.RoundedPolygon
 import androidx.graphics.shapes.circle
 import androidx.graphics.shapes.rectangle
 import androidx.navigation3.ui.LocalNavAnimatedContentScope
-import com.android.developers.androidify.util.skipToLookaheadPlacement
+import app.getnuri.util.skipToLookaheadPlacement
 import kotlin.math.max
 
 sealed interface SharedElementKey {

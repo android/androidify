@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.developers.androidify.data
+package app.getnuri.data
 
-import com.android.developers.androidify.RemoteConfigDataSource
-import com.android.developers.androidify.vertexai.FirebaseAiDataSource
+import app.getnuri.RemoteConfigDataSource
+import app.getnuri.vertexai.FirebaseAiDataSource
 import javax.inject.Inject
 import javax.inject.Singleton
 

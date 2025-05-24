@@ -15,7 +15,7 @@
  */
 @file:OptIn(ExperimentalMaterial3ExpressiveApi::class)
 
-package com.android.developers.androidify.results
+package app.getnuri.results
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
@@ -34,7 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.android.developers.androidify.theme.AndroidifyTheme
+import app.getnuri.theme.AndroidifyTheme
 
 @Preview
 @Composable

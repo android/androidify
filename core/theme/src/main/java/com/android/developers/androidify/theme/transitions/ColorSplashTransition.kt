@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.developers.androidify.theme.transitions
+package app.getnuri.theme.transitions
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.core.Animatable
@@ -46,9 +46,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
 import androidx.compose.ui.util.fastCoerceAtLeast
 import androidx.compose.ui.util.fastRoundToInt
-import com.android.developers.androidify.theme.AndroidifyTheme
-import com.android.developers.androidify.theme.Blue
-import com.android.developers.androidify.theme.components.PrimaryButton
+import app.getnuri.theme.AndroidifyTheme
+import app.getnuri.theme.Blue
+import app.getnuri.theme.components.PrimaryButton
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalSharedTransitionApi::class)
 @Composable

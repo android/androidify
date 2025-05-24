@@ -17,10 +17,10 @@ package com.android.developers.testing.network
 
 import android.graphics.Bitmap
 import androidx.core.graphics.createBitmap
-import com.android.developers.androidify.model.GeneratedPrompt
-import com.android.developers.androidify.model.ValidatedDescription
-import com.android.developers.androidify.model.ValidatedImage
-import com.android.developers.androidify.vertexai.FirebaseAiDataSource
+import app.getnuri.model.GeneratedPrompt
+import app.getnuri.model.ValidatedDescription
+import app.getnuri.model.ValidatedImage
+import app.getnuri.vertexai.FirebaseAiDataSource
 
 class TestFirebaseAiDataSource(val promptOutput: List<String>) : FirebaseAiDataSource {
     override suspend fun validatePromptHasEnoughInformation(inputPrompt: String): ValidatedDescription {

@@ -15,7 +15,7 @@
  */
 @file:OptIn(ExperimentalPermissionsApi::class)
 
-package com.android.developers.androidify.results
+package app.getnuri.results
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text

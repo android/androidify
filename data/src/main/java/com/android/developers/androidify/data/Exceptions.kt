@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.developers.androidify.data
+package app.getnuri.data
 
-import com.android.developers.androidify.model.ImageValidationError as ModelImageValidationError
+import app.getnuri.model.ImageValidationError as ModelImageValidationError
 
 class InsufficientInformationException(errorMessage: String? = null) : Exception(errorMessage)
 
@@ -31,11 +31,11 @@ enum class ImageValidationError {
     OTHER,
 }
 
-fun ModelImageValidationError.toImageValidationError(): com.android.developers.androidify.data.ImageValidationError {
+fun ModelImageValidationError.toImageValidationError(): app.getnuri.data.ImageValidationError {
     return when (this) {
-        ModelImageValidationError.NOT_PERSON -> com.android.developers.androidify.data.ImageValidationError.NOT_PERSON
-        ModelImageValidationError.NOT_ENOUGH_DETAIL -> com.android.developers.androidify.data.ImageValidationError.NOT_ENOUGH_DETAIL
-        ModelImageValidationError.POLICY_VIOLATION -> com.android.developers.androidify.data.ImageValidationError.POLICY_VIOLATION
-        ModelImageValidationError.OTHER -> com.android.developers.androidify.data.ImageValidationError.OTHER
+        ModelImageValidationError.NOT_PERSON -> app.getnuri.data.ImageValidationError.NOT_PERSON
+        ModelImageValidationError.NOT_ENOUGH_DETAIL -> app.getnuri.data.ImageValidationError.NOT_ENOUGH_DETAIL
+        ModelImageValidationError.POLICY_VIOLATION -> app.getnuri.data.ImageValidationError.POLICY_VIOLATION
+        ModelImageValidationError.OTHER -> app.getnuri.data.ImageValidationError.OTHER
     }
 }

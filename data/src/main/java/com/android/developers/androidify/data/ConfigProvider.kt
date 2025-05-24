@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.developers.androidify.data
+package app.getnuri.data
 
-import com.android.developers.androidify.RemoteConfigDataSource
+import app.getnuri.RemoteConfigDataSource
 import javax.inject.Singleton
 
 @Singleton

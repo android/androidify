@@ -15,7 +15,7 @@
  */
 package com.android.developers.testing.data
 
-import com.android.developers.androidify.data.GeminiNanoGenerationDataSource
+import app.getnuri.data.GeminiNanoGenerationDataSource
 
 class TestGeminiNanoGenerationDataSource(val promptOutput: String?) : GeminiNanoGenerationDataSource {
     override suspend fun initialize() {
