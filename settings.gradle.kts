@@ -47,3 +47,4 @@ include(":benchmark")
 
 // include(":feature:feedback")
 include(":feature:history")
+include(":feature:wellbeing")

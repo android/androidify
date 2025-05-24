@@ -11,3 +11,7 @@
 /core/build/
 /feature/build/
 /app/google-services.json
+tmp
+transformed
+debug
+build

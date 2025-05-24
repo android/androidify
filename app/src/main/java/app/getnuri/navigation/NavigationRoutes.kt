@@ -69,3 +69,26 @@ data class IngredientExtraction(
     val potentialTriggers: List<String> = listOf("Gluten", "Eggs"),
     val extractedQuantities: List<String> = emptyList()
 ) : NavigationRoute
+
+// Bottom Navigation Routes
+@Serializable
+object Wellbeing : NavigationRoute
+
+@Serializable
+object Results : NavigationRoute
+
+// Interface to define main tab routes (routes that should show bottom navigation)
+interface MainTabRoute : NavigationRoute
+
+// Make main tab routes implement MainTabRoute interface
+@Serializable
+data class MealTrackingChoiceTab(val fileName: String? = null) : NavigationRoute, MainTabRoute
+
+@Serializable  
+object WellbeingTab : NavigationRoute, MainTabRoute
+
+@Serializable
+object MealHistoryTab : NavigationRoute, MainTabRoute
+
+@Serializable
+object ResultsTab : NavigationRoute, MainTabRoute

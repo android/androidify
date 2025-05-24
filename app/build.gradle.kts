@@ -109,6 +109,10 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.compose.material.icons.core)
+    implementation(libs.androidx.compose.material.icons.extended)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    debugImplementation(libs.androidx.compose.ui.tooling)
     implementation(libs.androidx.navigation3.runtime)
     implementation(libs.androidx.navigation3.ui)
     implementation(libs.androidx.lifecycle.viewmodel.navigation3)
@@ -138,6 +142,7 @@ dependencies {
     implementation(project(":feature:nuri-creation"))
     // implementation(project(":feature:feedback"))
     implementation(project(":feature:history"))
+    implementation(project(":feature:wellbeing"))
 
     implementation(project(":core:theme"))
     implementation(project(":data"))
