@@ -47,14 +47,29 @@ import app.getnuri.theme.transitions.ColorSplashTransitionScreen
 // import app.getnuri.feature.nuri_creation.text.entry.MealTextEntryScreen
 import app.getnuri.feature.history.MealHistoryScreen
 import app.getnuri.feature.nuri_creation.ingredient.IngredientExtractionScreen
+import app.getnuri.data.NuriMealAnalyzer
 import app.getnuri.data.model.MealAnalysisData
 // import app.getnuri.feature.feedback.entry.FeedbackEntryScreen
 import android.net.Uri
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.hilt.navigation.compose.hiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+
+// Simple ViewModel wrapper to inject NuriMealAnalyzer
+@HiltViewModel
+class MealAnalysisViewModel @Inject constructor(
+    val analyzer: NuriMealAnalyzer
+) : ViewModel()
 
 @ExperimentalMaterial3ExpressiveApi
 @Composable
 fun MainNavigation() {
     val backStack = rememberMutableStateListOf<NavigationRoute>(Home)
+    val coroutineScope = rememberCoroutineScope()
+    val mealAnalysisViewModel = hiltViewModel<MealAnalysisViewModel>()
     var positionReveal by remember {
         mutableStateOf(IntOffset.Zero)
     }
@@ -101,9 +116,20 @@ fun MainNavigation() {
             entry<Camera> {
                 CameraPreviewScreen(
                     onImageCaptured = { uri ->
-                        backStack.removeAll { it is Create }
-                        backStack.add(Create(uri.toString()))
-                        backStack.removeAll { it is Camera }
+                        // Check if we're in meal tracking flow
+                        val isMealTrackingFlow = backStack.any { it is MealTrackingChoice }
+                        
+                        if (isMealTrackingFlow) {
+                            // For meal tracking flow, go back to MealTrackingChoice with the captured image
+                            backStack.removeAll { it is Camera }
+                            backStack.removeAll { it is MealTrackingChoice }
+                            backStack.add(MealTrackingChoice(uri.toString()))
+                        } else {
+                            // Original creation flow
+                            backStack.removeAll { it is Create }
+                            backStack.add(Create(uri.toString()))
+                            backStack.removeAll { it is Camera }
+                        }
                     },
                 )
             }
@@ -131,19 +157,73 @@ fun MainNavigation() {
             }
             
             // New Nuri meal tracking entries
-            entry<MealTrackingChoice> {
+            entry<MealTrackingChoice> { mealTrackingRoute ->
                 MealTrackingChoiceScreen(
+                    fileName = mealTrackingRoute.fileName,
                     onCameraPressed = {
-                        // TODO: Navigate to photo capture when ready
-                        // backStack.add(MealPhotoCapture)
+                        backStack.removeAll { it is Camera }
+                        backStack.add(Camera)
                     },
                     onBackPressed = {
                         backStack.removeLastOrNull()
                     },
                     onMealLogged = { imageUri, description ->
-                        // TODO: Handle meal logging - save to database and navigate appropriately
-                        // For now, just go back to home
-                        backStack.removeLastOrNull()
+                        // Use real Firebase Gemini analysis instead of mock data
+                        coroutineScope.launch {
+                            try {
+                                val analysisResult = if (imageUri != null && description.isBlank()) {
+                                    // Analyze image
+                                    mealAnalysisViewModel.analyzer.analyzeMealFromImage(imageUri)
+                                } else if (description.isNotBlank()) {
+                                    // Analyze text description
+                                    mealAnalysisViewModel.analyzer.analyzeMealFromText(description)
+                                } else {
+                                    // Fallback to default
+                                    Result.success(MealAnalysisData(
+                                        extractedIngredients = listOf(
+                                            "Mixed Vegetables | 200g",
+                                            "Protein Source | 100g",
+                                            "Grains | 80g"
+                                        ),
+                                        potentialTriggers = emptyList()
+                                    ))
+                                }
+                                
+                                analysisResult.fold(
+                                    onSuccess = { analysisData ->
+                                        backStack.add(IngredientExtraction(
+                                            mealTitle = if (description.isNotBlank()) description else "Your Meal",
+                                            mealImageUri = imageUri?.toString(),
+                                            extractedIngredients = analysisData.extractedIngredients,
+                                            potentialTriggers = analysisData.potentialTriggers
+                                        ))
+                                    },
+                                    onFailure = { error ->
+                                        // Handle error - for now, use fallback data
+                                        backStack.add(IngredientExtraction(
+                                            mealTitle = if (description.isNotBlank()) description else "Your Meal",
+                                            mealImageUri = imageUri?.toString(),
+                                            extractedIngredients = listOf(
+                                                "Analysis Error | Unable to analyze meal",
+                                                "Please add ingredients manually"
+                                            ),
+                                            potentialTriggers = emptyList()
+                                        ))
+                                    }
+                                )
+                            } catch (e: Exception) {
+                                // Handle exception - use fallback data
+                                backStack.add(IngredientExtraction(
+                                    mealTitle = if (description.isNotBlank()) description else "Your Meal",
+                                    mealImageUri = imageUri?.toString(),
+                                    extractedIngredients = listOf(
+                                        "Analysis Error | Unable to analyze meal",
+                                        "Please add ingredients manually"
+                                    ),
+                                    potentialTriggers = emptyList()
+                                ))
+                            }
+                        }
                     },
                     // Test navigation to ingredient extraction screen
                     onTestIngredientExtraction = {
@@ -166,7 +246,7 @@ fun MainNavigation() {
                     mealImageUri = ingredientRoute.mealImageUri,
                     analysisData = MealAnalysisData(
                         extractedIngredients = ingredientRoute.extractedIngredients,
-                        potentialTriggers = emptyList() // Will be handled separately
+                        potentialTriggers = ingredientRoute.potentialTriggers
                     ),
                     onBackPressed = {
                         backStack.removeLastOrNull()
@@ -198,7 +278,7 @@ fun MainNavigation() {
                 showSplash = false
             },
             onTransitionMidpoint = {
-                backStack.add(MealTrackingChoice)
+                backStack.add(MealTrackingChoice())
             },
         )
     }

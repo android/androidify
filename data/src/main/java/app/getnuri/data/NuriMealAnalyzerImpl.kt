@@ -26,13 +26,41 @@ class NuriMealAnalyzerImpl @Inject constructor(
             try {
                 // 1. Craft the prompt for Gemini
                 val prompt = """
-                Analyze the following meal description to identify key ingredients and potential common dietary triggers (like gluten, dairy, lactose, nuts, soy, eggs).
+                Analyze the following meal description to identify key ingredients with estimated quantities and potential common dietary triggers.
+                
                 Meal Description: "$description"
-                Return the ingredients as a comma-separated list under a heading "Ingredients:" and triggers as a comma-separated list under a heading "Triggers:".
-                Provide ONLY the Ingredients and Triggers sections. Do not include any other conversational text or explanations.
+                
+                Please provide a detailed breakdown in the following EXACT format:
+                
+                Ingredients:
+                Ingredient Name 1 | Quantity Unit
+                Ingredient Name 2 | Quantity Unit
+                Ingredient Name 3 | Quantity Unit
+                
+                Triggers:
+                trigger1, trigger2, trigger3
+                
+                Guidelines for ingredients:
+                - Include main ingredients only (not seasonings unless significant)
+                - Use realistic portion sizes for a single serving
+                - Use common units: g (grams), ml (milliliters), pieces, tbsp, tsp
+                - Format each ingredient as "Name | Quantity Unit" on separate lines
+                
+                Guidelines for triggers:
+                - Common allergens: gluten, dairy, eggs, nuts, soy, fish, shellfish
+                - Only include triggers that are likely present based on ingredients
+                
                 Example:
-                Ingredients: chicken, rice, broccoli, soy sauce
-                Triggers: soy, gluten
+                Ingredients:
+                Grilled Chicken Breast | 150g
+                Jasmine Rice | 80g
+                Steamed Broccoli | 100g
+                Olive Oil | 15ml
+                
+                Triggers:
+                none
+                
+                Provide ONLY the Ingredients and Triggers sections as shown above. No additional text or explanations.
                 """
 
                 // 2. Call FirebaseAiDataSource
@@ -43,7 +71,7 @@ class NuriMealAnalyzerImpl @Inject constructor(
                     Result.failure(Exception("AI response was empty or null for text analysis."))
                 } else {
                     // 3. Parse the responseText
-                    val ingredients = parseList(responseText, "Ingredients:")
+                    val ingredients = parseIngredientsList(responseText)
                     val triggers = parseList(responseText, "Triggers:")
                     Result.success(MealAnalysisData(ingredients, triggers))
                 }
@@ -118,5 +146,12 @@ class NuriMealAnalyzerImpl @Inject constructor(
             ?.map { it.trim() }
             ?.filter { it.isNotEmpty() }
             ?: emptyList()
+    }
+
+    private fun parseIngredientsList(text: String): List<String> {
+        return text.lines()
+            .filter { it.contains("|") && it.trim().isNotEmpty() }
+            .map { it.trim() }
+            .filter { it.isNotEmpty() }
     }
 }

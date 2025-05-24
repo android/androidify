@@ -76,6 +76,7 @@ dependencies {
         exclude(group = "com.google.guava")
     }
     implementation(libs.firebase.app.check)
+    implementation(libs.firebase.appcheck.debug)
     implementation(libs.firebase.config)
     implementation(project(":core:util"))
     implementation(libs.firebase.config.ktx)

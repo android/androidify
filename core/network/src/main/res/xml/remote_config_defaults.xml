@@ -16,141 +16,203 @@
 -->
 <defaults>
     <entry>
-        <key>prompt_image_validation</key>
-        <value>You are to analyze the provided image and determine if it is acceptable and appropriate based on specific criteria.
+        <key>prompt_meal_photo_validation</key>
+        <value>You are to analyze the provided image and determine if it contains food, meals, drinks, or edible items that can be tracked for nutrition purposes.
             In the JSON response, respond with the result 'success' as set to true or false based on results.
-            If the image is considered invalid, include the relevant reason as to why it is invalid in the 'error' property. A photo is only valid if:
-            - it is a photo of a person, at least showing their shoulders and head, it can be a full body photo
-            - it must be a photo of a person
-            - the photo has a clear main person in it, if there are people in the background ignore them
-            - it cannot contain nudity or explicit content
-            - it cannot contain illegal weapons or violent references
-            - it cannot contain references to drugs or other illicit substances
-            - it cannot contain  hate speech or other offensive language
-            -it cannot contain blood or gore or violence.</value>
+            If the image is considered invalid for meal tracking, include the relevant reason in the 'error' property. A photo is valid for meal tracking if:
+            - it contains visible food, meals, snacks, beverages, or ingredients
+            - the food items are clearly identifiable
+            - it's not blurry or too dark to analyze ingredients
+            - it doesn't contain non-food items as the primary subject
+            - it's suitable for ingredient extraction and nutritional analysis
+            Invalid images include: empty plates, non-food items, advertisements, menus without actual food, or images where food cannot be clearly identified.</value>
     </entry>
     <entry>
-        <key>prompt_image_generation</key>
-        <value>This 3D rendered, cartoonish Android mascot rendered in a photorealistic style, the pose is relaxed and straightforward, facing directly forward with his shoulders at ease, as if posing for a photo. The cartoonish exaggeration is subtle, lending a playful touch to the otherwise realistic rendering of the figure. The figure is centered against a muted, neutral warm cream coloured background (#F8F2E4) gives the figurine a unique and collectible appeal.
-            The bot should take on the body shape of the newest Google Android Robot (Shape: It has the distinctive rounded body. The main body is a slightly barrel-shaped form with a smooth, continuous surface connecting to the head without a distinct neck, a semi-circular head with Two short, straight antennae protrude vertically from the top of the dome, positioned towards the sides, and simple, cylindrical arms and legs.) but the characteristics of the description should be used. It should NOT use the model shape or color from pre 2024.</value>
+        <key>prompt_meal_analysis</key>
+        <value>Analyze this meal photo and extract detailed nutritional information. Identify all visible ingredients, foods, and beverages. 
+            For each identified item, provide:
+            - Ingredient name and category (protein, carbohydrate, fat, vegetable, fruit, dairy, etc.)
+            - Estimated portion size and quantity
+            - Common allergens present (gluten, dairy, nuts, soy, eggs, shellfish, etc.)
+            - Potential trigger foods for food sensitivities (histamine-rich foods, FODMAPs, nightshades, etc.)
+            - Preparation method if identifiable (fried, grilled, raw, processed, etc.)
+            - Nutritional density classification (whole food, processed, ultra-processed)
+            
+            Return results in JSON format with arrays for: ingredients, allergens, potential_triggers, preparation_methods, and estimated_nutrition.
+            Be as specific as possible with ingredient identification while noting any uncertainty levels.</value>
+    </entry>
+    <entry>
+        <key>prompt_symptom_processing</key>
+        <value>Process user input describing physical symptoms, emotions, or wellbeing states after eating. 
+            Extract and categorize:
+            - Physical symptoms (digestive, skin, respiratory, neurological, energy levels)
+            - Emotional symptoms (mood, anxiety, irritability, brain fog)
+            - Timing information (immediate, 30min, 1-2 hours, next day)
+            - Severity level (mild, moderate, severe)
+            - Duration of symptoms
+            - Any contextual information provided
+            
+            Standardize the input into structured categories while preserving the user's specific descriptions.
+            Return JSON with: symptom_categories, severity, timing, duration, original_description, and standardized_symptoms.
+            Do not provide medical advice or diagnose conditions.</value>
+    </entry>
+    <entry>
+        <key>prompt_food_intolerance_detection</key>
+        <value>Analyze patterns between consumed foods and reported symptoms to identify potential food intolerances or sensitivities.
+            Look for correlations between:
+            - Specific ingredients and symptom patterns
+            - Food categories and reaction timing
+            - Preparation methods and symptom severity
+            - Common allergens and consistent reactions
+            - FODMAP foods and digestive symptoms
+            - Histamine-rich foods and inflammatory responses
+            
+            Provide confidence levels for each potential correlation and suggest:
+            - Foods to monitor more closely
+            - Potential elimination trial suggestions
+            - Patterns that warrant medical consultation
+            
+            Return analysis in JSON format with: potential_triggers, confidence_levels, recommended_monitoring, and suggested_actions.
+            Always recommend consulting healthcare providers for persistent symptoms.</value>
     </entry>
     <entry>
         <key>use_gemini_nano</key>
         <value>false</value>
     </entry>
     <entry>
-        <key>dancing_droid_gif_link</key>
-        <value>https://services.google.com/fh/files/misc/android_dancing.gif</value>
+        <key>nutrition_tips_gif_link</key>
+        <value>https://services.google.com/fh/files/misc/healthy_eating_tips.gif</value>
     </entry>
     <entry>
-        <key>system_prompt_image_description</key>
-        <value>Extract detailed information from the provided image. THE GOAL is to using this information to recreate the image with image generation model.
-
-            | Category | Attribute | Description (Focus on visual, descriptive language for image generation) |
-            |---|---|---|
-            | **Subject** | Type | The central figure in the image. |
-            |  | Hair | The color, length, and style of the hair. Use concise, descriptive adjectives to detail its appearance. |
-            |  | Facial Hair | The style, and color (if applicable) of any facial hair present. Be visually specific about its form and length (if applicable). |
-            |  | Headwear | The type, color, material, and any visually distinct details of the headwear. Describe any patterns, textures, or embellishments, and its position on the head. |
-            |  | Skin Color | The apparent color of the skin, using terms commonly associated with skin tones followed by the approximate hex code for accuracy. |
-            |  | Clothing - Top | The type, color, and pattern of the upper garment. Describe its fit and any observable visual details such as closures, necklines, or textures. |
-            |  | Clothing - Bottom | The type, color, and pattern of the lower garment. Describe its fit and any visual details like rips, pleats, or pockets. |
-            |  | Footwear | The type, color, and material of the footwear. Be visually specific about any details such as laces, buckles, or straps. |
-            |  | Accessories | The type, color, and material of any accessories. Explicitly state their position on or relative to the subject, as well as their arrangement if multiple items are present. |
-            |  | Gadgets | The type, color, and material of any gadgets present. Be specific about their appearance and their position relative to the subject. |
-            |  | Additional Notes | Any other visually distinct details of the subject that have not been covered in the above attributes. |
-
-            * Remember to replace the bracketed information with your detailed visual analysis of a specific image.
-            * Provide highly descriptive details for all attributes of the subject.
-            * For accessories, ensure the descriptions are highly detailed and explicitly state their position on or relative to the subject, as well as their arrangement if applicable.
-            * Describe hair and facial hair with rich visual detail, including color, style, and length.
-            * Use color names that accurately reflect human visual perception and are commonly understood by image generation models.
-            * Do not include any brand logos or brand names in your descriptions.
-            * Do not include descriptions of any emblems present.
-            * Do not include any reference to facial features or facial expressions in the description.
-            * Do not include descriptions of anything that appears in the background. Only describe the appearance of the person and what the subject may be wearing or holding.</value>
-    </entry>
-    <entry>
-        <key>is_android_app_inactive</key>
-        <value>false</value>
-    </entry>
-    <entry>
-        <key>prompt_image_description</key>
-        <value>Create a new image description where the subject(s) and surroundings are transformed into subject(s) attributes  hair color, clothing, accessories are important for human subjects.
-            The goal is a near perfect recreation.
-            Describe details of the subject, accessories.
-
-            Never say "the image".
-
-            If the subject is non human do not add anthropomorphic attributes.
-
-            Style is not allowed to alter skin tone directly or indrectly.
-
-            never use the suffix "-esque" or "-style"
-
-            Dont say rendered, rendering, or digital. Do not mention the background.
-
-            The detailed description should become the 'user_description' value in the JSON schema that will be used for the generative image model.
-            For the 'user_description' value, describe attributes such as:
-            -headwear; for example: hats, hair accessories, glasses, or headphones
-            -hair color, hair style, and hair length; for example: chin-length straight brown hair, long curly blonde hair, short spiky red hair, bald with no hair
-            -facial hair, if applicable; for example: full brown bushy beard, blonde mustache, short black chin patch
-            -upper body clothing style and color; for example: white t-shirt, black dress shirt under a white and pink striped blazer, green lace dress with spaghetti straps
-            -lower body clothing style and color; for example: blue cuffed jeans with a brown leather belt, black slacks, white knee-length skirt
-            -footwear; for example: pink leather sandals, blue flip flops, brown suede ankle boots, black high heels, brown loafers, green sneakers, red socks
-            -accessories; for example: holding a navy blue backpack, holding a tennis racket, using a walking cane, holding a coffee mug
-
-
-            For all those attributes, include details such as color, shape, length, style, accessories, and textures and materials. When describing clothing on the upper body,
-            include details such as neckline, type of sleeves or straps that go over the shoulders as well as the exact colors in hex codes.
-            For example: v-neck tank top with thin straps, or scoop neck dress with cap sleeves.
-            When describing clothing, use this phrase structure: "wearing (describe clothing) on its body
-
-            Do not include brand logos or brand names in the description.    Do not include descriptions of emblems.    The description should be gender neutral. Do not use gendered terms like 'he' or 'she'.    Do not describe skin color or include any reference to skin.    Do not include any reference to facial features or facial expressions in the description.    Dn not include descriptions of anything that appears in the background. Only describe the appearance of the person, and what the subject may be wearing or holding.</value>
-    </entry>
-    <entry>
-        <key>promo_video_link</key>
-        <value>https://services.google.com/fh/files/misc/androidfy_storyboard_b_v07.mp4</value>
-    </entry>
-    <entry>
-        <key>text_model_name</key>
-        <value>gemini-2.5-pro-preview-03-25</value>
+        <key>prompt_ingredient_extraction</key>
+        <value>Extract and identify all visible ingredients from the meal photo with high accuracy for nutrition tracking.
+            Focus on:
+            - Primary ingredients and their estimated quantities
+            - Hidden ingredients that might be present (oils, seasonings, additives)
+            - Cooking methods that affect nutritional content
+            - Brand identifications for packaged foods when visible
+            - Freshness and quality indicators
+            
+            Provide detailed ingredient lists suitable for:
+            - Caloric estimation
+            - Macro and micronutrient tracking
+            - Allergen identification
+            - Food sensitivity monitoring
+            
+            Format as JSON with: primary_ingredients, estimated_quantities, cooking_methods, potential_hidden_ingredients, and nutrition_relevant_details.</value>
     </entry>
     <entry>
         <key>is_app_active</key>
         <value>true</value>
     </entry>
     <entry>
-        <key>generate_bot_prompt</key>
-        <value>Generate 10 different random prompts as a comma separated list for a description of what a person looks like for android bot generation: include hair color texture and length, clothing including colors and details (like the persons shirt and pants or dress and collar types), with accessories. Make them, fun, safe and all different, dont include gender or ethnicity or dangerous content. For example "wearing blue jeans, gray ruffly blouse, holding a magnifying glass with sparkly shoes and brown wavy hair."
-
-            The prompt should:
-            - it cannot contain gender or ethnicity or dangerous content.
-            - it cannot contain nudity or explicit content.
-            - it cannot contain any weapons or violent references.
-            - it cannot contain references to drugs or other illicit substances.
-            - it cannot contain hate speech or other offensive language.
-            - it cannot contain blood or gore or violence.
-            - it cannot contain political symbolism.</value>
+        <key>prompt_pattern_analysis</key>
+        <value>Analyze collected nutrition and symptom data to identify meaningful patterns and correlations.
+            Look for:
+            - Time-based patterns (symptoms occurring at specific times after eating)
+            - Ingredient-specific reactions across multiple meals
+            - Cumulative effects of certain foods over time
+            - Environmental factors affecting food tolerance (stress, sleep, exercise)
+            - Seasonal or cyclical patterns in food sensitivities
+            
+            Provide insights on:
+            - Most likely food triggers based on data
+            - Optimal eating windows and timing
+            - Foods that consistently correlate with positive wellbeing
+            - Lifestyle factors that influence food tolerance
+            
+            Return comprehensive analysis in JSON format with: identified_patterns, trigger_foods, beneficial_foods, timing_insights, and lifestyle_correlations.</value>
     </entry>
     <entry>
-        <key>prompt_text_verify</key>
-        <value>You are to evaluate the given text string, restructure it, and return it in a JSON format for use with a backend application. First, check that the text describes the attributes of a person and includes some attributes describing what they look like and are wearing. For example, valid attributes may include hair color and style, facial hair, clothing, shoes, and objects and accessories that the person is holding or wearing. If no valid attributes describing a person and their appearance exist in the text, set the value for the 'success' property in the JSON to 'false'.
-
-            If the text string includes a valid description of a person, set the value for the 'success' property in the JSON to 'true' and restructure the input text to be part of the response as 'user_description' in the following ways,:
-            -strip out any phrases or descriptors that are inappropriate for a general audience such as racial or cultural stereotypes, political or hate symbols, sexual references, hateful comments, or inappropriate language.
-            -strip out descriptions of weapons and guns, and references to drugs or drug paraphernalia
-            -strip out descriptions of logos or brand names
-            -strip out descriptions of anything that might describe the background behind or around the person or subject in the text
-
-            Keep all words and descriptors that describe details such as colors, styles, size and materials of hair, clothing, shoes, accessories that do not allude to any of the inappropriate content listed above.</value>
+        <key>prompt_voice_input_processing</key>
+        <value>Process voice input from users describing their meals, symptoms, or general wellbeing.
+            Handle various input types:
+            - Casual meal descriptions ("I had pasta with chicken")
+            - Detailed ingredient lists
+            - Symptom reports ("feeling bloated and tired")
+            - Emotional state descriptions
+            - Questions about food choices
+            
+            Convert spoken input into structured data:
+            - Extract food items and preparation methods
+            - Identify symptoms and their characteristics
+            - Capture timing and context information
+            - Standardize terminology while preserving meaning
+            
+            Return JSON with: extracted_foods, identified_symptoms, timing_context, emotional_indicators, and structured_summary.
+            Maintain conversational tone while ensuring data accuracy.</value>
+    </entry>
+    <entry>
+        <key>text_model_name</key>
+        <value>gemini-2.0-flash</value>
+    </entry>
+    <entry>
+        <key>prompt_nutrition_estimation</key>
+        <value>Estimate nutritional content from identified meal components for comprehensive tracking.
+            Calculate approximate values for:
+            - Macronutrients (carbohydrates, proteins, fats)
+            - Calories and energy density
+            - Key micronutrients (vitamins, minerals)
+            - Fiber content and types
+            - Sugar content (natural vs added)
+            - Sodium and other electrolytes
+            
+            Consider:
+            - Portion size variations and uncertainty ranges
+            - Cooking method impacts on nutrition
+            - Bioavailability of nutrients
+            - Individual variation in nutrient needs
+            
+            Provide estimates with confidence intervals and note any significant limitations in accuracy.
+            Format as JSON with: macronutrients, micronutrients, calories, confidence_levels, and estimation_notes.</value>
     </entry>
     <entry>
         <key>image_model_name</key>
         <value>imagen-3.0-generate-002</value>
     </entry>
     <entry>
-        <key>prompt_image_generation_skin_tone</key>
-        <value>This 3D rendered, cartoonish Android mascot rendered in a photorealistic style, with the {skinTone} skin color and {prompt}, the pose is relaxed and straightforward, facing directly forward with his shoulders at ease, as if posing for a photo. The cartoonish exaggeration is subtle, lending a playful touch to the otherwise realistic rendering of the figure. The figure is centered against a muted, neutral warm cream coloured background (#F8F2E4) gives the figurine a unique and collectible appeal. The bot should take on the body shape of the newest Google Android Robot (Shape: It has the distinctive rounded body. The main body is a slightly barrel-shaped form with a smooth, continuous surface connecting to the head without a distinct neck, a semi-circular head with Two short, straight antennae protrude vertically from the top of the dome, positioned towards the sides, and simple, cylindrical arms and legs.) but the characteristics of the description should be used. It should NOT use the model shape or color from pre 2024.</value>
+        <key>prompt_health_data_correlation</key>
+        <value>Correlate nutrition data with health metrics and lifestyle factors to provide comprehensive wellness insights.
+            Analyze relationships between:
+            - Food intake and sleep quality patterns
+            - Meal timing and energy level fluctuations
+            - Nutritional choices and mood variations
+            - Hydration and physical performance
+            - Stress levels and food tolerance
+            - Exercise timing and digestive comfort
+            
+            Integrate data from:
+            - Heart rate variability
+            - Sleep duration and quality
+            - Physical activity levels
+            - Location and environmental factors
+            - Menstrual cycle data (when available)
+            
+            Provide actionable insights for optimizing nutrition based on individual health patterns.
+            Return JSON with: correlation_insights, optimization_suggestions, health_trends, and personalized_recommendations.</value>
+    </entry>
+    <entry>
+        <key>enable_advanced_analytics</key>
+        <value>true</value>
+    </entry>
+    <entry>
+        <key>prompt_meal_context_analysis</key>
+        <value>Analyze contextual factors surrounding meals to understand their impact on digestion and wellbeing.
+            Consider:
+            - Eating environment (home, restaurant, on-the-go)
+            - Social context (alone, with others, business meal)
+            - Emotional state during eating (stressed, relaxed, rushed)
+            - Time of day and meal timing patterns
+            - Physical activity before and after eating
+            - Hydration status and fluid intake
+            
+            Correlate context with:
+            - Digestive comfort and symptoms
+            - Satiety and hunger patterns
+            - Food choices and portion sizes
+            - Post-meal energy and mood
+            
+            Provide insights on optimal eating contexts for individual users.
+            Format as JSON with: context_factors, impact_analysis, optimal_conditions, and behavioral_recommendations.</value>
     </entry>
 </defaults>

@@ -36,7 +36,7 @@ object About : NavigationRoute
 
 // New Nuri meal tracking routes
 @Serializable
-object MealTrackingChoice : NavigationRoute
+data class MealTrackingChoice(val fileName: String? = null) : NavigationRoute
 
 @Serializable
 object MealPhotoCapture : NavigationRoute
@@ -65,5 +65,6 @@ data class IngredientExtraction(
         "Salt | 1g",
         "Pepper | 1g"
     ),
+    val potentialTriggers: List<String> = listOf("Gluten", "Eggs"),
     val extractedQuantities: List<String> = emptyList()
 ) : NavigationRoute
