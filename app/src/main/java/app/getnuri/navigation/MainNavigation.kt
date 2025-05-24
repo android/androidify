@@ -29,6 +29,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.unit.IntOffset
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.entry
@@ -45,6 +46,8 @@ import app.getnuri.theme.transitions.ColorSplashTransitionScreen
 // import app.getnuri.feature.nuri_creation.photo.confirm.MealPhotoConfirmationScreen
 // import app.getnuri.feature.nuri_creation.text.entry.MealTextEntryScreen
 import app.getnuri.feature.history.MealHistoryScreen
+import app.getnuri.feature.nuri_creation.ingredient.IngredientExtractionScreen
+import app.getnuri.data.model.MealAnalysisData
 // import app.getnuri.feature.feedback.entry.FeedbackEntryScreen
 import android.net.Uri
 
@@ -141,6 +144,10 @@ fun MainNavigation() {
                         // TODO: Handle meal logging - save to database and navigate appropriately
                         // For now, just go back to home
                         backStack.removeLastOrNull()
+                    },
+                    // Test navigation to ingredient extraction screen
+                    onTestIngredientExtraction = {
+                        backStack.add(IngredientExtraction())
                     }
                 )
             }
@@ -149,6 +156,25 @@ fun MainNavigation() {
                 MealHistoryScreen(
                     onBackPressed = {
                         backStack.removeLastOrNull()
+                    }
+                )
+            }
+            
+            entry<IngredientExtraction> { ingredientRoute ->
+                IngredientExtractionScreen(
+                    mealTitle = ingredientRoute.mealTitle,
+                    mealImageUri = ingredientRoute.mealImageUri,
+                    analysisData = MealAnalysisData(
+                        extractedIngredients = ingredientRoute.extractedIngredients,
+                        potentialTriggers = emptyList() // Will be handled separately
+                    ),
+                    onBackPressed = {
+                        backStack.removeLastOrNull()
+                    },
+                    onNextPressed = { finalIngredients ->
+                        // TODO: Navigate to next screen in the meal creation flow
+                        // For now, just go back to home
+                        backStack.removeAll { it !is Home }
                     }
                 )
             }

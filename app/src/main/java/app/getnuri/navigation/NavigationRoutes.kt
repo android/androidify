@@ -52,3 +52,18 @@ object MealHistory : NavigationRoute
 
 @Serializable
 data class FeedbackEntry(val mealId: Long) : NavigationRoute
+
+@Serializable
+data class IngredientExtraction(
+    val mealTitle: String = "Avocado Toast with Poached Eggs",
+    val mealImageUri: String? = null,
+    val extractedIngredients: List<String> = listOf(
+        "Sourdough Bread | 180g",
+        "Avocado | 120g", 
+        "Poached Eggs | 100g",
+        "Cherry Tomatoes | 120g",
+        "Salt | 1g",
+        "Pepper | 1g"
+    ),
+    val extractedQuantities: List<String> = emptyList()
+) : NavigationRoute

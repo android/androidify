@@ -74,6 +74,7 @@ import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Fastfood
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FloatingToolbarColors
@@ -177,6 +178,7 @@ fun MealTrackingChoiceScreen(
     onCameraPressed: () -> Unit = {},
     onBackPressed: () -> Unit = {},
     onMealLogged: (Uri?, String) -> Unit = { _, _ -> },
+    onTestIngredientExtraction: () -> Unit = {},
 ) {
     // Mock state - in real implementation this would come from a ViewModel
     var uiState by remember { mutableStateOf(MealTrackingState()) }
@@ -225,6 +227,7 @@ fun MealTrackingChoiceScreen(
                     val description = uiState.descriptionText.text.toString()
                     onMealLogged(uiState.imageUri, description)
                 },
+                onTestIngredientExtraction = onTestIngredientExtraction,
             )
         }
         
@@ -255,6 +258,7 @@ fun MealInputScreen(
     onPromptGenerationPressed: () -> Unit,
     onPromptGenerationComplete: () -> Unit,
     onTrackMealClicked: () -> Unit,
+    onTestIngredientExtraction: () -> Unit,
 ) {
     // Handle prompt generation delay
     LaunchedEffect(uiState.promptGenerationInProgress) {
@@ -381,6 +385,19 @@ fun MealInputScreen(
                             .padding(16.dp),
                         onClicked = onTrackMealClicked,
                     )
+                    
+                    // Test button for ingredient extraction
+                    Button(
+                        onClick = onTestIngredientExtraction,
+                        modifier = Modifier
+                            .align(Alignment.CenterHorizontally)
+                            .padding(horizontal = 16.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.secondary
+                        )
+                    ) {
+                        Text("Test Ingredient Extraction")
+                    }
                 }
             }
         }

@@ -135,11 +135,12 @@ dependencies {
     implementation(project(":feature:results"))
     
     // New Nuri meal tracking features
-    // implementation(project(":feature:nuri-creation"))
+    implementation(project(":feature:nuri-creation"))
     // implementation(project(":feature:feedback"))
     implementation(project(":feature:history"))
 
     implementation(project(":core:theme"))
+    implementation(project(":data"))
 
     // WorkManager
     implementation(libs.androidx.work.runtime.ktx)
