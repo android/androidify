@@ -24,16 +24,45 @@ interface RemoteConfigDataSource {
     fun isAppInactive(): Boolean
     fun textModelName(): String
     fun imageModelName(): String
-    fun promptTextVerify(): String
-    fun promptImageValidation(): String
-    fun promptImageDescription(): String
+    
+    // Updated nutrition-focused methods
+    fun promptMealPhotoValidation(): String
+    fun promptMealAnalysis(): String
+    fun promptIngredientExtraction(): String
+    fun promptSymptomProcessing(): String
+    fun promptFoodIntoleranceDetection(): String
+    fun promptPatternAnalysis(): String
+    fun promptVoiceInputProcessing(): String
+    fun promptNutritionEstimation(): String
+    fun promptHealthDataCorrelation(): String
+    fun promptMealContextAnalysis(): String
+    
     fun useGeminiNano(): Boolean
-    fun generateBotPrompt(): String
-    fun promptImageGenerationWithSkinTone(): String
+    fun enableAdvancedAnalytics(): Boolean
+    
+    fun getNutritionTipsGifLink(): String
 
-    fun getPromoVideoLink(): String
-
-    fun getDancingDroidLink(): String
+    // Deprecated methods - kept for backward compatibility during transition
+    @Deprecated("Use nutrition-focused methods instead")
+    fun promptTextVerify(): String = promptSymptomProcessing()
+    
+    @Deprecated("Use promptMealPhotoValidation() instead")
+    fun promptImageValidation(): String = promptMealPhotoValidation()
+    
+    @Deprecated("Use promptIngredientExtraction() instead") 
+    fun promptImageDescription(): String = promptIngredientExtraction()
+    
+    @Deprecated("Use nutrition-focused methods instead")
+    fun generateBotPrompt(): String = ""
+    
+    @Deprecated("Use nutrition-focused methods instead")
+    fun promptImageGenerationWithSkinTone(): String = ""
+    
+    @Deprecated("Use nutrition-focused methods instead")
+    fun getPromoVideoLink(): String = ""
+    
+    @Deprecated("Use getNutritionTipsGifLink() instead")
+    fun getDancingDroidLink(): String = getNutritionTipsGifLink()
 }
 
 @Singleton
@@ -41,7 +70,7 @@ class RemoteConfigDataSourceImpl @Inject constructor() : RemoteConfigDataSource 
     private val remoteConfig = Firebase.remoteConfig
 
     override fun isAppInactive(): Boolean {
-        return remoteConfig.getBoolean("is_android_app_inactive")
+        return remoteConfig.getBoolean("is_app_active").not()
     }
 
     override fun textModelName(): String {
@@ -52,35 +81,55 @@ class RemoteConfigDataSourceImpl @Inject constructor() : RemoteConfigDataSource 
         return remoteConfig.getString("image_model_name")
     }
 
-    override fun promptTextVerify(): String {
-        return remoteConfig.getString("prompt_text_verify")
+    override fun promptMealPhotoValidation(): String {
+        return remoteConfig.getString("prompt_meal_photo_validation")
     }
 
-    override fun promptImageValidation(): String {
-        return remoteConfig.getString("prompt_image_validation")
+    override fun promptMealAnalysis(): String {
+        return remoteConfig.getString("prompt_meal_analysis")
     }
 
-    override fun promptImageDescription(): String {
-        return remoteConfig.getString("prompt_image_description")
+    override fun promptIngredientExtraction(): String {
+        return remoteConfig.getString("prompt_ingredient_extraction")
+    }
+
+    override fun promptSymptomProcessing(): String {
+        return remoteConfig.getString("prompt_symptom_processing")
+    }
+
+    override fun promptFoodIntoleranceDetection(): String {
+        return remoteConfig.getString("prompt_food_intolerance_detection")
+    }
+
+    override fun promptPatternAnalysis(): String {
+        return remoteConfig.getString("prompt_pattern_analysis")
+    }
+
+    override fun promptVoiceInputProcessing(): String {
+        return remoteConfig.getString("prompt_voice_input_processing")
+    }
+
+    override fun promptNutritionEstimation(): String {
+        return remoteConfig.getString("prompt_nutrition_estimation")
+    }
+
+    override fun promptHealthDataCorrelation(): String {
+        return remoteConfig.getString("prompt_health_data_correlation")
+    }
+
+    override fun promptMealContextAnalysis(): String {
+        return remoteConfig.getString("prompt_meal_context_analysis")
     }
 
     override fun useGeminiNano(): Boolean {
         return remoteConfig.getBoolean("use_gemini_nano")
     }
 
-    override fun generateBotPrompt(): String {
-        return remoteConfig.getString("generate_bot_prompt")
+    override fun enableAdvancedAnalytics(): Boolean {
+        return remoteConfig.getBoolean("enable_advanced_analytics")
     }
 
-    override fun promptImageGenerationWithSkinTone(): String {
-        return remoteConfig.getString("prompt_image_generation_skin_tone")
-    }
-
-    override fun getPromoVideoLink(): String {
-        return remoteConfig.getString("promo_video_link")
-    }
-
-    override fun getDancingDroidLink(): String {
-        return remoteConfig.getString("dancing_droid_gif_link")
+    override fun getNutritionTipsGifLink(): String {
+        return remoteConfig.getString("nutrition_tips_gif_link")
     }
 }

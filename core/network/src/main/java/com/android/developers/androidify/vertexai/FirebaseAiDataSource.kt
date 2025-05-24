@@ -45,10 +45,22 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 interface FirebaseAiDataSource {
+    // Nutrition-focused methods
+    suspend fun validateMealPhoto(image: Bitmap): ValidatedImage
+    suspend fun analyzeMealFromImage(image: Bitmap): ValidatedDescription
+    suspend fun processSymptomInput(inputPrompt: String): ValidatedDescription
+    suspend fun generateNutritionPrompt(prompt: String): GeneratedPrompt
+    
+    // Legacy methods for backward compatibility
+    @Deprecated("Use validateMealPhoto() instead")
     suspend fun validatePromptHasEnoughInformation(inputPrompt: String): ValidatedDescription
+    @Deprecated("Use validateMealPhoto() instead") 
     suspend fun validateImageHasEnoughInformation(image: Bitmap): ValidatedImage
+    @Deprecated("Use analyzeMealFromImage() instead")
     suspend fun generateDescriptivePromptFromImage(image: Bitmap): ValidatedDescription
+    @Deprecated("Not applicable for nutrition tracking")
     suspend fun generateImageFromPromptAndSkinTone(prompt: String, skinTone: String): Bitmap
+    @Deprecated("Use generateNutritionPrompt() instead")
     suspend fun generatePrompt(prompt: String): GeneratedPrompt
 }
 
@@ -86,20 +98,8 @@ class FirebaseAiDataSourceImpl @Inject constructor(
         )
     }
 
-    override suspend fun validatePromptHasEnoughInformation(inputPrompt: String): ValidatedDescription {
-        val jsonSchema = Schema.obj(
-            mapOf("success" to Schema.boolean(), "user_description" to Schema.string()),
-            optionalProperties = listOf("user_description"),
-        )
-        val generativeModel = createGenerativeTextModel(jsonSchema)
-
-        return executeTextValidation(
-            generativeModel,
-            "${remoteConfigDataSource.promptTextVerify()}. The input prompt is as follows:`$inputPrompt`.",
-        )
-    }
-
-    override suspend fun validateImageHasEnoughInformation(image: Bitmap): ValidatedImage {
+    // New nutrition-focused methods
+    override suspend fun validateMealPhoto(image: Bitmap): ValidatedImage {
         val jsonSchema = Schema.obj(
             properties = mapOf(
                 "success" to Schema.boolean(),
@@ -115,12 +115,12 @@ class FirebaseAiDataSourceImpl @Inject constructor(
 
         return executeImageValidation(
             generativeModel,
-            remoteConfigDataSource.promptImageValidation(),
+            remoteConfigDataSource.promptMealPhotoValidation(),
             image,
         )
     }
 
-    override suspend fun generateDescriptivePromptFromImage(image: Bitmap): ValidatedDescription {
+    override suspend fun analyzeMealFromImage(image: Bitmap): ValidatedDescription {
         val jsonSchema = Schema.obj(
             properties = mapOf(
                 "success" to Schema.boolean(),
@@ -132,27 +132,59 @@ class FirebaseAiDataSourceImpl @Inject constructor(
 
         return executeImageDescriptionGeneration(
             generativeModel,
-            remoteConfigDataSource.promptImageDescription(),
+            remoteConfigDataSource.promptIngredientExtraction(),
             image,
         )
     }
 
-    override suspend fun generateImageFromPromptAndSkinTone(prompt: String, skinTone: String): Bitmap {
-        val generativeModel = createGenerativeImageModel()
-        // Retrieve the base prompt template from Remote Config
-        val basePromptTemplate = remoteConfigDataSource.promptImageGenerationWithSkinTone()
+    override suspend fun processSymptomInput(inputPrompt: String): ValidatedDescription {
+        val jsonSchema = Schema.obj(
+            mapOf("success" to Schema.boolean(), "user_description" to Schema.string()),
+            optionalProperties = listOf("user_description"),
+        )
+        val generativeModel = createGenerativeTextModel(jsonSchema)
 
-        // Perform the substitution
-        val imageGenerationPrompt = basePromptTemplate
-            .replace("{prompt}", prompt)
-            .replace("{skinTone}", skinTone)
-
-        return executeImageGeneration(
+        return executeTextValidation(
             generativeModel,
-            imageGenerationPrompt,
+            "${remoteConfigDataSource.promptSymptomProcessing()}. The input is as follows: `$inputPrompt`.",
         )
     }
 
+    override suspend fun generateNutritionPrompt(prompt: String): GeneratedPrompt {
+        val jsonSchema = Schema.obj(
+            properties = mapOf(
+                "success" to Schema.boolean(),
+                "generated_prompt" to Schema.array(Schema.string()),
+            ),
+            optionalProperties = listOf("generated_prompt"),
+        )
+        val generativeModel = createGenerativeTextModel(jsonSchema, temperature = 0.75f)
+        return executePromptGeneration(generativeModel, prompt)
+    }
+
+    // Legacy methods for backward compatibility
+    override suspend fun validatePromptHasEnoughInformation(inputPrompt: String): ValidatedDescription {
+        return processSymptomInput(inputPrompt)
+    }
+
+    override suspend fun validateImageHasEnoughInformation(image: Bitmap): ValidatedImage {
+        return validateMealPhoto(image)
+    }
+
+    override suspend fun generateDescriptivePromptFromImage(image: Bitmap): ValidatedDescription {
+        return analyzeMealFromImage(image)
+    }
+
+    override suspend fun generateImageFromPromptAndSkinTone(prompt: String, skinTone: String): Bitmap {
+        // Not applicable for nutrition tracking - return a placeholder or throw
+        throw UnsupportedOperationException("Image generation not supported in nutrition tracking mode")
+    }
+
+    override suspend fun generatePrompt(prompt: String): GeneratedPrompt {
+        return generateNutritionPrompt(prompt)
+    }
+
+    // Private helper methods remain the same
     private suspend fun executeTextValidation(
         generativeModel: GenerativeModel,
         prompt: String,
@@ -205,18 +237,6 @@ class FirebaseAiDataSourceImpl @Inject constructor(
     ): Bitmap {
         val response = generativeModel.generateImages(prompt)
         return response.images.first().asBitmap()
-    }
-
-    override suspend fun generatePrompt(prompt: String): GeneratedPrompt {
-        val jsonSchema = Schema.obj(
-            properties = mapOf(
-                "success" to Schema.boolean(),
-                "generated_prompt" to Schema.array(Schema.string()),
-            ),
-            optionalProperties = listOf("generated_prompt"),
-        )
-        val generativeModel = createGenerativeTextModel(jsonSchema, temperature = 0.75f)
-        return executePromptGeneration(generativeModel, prompt)
     }
 
     private suspend fun executePromptGeneration(

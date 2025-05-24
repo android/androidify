@@ -4,9 +4,10 @@ import android.content.Context
 import android.graphics.BitmapFactory
 import android.graphics.Bitmap
 import android.net.Uri
+import app.getnuri.RemoteConfigDataSource
 import app.getnuri.data.model.MealAnalysisData
 import app.getnuri.util.LocalFileProvider
-import app.getnuri.vertexai.FirebaseAiDataSource // Corrected import path
+import app.getnuri.vertexai.FirebaseAiDataSource
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -17,6 +18,7 @@ import javax.inject.Singleton
 @Singleton
 class NuriMealAnalyzerImpl @Inject constructor(
     private val firebaseAiDataSource: FirebaseAiDataSource,
+    private val remoteConfigDataSource: RemoteConfigDataSource,
     private val localFileProvider: LocalFileProvider,
     @ApplicationContext private val context: Context
 ) : NuriMealAnalyzer {
@@ -24,13 +26,14 @@ class NuriMealAnalyzerImpl @Inject constructor(
     override suspend fun analyzeMealFromText(description: String): Result<MealAnalysisData> {
         return withContext(Dispatchers.IO) {
             try {
-                // 1. Craft the prompt for Gemini
-                val prompt = """
-                Analyze the following meal description to identify key ingredients with estimated quantities and potential common dietary triggers.
+                // Use the remote config prompt for meal analysis
+                val mealAnalysisPrompt = remoteConfigDataSource.promptMealAnalysis()
+                val fullPrompt = """
+                $mealAnalysisPrompt
                 
                 Meal Description: "$description"
                 
-                Please provide a detailed breakdown in the following EXACT format:
+                Please provide the analysis in the following EXACT format:
                 
                 Ingredients:
                 Ingredient Name 1 | Quantity Unit
@@ -40,37 +43,23 @@ class NuriMealAnalyzerImpl @Inject constructor(
                 Triggers:
                 trigger1, trigger2, trigger3
                 
-                Guidelines for ingredients:
-                - Include main ingredients only (not seasonings unless significant)
+                Guidelines:
                 - Use realistic portion sizes for a single serving
                 - Use common units: g (grams), ml (milliliters), pieces, tbsp, tsp
                 - Format each ingredient as "Name | Quantity Unit" on separate lines
+                - Only include common allergens/triggers that are likely present
                 
-                Guidelines for triggers:
-                - Common allergens: gluten, dairy, eggs, nuts, soy, fish, shellfish
-                - Only include triggers that are likely present based on ingredients
-                
-                Example:
-                Ingredients:
-                Grilled Chicken Breast | 150g
-                Jasmine Rice | 80g
-                Steamed Broccoli | 100g
-                Olive Oil | 15ml
-                
-                Triggers:
-                none
-                
-                Provide ONLY the Ingredients and Triggers sections as shown above. No additional text or explanations.
+                Provide ONLY the Ingredients and Triggers sections as shown above.
                 """
 
-                // 2. Call FirebaseAiDataSource
-                val aiResponse = firebaseAiDataSource.generatePrompt(prompt)
+                // Call FirebaseAiDataSource with nutrition-focused prompt
+                val aiResponse = firebaseAiDataSource.generateNutritionPrompt(fullPrompt)
                 val responseText = aiResponse.generatedPrompts?.firstOrNull()
 
                 if (responseText.isNullOrBlank()) {
                     Result.failure(Exception("AI response was empty or null for text analysis."))
                 } else {
-                    // 3. Parse the responseText
+                    // Parse the responseText
                     val ingredients = parseIngredientsList(responseText)
                     val triggers = parseList(responseText, "Triggers:")
                     Result.success(MealAnalysisData(ingredients, triggers))
@@ -115,27 +104,91 @@ class NuriMealAnalyzerImpl @Inject constructor(
                     return@withContext Result.failure(Exception("Failed to decode bitmap from image file."))
                 }
 
-                // 2. Get image description from AI
-                val imageDescResponse = firebaseAiDataSource.generateDescriptivePromptFromImage(bitmap)
-                val description = imageDescResponse.userDescription 
+                // 2. First validate the meal photo using nutrition-focused validation
+                val validationResult = firebaseAiDataSource.validateMealPhoto(bitmap)
+                if (!validationResult.success) {
+                    // Clean up temp file
+                    if (imageUri.scheme != "file" && imageFile.name.startsWith("temp_image_for_analysis")) {
+                        imageFile.delete()
+                    }
+                    return@withContext Result.failure(Exception("Image validation failed: ${validationResult.errorMessage?.description ?: "Invalid meal photo"}"))
+                }
+
+                // 3. Get meal analysis from AI using nutrition-focused prompts
+                val imageAnalysisResponse = firebaseAiDataSource.analyzeMealFromImage(bitmap)
+                val description = imageAnalysisResponse.userDescription 
 
                 // Clean up the temp file if it was created
                 if (imageUri.scheme != "file" && imageFile.name.startsWith("temp_image_for_analysis")) {
                     imageFile.delete()
                 }
                 
-                if (!imageDescResponse.success || description.isNullOrBlank()) {
-                    return@withContext Result.failure(Exception("Failed to get description from image. AI indicated failure or empty description."))
+                if (!imageAnalysisResponse.success || description.isNullOrBlank()) {
+                    return@withContext Result.failure(Exception("Failed to analyze meal from image. AI indicated failure or empty description."))
                 }
 
-                // 3. Analyze the generated description for ingredients and triggers (reuse text analysis logic)
-                // Pass the description to the text analysis function.
-                // The result of this call (which is Result<MealAnalysisData>) is returned directly.
-                analyzeMealFromText(description)
+                // 4. Process the AI description using meal analysis logic
+                analyzeMealFromAnalysisResponse(description)
             } catch (e: Exception) {
                 Result.failure(Exception("Failed during image analysis: ${e.message}", e))
             }
         }
+    }
+
+    private suspend fun analyzeMealFromAnalysisResponse(aiDescription: String): Result<MealAnalysisData> {
+        return withContext(Dispatchers.IO) {
+            try {
+                // Use nutrition estimation prompt to get structured data
+                val nutritionPrompt = remoteConfigDataSource.promptNutritionEstimation()
+                val fullPrompt = """
+                $nutritionPrompt
+                
+                AI Analysis: "$aiDescription"
+                
+                Convert this analysis into structured ingredient and trigger data:
+                
+                Ingredients:
+                [List ingredients with quantities]
+                
+                Triggers:
+                [List potential allergens/triggers]
+                """
+
+                val aiResponse = firebaseAiDataSource.generateNutritionPrompt(fullPrompt)
+                val responseText = aiResponse.generatedPrompts?.firstOrNull()
+
+                if (responseText.isNullOrBlank()) {
+                    // Fallback: parse the original AI description directly
+                    Result.success(parseAiDescriptionFallback(aiDescription))
+                } else {
+                    val ingredients = parseIngredientsList(responseText)
+                    val triggers = parseList(responseText, "Triggers:")
+                    Result.success(MealAnalysisData(ingredients, triggers))
+                }
+            } catch (e: Exception) {
+                // Fallback on error
+                Result.success(parseAiDescriptionFallback(aiDescription))
+            }
+        }
+    }
+
+    private fun parseAiDescriptionFallback(description: String): MealAnalysisData {
+        // Simple fallback parsing
+        val ingredients = description.split(",", ".", "and")
+            .map { it.trim() }
+            .filter { it.isNotBlank() && it.length > 2 }
+            .take(5)
+            .map { "$it | estimated portion" }
+        
+        val commonTriggers = listOf("gluten", "dairy", "eggs", "nuts", "soy")
+        val detectedTriggers = commonTriggers.filter { trigger ->
+            description.lowercase().contains(trigger)
+        }
+        
+        return MealAnalysisData(
+            extractedIngredients = ingredients.ifEmpty { listOf("Unknown food items | unknown quantity") },
+            potentialTriggers = detectedTriggers.ifEmpty { listOf("none detected") }
+        )
     }
 
     private fun parseList(text: String, heading: String): List<String> {
