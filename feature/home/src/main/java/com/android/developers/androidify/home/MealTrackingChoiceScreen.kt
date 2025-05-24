@@ -179,6 +179,7 @@ fun MealTrackingChoiceScreen(
     onBackPressed: () -> Unit = {},
     onMealLogged: (Uri?, String) -> Unit = { _, _ -> },
     onTestIngredientExtraction: () -> Unit = {},
+    onAboutClicked: () -> Unit = {},
 ) {
     // Mock state - in real implementation this would come from a ViewModel
     var uiState by remember { mutableStateOf(MealTrackingState()) }
@@ -228,6 +229,7 @@ fun MealTrackingChoiceScreen(
                     onMealLogged(uiState.imageUri, description)
                 },
                 onTestIngredientExtraction = onTestIngredientExtraction,
+                onAboutClicked = onAboutClicked,
             )
         }
         
@@ -259,6 +261,7 @@ fun MealInputScreen(
     onPromptGenerationComplete: () -> Unit,
     onTrackMealClicked: () -> Unit,
     onTestIngredientExtraction: () -> Unit,
+    onAboutClicked: () -> Unit,
 ) {
     // Handle prompt generation delay
     LaunchedEffect(uiState.promptGenerationInProgress) {
@@ -298,16 +301,10 @@ fun MealInputScreen(
                     },
                 )
             } else {
-                TopAppBar(
-                    title = { Text(stringResource(R.string.track_meal_choice_title)) },
-                    navigationIcon = {
-                        IconButton(onClick = onBackPressed) {
-                            Icon(
-                                imageVector = Icons.Default.ArrowBack,
-                                contentDescription = "Back"
-                            )
-                        }
-                    }
+                AndroidifyTopAppBar(
+                    backEnabled = false,
+                    aboutEnabled = true,
+                    onAboutClicked = onAboutClicked,
                 )
             }
         },

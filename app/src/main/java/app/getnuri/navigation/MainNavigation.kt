@@ -67,7 +67,7 @@ class MealAnalysisViewModel @Inject constructor(
 @ExperimentalMaterial3ExpressiveApi
 @Composable
 fun MainNavigation() {
-    val backStack = rememberMutableStateListOf<NavigationRoute>(Home)
+    val backStack = rememberMutableStateListOf<NavigationRoute>(MealTrackingChoice())
     val coroutineScope = rememberCoroutineScope()
     val mealAnalysisViewModel = hiltViewModel<MealAnalysisViewModel>()
     var positionReveal by remember {
@@ -166,6 +166,9 @@ fun MainNavigation() {
                     },
                     onBackPressed = {
                         backStack.removeLastOrNull()
+                    },
+                    onAboutClicked = {
+                        backStack.add(About)
                     },
                     onMealLogged = { imageUri, description ->
                         // Use real Firebase Gemini analysis instead of mock data
