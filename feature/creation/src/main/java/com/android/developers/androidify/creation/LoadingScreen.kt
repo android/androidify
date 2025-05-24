@@ -56,6 +56,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.Path
 import androidx.compose.ui.graphics.vector.PathParser
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.keepScreenOn
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
@@ -72,7 +73,6 @@ import androidx.compose.ui.unit.dp
 import com.android.developers.androidify.theme.AndroidifyTheme
 import com.android.developers.androidify.theme.components.AndroidifyTopAppBar
 import com.android.developers.androidify.theme.components.PrimaryButton
-import com.android.developers.androidify.util.KeepScreenOn
 import com.android.developers.androidify.util.LargeScreensPreview
 import com.android.developers.androidify.util.SmallPhonePreview
 import com.android.developers.androidify.util.isAtLeastMedium
@@ -85,7 +85,6 @@ fun LoadingScreen(
     onCancelPress: () -> Unit,
     isMediumScreen: Boolean = isAtLeastMedium(),
 ) {
-    KeepScreenOn()
     Scaffold(
         topBar = {
             AndroidifyTopAppBar(isMediumWindowSize = isMediumScreen, aboutEnabled = false)
@@ -108,7 +107,8 @@ fun LoadingScreen(
         },
         containerColor = MaterialTheme.colorScheme.secondary,
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .keepScreenOn(),
     ) { contentPadding ->
         LoadingScreenContents(contentPadding)
     }

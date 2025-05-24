@@ -17,9 +17,7 @@ package com.android.developers.androidify.util
 
 import android.annotation.SuppressLint
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.window.WindowSdkExtensions
 import androidx.window.core.layout.WindowSizeClass
@@ -121,15 +119,4 @@ class FoldablePreviewParametersProvider : PreviewParameterProvider<FoldablePrevi
         FoldablePreviewParameters(supportsTabletop = false, isTabletop = false),
 
     )
-}
-
-@Composable
-fun KeepScreenOn() {
-    val currentView = LocalView.current
-    DisposableEffect(Unit) {
-        currentView.keepScreenOn = true
-        onDispose {
-            currentView.keepScreenOn = false
-        }
-    }
 }
