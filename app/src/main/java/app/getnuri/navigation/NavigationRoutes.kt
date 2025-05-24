@@ -22,8 +22,9 @@ import kotlinx.serialization.Serializable
 
 interface NavigationRoute
 
-@Serializable
-data object Home : NavigationRoute
+// Remove Home route
+// @Serializable
+// data object Home : NavigationRoute
 
 @Serializable
 data class Create(val fileName: String? = null, val prompt: String? = null) : NavigationRoute

@@ -39,7 +39,6 @@ import androidx.navigation3.ui.NavDisplay
 import app.getnuri.camera.CameraPreviewScreen
 import app.getnuri.creation.CreationScreen
 import app.getnuri.home.AboutScreen
-import app.getnuri.home.HomeScreen
 import app.getnuri.home.MealTrackingChoiceScreen
 import app.getnuri.theme.transitions.ColorSplashTransitionScreen
 // import app.getnuri.feature.nuri_creation.photo.capture.MealPhotoCaptureScreen
@@ -70,12 +69,6 @@ fun MainNavigation() {
     val backStack = rememberMutableStateListOf<NavigationRoute>(MealTrackingChoice())
     val coroutineScope = rememberCoroutineScope()
     val mealAnalysisViewModel = hiltViewModel<MealAnalysisViewModel>()
-    var positionReveal by remember {
-        mutableStateOf(IntOffset.Zero)
-    }
-    var showSplash by remember {
-        mutableStateOf(false)
-    }
     val motionScheme = MaterialTheme.motionScheme
     NavDisplay(
         backStack = backStack,
@@ -99,20 +92,6 @@ fun MainNavigation() {
             )
         },
         entryProvider = entryProvider {
-            entry<Home> { entry ->
-                HomeScreen(
-                    onClickLetsGo = { positionOffset ->
-                        showSplash = true
-                        positionReveal = positionOffset
-                    },
-                    onAboutClicked = {
-                        backStack.add(About)
-                    },
-                    onHistoryClicked = {
-                        backStack.add(MealHistory)
-                    },
-                )
-            }
             entry<Camera> {
                 CameraPreviewScreen(
                     onImageCaptured = { uri ->
@@ -256,8 +235,8 @@ fun MainNavigation() {
                     },
                     onNextPressed = { finalIngredients ->
                         // TODO: Navigate to next screen in the meal creation flow
-                        // For now, just go back to home
-                        backStack.removeAll { it !is Home }
+                        // For now, just go back to the initial screen (MealTrackingChoice)
+                        backStack.removeAll { it !is MealTrackingChoice }
                     }
                 )
             }
@@ -274,15 +253,4 @@ fun MainNavigation() {
             */
         },
     )
-    if (showSplash) {
-        ColorSplashTransitionScreen(
-            startPoint = positionReveal,
-            onTransitionFinished = {
-                showSplash = false
-            },
-            onTransitionMidpoint = {
-                backStack.add(MealTrackingChoice())
-            },
-        )
-    }
 }

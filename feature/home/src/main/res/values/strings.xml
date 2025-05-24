@@ -25,16 +25,10 @@
     <string name="about_back_content_description">Back</string>
     <string name="create_a_prompt">Describe your meal</string>
     <string name="start_with_photo">Take a photo</string>
-    <string name="customize_your_own">Discover what affects\n</string>
-    <string name="into_an_android_bot">\n\nyour wellbeing</string>
-    <string name="home_button_label">Track a Meal</string>
     <string name="home_button_history">View History</string>
     <string name="check_back_later">Check back later.</string>
     <string name="app_is_under_construction">App is under construction.</string>
     <string name="how_it_works">How it works</string>
-    <string name="instruction_video_transcript">Take a photo of your meal or describe what you ate, then let AI help you discover patterns in your nutrition and health</string>
-    <string name="play">Play</string>
-    <string name="pause">Pause</string>
     <string name="terms">Terms</string>
     <string name="privacy">Privacy</string>
     <string name="meal_tracking_subtitle">AI-powered nutrition insights</string>
