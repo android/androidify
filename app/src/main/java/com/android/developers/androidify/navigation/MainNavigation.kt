@@ -106,7 +106,9 @@ fun MainNavigation() {
                         backStack.add(Camera)
                     },
                     onBackPressed = {
-                        backStack.removeLastOrNull()
+                        if (backStack.isNotEmpty() && backStack.last() is Create) {
+                            backStack.removeLastOrNull()
+                        }
                     },
                     onAboutPressed = {
                         backStack.add(About)
@@ -116,7 +118,9 @@ fun MainNavigation() {
             entry<About> {
                 AboutScreen(
                     onBackPressed = {
-                        backStack.removeLastOrNull()
+                        if (backStack.isNotEmpty() && backStack.last() is About) {
+                            backStack.removeLastOrNull()
+                        }
                     },
                 )
             }
