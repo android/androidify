@@ -28,7 +28,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Androidify"
+rootProject.name = "Nuri"
 include(":app")
 
 include(":feature")
