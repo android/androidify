@@ -39,4 +39,5 @@
     <string name="privacy">Privacy</string>
     <string name="meal_tracking_subtitle">AI-powered nutrition insights</string>
     <string name="track_meal_choice_title">How would you like to log this meal?</string>
+    <string name="track_meal_button">Track Meal</string>
 </resources>

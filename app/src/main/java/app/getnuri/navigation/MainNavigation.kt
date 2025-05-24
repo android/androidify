@@ -130,15 +130,16 @@ fun MainNavigation() {
             // New Nuri meal tracking entries
             entry<MealTrackingChoice> {
                 MealTrackingChoiceScreen(
-                    onPhotoChoice = {
+                    onCameraPressed = {
                         // TODO: Navigate to photo capture when ready
                         // backStack.add(MealPhotoCapture)
                     },
-                    onTextChoice = {
-                        // TODO: Navigate to text entry when ready
-                        // backStack.add(MealTextEntry)
-                    },
                     onBackPressed = {
+                        backStack.removeLastOrNull()
+                    },
+                    onMealLogged = { imageUri, description ->
+                        // TODO: Handle meal logging - save to database and navigate appropriately
+                        // For now, just go back to home
                         backStack.removeLastOrNull()
                     }
                 )
