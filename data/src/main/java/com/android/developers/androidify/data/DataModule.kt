@@ -25,6 +25,7 @@ import app.getnuri.vertexai.FirebaseAiDataSourceImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import androidx.room.Room
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
@@ -35,6 +36,32 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 internal object DataModule {
+
+    @Provides
+    @Singleton
+    fun provideNuriMealAnalyzer(impl: NuriMealAnalyzerImpl): NuriMealAnalyzer = impl
+
+    @Provides
+    @Singleton
+    fun provideStringListConverter(): StringListConverter = StringListConverter()
+
+    @Provides
+    @Singleton
+    fun provideNuriDatabase(
+        @ApplicationContext context: Context,
+        stringListConverter: StringListConverter
+    ): NuriDatabase {
+        return Room.databaseBuilder(context, NuriDatabase::class.java, "nuri_database.db")
+            .addTypeConverter(stringListConverter)
+            .fallbackToDestructiveMigration()
+            .build()
+    }
+
+    @Provides
+    fun provideMealDao(database: NuriDatabase): MealDao = database.mealDao()
+
+    @Provides
+    fun provideUserFeedbackDao(database: NuriDatabase): UserFeedbackDao = database.userFeedbackDao()
 
     @Provides
     @Named("IO")
