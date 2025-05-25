@@ -58,10 +58,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import app.getnuri.theme.AndroidifyTheme
-import app.getnuri.theme.BackgroundGradientAccent
-import app.getnuri.theme.BackgroundGradientEnd
-import app.getnuri.theme.BackgroundGradientStart
-import app.getnuri.theme.ExpressiveAccent1
+import app.getnuri.theme.Primary
+import app.getnuri.theme.PrimaryContainer
+import app.getnuri.theme.Secondary
+import app.getnuri.theme.SurfaceContainerHighest
 
 /**
  * Expressive gradient background inspired by Serafina's purple gradient design
@@ -69,9 +69,9 @@ import app.getnuri.theme.ExpressiveAccent1
 @Composable
 fun ExpressiveGradientBackground(
     modifier: Modifier = Modifier,
-    startColor: Color = BackgroundGradientStart,
-    endColor: Color = BackgroundGradientEnd,
-    accentColor: Color = BackgroundGradientAccent,
+    startColor: Color = Primary,
+    endColor: Color = PrimaryContainer,
+    accentColor: Color = Secondary,
     content: @Composable BoxScope.() -> Unit
 ) {
     Box(
@@ -144,7 +144,7 @@ fun ExpressiveButton(
 @Composable
 fun ExpressiveCard(
     modifier: Modifier = Modifier,
-    backgroundColor: Color = ExpressiveAccent1,
+    backgroundColor: Color = SurfaceContainerHighest,
     cornerRadius: Dp = 20.dp,
     elevation: Dp = 8.dp,
     content: @Composable () -> Unit

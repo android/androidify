@@ -43,8 +43,8 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import app.getnuri.theme.AndroidifyTheme
-import app.getnuri.theme.LimeGreen
 import app.getnuri.theme.R
+import app.getnuri.theme.Secondary
 import app.getnuri.util.dashedRoundedRectBorder
 import app.getnuri.util.dpToPx
 
@@ -72,7 +72,7 @@ internal fun CameraGuide(
                     ),
             ) {
                 DecorativeSquiggle(
-                    color = LimeGreen,
+                    color = Secondary,
                     modifier = Modifier.padding(horizontal = 4.dp, vertical = 20.dp),
                 )
                 DecorativeSquiggle(

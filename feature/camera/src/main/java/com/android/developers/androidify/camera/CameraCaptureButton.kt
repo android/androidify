@@ -43,10 +43,9 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import app.getnuri.theme.AndroidifyTheme
-import app.getnuri.theme.LimeGreen
 import app.getnuri.theme.Primary
-import app.getnuri.theme.Primary80
-import app.getnuri.theme.Primary90
+import app.getnuri.theme.PrimaryContainer
+import app.getnuri.theme.PrimaryFixed
 import app.getnuri.theme.Secondary
 import app.getnuri.theme.components.ScaleIndicationNodeFactory
 
@@ -120,8 +119,8 @@ internal fun CameraCaptureButton(
                         },
                     )
                 }
-                val outerBrush = Brush.linearGradient(listOf(LimeGreen, Primary80, Primary))
-                val innerBrush = Brush.linearGradient(listOf(LimeGreen, Primary90, Secondary))
+                val outerBrush = Brush.linearGradient(listOf(Secondary, PrimaryContainer, Primary))
+                val innerBrush = Brush.linearGradient(listOf(Secondary, PrimaryFixed, Secondary))
                 onDrawBehind {
                     if (enabled) {
                         drawPath(outerPath, outerBrush, style = Stroke(borderWidth))

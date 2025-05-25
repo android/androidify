@@ -17,69 +17,64 @@ package app.getnuri.theme
 
 import androidx.compose.ui.graphics.Color
 
-// Material 3 Expressive - Purple Gradient Theme (Inspired by Serafina)
-// Primary - Rich vibrant purple for main actions
-val Primary = Color(0xFF7B52FF)
+// Material 3 Color Palette
+// Primary colors
+val Primary = Color(0xFF726BF6)
 val OnPrimary = Color(0xFFFFFFFF)
-val PrimaryContainer = Color(0xFF6945E8)
-val OnPrimaryContainer = Color(0xFFFFFFFF)
+val PrimaryContainer = Color(0xFFDAD7FE)
+val OnPrimaryContainer = Color(0xFF1C1864)
+val PrimaryFixed = Color(0xFFDAD7FE)
+val PrimaryFixedDim = Color(0xFFB1AEF8)
+val OnPrimaryFixed = Color(0xFF1C1864)
+val OnPrimaryFixedVariant = Color(0xFF302B92)
 
-// Secondary - Soft lavender for secondary elements
-val Secondary = Color(0xFFB19AFF)
-val OnSecondary = Color(0xFF1A0A2E)
-val SecondaryContainer = Color(0xFF9F87FF)
-val OnSecondaryContainer = Color(0xFF1A0A2E)
+// Secondary colors
+val Secondary = Color(0xFFF5FF8C)
+val OnSecondary = Color(0xFF1A1A1A)
+val SecondaryContainer = Color(0xFFF8FFA9)
+val OnSecondaryContainer = Color(0xFF3A3A00)
+val SecondaryFixed = Color(0xFFF5FF8C)
+val SecondaryFixedDim = Color(0xFFE2F27D)
+val OnSecondaryFixed = Color(0xFF1A1A1A)
+val OnSecondaryFixedVariant = Color(0xFF474500)
 
-// Tertiary - Golden yellow for highlights and accents
-val Tertiary = Color(0xFFFFD94D)
-val OnTertiary = Color(0xFF1A0A2E)
-val TertiaryContainer = Color(0xFFFFC700)
-val OnTertiaryContainer = Color(0xFF1A0A2E)
+// Tertiary colors
+val Tertiary = Color(0xFFB250B8)
+val OnTertiary = Color(0xFFFFFFFF)
+val TertiaryContainer = Color(0xFFFFD6FD)
+val OnTertiaryContainer = Color(0xFF50034F)
+val TertiaryFixed = Color(0xFFFFD6FD)
+val TertiaryFixedDim = Color(0xFFF4A2F6)
+val OnTertiaryFixed = Color(0xFF50034F)
+val OnTertiaryFixedVariant = Color(0xFF730472)
 
-// Error colors - Warm coral to match expressive theme
-val Error = Color(0xFFFF6B6B)
+// Error colors
+val Error = Color(0xFFF95161)
 val OnError = Color(0xFFFFFFFF)
-val ErrorContainer = Color(0xFFFFE0E0)
-val OnErrorContainer = Color(0xFF8B0000)
+val ErrorContainer = Color(0xFFFFD8D9)
+val OnErrorContainer = Color(0xFF65000B)
 
-// Background gradient colors
-val BackgroundGradientStart = Color(0xFF8B5FFF)
-val BackgroundGradientEnd = Color(0xFF9B6BFF)
-val BackgroundGradientAccent = Color(0xFFA875FF)
-
-// Surface colors - Semi-transparent with blur effects
-val Surface = Color(0xFF726BF6) // Purple background color
+// Surface colors
+val SurfaceDim = Color(0xFFEAE9F5)
+val Surface = Color(0xFFF5F4FF)
 val SurfaceBright = Color(0xFFFFFFFF)
-val SurfaceDim = Color(0xFFF5F3FF)
-val InverseSurface = Color(0xFF1A0A2E)
-val InverseOnSurface = Color(0xFFE8E1FF)
-
-// Surface containers with expressive transparency
 val SurfaceContainerLowest = Color(0xFFFFFFFF)
-val SurfaceContainerLow = Color(0xFFF8F6FF)
-val SurfaceContainer = Color(0xFFEEEAFF)
-val SurfaceContainerHigh = Color(0xFFE2DCFF)
-val SurfaceContainerHighest = Color(0xFFD6CEFF)
+val SurfaceContainerLow = Color(0xFFF0F0FC)
+val SurfaceContainer = Color(0xFFE3E3F3)
+val SurfaceContainerHigh = Color(0xFFD3D2E9)
+val SurfaceContainerHighest = Color(0xFFC5C4E0)
 
 // Text and content colors
-val OnSurface = Color(0xFF1A0A2E)
-val OnSurfaceVariant = Color(0xFF4A3A5E)
-val Outline = Color(0xFF7A6B8A)
-val OutlineVariant = Color(0xFFB8AACC)
-val Scrim = Color(0x80000000) // Semi-transparent for blur effects
-val Shadow = Color(0x40000000)
+val OnSurface = Color(0xFF1A1A1A)
+val OnSurfaceVariant = Color(0xFF494763)
+val Outline = Color(0xFF8987A4)
+val OutlineVariant = Color(0xFFCAC9E2)
 
-// Expressive accent colors for special UI elements
-val ExpressiveAccent1 = Color(0xFFE8DDFF) // Light purple mist
-val ExpressiveAccent2 = Color(0xFFFFE5F8) // Pink gradient accent
-val ExpressiveAccent3 = Color(0xFFE1F5FF) // Soft blue highlight
+// Inverse colors
+val InverseSurface = Color(0xFF2C2C2C)
+val InverseOnSurface = Color(0xFFF5F4FF)
+val InversePrimary = Color(0xFFB1AEF8)
 
-// Legacy colors for backward compatibility
-val LimeGreen = Color(0xFFC6FF00)
-val Primary80 = Color(0xFF9B6BFF)
-val Primary90 = Color(0xFFB19AFF)
-val Blue = Color(0xFF7B52FF)
-
-// Navigation-specific colors
-val NavigationBarBackground = Color(0xFFF5FF8C) // Light yellow-green background
-val NavigationBarHighlight = Color(0xFF726BF6) // Purple-blue highlight for selected items
+// Shadow and scrim
+val Shadow = Color(0xFF000000)
+val Scrim = Color(0xCC000000)

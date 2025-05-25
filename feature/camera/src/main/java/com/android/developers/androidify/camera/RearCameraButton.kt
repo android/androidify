@@ -28,7 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import app.getnuri.theme.Primary80
+import app.getnuri.theme.PrimaryContainer
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -40,7 +40,7 @@ fun RearCameraButton(
     val actionLabel = stringResource(R.string.rear_camera_description)
     val colors = if (isRearCameraEnabled) {
         IconButtonDefaults.filledTonalIconButtonColors().copy(
-            containerColor = Primary80,
+            containerColor = PrimaryContainer,
             contentColor = MaterialTheme.colorScheme.onPrimary,
         )
     } else {

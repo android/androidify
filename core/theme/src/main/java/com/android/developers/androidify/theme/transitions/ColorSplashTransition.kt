@@ -47,7 +47,7 @@ import androidx.compose.ui.unit.max
 import androidx.compose.ui.util.fastCoerceAtLeast
 import androidx.compose.ui.util.fastRoundToInt
 import app.getnuri.theme.AndroidifyTheme
-import app.getnuri.theme.Blue
+import app.getnuri.theme.Primary
 import app.getnuri.theme.components.PrimaryButton
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalSharedTransitionApi::class)
@@ -56,7 +56,7 @@ fun ColorSplashTransitionScreen(
     enterSpec: AnimationSpec<DpSize> = MaterialTheme.motionScheme.fastSpatialSpec(),
     exitSpec: AnimationSpec<DpSize> = MaterialTheme.motionScheme.slowSpatialSpec(),
     startPoint: IntOffset = IntOffset(0, 0),
-    color: Color = Blue,
+    color: Color = Primary,
     onTransitionMidpoint: () -> Unit = {},
     onTransitionFinished: () -> Unit = {},
     modifier: Modifier = Modifier,

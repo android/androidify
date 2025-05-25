@@ -40,7 +40,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.round
 import app.getnuri.theme.Error
-import app.getnuri.theme.LimeGreen
+import app.getnuri.theme.Secondary
 import app.getnuri.theme.Surface
 
 private val TAP_TO_FOCUS_INDICATOR_SIZE = 48.dp
@@ -101,7 +101,7 @@ internal fun CameraViewfinder(
                     .border(
                         2.dp,
                         when (autofocusUiState.status) {
-                            AutofocusUiState.Status.SUCCESS -> LimeGreen
+                            AutofocusUiState.Status.SUCCESS -> Secondary
                             AutofocusUiState.Status.FAILURE -> Error
                             else -> Surface
                         },
