@@ -66,7 +66,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.CameraAlt
-import androidx.compose.material.icons.filled.Description
+
 import androidx.compose.material.icons.filled.Fastfood
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Button
@@ -537,50 +537,34 @@ fun MealTextPrompt(
     textFieldState: TextFieldState,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(
-                Icons.Default.Description,
-                contentDescription = null,
-                modifier = Modifier.size(24.dp),
+    Column(
+        modifier = modifier
+            .dashedRoundedRectBorder(
+                2.dp,
+                MaterialTheme.colorScheme.outline,
+                cornerRadius = 28.dp,
             )
-            Spacer(modifier = Modifier.size(8.dp))
-            Text(
-                "Describe your meal",
-                style = MaterialTheme.typography.headlineLarge,
-                fontSize = 24.sp,
-            )
-        }
-        Spacer(modifier = Modifier.size(8.dp))
-        Column(
+            .padding(horizontal = 16.dp)
+            .padding(top = 16.dp, bottom = 16.dp)
+            .fillMaxSize(),
+    ) {
+        AnimatedTextField(
+            textFieldState,
             modifier = Modifier
-                .dashedRoundedRectBorder(
-                    2.dp,
-                    MaterialTheme.colorScheme.outline,
-                    cornerRadius = 28.dp,
-                )
-                .padding(horizontal = 16.dp)
-                .padding(top = 16.dp, bottom = 16.dp)
+                .weight(1f)
                 .fillMaxSize(),
-        ) {
-            AnimatedTextField(
-                textFieldState,
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxSize(),
-                textStyle = TextStyle(fontSize = 24.sp),
-                decorator = { innerTextField ->
-                    if (textFieldState.text.isEmpty()) {
-                        Text(
-                            "What did you eat? Be as detailed as you'd like...",
-                            color = Color.Gray,
-                            fontSize = 24.sp,
-                        )
-                    }
-                    innerTextField()
-                },
-            )
-        }
+            textStyle = TextStyle(fontSize = 24.sp),
+            decorator = { innerTextField ->
+                if (textFieldState.text.isEmpty()) {
+                    Text(
+                        "What did you eat? Be as detailed as you'd like...",
+                        color = Color(0xFF4A148C),
+                        fontSize = 24.sp,
+                    )
+                }
+                innerTextField()
+            },
+        )
     }
 }
 
