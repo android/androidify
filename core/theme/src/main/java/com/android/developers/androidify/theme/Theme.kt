@@ -29,6 +29,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.unit.dp
 
+// Material 3 Expressive Color Scheme with rich purples and gradients
 private val LightColorScheme = lightColorScheme(
     primary = Primary,
     onPrimary = OnPrimary,
@@ -49,25 +50,41 @@ private val LightColorScheme = lightColorScheme(
     onError = OnError,
     onErrorContainer = OnErrorContainer,
     errorContainer = ErrorContainer,
+    
+    // Updated surface colors for expressive theme
+    surface = Surface,
+    surfaceBright = SurfaceBright,
+    surfaceDim = SurfaceDim,
     inverseSurface = InverseSurface,
     inverseOnSurface = InverseOnSurface,
-    scrim = Scrim,
+    
+    // Enhanced surface containers with purple tints
     surfaceContainerLowest = SurfaceContainerLowest,
     surfaceContainerLow = SurfaceContainerLow,
     surfaceContainer = SurfaceContainer,
     surfaceContainerHigh = SurfaceContainerHigh,
     surfaceContainerHighest = SurfaceContainerHighest,
+    
+    // Improved text and outline colors
     onSurface = OnSurface,
     onSurfaceVariant = OnSurfaceVariant,
-    surface = Surface,
-    surfaceBright = SurfaceBright,
     outline = Outline,
     outlineVariant = OutlineVariant,
+    scrim = Scrim,
 )
 
+// Expressive shapes with larger corner radiuses and organic feeling
 val shapes = Shapes(
-    extraSmall = RoundedCornerShape(50),
-    large = RoundedCornerShape(size = 30.dp),
+    // Small components - subtle roundness
+    extraSmall = RoundedCornerShape(8.dp),
+    small = RoundedCornerShape(12.dp),
+    
+    // Medium components - more expressive curves  
+    medium = RoundedCornerShape(16.dp),
+    
+    // Large components - bold, flowing shapes
+    large = RoundedCornerShape(28.dp),
+    extraLarge = RoundedCornerShape(32.dp),
 )
 
 @Composable

@@ -17,50 +17,65 @@ package app.getnuri.theme
 
 import androidx.compose.ui.graphics.Color
 
-val LimeGreen = Color(0xFFC6FF00)
-val Primary80 = Color(0xFF6DDD81)
-val Primary90 = Color(0xFF89FA9B)
-val Blue = Color(0xFF4285F4)
-
-// Primary colors
-val Primary = Color(0xFF34A853)
+// Material 3 Expressive - Purple Gradient Theme (Inspired by Serafina)
+// Primary - Rich vibrant purple for main actions
+val Primary = Color(0xFF7B52FF)
 val OnPrimary = Color(0xFFFFFFFF)
-val PrimaryContainer = Color(0xFF34A853)
-val OnPrimaryContainer = Color(0xFF202124)
+val PrimaryContainer = Color(0xFF6945E8)
+val OnPrimaryContainer = Color(0xFFFFFFFF)
 
-// Secondary colors
-val Secondary = Color(0xFFE6F4EA)
-val OnSecondary = Color(0xFF202124)
-val SecondaryContainer = Color(0xFFE6F4EA)
-val OnSecondaryContainer = Color(0xFF202124)
+// Secondary - Soft lavender for secondary elements
+val Secondary = Color(0xFFB19AFF)
+val OnSecondary = Color(0xFF1A0A2E)
+val SecondaryContainer = Color(0xFF9F87FF)
+val OnSecondaryContainer = Color(0xFF1A0A2E)
 
-// Tertiary colors
-val Tertiary = Color(0xFF202124)
-val OnTertiary = Color(0xFFFFFFFF)
-val TertiaryContainer = Color(0xFF202124)
-val OnTertiaryContainer = Color(0xFFFFFFFF)
+// Tertiary - Golden yellow for highlights and accents
+val Tertiary = Color(0xFFFFD94D)
+val OnTertiary = Color(0xFF1A0A2E)
+val TertiaryContainer = Color(0xFFFFC700)
+val OnTertiaryContainer = Color(0xFF1A0A2E)
 
-// Error colors
-val Error = Color(0xFFBA1A1A) // Red
-val OnError = Color(0xFFFFFFFF) // White
-val ErrorContainer = Color(0xFFFFDAD6) // Light Red
-val OnErrorContainer = Color(0xFF93000A) // Dark Red
+// Error colors - Warm coral to match expressive theme
+val Error = Color(0xFFFF6B6B)
+val OnError = Color(0xFFFFFFFF)
+val ErrorContainer = Color(0xFFFFE0E0)
+val OnErrorContainer = Color(0xFF8B0000)
 
-// Surface colors
-val Surface = Color(0xFFF1F3F4) // White
-val SurfaceBright = Color(0xFFE6F4EA) // Light Green
-val InverseSurface = Color(0xFF313030) // Dark Gray
-val InverseOnSurface = Color(0xFFF3F0EF) // Light gray
-val SurfaceContainerLowest = Color(0xFFFFFFFF) // Off White
-val SurfaceContainerLow = Color(0xFFEEF0F2) // Light gray
-val SurfaceContainer = Color(0xFFE8EBED) // Gray
-val SurfaceContainerHigh = Color(0xFFE5E9EB) // Dark Gray
-val SurfaceContainerHighest = Color(0xFFE5E9EB) // Very dark Gray
+// Background gradient colors
+val BackgroundGradientStart = Color(0xFF8B5FFF)
+val BackgroundGradientEnd = Color(0xFF9B6BFF)
+val BackgroundGradientAccent = Color(0xFFA875FF)
 
-// Others colors
-val OnSurface = Color(0xFF202124) // Black
-val OnSurfaceVariant = Color(0xFF434846) // Dark Gray
-val Outline = Color(0xFF202124) // Dark Gray
-val OutlineVariant = Color(0xFF313030) // Light Dark Gray
-val Scrim = Color(0xFF000000) // Black
-val Shadow = Color(0xFF000000) // Dark gray
+// Surface colors - Semi-transparent with blur effects
+val Surface = Color(0xFFFBFAFF) // Very light purple tint
+val SurfaceBright = Color(0xFFFFFFFF)
+val SurfaceDim = Color(0xFFF5F3FF)
+val InverseSurface = Color(0xFF1A0A2E)
+val InverseOnSurface = Color(0xFFE8E1FF)
+
+// Surface containers with expressive transparency
+val SurfaceContainerLowest = Color(0xFFFFFFFF)
+val SurfaceContainerLow = Color(0xFFF8F6FF)
+val SurfaceContainer = Color(0xFFEEEAFF)
+val SurfaceContainerHigh = Color(0xFFE2DCFF)
+val SurfaceContainerHighest = Color(0xFFD6CEFF)
+
+// Text and content colors
+val OnSurface = Color(0xFF1A0A2E)
+val OnSurfaceVariant = Color(0xFF4A3A5E)
+val Outline = Color(0xFF7A6B8A)
+val OutlineVariant = Color(0xFFB8AACC)
+val Scrim = Color(0x80000000) // Semi-transparent for blur effects
+val Shadow = Color(0x40000000)
+
+// Expressive accent colors for special UI elements
+val ExpressiveAccent1 = Color(0xFFE8DDFF) // Light purple mist
+val ExpressiveAccent2 = Color(0xFFFFE5F8) // Pink gradient accent
+val ExpressiveAccent3 = Color(0xFFE1F5FF) // Soft blue highlight
+
+// Legacy colors for backward compatibility
+val LimeGreen = Color(0xFFC6FF00)
+val Primary80 = Color(0xFF9B6BFF)
+val Primary90 = Color(0xFFB19AFF)
+val Blue = Color(0xFF7B52FF)

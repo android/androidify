@@ -1,6 +1,8 @@
 package app.getnuri.feature.history
 
 import android.net.Uri
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -10,14 +12,18 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Fastfood
 import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.Restaurant
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -27,15 +33,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import app.getnuri.feature.history.model.MealWithFeedback
+import app.getnuri.theme.components.ExpressiveCard
+import app.getnuri.theme.components.ExpressiveGradientBackground
 import coil3.compose.rememberAsyncImagePainter
 import coil3.request.ImageRequest
 import java.text.SimpleDateFormat
 import java.util.*
 
 // Navigation comment:
-// This screen displays the list of meals and their feedback.
-// Interactions like navigating to a meal detail screen or feedback entry screen
-// would be handled via callbacks or NavController.
+// This screen displays the list of meals and their feedback with Material 3 Expressive design.
+// Features flowing cards, gradient backgrounds, and smooth animations.
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -46,41 +53,83 @@ fun MealHistoryScreen(
 ) {
     val mealHistory by viewModel.mealHistory.collectAsState()
 
-    Scaffold(
-        modifier = modifier.fillMaxSize(),
-        topBar = {
-            TopAppBar(
-                title = { Text("Meal History") },
-                navigationIcon = {
-                    IconButton(onClick = onBackPressed) {
-                        Icon(
-                            imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = "Back"
+    ExpressiveGradientBackground {
+        Scaffold(
+            modifier = modifier.fillMaxSize(),
+            containerColor = Color.Transparent, // Let gradient show through
+            topBar = {
+                CenterAlignedTopAppBar(
+                    title = { 
+                        Text(
+                            "Meal Journey",
+                            style = MaterialTheme.typography.headlineSmall.copy(
+                                fontWeight = FontWeight.Bold
+                            ),
+                            color = MaterialTheme.colorScheme.onSurface
                         )
+                    },
+                    navigationIcon = {
+                        IconButton(onClick = onBackPressed) {
+                            Icon(
+                                imageVector = Icons.Filled.ArrowBack,
+                                contentDescription = "Back",
+                                tint = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+                    },
+                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                        containerColor = Color.Transparent
+                    )
+                )
+            }
+        ) { paddingValues ->
+            if (mealHistory.isEmpty()) {
+                Box(
+                    modifier = Modifier
+                        .padding(paddingValues)
+                        .fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    ExpressiveCard(
+                        modifier = Modifier.padding(32.dp),
+                        cornerRadius = 24.dp
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(16.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.Restaurant,
+                                contentDescription = null,
+                                modifier = Modifier.size(48.dp),
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                            Text(
+                                "Your meal journey starts here",
+                                style = MaterialTheme.typography.titleLarge.copy(
+                                    fontWeight = FontWeight.SemiBold
+                                ),
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                            Text(
+                                "Log your first meal to begin tracking your nutrition and wellness journey.",
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
                     }
                 }
-            )
-        }
-    ) { paddingValues ->
-        if (mealHistory.isEmpty()) {
-            Box(
-                modifier = Modifier
-                    .padding(paddingValues)
-                    .fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text("No meals logged yet.", style = MaterialTheme.typography.bodyLarge)
-            }
-        } else {
-            LazyColumn(
-                modifier = Modifier
-                    .padding(paddingValues)
-                    .fillMaxSize(),
-                contentPadding = PaddingValues(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                items(mealHistory, key = { it.meal.id }) { item ->
-                    MealHistoryItem(mealWithFeedback = item)
+            } else {
+                LazyColumn(
+                    modifier = Modifier
+                        .padding(paddingValues)
+                        .fillMaxSize(),
+                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    items(mealHistory, key = { it.meal.id }) { item ->
+                        ExpressiveMealHistoryItem(mealWithFeedback = item)
+                    }
                 }
             }
         }
@@ -88,41 +137,72 @@ fun MealHistoryScreen(
 }
 
 @Composable
-fun MealHistoryItem(mealWithFeedback: MealWithFeedback) {
+fun ExpressiveMealHistoryItem(mealWithFeedback: MealWithFeedback) {
     val meal = mealWithFeedback.meal
     val feedbackList = mealWithFeedback.feedback
+    var isExpanded by remember { mutableStateOf(false) }
 
     val dateFormat = remember { SimpleDateFormat("EEE, MMM d, yyyy 'at' h:mm a", Locale.getDefault()) }
+    
+    val scale by animateFloatAsState(
+        targetValue = if (isExpanded) 1.02f else 1f,
+        animationSpec = spring(
+            dampingRatio = 0.7f,
+            stiffness = 300f
+        ),
+        label = "card_scale"
+    )
 
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ExpressiveCard(
+        modifier = Modifier
+            .fillMaxWidth()
+            .scale(scale),
+        cornerRadius = 20.dp,
+        elevation = if (isExpanded) 12.dp else 6.dp
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            // Header with meal type and timestamp
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Icon(
-                    imageVector = if (meal.inputType == "PHOTO") Icons.Filled.Image else Icons.Filled.Fastfood,
-                    contentDescription = meal.inputType,
-                    modifier = Modifier.size(24.dp),
-                    tint = MaterialTheme.colorScheme.primary
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = "Meal - ${meal.inputType}",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
-                )
+                Surface(
+                    shape = RoundedCornerShape(12.dp),
+                    color = MaterialTheme.colorScheme.primaryContainer,
+                    modifier = Modifier.size(48.dp)
+                ) {
+                    Box(contentAlignment = Alignment.Center) {
+                        Icon(
+                            imageVector = if (meal.inputType == "PHOTO") Icons.Filled.Image else Icons.Filled.Fastfood,
+                            contentDescription = meal.inputType,
+                            modifier = Modifier.size(24.dp),
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer
+                        )
+                    }
+                }
+                
+                Spacer(modifier = Modifier.width(12.dp))
+                
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = if (meal.inputType == "PHOTO") "Photo Meal" else "Text Entry",
+                        style = MaterialTheme.typography.titleMedium.copy(
+                            fontWeight = FontWeight.Bold
+                        ),
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                    Text(
+                        text = dateFormat.format(Date(meal.timestamp)),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
             }
-            Text(
-                text = dateFormat.format(Date(meal.timestamp)),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant, // Use theme color
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
 
+            // Meal content
             if (meal.inputType == "PHOTO" && meal.photoUri != null) {
                 Image(
                     painter = rememberAsyncImagePainter(
@@ -134,78 +214,151 @@ fun MealHistoryItem(mealWithFeedback: MealWithFeedback) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(200.dp)
-                        .clip(RoundedCornerShape(8.dp)),
+                        .clip(RoundedCornerShape(16.dp)),
                     contentScale = ContentScale.Crop
                 )
-                Spacer(modifier = Modifier.height(8.dp))
             } else if (meal.inputType == "TEXT" && meal.description != null) {
-                Text(
-                    text = "\"${meal.description}\"",
-                    style = MaterialTheme.typography.bodyLarge.copy(fontStyle = FontStyle.Italic),
-                    modifier = Modifier.padding(bottom = 8.dp)
-                )
+                Surface(
+                    shape = RoundedCornerShape(12.dp),
+                    color = MaterialTheme.colorScheme.surfaceContainer,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = "\"${meal.description}\"",
+                        style = MaterialTheme.typography.bodyLarge.copy(
+                            fontStyle = FontStyle.Italic,
+                            fontWeight = FontWeight.Medium
+                        ),
+                        color = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                }
             }
 
-            DetailRow("Ingredients:", meal.rawExtractedIngredients.joinToString(", "))
-            DetailRow("Triggers:", meal.rawExtractedTriggers.joinToString(", "))
+            // Nutrition details
+            if (meal.rawExtractedIngredients.isNotEmpty()) {
+                ExpressiveDetailSection(
+                    title = "Ingredients",
+                    content = meal.rawExtractedIngredients.joinToString(", "),
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
+            
+            if (meal.rawExtractedTriggers.isNotEmpty()) {
+                ExpressiveDetailSection(
+                    title = "Potential Triggers",
+                    content = meal.rawExtractedTriggers.joinToString(", "),
+                    color = MaterialTheme.colorScheme.tertiary
+                )
+            }
 
             meal.notes?.let { notes ->
                 if (notes.isNotBlank()) {
-                    DetailRow("Meal Notes:", notes)
+                    ExpressiveDetailSection(
+                        title = "Notes",
+                        content = notes,
+                        color = MaterialTheme.colorScheme.secondary
+                    )
                 }
             }
             
+            // Feedback section
             if (feedbackList.isNotEmpty()) {
-                Divider(modifier = Modifier.padding(vertical = 8.dp))
-                Text(
-                    "Feedback Logged:",
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(bottom = 4.dp)
+                HorizontalDivider(
+                    modifier = Modifier.padding(vertical = 8.dp),
+                    color = MaterialTheme.colorScheme.outlineVariant
                 )
+                
+                Text(
+                    "Wellness Feedback",
+                    style = MaterialTheme.typography.titleSmall.copy(
+                        fontWeight = FontWeight.Bold
+                    ),
+                    color = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+                
                 feedbackList.forEach { feedback ->
-                    Column(modifier = Modifier.padding(start = 8.dp, top = 4.dp, bottom = 4.dp)) {
-                        Text(
-                            text = "Feeling: ${feedback.feelingDescription}" +
-                                   (feedback.customFeeling?.let { " ($it)" } ?: ""),
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                        if (!feedback.feedbackNotes.isNullOrBlank()) {
+                    Surface(
+                        shape = RoundedCornerShape(12.dp),
+                        color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Column(modifier = Modifier.padding(12.dp)) {
                             Text(
-                                text = "Notes: ${feedback.feedbackNotes}",
-                                style = MaterialTheme.typography.bodySmall
+                                text = "Feeling: ${feedback.feelingDescription}" +
+                                       (feedback.customFeeling?.let { " ($it)" } ?: ""),
+                                style = MaterialTheme.typography.bodyMedium.copy(
+                                    fontWeight = FontWeight.Medium
+                                ),
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                            feedback.feedbackNotes?.let { notes ->
+                                if (notes.isNotBlank()) {
+                                    Text(
+                                        text = notes,
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        modifier = Modifier.padding(top = 4.dp)
+                                    )
+                                }
+                            }
+                            Text(
+                                text = dateFormat.format(Date(feedback.feedbackTimestamp)),
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.padding(top = 4.dp)
                             )
                         }
-                        Text(
-                            text = "Logged: ${dateFormat.format(Date(feedback.feedbackTimestamp))}",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant // Use theme color
-                        )
                     }
                 }
             } else {
-                Text(
-                    "No feedback logged for this meal yet.",
-                    style = MaterialTheme.typography.bodySmall,
-                    fontStyle = FontStyle.Italic,
-                    modifier = Modifier.padding(top = 8.dp)
-                )
+                Surface(
+                    shape = RoundedCornerShape(12.dp),
+                    color = MaterialTheme.colorScheme.surfaceContainerLow,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        "No wellness feedback logged yet. How did this meal make you feel?",
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontStyle = FontStyle.Italic
+                        ),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(12.dp)
+                    )
+                }
             }
         }
     }
 }
 
 @Composable
-fun DetailRow(label: String, value: String) {
-    if (value.isNotBlank()) {
-        Row(modifier = Modifier.padding(bottom = 4.dp)) {
-            Text(
-                text = label,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.width(100.dp) // Fixed width for label
-            )
-            Text(text = value, style = MaterialTheme.typography.bodyMedium)
+fun ExpressiveDetailSection(
+    title: String,
+    content: String,
+    color: Color
+) {
+    if (content.isNotBlank()) {
+        Surface(
+            shape = RoundedCornerShape(12.dp),
+            color = color.copy(alpha = 0.1f),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Column(modifier = Modifier.padding(12.dp)) {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.labelLarge.copy(
+                        fontWeight = FontWeight.SemiBold
+                    ),
+                    color = color
+                )
+                Text(
+                    text = content,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.padding(top = 4.dp)
+                )
+            }
         }
     }
 }
