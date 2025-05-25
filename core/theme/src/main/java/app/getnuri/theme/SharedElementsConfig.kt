@@ -70,6 +70,7 @@ sealed interface SharedElementKey {
     object CameraButtonToFullScreenCamera : SharedElementKey
     object CaptureImageToDetails : SharedElementKey
     object AboutKey : SharedElementKey
+    data class MealHistoryPhoto(val id: String) : SharedElementKey
 }
 
 @OptIn(ExperimentalSharedTransitionApi::class)

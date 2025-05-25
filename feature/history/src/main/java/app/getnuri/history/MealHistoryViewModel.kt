@@ -6,6 +6,7 @@ import app.getnuri.data.MealDao
 import app.getnuri.data.UserFeedbackDao
 import app.getnuri.history.model.MealWithFeedback
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -23,6 +24,7 @@ class MealHistoryViewModel @Inject constructor(
     private val userFeedbackDao: UserFeedbackDao
 ) : ViewModel() {
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     val mealHistory: StateFlow<List<MealWithFeedback>> =
         mealDao.getAllMeals() // Assuming this returns Flow<List<Meal>> sorted by timestamp DESC
             .flatMapLatest { meals ->

@@ -254,8 +254,8 @@ private fun EnergyTracker() {
 @Composable
 private fun SymptomTracker() {
     val symptoms = listOf(
-        "Bloated", "Tired", "Nauseous", "Headache", "Skin Issues",
-        "Brain Fog", "Joint Pain", "Mood Changes", "Sleep Issues"
+        "Bloating", "Headache/Migraine", "Nausea", "Skin Issues",
+        "Fatigue/Brain Fog", "Stomach Pain/Cramps", "Diarrhea"
     )
     var selectedSymptoms by remember { mutableStateOf(setOf<String>()) }
 
