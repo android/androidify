@@ -570,7 +570,8 @@ fun MealInputTypeToolbar(
                 onCheckedChange = { onOptionSelected(label) },
                 shapes = ToggleButtonDefaults.shapes(checkedShape = MaterialTheme.shapes.large),
                 colors = ToggleButtonDefaults.toggleButtonColors(
-                    checkedContainerColor = MaterialTheme.colorScheme.onSurface,
+                    checkedContainerColor = NavigationBarBackground,
+                    checkedContentColor = MaterialTheme.colorScheme.onSurface,
                     containerColor = MaterialTheme.colorScheme.surface,
                 ),
             ) {
