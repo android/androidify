@@ -48,7 +48,7 @@ val BackgroundGradientEnd = Color(0xFF9B6BFF)
 val BackgroundGradientAccent = Color(0xFFA875FF)
 
 // Surface colors - Semi-transparent with blur effects
-val Surface = Color(0xFFFBFAFF) // Very light purple tint
+val Surface = Color(0xFF726BF6) // Purple background color
 val SurfaceBright = Color(0xFFFFFFFF)
 val SurfaceDim = Color(0xFFF5F3FF)
 val InverseSurface = Color(0xFF1A0A2E)

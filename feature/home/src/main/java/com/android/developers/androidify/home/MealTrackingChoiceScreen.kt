@@ -262,7 +262,7 @@ fun MealInputScreen(
         },
         containerColor = MaterialTheme.colorScheme.surface,
     ) { contentPadding ->
-        SquiggleBackground(offsetHeightFraction = 0.5f)
+
         Box(
             modifier = Modifier
                 .fillMaxSize()

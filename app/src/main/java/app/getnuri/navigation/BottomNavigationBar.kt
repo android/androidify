@@ -45,7 +45,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import app.getnuri.theme.AndroidifyTheme
-import app.getnuri.theme.NavigationBarBackground
 import app.getnuri.theme.NavigationBarHighlight
 import kotlinx.coroutines.delay
 
@@ -71,7 +70,7 @@ fun BottomNavigationBar(
 
     NavigationBar(
         modifier = modifier.fillMaxWidth(),
-        containerColor = NavigationBarBackground,
+        containerColor = MaterialTheme.colorScheme.surfaceContainer,
         contentColor = MaterialTheme.colorScheme.onSurface,
         tonalElevation = 3.dp,
         windowInsets = WindowInsets.navigationBars
@@ -95,7 +94,7 @@ fun BottomNavigationBar(
                 targetValue = if (selected) 
                     Color.White  // White icons on purple highlight
                 else 
-                    Color(0xFF2A2A2A), // Dark gray for unselected on light background
+                    MaterialTheme.colorScheme.onSurfaceVariant,
                 animationSpec = tween(
                     durationMillis = 225,
                     easing = LinearOutSlowInEasing
@@ -106,9 +105,9 @@ fun BottomNavigationBar(
             // Standard curve for text color transitions - 300ms
             val labelColor by animateColorAsState(
                 targetValue = if (selected) 
-                    Color(0xFF1A1A1A) // Dark text for selected items
+                    MaterialTheme.colorScheme.onSurface 
                 else 
-                    Color(0xFF4A4A4A), // Medium gray for unselected on light background
+                    MaterialTheme.colorScheme.onSurfaceVariant,
                 animationSpec = tween(
                     durationMillis = 300,
                     easing = FastOutSlowInEasing

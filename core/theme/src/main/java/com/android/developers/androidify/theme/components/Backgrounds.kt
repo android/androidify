@@ -81,23 +81,12 @@ fun SquiggleBackground(
 
 @Composable
 fun ScallopBackground(modifier: Modifier = Modifier) {
-    val vectorBackground =
-        rememberVectorPainter(ImageVector.vectorResource(R.drawable.shape_home_bg))
-    val backgroundWidth = 300.dp
     BoxWithConstraints(
         modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.secondary),
     ) {
-        val maxHeight = this@BoxWithConstraints.maxHeight.dpToPx()
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .offset {
-                    IntOffset(0, y = (maxHeight * 0.6f).toInt())
-                }
-                .backgroundRepeatX(vectorBackground, backgroundWidth.dpToPx()),
-        )
+        // Background removed
     }
 }
 
