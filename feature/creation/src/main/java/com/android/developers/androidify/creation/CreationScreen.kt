@@ -106,6 +106,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontVariation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -775,6 +776,7 @@ private fun UploadEmptyState(
     ) {
         Text(
             stringResource(CreationR.string.photo_picker_title),
+            style = MaterialTheme.typography.headlineMedium,
             fontSize = 28.sp,
             textAlign = TextAlign.Center,
             lineHeight = 40.sp,

@@ -44,8 +44,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.font.FontVariation
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import app.getnuri.theme.LocalSharedTransitionScope
+import app.getnuri.theme.displayFontFamily
 import app.getnuri.theme.R
 import app.getnuri.theme.SharedElementKey
 import app.getnuri.theme.sharedBoundsReveal
@@ -175,7 +179,14 @@ fun AndroidifyTranslucentTopAppBar(
 
 @Composable
 private fun AndroidifyTitle() {
-    Text(stringResource(R.string.androidify_title), fontWeight = FontWeight.Bold)
+    Text(
+        text = stringResource(R.string.androidify_title),
+        style = MaterialTheme.typography.titleLarge.copy(
+            fontFamily = displayFontFamily,
+            fontWeight = FontWeight.Bold,
+            letterSpacing = (-0.5).sp,
+        )
+    )
 }
 
 @OptIn(ExperimentalSharedTransitionApi::class)

@@ -18,7 +18,6 @@ package app.getnuri.feature.wellbeing
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -34,14 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import app.getnuri.theme.AndroidifyTheme
 
-data class WellbeingEntry(
-    val id: Long = System.currentTimeMillis(),
-    val timestamp: String,
-    val moodLevel: Int, // 1-5 scale
-    val energyLevel: Int, // 1-5 scale
-    val symptoms: List<String> = emptyList(),
-    val notes: String = ""
-)
+
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -49,9 +41,6 @@ fun WellbeingScreen(
     modifier: Modifier = Modifier,
     onBackPressed: () -> Unit = {}
 ) {
-    var selectedTab by remember { mutableIntStateOf(0) }
-    val tabs = listOf("Track Now", "History", "Insights")
-
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
@@ -71,49 +60,18 @@ fun WellbeingScreen(
         },
         containerColor = MaterialTheme.colorScheme.surface,
     ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .padding(paddingValues)
-                .fillMaxSize()
-        ) {
-            // Tab row for different wellbeing sections
-            TabRow(
-                selectedTabIndex = selectedTab,
-                modifier = Modifier.fillMaxWidth(),
-                containerColor = MaterialTheme.colorScheme.surface,
-                contentColor = MaterialTheme.colorScheme.onSurface
-            ) {
-                tabs.forEachIndexed { index, title ->
-                    Tab(
-                        selected = selectedTab == index,
-                        onClick = { selectedTab = index },
-                        text = { 
-                            Text(
-                                title,
-                                style = MaterialTheme.typography.titleMedium.copy(
-                                    fontWeight = if (selectedTab == index) FontWeight.Bold else FontWeight.Medium
-                                )
-                            )
-                        }
-                    )
-                }
-            }
-
-            // Content based on selected tab
-            when (selectedTab) {
-                0 -> TrackNowContent()
-                1 -> WellbeingHistoryContent()
-                2 -> WellbeingInsightsContent()
-            }
-        }
+        // Display the tracking content directly without tabs
+        TrackNowContent(
+            modifier = Modifier.padding(paddingValues)
+        )
     }
 }
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun TrackNowContent() {
+private fun TrackNowContent(modifier: Modifier) {
     LazyColumn(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(24.dp)
@@ -383,181 +341,7 @@ private fun NotesSection() {
     }
 }
 
-@Composable
-private fun WellbeingHistoryContent() {
-    // Mock data for demonstration
-    val sampleEntries = listOf(
-        WellbeingEntry(1, "Today, 2:30 PM", 4, 3, listOf("Bloated"), "Felt good overall"),
-        WellbeingEntry(2, "Yesterday, 7:15 PM", 3, 4, listOf("Tired"), "Late dinner"),
-        WellbeingEntry(3, "Yesterday, 1:00 PM", 5, 5, emptyList(), "Great meal!"),
-    )
 
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        items(sampleEntries) { entry ->
-            WellbeingEntryCard(entry)
-        }
-    }
-}
-
-@Composable
-private fun WellbeingEntryCard(entry: WellbeingEntry) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainer
-        ),
-        shape = RoundedCornerShape(12.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.Top
-            ) {
-                Text(
-                    entry.timestamp,
-                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
-                )
-                Row {
-                    Text("😊 ${entry.moodLevel}/5", style = MaterialTheme.typography.bodyMedium)
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text("⚡ ${entry.energyLevel}/5", style = MaterialTheme.typography.bodyMedium)
-                }
-            }
-            
-            if (entry.symptoms.isNotEmpty()) {
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    "Symptoms: ${entry.symptoms.joinToString(", ")}",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.error
-                )
-            }
-            
-            if (entry.notes.isNotEmpty()) {
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    entry.notes,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun WellbeingInsightsContent() {
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        item {
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer
-                ),
-                shape = RoundedCornerShape(16.dp)
-            ) {
-                Column(
-                    modifier = Modifier.padding(20.dp)
-                ) {
-                    Text(
-                        "Weekly Overview",
-                        style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold)
-                    )
-                    Spacer(modifier = Modifier.height(12.dp))
-                    Text(
-                        "Average Mood: 4.2/5 😊",
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                    Text(
-                        "Average Energy: 3.8/5 ⚡",
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                    Text(
-                        "Most Common Symptom: Bloating",
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                }
-            }
-        }
-
-        item {
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.secondaryContainer
-                ),
-                shape = RoundedCornerShape(16.dp)
-            ) {
-                Column(
-                    modifier = Modifier.padding(20.dp)
-                ) {
-                    Text(
-                        "Pattern Insights",
-                        style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold)
-                    )
-                    Spacer(modifier = Modifier.height(12.dp))
-                    Text(
-                        "• You tend to feel more energized after breakfast",
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                    Text(
-                        "• Dairy products may be triggering bloating",
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                    Text(
-                        "• Your mood is highest between 12-2 PM",
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                }
-            }
-        }
-
-        item {
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.tertiaryContainer
-                ),
-                shape = RoundedCornerShape(16.dp)
-            ) {
-                Column(
-                    modifier = Modifier.padding(20.dp)
-                ) {
-                    Text(
-                        "Recommendations",
-                        style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold)
-                    )
-                    Spacer(modifier = Modifier.height(12.dp))
-                    Text(
-                        "• Consider tracking for 2 more weeks to identify clearer patterns",
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                    Text(
-                        "• Try eliminating dairy for a week to test sensitivity",
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                    Text(
-                        "• Schedule important meals around your peak energy times",
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                }
-            }
-        }
-    }
-}
 
 @Preview(showBackground = true)
 @Composable
