@@ -50,6 +50,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import app.getnuri.theme.LocalSharedTransitionScope
 import app.getnuri.theme.displayFontFamily
+import app.getnuri.theme.displayLargeFontFamily
 import app.getnuri.theme.R
 import app.getnuri.theme.SharedElementKey
 import app.getnuri.theme.sharedBoundsReveal
@@ -197,7 +198,7 @@ private fun AndroidifyTitle(textColor: Color = MaterialTheme.colorScheme.onSurfa
     Text(
         text = stringResource(R.string.androidify_title),
         style = MaterialTheme.typography.titleLarge.copy(
-            fontFamily = displayFontFamily,
+            fontFamily = displayLargeFontFamily,
             fontWeight = FontWeight.Black, // Font weight 900 for maximum impact
             letterSpacing = (-0.5).sp,
         ),
@@ -210,7 +211,7 @@ private fun CustomTitle(title: String, textColor: Color = MaterialTheme.colorSch
     Text(
         text = title,
         style = MaterialTheme.typography.titleLarge.copy(
-            fontFamily = displayFontFamily,
+            fontFamily = displayLargeFontFamily,
             fontWeight = FontWeight.Black, // Font weight 900 for maximum impact
             letterSpacing = (-0.5).sp,
         ),

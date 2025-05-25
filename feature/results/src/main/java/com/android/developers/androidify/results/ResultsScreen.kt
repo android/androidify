@@ -216,31 +216,49 @@ fun ResultsScreenContents(
             },
         )
     }
-    val botResultCard = @Composable { modifier: Modifier ->
-        AnimatedVisibility(
-            showResult,
-            enter = fadeIn(tween(300, delayMillis = 1000)) + slideInVertically(
-                tween(1000, easing = EaseOutBack, delayMillis = 1000),
-                initialOffsetY = { fullHeight -> fullHeight },
-            ),
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize(),
-            ) {
-                BotResultCard(
-                    state.value.resultImageBitmap!!,
-                    state.value.originalImageUrl,
-                    state.value.promptText,
-                    modifier = Modifier.align(Alignment.Center),
-                    flippableState = selectedResultOption.toFlippableState(),
-                    onFlipStateChanged = { flipOption ->
-                        selectedResultOption = when (flipOption) {
-                            FlippableState.Front -> ResultOption.ResultImage
-                            FlippableState.Back -> ResultOption.OriginalInput
-                        }
-                    },
-                )
+    val mainContent = @Composable { modifier: Modifier ->
+        when (selectedResultOption) {
+            ResultOption.WellbeingCharts -> {
+                AnimatedVisibility(
+                    visible = true,
+                    enter = fadeIn(tween(300, delayMillis = 500)) + slideInVertically(
+                        tween(1000, easing = EaseOutBack, delayMillis = 500),
+                        initialOffsetY = { fullHeight -> fullHeight },
+                    ),
+                ) {
+                    WellbeingChartsSection(
+                        wellbeingData = state.value.wellbeingData,
+                        modifier = modifier
+                    )
+                }
+            }
+            else -> {
+                AnimatedVisibility(
+                    showResult,
+                    enter = fadeIn(tween(300, delayMillis = 1000)) + slideInVertically(
+                        tween(1000, easing = EaseOutBack, delayMillis = 1000),
+                        initialOffsetY = { fullHeight -> fullHeight },
+                    ),
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                    ) {
+                        BotResultCard(
+                            state.value.resultImageBitmap!!,
+                            state.value.originalImageUrl,
+                            state.value.promptText,
+                            modifier = Modifier.align(Alignment.Center),
+                            flippableState = selectedResultOption.toFlippableState(),
+                            onFlipStateChanged = { flipOption ->
+                                selectedResultOption = when (flipOption) {
+                                    FlippableState.Front -> ResultOption.ResultImage
+                                    FlippableState.Back -> ResultOption.OriginalInput
+                                }
+                            },
+                        )
+                    }
+                }
             }
         }
     }
@@ -279,29 +297,37 @@ fun ResultsScreenContents(
                     .weight(1f)
                     .fillMaxSize(),
             ) {
-                backgroundQuotes(Modifier)
-                botResultCard(Modifier)
+                if (selectedResultOption != ResultOption.WellbeingCharts) {
+                    backgroundQuotes(Modifier)
+                }
+                mainContent(Modifier)
             }
-            buttonRow(
-                Modifier
-                    .padding(bottom = 16.dp, top = 16.dp)
-                    .align(Alignment.CenterHorizontally),
-            )
+            if (selectedResultOption != ResultOption.WellbeingCharts) {
+                buttonRow(
+                    Modifier
+                        .padding(bottom = 16.dp, top = 16.dp)
+                        .align(Alignment.CenterHorizontally),
+                )
+            }
         }
     } else {
         Box {
-            backgroundQuotes(Modifier.fillMaxSize())
-            botResultCard(Modifier)
+            if (selectedResultOption != ResultOption.WellbeingCharts) {
+                backgroundQuotes(Modifier.fillMaxSize())
+            }
+            mainContent(Modifier)
             promptToolbar(
                 Modifier
                     .align(Alignment.BottomStart)
                     .padding(bottom = 16.dp),
             )
-            buttonRow(
-                Modifier
-                    .padding(bottom = 16.dp, end = 16.dp)
-                    .align(Alignment.BottomEnd),
-            )
+            if (selectedResultOption != ResultOption.WellbeingCharts) {
+                buttonRow(
+                    Modifier
+                        .padding(bottom = 16.dp, end = 16.dp)
+                        .align(Alignment.BottomEnd),
+                )
+            }
         }
     }
 }

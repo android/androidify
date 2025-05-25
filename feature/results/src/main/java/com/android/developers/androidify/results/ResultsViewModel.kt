@@ -97,4 +97,5 @@ data class ResultState(
     val externalSavedUri: Uri? = null,
     val externalOriginalSavedUri: Uri? = null,
     val promptText: String? = null,
+    val wellbeingData: WellbeingData = MockWellbeingDataGenerator.generateMockData(),
 )

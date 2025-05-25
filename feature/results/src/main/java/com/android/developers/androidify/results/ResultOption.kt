@@ -94,12 +94,14 @@ fun ResultToolbarOption(
 enum class ResultOption(val displayName: Int) {
     OriginalInput(R.string.photo),
     ResultImage(R.string.bot),
+    WellbeingCharts(R.string.charts),
     ;
 
     fun toFlippableState(): FlippableState {
         return when (this) {
             ResultImage -> FlippableState.Front
             OriginalInput -> FlippableState.Back
+            WellbeingCharts -> FlippableState.Front // Charts show on front
         }
     }
 

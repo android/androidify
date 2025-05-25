@@ -48,19 +48,20 @@ fun EnhancedHistoryScreen(
 ) {
     val timelineData by viewModel.timelineData.collectAsState()
 
-    ExpressiveGradientBackground {
-        Scaffold(
-            modifier = modifier.fillMaxSize(),
-            containerColor = Color.Transparent,
-            topBar = {
-                AndroidifyTopAppBar(
-                    backEnabled = false,
-                    aboutEnabled = true,
-                    useNuriStyling = true,
-                    onAboutClicked = onBackPressed,
-                )
-            }
-        ) { paddingValues ->
+    Scaffold(
+        modifier = modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.surface),
+        containerColor = Color.Transparent,
+        topBar = {
+            AndroidifyTopAppBar(
+                backEnabled = false,
+                aboutEnabled = true,
+                useNuriStyling = true,
+                onAboutClicked = onBackPressed,
+            )
+        }
+    ) { paddingValues ->
             if (timelineData.isEmpty()) {
                 EmptyTimelineState(
                     modifier = Modifier
@@ -487,7 +488,7 @@ fun getFeelingColor(feeling: String): Color {
         "bloated", "uncomfortable" -> Color(0xFFFF9800) // Orange
         "tired", "sluggish" -> Color(0xFF9C27B0) // Purple
         "bad", "awful", "sick" -> Color(0xFFF44336) // Red
-        else -> MaterialTheme.colorScheme.tertiary
+        else -> Color(0xFF9C27B0) // Purple as default instead of MaterialTheme
     }
 }
 

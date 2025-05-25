@@ -16,7 +16,9 @@
 package app.getnuri.theme
 
 import androidx.compose.material3.Typography
+import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.font.FontVariation
@@ -39,6 +41,20 @@ val provider = GoogleFont.Provider(
 
 // Roboto Flex - Google's most advanced variable font
 val robotoFlexFont = GoogleFont("Roboto Flex")
+
+// Custom Roboto Flex Variable Font for dramatic "nuri" header styling
+@OptIn(ExperimentalTextApi::class)
+val displayLargeFontFamily =
+    FontFamily(
+        Font(
+            R.font.robotoflex_variable,
+            variationSettings = FontVariation.Settings(
+                FontVariation.weight(950),
+                FontVariation.width(30f),
+                FontVariation.slant(-6f),
+            )
+        )
+    )
 
 // Creative Roboto Flex configurations for different use cases
 // Display Family - Ultra expressive with dramatic weight and width variations

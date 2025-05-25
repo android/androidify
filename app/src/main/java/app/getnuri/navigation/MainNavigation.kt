@@ -46,7 +46,7 @@ import app.getnuri.theme.transitions.ColorSplashTransitionScreen
 // import app.getnuri.feature.nuri_creation.photo.confirm.MealPhotoConfirmationScreen
 // import app.getnuri.feature.nuri_creation.text.entry.MealTextEntryScreen
 import app.getnuri.feature.history.MealHistoryScreen
-import app.getnuri.feature.history.EnhancedHistoryScreen
+// import app.getnuri.feature.history.EnhancedHistoryScreen
 import app.getnuri.feature.nuri_creation.ingredient.IngredientExtractionScreen
 import app.getnuri.feature.wellbeing.WellbeingScreen
 import app.getnuri.results.ResultsScreen
@@ -301,7 +301,7 @@ fun MainNavigation() {
             }
             
             entry<MealHistoryTab> {
-                EnhancedHistoryScreen(
+                MealHistoryScreen(
                     onBackPressed = {
                         backStack.removeLastOrNull()
                     }
@@ -309,7 +309,7 @@ fun MainNavigation() {
             }
             
             entry<MealHistory> {
-                EnhancedHistoryScreen(
+                MealHistoryScreen(
                     onBackPressed = {
                         backStack.removeLastOrNull()
                     }

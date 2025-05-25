@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -53,11 +54,12 @@ fun MealHistoryScreen(
 ) {
     val mealHistory by viewModel.mealHistory.collectAsState()
 
-    ExpressiveGradientBackground {
-        Scaffold(
-            modifier = modifier.fillMaxSize(),
-            containerColor = Color.Transparent, // Let gradient show through
-            topBar = {
+    Scaffold(
+        modifier = modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.surface),
+        containerColor = Color.Transparent,
+        topBar = {
                 CenterAlignedTopAppBar(
                     title = { 
                         Text(
@@ -133,7 +135,6 @@ fun MealHistoryScreen(
                 }
             }
         }
-    }
 }
 
 @Composable
