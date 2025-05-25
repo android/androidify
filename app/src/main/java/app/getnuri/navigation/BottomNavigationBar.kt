@@ -45,6 +45,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import app.getnuri.theme.AndroidifyTheme
+import app.getnuri.theme.NavigationBarBackground
+import app.getnuri.theme.NavigationBarHighlight
 import kotlinx.coroutines.delay
 
 enum class BottomNavTab(
@@ -69,7 +71,7 @@ fun BottomNavigationBar(
 
     NavigationBar(
         modifier = modifier.fillMaxWidth(),
-        containerColor = MaterialTheme.colorScheme.surfaceContainer,
+        containerColor = NavigationBarBackground,
         contentColor = MaterialTheme.colorScheme.onSurface,
         tonalElevation = 3.dp,
         windowInsets = WindowInsets.navigationBars
@@ -91,9 +93,9 @@ fun BottomNavigationBar(
             // Deceleration curve (LinearOutSlowInEasing) for entering elements - 225ms
             val iconTint by animateColorAsState(
                 targetValue = if (selected) 
-                    MaterialTheme.colorScheme.onSecondaryContainer 
+                    Color.White  // White icons on purple highlight
                 else 
-                    MaterialTheme.colorScheme.onSurfaceVariant,
+                    Color(0xFF2A2A2A), // Dark gray for unselected on light background
                 animationSpec = tween(
                     durationMillis = 225,
                     easing = LinearOutSlowInEasing
@@ -104,9 +106,9 @@ fun BottomNavigationBar(
             // Standard curve for text color transitions - 300ms
             val labelColor by animateColorAsState(
                 targetValue = if (selected) 
-                    MaterialTheme.colorScheme.onSurface 
+                    Color(0xFF1A1A1A) // Dark text for selected items
                 else 
-                    MaterialTheme.colorScheme.onSurfaceVariant,
+                    Color(0xFF4A4A4A), // Medium gray for unselected on light background
                 animationSpec = tween(
                     durationMillis = 300,
                     easing = FastOutSlowInEasing
@@ -178,7 +180,7 @@ fun BottomNavigationBar(
                             .size(40.dp)
                             .clip(CircleShape)
                             .background(
-                                color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = backgroundAlpha),
+                                color = NavigationBarHighlight.copy(alpha = backgroundAlpha),
                                 shape = CircleShape
                             )
                     )

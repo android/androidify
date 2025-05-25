@@ -79,3 +79,7 @@ val LimeGreen = Color(0xFFC6FF00)
 val Primary80 = Color(0xFF9B6BFF)
 val Primary90 = Color(0xFFB19AFF)
 val Blue = Color(0xFF7B52FF)
+
+// Navigation-specific colors
+val NavigationBarBackground = Color(0xFFF5FF8C) // Light yellow-green background
+val NavigationBarHighlight = Color(0xFF726BF6) // Purple-blue highlight for selected items
