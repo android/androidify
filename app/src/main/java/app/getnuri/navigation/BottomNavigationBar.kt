@@ -17,6 +17,12 @@ package app.getnuri.navigation
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -33,6 +39,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import app.getnuri.theme.AndroidifyTheme
+import kotlinx.coroutines.delay
 
 enum class BottomNavTab(
     val label: String,
@@ -61,32 +68,55 @@ fun BottomNavigationBar(
         tonalElevation = 3.dp,
         windowInsets = WindowInsets.navigationBars
     ) {
-        BottomNavTab.entries.forEach { tab ->
+        BottomNavTab.entries.forEachIndexed { index, tab ->
             val selected = selectedTab == tab
             
-            // Material 3 expressive animations
+            // Material 3 expressive animations with proper easing curves and durations
+            // Standard curve (FastOutSlowInEasing) for scale - 300ms duration as per Material specs
             val scale by animateFloatAsState(
-                targetValue = if (selected) 1.1f else 1.0f,
-                animationSpec = motionScheme.defaultEffectsSpec(),
+                targetValue = if (selected) 1.15f else 1.0f,
+                animationSpec = spring(
+                    dampingRatio = Spring.DampingRatioMediumBouncy,
+                    stiffness = Spring.StiffnessMedium
+                ),
                 label = "scale_animation"
             )
             
+            // Deceleration curve (LinearOutSlowInEasing) for entering elements - 225ms
             val iconTint by animateColorAsState(
                 targetValue = if (selected) 
                     MaterialTheme.colorScheme.onSecondaryContainer 
                 else 
                     MaterialTheme.colorScheme.onSurfaceVariant,
-                animationSpec = motionScheme.defaultEffectsSpec(),
+                animationSpec = tween(
+                    durationMillis = 225,
+                    easing = LinearOutSlowInEasing
+                ),
                 label = "icon_tint_animation"
             )
             
+            // Standard curve for text color transitions - 300ms
             val labelColor by animateColorAsState(
                 targetValue = if (selected) 
                     MaterialTheme.colorScheme.onSurface 
                 else 
                     MaterialTheme.colorScheme.onSurfaceVariant,
-                animationSpec = motionScheme.defaultEffectsSpec(),
+                animationSpec = tween(
+                    durationMillis = 300,
+                    easing = FastOutSlowInEasing
+                ),
                 label = "label_color_animation"
+            )
+            
+            // Additional expressive animation for text size with staggered delay
+            val textSize by animateFloatAsState(
+                targetValue = if (selected) 12f else 10f,
+                animationSpec = tween(
+                    durationMillis = 300,
+                    delayMillis = index * 50, // Staggered animation
+                    easing = FastOutSlowInEasing
+                ),
+                label = "text_size_animation"
             )
 
             NavigationBarItem(
@@ -102,18 +132,16 @@ fun BottomNavigationBar(
                             modifier = Modifier.size(24.dp)
                         )
                         
-                        // Expressive label that appears on selection
-                        if (selected) {
-                            Spacer(modifier = Modifier.height(4.dp))
-                            Text(
-                                text = tab.label,
-                                style = MaterialTheme.typography.labelSmall.copy(
-                                    fontSize = 11.sp,
-                                    fontWeight = FontWeight.Bold
-                                ),
-                                color = labelColor
-                            )
-                        }
+                        // Always show label for all tabs with different styling
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = tab.label,
+                            style = MaterialTheme.typography.labelSmall.copy(
+                                fontSize = if (selected) 12.sp else 10.sp,
+                                fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium
+                            ),
+                            color = labelColor
+                        )
                     }
                 },
                 selected = selected,

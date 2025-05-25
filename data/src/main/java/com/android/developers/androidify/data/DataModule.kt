@@ -95,18 +95,7 @@ internal object DataModule {
     fun providesFirebaseVertexAiDataSource(remoteConfigDataSource: RemoteConfigDataSource): FirebaseAiDataSource =
         FirebaseAiDataSourceImpl(remoteConfigDataSource)
 
-    @Provides
-    @Singleton
-    fun providesTextGenerationRepository(
-        remoteConfigDataSource: RemoteConfigDataSource,
-        geminiNanoDataSource: GeminiNanoGenerationDataSource,
-        firebaseAiDataSource: FirebaseAiDataSource,
-    ): TextGenerationRepository =
-        TextGenerationRepositoryImpl(
-            remoteConfigDataSource,
-            geminiNanoDataSource,
-            firebaseAiDataSource,
-        )
+
 
     @Provides
     @Singleton

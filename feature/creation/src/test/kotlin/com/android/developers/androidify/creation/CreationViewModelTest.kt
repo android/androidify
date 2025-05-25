@@ -21,7 +21,7 @@ import app.getnuri.data.InsufficientInformationException
 import com.android.developers.testing.data.TestFileProvider
 import com.android.developers.testing.data.TestInternetConnectivityManager
 import com.android.developers.testing.repository.FakeImageGenerationRepository
-import com.android.developers.testing.repository.TestTextGenerationRepository
+
 import com.android.developers.testing.util.MainDispatcherRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
@@ -55,7 +55,6 @@ class CreationViewModelTest {
         viewModel = CreationViewModel(
             internetConnectivityManager,
             imageGenerationRepository,
-            TestTextGenerationRepository(),
             TestFileProvider(),
             UnconfinedTestDispatcher(),
             context = RuntimeEnvironment.getApplication(),
@@ -68,7 +67,6 @@ class CreationViewModelTest {
             ScreenState.EDIT,
             viewModel.uiState.value.screenState,
         )
-        assertEquals(false, viewModel.uiState.value.promptGenerationInProgress)
         assertEquals(null, viewModel.uiState.value.imageUri)
     }
 
@@ -96,12 +94,7 @@ class CreationViewModelTest {
         assertEquals(PromptType.TEXT, viewModel.uiState.value.selectedPromptOption)
     }
 
-    @Test
-    fun promptGenerationClicked() = runTest {
-        viewModel.onPromptGenerationClicked()
-        assertEquals("Test prompt", viewModel.uiState.value.generatedPrompt)
-        assertEquals(false, viewModel.uiState.value.promptGenerationInProgress)
-    }
+
 
     @Test
     fun startClicked_GenerateBotFromPhoto() = runTest {

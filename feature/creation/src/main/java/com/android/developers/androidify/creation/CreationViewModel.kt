@@ -31,7 +31,7 @@ import app.getnuri.data.ImageValidationException
 import app.getnuri.data.InsufficientInformationException
 import app.getnuri.data.InternetConnectivityManager
 import app.getnuri.data.NoInternetException
-import app.getnuri.data.TextGenerationRepository
+
 import app.getnuri.util.LocalFileProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -49,7 +49,7 @@ import javax.inject.Named
 class CreationViewModel @Inject constructor(
     val internetConnectivityManager: InternetConnectivityManager,
     val imageGenerationRepository: ImageGenerationRepository,
-    val textGenerationRepository: TextGenerationRepository,
+
     val fileProvider: LocalFileProvider,
     @Named("IO")
     val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
@@ -60,7 +60,6 @@ class CreationViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             imageGenerationRepository.initialize()
-            textGenerationRepository.initialize()
         }
     }
 
@@ -95,31 +94,7 @@ class CreationViewModel @Inject constructor(
         }
     }
 
-    fun onPromptGenerationClicked() {
-        viewModelScope.launch(ioDispatcher) {
-            Log.d("CreationViewModel", "Generating prompt...")
-            _uiState.update {
-                it.copy(promptGenerationInProgress = true)
-            }
-            try {
-                val prompt = textGenerationRepository.getNextGeneratedBotPrompt()
-                Log.d("CreationViewModel", "Prompt: $prompt")
-                if (prompt != null) {
-                    _uiState.update {
-                        it.copy(
-                            generatedPrompt = prompt,
-                            promptGenerationInProgress = false,
-                        )
-                    }
-                }
-            } catch (exception: Exception) {
-                Log.e("CreationViewModel", "Error generating prompt", exception)
-                _uiState.update {
-                    it.copy(promptGenerationInProgress = false)
-                }
-            }
-        }
-    }
+
 
     fun startClicked() {
         viewModelScope.launch(ioDispatcher) {
@@ -231,8 +206,6 @@ data class CreationState(
     val botColor: BotColor = listBotColors.first(),
     val imageUri: Uri? = null,
     val descriptionText: TextFieldState = TextFieldState(),
-    val generatedPrompt: String? = null,
-    val promptGenerationInProgress: Boolean = false,
     val screenState: ScreenState = ScreenState.EDIT,
     val resultBitmap: Bitmap? = null,
 )

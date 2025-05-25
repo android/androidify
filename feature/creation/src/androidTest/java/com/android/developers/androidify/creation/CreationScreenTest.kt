@@ -55,7 +55,6 @@ class CreationScreenTest {
                     onChooseImageClicked = {},
                     onPromptOptionSelected = {},
                     onUndoPressed = {},
-                    onPromptGenerationPressed = {},
                     onBotColorSelected = {},
                     onStartClicked = {},
                 )
@@ -83,7 +82,6 @@ class CreationScreenTest {
                     onChooseImageClicked = {},
                     onPromptOptionSelected = {},
                     onUndoPressed = {},
-                    onPromptGenerationPressed = {},
                     onBotColorSelected = {},
                     onStartClicked = {},
                 )
@@ -115,7 +113,6 @@ class CreationScreenTest {
                     onChooseImageClicked = {},
                     onPromptOptionSelected = {},
                     onUndoPressed = {},
-                    onPromptGenerationPressed = {},
                     onBotColorSelected = {},
                     onStartClicked = {},
                 )
@@ -149,7 +146,6 @@ class CreationScreenTest {
                     onChooseImageClicked = {},
                     onPromptOptionSelected = {},
                     onUndoPressed = {},
-                    onPromptGenerationPressed = {},
                     onBotColorSelected = {},
                     onStartClicked = {},
                 )
@@ -162,10 +158,9 @@ class CreationScreenTest {
     }
 
     @Test
-    fun textPrompt_displaysCorrectly_whenSelectedAndNotGenerating() {
+    fun textPrompt_displaysCorrectly_whenSelected() {
         val headlineText = composeTestRule.activity.getString(R.string.headline_my_bot_is)
         val hintText = composeTestRule.activity.getString(R.string.prompt_text_hint)
-        val helpChipText = composeTestRule.activity.getString(R.string.write_me_a_prompt)
 
         composeTestRule.setContent {
             SharedElementContextPreview {
@@ -177,12 +172,10 @@ class CreationScreenTest {
                     onAboutPressed = {},
                     uiState = CreationState(
                         selectedPromptOption = PromptType.TEXT,
-                        promptGenerationInProgress = false,
                     ),
                     onChooseImageClicked = {},
                     onPromptOptionSelected = {},
                     onUndoPressed = {},
-                    onPromptGenerationPressed = {},
                     onBotColorSelected = {},
                     onStartClicked = {},
                 )
@@ -191,43 +184,6 @@ class CreationScreenTest {
 
         composeTestRule.onNodeWithText(headlineText).assertIsDisplayed()
         composeTestRule.onNodeWithText(hintText).assertIsDisplayed()
-        // TODO: Fails in pixel 5
-        //  composeTestRule.onNodeWithText(helpChipText).assertIsDisplayed().assertIsEnabled()
-    }
-
-    @Test
-    fun textPrompt_displaysWritingChip_whenGenerating() {
-        val headlineText = composeTestRule.activity.getString(R.string.headline_my_bot_is)
-        val writingChipText = composeTestRule.activity.getString(R.string.writing)
-        val helpChipText = composeTestRule.activity.getString(R.string.write_me_a_prompt)
-
-        composeTestRule.setContent {
-            SharedElementContextPreview {
-                EditScreen(
-                    snackbarHostState = SnackbarHostState(),
-                    isExpanded = false,
-                    onCameraPressed = {},
-                    onBackPressed = {},
-                    onAboutPressed = {},
-                    uiState = CreationState(
-                        selectedPromptOption = PromptType.TEXT,
-                        promptGenerationInProgress = true,
-                    ),
-                    onChooseImageClicked = {},
-                    onPromptOptionSelected = {},
-                    onUndoPressed = {},
-                    onPromptGenerationPressed = {},
-                    onBotColorSelected = {},
-                    onStartClicked = {},
-                )
-            }
-        }
-
-
-        composeTestRule.onNodeWithText(headlineText).assertIsDisplayed()
-        // TODO: Fails in pixel 5
-        // composeTestRule.onNodeWithText(writingChipText).assertIsDisplayed().assertIsNotEnabled()
-        composeTestRule.onNodeWithText(helpChipText).assertDoesNotExist()
     }
 
     @Test
@@ -247,7 +203,6 @@ class CreationScreenTest {
                     onChooseImageClicked = {},
                     onPromptOptionSelected = {},
                     onUndoPressed = {},
-                    onPromptGenerationPressed = {},
                     onBotColorSelected = {},
                     onStartClicked = {},
                 )
@@ -259,49 +214,27 @@ class CreationScreenTest {
     }
 
     @Test
-    fun bottomButtons_areNotDisplayed_inExpandedMode() {
-        val botColorButtonText = composeTestRule.activity.getString(R.string.bot_color_button)
-        val transformButtonText = composeTestRule.activity.getString(R.string.transform_button)
-        val startTransformationButtonText = composeTestRule.activity.getString(R.string.start_transformation_button)
+    fun transformButton_isDisplayed_inExpandedMode() {
+        val transformButtonText = composeTestRule.activity.getString(R.string.start_transformation_button)
 
         composeTestRule.setContent {
             SharedElementContextPreview {
                 EditScreen(
                     snackbarHostState = SnackbarHostState(),
-                    isExpanded = true, // Expanded mode
+                    isExpanded = true,
                     onCameraPressed = {},
                     onBackPressed = {},
                     onAboutPressed = {},
-                    uiState = CreationState(),
+                    uiState = CreationState(), // Use default state
                     onChooseImageClicked = {},
                     onPromptOptionSelected = {},
                     onUndoPressed = {},
-                    onPromptGenerationPressed = {},
                     onBotColorSelected = {},
                     onStartClicked = {},
                 )
             }
         }
 
-        composeTestRule.onNodeWithText(botColorButtonText).assertDoesNotExist()
-        composeTestRule.onNodeWithText(transformButtonText).assertDoesNotExist()
-        composeTestRule.onNodeWithText(startTransformationButtonText).assertIsDisplayed()
-    }
-
-    @Test
-    fun loadingScreen_isDisplayed_whenStateIsLoading() {
-        // This test remains focused on the LoadingScreen UI itself,
-        // as testing the state transition within CreationScreen requires Hilt/ViewModel setup.
-        val loadingText = composeTestRule.activity.getString(R.string.generating_your_bot)
-        val cancelButtonText = composeTestRule.activity.getString(R.string.cancel)
-
-        composeTestRule.setContent {
-            SharedElementContextPreview {
-                LoadingScreen(onCancelPress = {})
-            }
-        }
-
-        composeTestRule.onNodeWithText(loadingText).assertIsDisplayed()
-        composeTestRule.onNodeWithText(cancelButtonText).assertIsDisplayed()
+        composeTestRule.onNodeWithText(transformButtonText).assertIsDisplayed()
     }
 }

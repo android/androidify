@@ -69,8 +69,7 @@
     <string name="prompt_type_text">Prompt</string>
     <string name="start_transformation_button">Start transformation</string>
     <string name="transform_button">Transform</string>
-    <string name="write_me_a_prompt">Help me write</string>
-    <string name="writing">Writing…</string>
+
     <string name="prompt_text_hint">Describe clothing, accessories, hairstyles, or any unique traits to make your bot a reflection of yourself.</string>
     <string name="error_provide_more_descriptive_bot">Provide a more detailed description about your bot, include hair color, clothes and accessories.</string>
     <string name="error_connectivity">No internet connection, please check your connection and try again.</string>
