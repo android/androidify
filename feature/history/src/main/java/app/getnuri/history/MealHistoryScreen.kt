@@ -99,6 +99,7 @@ sealed class TimelineEntry {
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
 fun MealHistoryScreen(
+    navigationPadding: PaddingValues = PaddingValues(),
     onBackPressed: () -> Unit = {},
     modifier: Modifier = Modifier,
     viewModel: MealHistoryViewModel = hiltViewModel()
@@ -153,17 +154,24 @@ fun MealHistoryScreen(
             )
         }
     ) { contentPadding ->
+        val combinedPadding = PaddingValues(
+            start = maxOf(contentPadding.calculateLeftPadding(androidx.compose.ui.unit.LayoutDirection.Ltr), navigationPadding.calculateLeftPadding(androidx.compose.ui.unit.LayoutDirection.Ltr)),
+            top = maxOf(contentPadding.calculateTopPadding(), navigationPadding.calculateTopPadding()),
+            end = maxOf(contentPadding.calculateRightPadding(androidx.compose.ui.unit.LayoutDirection.Ltr), navigationPadding.calculateRightPadding(androidx.compose.ui.unit.LayoutDirection.Ltr)),
+            bottom = maxOf(contentPadding.calculateBottomPadding(), navigationPadding.calculateBottomPadding())
+        )
+        
         if (timelineEntries.isEmpty()) {
             MealHistoryEmptyState(
                 modifier = Modifier
-                    .padding(contentPadding)
+                    .padding(combinedPadding)
                     .fillMaxSize()
                     .padding(16.dp)
             )
         } else {
             LazyColumn(
                 modifier = Modifier
-                    .padding(contentPadding)
+                    .padding(combinedPadding)
                     .fillMaxSize(),
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)

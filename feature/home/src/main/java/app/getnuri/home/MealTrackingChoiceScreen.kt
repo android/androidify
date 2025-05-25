@@ -160,6 +160,7 @@ enum class MealScreenState {
 @Composable
 fun MealTrackingChoiceScreen(
     fileName: String? = null,
+    navigationPadding: PaddingValues = PaddingValues(),
     isMedium: Boolean = isAtLeastMedium(),
     onCameraPressed: () -> Unit = {},
     onBackPressed: () -> Unit = {},
@@ -193,6 +194,7 @@ fun MealTrackingChoiceScreen(
         MealScreenState.INPUT -> {
             MealInputScreen(
                 snackbarHostState = snackbarHostState,
+                navigationPadding = navigationPadding,
                 isExpanded = isMedium,
                 onCameraPressed = onCameraPressed,
                 onBackPressed = onBackPressed,
@@ -226,6 +228,7 @@ fun MealTrackingChoiceScreen(
 @Composable
 fun MealInputScreen(
     snackbarHostState: SnackbarHostState,
+    navigationPadding: PaddingValues = PaddingValues(),
     isExpanded: Boolean,
     onCameraPressed: () -> Unit,
     onBackPressed: () -> Unit,
@@ -264,11 +267,17 @@ fun MealInputScreen(
         },
         containerColor = Primary,
     ) { contentPadding ->
+        val combinedPadding = PaddingValues(
+            start = maxOf(contentPadding.calculateLeftPadding(androidx.compose.ui.unit.LayoutDirection.Ltr), navigationPadding.calculateLeftPadding(androidx.compose.ui.unit.LayoutDirection.Ltr)),
+            top = maxOf(contentPadding.calculateTopPadding(), navigationPadding.calculateTopPadding()),
+            end = maxOf(contentPadding.calculateRightPadding(androidx.compose.ui.unit.LayoutDirection.Ltr), navigationPadding.calculateRightPadding(androidx.compose.ui.unit.LayoutDirection.Ltr)),
+            bottom = maxOf(contentPadding.calculateBottomPadding(), navigationPadding.calculateBottomPadding())
+        )
 
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(contentPadding)
+                .padding(combinedPadding)
                 .imePadding(),
         ) {
             Column(

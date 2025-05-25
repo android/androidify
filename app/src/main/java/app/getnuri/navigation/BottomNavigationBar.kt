@@ -37,6 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
@@ -45,7 +46,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import app.getnuri.theme.AndroidifyTheme
+import app.getnuri.theme.Primary
 import app.getnuri.theme.PrimaryContainer
+import app.getnuri.theme.Secondary
 import kotlinx.coroutines.delay
 
 enum class BottomNavTab(
@@ -67,14 +70,29 @@ fun BottomNavigationBar(
     modifier: Modifier = Modifier
 ) {
     val motionScheme = MaterialTheme.motionScheme
+    
+    // Create a subtle gradient that blends with the app's primary theme
+    val gradientBackground = Brush.verticalGradient(
+        colors = listOf(
+            Primary.copy(alpha = 0.98f),  // Slightly more opaque at top
+            Primary.copy(alpha = 0.92f)   // Slightly more transparent at bottom
+        ),
+        startY = 0f,
+        endY = 300f
+    )
 
-    NavigationBar(
-        modifier = modifier.fillMaxWidth(),
-        containerColor = MaterialTheme.colorScheme.surfaceContainer,
-        contentColor = MaterialTheme.colorScheme.onSurface,
-        tonalElevation = 3.dp,
-        windowInsets = WindowInsets.navigationBars
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .background(gradientBackground)
     ) {
+        NavigationBar(
+            modifier = Modifier.fillMaxWidth(),
+            containerColor = Color.Transparent, // Make container transparent to show gradient
+            contentColor = Color.White,
+            tonalElevation = 0.dp, // Remove elevation since we have custom background
+            windowInsets = WindowInsets.navigationBars
+        ) {
         BottomNavTab.entries.forEachIndexed { index, tab ->
             val selected = selectedTab == tab
             
@@ -92,9 +110,9 @@ fun BottomNavigationBar(
             // Deceleration curve (LinearOutSlowInEasing) for entering elements - 225ms
             val iconTint by animateColorAsState(
                 targetValue = if (selected) 
-                    Color.White  // White icons on purple highlight
+                    Color.Black.copy(alpha = 0.8f)  // Dark icons on secondary highlight for better contrast
                 else 
-                    MaterialTheme.colorScheme.onSurfaceVariant,
+                    Color.White.copy(alpha = 0.7f), // Semi-transparent white for unselected
                 animationSpec = tween(
                     durationMillis = 225,
                     easing = LinearOutSlowInEasing
@@ -105,9 +123,9 @@ fun BottomNavigationBar(
             // Standard curve for text color transitions - 300ms
             val labelColor by animateColorAsState(
                 targetValue = if (selected) 
-                    MaterialTheme.colorScheme.onSurface 
+                    Color.Black.copy(alpha = 0.9f) // Dark text for selected to match icon
                 else 
-                    MaterialTheme.colorScheme.onSurfaceVariant,
+                    Color.White.copy(alpha = 0.8f), // Semi-transparent white for unselected
                 animationSpec = tween(
                     durationMillis = 300,
                     easing = FastOutSlowInEasing
@@ -179,7 +197,7 @@ fun BottomNavigationBar(
                             .size(40.dp)
                             .clip(CircleShape)
                             .background(
-                                color = PrimaryContainer.copy(alpha = backgroundAlpha),
+                                color = Secondary.copy(alpha = backgroundAlpha * 0.9f), // Use secondary color for better contrast
                                 shape = CircleShape
                             )
                     )
@@ -204,6 +222,7 @@ fun BottomNavigationBar(
                     color = labelColor
                 )
             }
+        }
         }
     }
 }
@@ -231,7 +250,7 @@ private fun BottomNavigationBarPreview() {
     AndroidifyTheme {
         Surface(
             modifier = Modifier.fillMaxWidth(),
-            color = MaterialTheme.colorScheme.surface
+            color = Primary // Use primary color background to match app theme
         ) {
             BottomNavigationBar(
                 selectedTab = BottomNavTab.Meals,
@@ -247,7 +266,7 @@ private fun BottomNavigationBarWellbeingSelectedPreview() {
     AndroidifyTheme {
         Surface(
             modifier = Modifier.fillMaxWidth(),
-            color = MaterialTheme.colorScheme.surface
+            color = Primary // Use primary color background to match app theme
         ) {
             BottomNavigationBar(
                 selectedTab = BottomNavTab.Wellbeing,

@@ -155,6 +155,7 @@ fun MainNavigation() {
             entry<MealTrackingChoiceTab> { mealTrackingRoute ->
                 MealTrackingChoiceScreen(
                     fileName = mealTrackingRoute.fileName,
+                    navigationPadding = paddingValues,
                     onCameraPressed = {
                         backStack.removeAll { it is Camera }
                         backStack.add(Camera)
@@ -229,6 +230,7 @@ fun MainNavigation() {
             entry<MealTrackingChoice> { mealTrackingRoute ->
                 MealTrackingChoiceScreen(
                     fileName = mealTrackingRoute.fileName,
+                    navigationPadding = paddingValues,
                     onCameraPressed = {
                         backStack.removeAll { it is Camera }
                         backStack.add(Camera)
@@ -302,6 +304,7 @@ fun MainNavigation() {
             
             entry<MealHistoryTab> {
                 MealHistoryScreen(
+                    navigationPadding = paddingValues,
                     onBackPressed = {
                         backStack.removeLastOrNull()
                     }
@@ -310,6 +313,7 @@ fun MainNavigation() {
             
             entry<MealHistory> {
                 MealHistoryScreen(
+                    navigationPadding = paddingValues,
                     onBackPressed = {
                         backStack.removeLastOrNull()
                     }
@@ -318,6 +322,7 @@ fun MainNavigation() {
             
             entry<WellbeingTab> {
                 WellbeingScreen(
+                    navigationPadding = paddingValues,
                     onBackPressed = {
                         backStack.removeLastOrNull()
                     }
@@ -326,6 +331,7 @@ fun MainNavigation() {
             
             entry<Wellbeing> {
                 WellbeingScreen(
+                    navigationPadding = paddingValues,
                     onBackPressed = {
                         backStack.removeLastOrNull()
                     }
@@ -335,6 +341,7 @@ fun MainNavigation() {
             entry<ResultsTab> {
                 // For now, show a placeholder. In a real app, this would show analytics/insights
                 WellbeingScreen(
+                    navigationPadding = paddingValues,
                     onBackPressed = {
                         backStack.removeLastOrNull()
                     }
@@ -344,6 +351,7 @@ fun MainNavigation() {
             entry<Results> {
                 // For now, show a placeholder. In a real app, this would show analytics/insights
                 WellbeingScreen(
+                    navigationPadding = paddingValues,
                     onBackPressed = {
                         backStack.removeLastOrNull()
                     }

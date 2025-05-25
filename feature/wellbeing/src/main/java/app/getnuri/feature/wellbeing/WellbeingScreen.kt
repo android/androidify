@@ -15,34 +15,51 @@
  */
 package app.getnuri.feature.wellbeing
 
+import androidx.compose.animation.*
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import app.getnuri.theme.AndroidifyTheme
-import app.getnuri.theme.Primary
+import app.getnuri.theme.*
 import app.getnuri.theme.components.AndroidifyTopAppBar
-
-
+import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun WellbeingScreen(
+    navigationPadding: PaddingValues = PaddingValues(),
     modifier: Modifier = Modifier,
     onBackPressed: () -> Unit = {}
 ) {
+    var selectedSymptoms by remember { mutableStateOf(setOf<String>()) }
+    var customSymptoms by remember { mutableStateOf(listOf<String>()) }
+    
+    val gradientBackground = Brush.verticalGradient(
+        colors = listOf(Primary, PrimaryContainer),
+        startY = 0f,
+        endY = Float.POSITIVE_INFINITY
+    )
+    
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
@@ -55,31 +72,65 @@ fun WellbeingScreen(
         },
         containerColor = Primary,
     ) { paddingValues ->
-        // Display the tracking content directly without tabs
-        TrackNowContent(
-            modifier = Modifier.padding(paddingValues)
+        val combinedPadding = PaddingValues(
+            start = maxOf(paddingValues.calculateLeftPadding(androidx.compose.ui.unit.LayoutDirection.Ltr), navigationPadding.calculateLeftPadding(androidx.compose.ui.unit.LayoutDirection.Ltr)),
+            top = maxOf(paddingValues.calculateTopPadding(), navigationPadding.calculateTopPadding()),
+            end = maxOf(paddingValues.calculateRightPadding(androidx.compose.ui.unit.LayoutDirection.Ltr), navigationPadding.calculateRightPadding(androidx.compose.ui.unit.LayoutDirection.Ltr)),
+            bottom = maxOf(paddingValues.calculateBottomPadding(), navigationPadding.calculateBottomPadding())
         )
+        
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(gradientBackground)
+                .padding(combinedPadding)
+        ) {
+            TrackNowContent(
+                selectedSymptoms = selectedSymptoms,
+                customSymptoms = customSymptoms,
+                onSymptomsChanged = { selectedSymptoms = it },
+                onCustomSymptomsChanged = { customSymptoms = it }
+            )
+        }
     }
 }
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun TrackNowContent(modifier: Modifier) {
+private fun TrackNowContent(
+    selectedSymptoms: Set<String>,
+    customSymptoms: List<String>,
+    onSymptomsChanged: (Set<String>) -> Unit,
+    onCustomSymptomsChanged: (List<String>) -> Unit
+) {
     LazyColumn(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(24.dp)
+            .padding(20.dp),
+        verticalArrangement = Arrangement.spacedBy(32.dp)
     ) {
         item {
-            Text(
-                "How are you feeling after your meal?",
-                style = MaterialTheme.typography.headlineSmall.copy(
-                    fontWeight = FontWeight.Bold
-                ),
-                textAlign = TextAlign.Center,
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.fillMaxWidth()
-            )
+            ) {
+                Text(
+                    "How are you feeling",
+                    style = MaterialTheme.typography.headlineMedium.copy(
+                        fontWeight = FontWeight.Bold,
+                        color = OnPrimary
+                    ),
+                    textAlign = TextAlign.Center
+                )
+                Text(
+                    "after your meal?",
+                    style = MaterialTheme.typography.headlineMedium.copy(
+                        fontWeight = FontWeight.Bold,
+                        color = OnPrimary
+                    ),
+                    textAlign = TextAlign.Center
+                )
+            }
         }
 
         item {
@@ -91,7 +142,12 @@ private fun TrackNowContent(modifier: Modifier) {
         }
 
         item {
-            SymptomTracker()
+            SymptomTracker(
+                selectedSymptoms = selectedSymptoms,
+                customSymptoms = customSymptoms,
+                onSymptomsChanged = onSymptomsChanged,
+                onCustomSymptomsChanged = onCustomSymptomsChanged
+            )
         }
 
         item {
@@ -99,23 +155,41 @@ private fun TrackNowContent(modifier: Modifier) {
         }
 
         item {
+            // Enhanced Submit Button
             Button(
-                onClick = { /* Save entry */ },
+                onClick = { /* Handle submission */ },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(56.dp),
+                    .height(72.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary
+                    containerColor = if (selectedSymptoms.isNotEmpty()) Secondary else SurfaceContainerHigh,
+                    contentColor = if (selectedSymptoms.isNotEmpty()) OnSecondary else OnSurfaceVariant
                 ),
-                shape = RoundedCornerShape(28.dp)
-            ) {
-                Text(
-                    "Save Entry",
-                    style = MaterialTheme.typography.titleMedium.copy(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp
-                    )
+                shape = RoundedCornerShape(36.dp),
+                enabled = selectedSymptoms.isNotEmpty(),
+                elevation = ButtonDefaults.buttonElevation(
+                    defaultElevation = if (selectedSymptoms.isNotEmpty()) 8.dp else 2.dp
                 )
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Icon(
+                        Icons.Filled.Save,
+                        contentDescription = "Save",
+                        modifier = Modifier.size(28.dp)
+                    )
+                    Spacer(modifier = Modifier.width(12.dp))
+                    Text(
+                        if (selectedSymptoms.isNotEmpty()) "Submit Entry" else "Select symptoms to continue",
+                        style = MaterialTheme.typography.titleLarge.copy(
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 18.sp
+                        )
+                    )
+                }
             }
         }
     }
@@ -127,22 +201,24 @@ private fun MoodTracker() {
     val moodLabels = listOf("Poor", "Low", "Okay", "Good", "Great")
     var selectedMood by remember { mutableIntStateOf(-1) }
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainer
-        ),
-        shape = RoundedCornerShape(16.dp)
+        color = SurfaceBright,
+        shape = RoundedCornerShape(24.dp),
+        shadowElevation = 8.dp
     ) {
         Column(
-            modifier = Modifier.padding(20.dp),
+            modifier = Modifier.padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
                 "Mood",
-                style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
+                style = MaterialTheme.typography.titleLarge.copy(
+                    fontWeight = FontWeight.Bold,
+                    color = Primary
+                )
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(20.dp))
             
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -157,23 +233,27 @@ private fun MoodTracker() {
                             label = { 
                                 Text(
                                     emoji,
-                                    fontSize = 24.sp
+                                    fontSize = 28.sp
                                 )
                             },
                             selected = selectedMood == index,
                             colors = FilterChipDefaults.filterChipColors(
-                                selectedContainerColor = MaterialTheme.colorScheme.primary,
-                                containerColor = MaterialTheme.colorScheme.surface
+                                selectedContainerColor = Secondary,
+                                selectedLabelColor = OnSecondary,
+                                containerColor = SurfaceContainerLow,
+                                labelColor = OnSurface
                             ),
-                            modifier = Modifier.size(60.dp)
+                            modifier = Modifier.size(64.dp)
                         )
-                        Spacer(modifier = Modifier.height(4.dp))
+                        Spacer(modifier = Modifier.height(8.dp))
                         Text(
                             moodLabels[index],
-                            style = MaterialTheme.typography.bodySmall,
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                fontWeight = if (selectedMood == index) FontWeight.Bold else FontWeight.Normal
+                            ),
                             color = if (selectedMood == index) 
-                                MaterialTheme.colorScheme.primary 
-                            else MaterialTheme.colorScheme.onSurfaceVariant
+                                Secondary 
+                            else OnSurface
                         )
                     }
                 }
@@ -194,22 +274,24 @@ private fun EnergyTracker() {
     val energyLabels = listOf("Drained", "Low", "Okay", "Good", "Energized")
     var selectedEnergy by remember { mutableIntStateOf(-1) }
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainer
-        ),
-        shape = RoundedCornerShape(16.dp)
+        color = SurfaceBright,
+        shape = RoundedCornerShape(24.dp),
+        shadowElevation = 8.dp
     ) {
         Column(
-            modifier = Modifier.padding(20.dp),
+            modifier = Modifier.padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
                 "Energy Level",
-                style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
+                style = MaterialTheme.typography.titleLarge.copy(
+                    fontWeight = FontWeight.Bold,
+                    color = Primary
+                )
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(20.dp))
             
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -225,23 +307,27 @@ private fun EnergyTracker() {
                                 Icon(
                                     icon,
                                     contentDescription = energyLabels[index],
-                                    modifier = Modifier.size(24.dp)
+                                    modifier = Modifier.size(28.dp)
                                 )
                             },
                             selected = selectedEnergy == index,
                             colors = FilterChipDefaults.filterChipColors(
-                                selectedContainerColor = MaterialTheme.colorScheme.secondary,
-                                containerColor = MaterialTheme.colorScheme.surface
+                                selectedContainerColor = Tertiary,
+                                selectedLabelColor = OnTertiary,
+                                containerColor = SurfaceContainerLow,
+                                labelColor = OnSurface
                             ),
-                            modifier = Modifier.size(60.dp)
+                            modifier = Modifier.size(64.dp)
                         )
-                        Spacer(modifier = Modifier.height(4.dp))
+                        Spacer(modifier = Modifier.height(8.dp))
                         Text(
                             energyLabels[index],
-                            style = MaterialTheme.typography.bodySmall,
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                fontWeight = if (selectedEnergy == index) FontWeight.Bold else FontWeight.Normal
+                            ),
                             color = if (selectedEnergy == index) 
-                                MaterialTheme.colorScheme.secondary 
-                            else MaterialTheme.colorScheme.onSurfaceVariant
+                                Tertiary 
+                            else OnSurface
                         )
                     }
                 }
@@ -252,54 +338,129 @@ private fun EnergyTracker() {
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun SymptomTracker() {
-    val symptoms = listOf(
+private fun SymptomTracker(
+    selectedSymptoms: Set<String>,
+    customSymptoms: List<String>,
+    onSymptomsChanged: (Set<String>) -> Unit,
+    onCustomSymptomsChanged: (List<String>) -> Unit
+) {
+    val predefinedSymptoms = listOf(
         "Bloating", "Headache/Migraine", "Nausea", "Skin Issues",
         "Fatigue/Brain Fog", "Stomach Pain/Cramps", "Diarrhea"
     )
-    var selectedSymptoms by remember { mutableStateOf(setOf<String>()) }
+    val allSymptoms = predefinedSymptoms + customSymptoms
+    
+    var customSymptomText by remember { mutableStateOf("") }
+    val keyboardController = LocalSoftwareKeyboardController.current
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainer
-        ),
-        shape = RoundedCornerShape(16.dp)
+        color = SurfaceBright,
+        shape = RoundedCornerShape(24.dp),
+        shadowElevation = 8.dp
     ) {
         Column(
-            modifier = Modifier.padding(20.dp)
+            modifier = Modifier.padding(24.dp)
         ) {
             Text(
                 "Symptoms",
-                style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                style = MaterialTheme.typography.titleLarge.copy(
+                    fontWeight = FontWeight.Bold,
+                    color = Primary
+                ),
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(20.dp))
             
-            FlowRow(
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+            // Material 3 Button Group Layout - closer together, larger buttons
+            Column(
+                verticalArrangement = Arrangement.spacedBy(4.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                symptoms.forEach { symptom ->
-                    FilterChip(
-                        onClick = { 
-                            selectedSymptoms = if (selectedSymptoms.contains(symptom)) {
-                                selectedSymptoms - symptom
-                            } else {
-                                selectedSymptoms + symptom
+                // Group symptoms into rows of 2
+                allSymptoms.chunked(2).forEach { rowSymptoms ->
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(4.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        rowSymptoms.forEach { symptom ->
+                            val isSelected = selectedSymptoms.contains(symptom)
+                            Button(
+                                onClick = { 
+                                    onSymptomsChanged(
+                                        if (isSelected) {
+                                            selectedSymptoms - symptom
+                                        } else {
+                                            selectedSymptoms + symptom
+                                        }
+                                    )
+                                },
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .height(56.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = if (isSelected) Secondary else SurfaceContainerLow,
+                                    contentColor = if (isSelected) OnSecondary else OnSurface
+                                ),
+                                shape = if (isSelected) RoundedCornerShape(8.dp) else RoundedCornerShape(28.dp),
+                                border = if (!isSelected) BorderStroke(1.dp, Outline) else null
+                            ) {
+                                Text(
+                                    symptom,
+                                    style = MaterialTheme.typography.bodyMedium.copy(
+                                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium
+                                    ),
+                                    textAlign = TextAlign.Center
+                                )
                             }
-                        },
-                        label = { Text(symptom) },
-                        selected = selectedSymptoms.contains(symptom),
-                        colors = FilterChipDefaults.filterChipColors(
-                            selectedContainerColor = MaterialTheme.colorScheme.tertiary,
-                            containerColor = MaterialTheme.colorScheme.surface
-                        )
-                    )
+                        }
+                        
+                        // Fill empty space if odd number of symptoms in last row
+                        if (rowSymptoms.size == 1) {
+                            Spacer(modifier = Modifier.weight(1f))
+                        }
+                    }
                 }
             }
+            
+            Spacer(modifier = Modifier.height(20.dp))
+            
+            // Custom symptom input
+            OutlinedTextField(
+                value = customSymptomText,
+                onValueChange = { customSymptomText = it },
+                placeholder = { Text("Add custom symptom...") },
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp),
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        if (customSymptomText.isNotBlank() && customSymptomText !in allSymptoms) {
+                            onCustomSymptomsChanged(customSymptoms + customSymptomText.trim())
+                            onSymptomsChanged(selectedSymptoms + customSymptomText.trim())
+                            customSymptomText = ""
+                            keyboardController?.hide()
+                        }
+                    }
+                ),
+                trailingIcon = {
+                    if (customSymptomText.isNotBlank()) {
+                        IconButton(
+                            onClick = {
+                                if (customSymptomText.isNotBlank() && customSymptomText !in allSymptoms) {
+                                    onCustomSymptomsChanged(customSymptoms + customSymptomText.trim())
+                                    onSymptomsChanged(selectedSymptoms + customSymptomText.trim())
+                                    customSymptomText = ""
+                                    keyboardController?.hide()
+                                }
+                            }
+                        ) {
+                            Icon(Icons.Filled.Add, contentDescription = "Add symptom")
+                        }
+                    }
+                }
+            )
         }
     }
 }
@@ -308,21 +469,23 @@ private fun SymptomTracker() {
 private fun NotesSection() {
     var notes by remember { mutableStateOf("") }
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainer
-        ),
-        shape = RoundedCornerShape(16.dp)
+        color = SurfaceBright,
+        shape = RoundedCornerShape(24.dp),
+        shadowElevation = 8.dp
     ) {
         Column(
-            modifier = Modifier.padding(20.dp)
+            modifier = Modifier.padding(24.dp)
         ) {
             Text(
                 "Additional Notes",
-                style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
+                style = MaterialTheme.typography.titleLarge.copy(
+                    fontWeight = FontWeight.Bold,
+                    color = Primary
+                )
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(20.dp))
             
             OutlinedTextField(
                 value = notes,
@@ -330,13 +493,11 @@ private fun NotesSection() {
                 placeholder = { Text("How are you feeling? Any other symptoms or observations?") },
                 modifier = Modifier.fillMaxWidth(),
                 minLines = 3,
-                shape = RoundedCornerShape(12.dp)
+                shape = RoundedCornerShape(16.dp)
             )
         }
     }
 }
-
-
 
 @Preview(showBackground = true)
 @Composable
