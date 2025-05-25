@@ -121,6 +121,7 @@ import coil3.request.ImageRequest
 import coil3.request.crossfade
 import app.getnuri.theme.AndroidifyTheme
 import app.getnuri.theme.LocalSharedTransitionScope
+import app.getnuri.theme.Primary
 import app.getnuri.theme.Secondary
 import app.getnuri.theme.SharedElementKey
 import app.getnuri.theme.components.AndroidifyTopAppBar
@@ -261,7 +262,7 @@ fun MealInputScreen(
                 onAboutClicked = onAboutClicked,
             )
         },
-        containerColor = MaterialTheme.colorScheme.surface,
+        containerColor = Primary,
     ) { contentPadding ->
 
         Box(
@@ -556,8 +557,8 @@ fun MealInputTypeToolbar(
             shape = MaterialTheme.shapes.large,
         ),
         colors = FloatingToolbarColors(
-            toolbarContainerColor = MaterialTheme.colorScheme.surface,
-            toolbarContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            toolbarContainerColor = Primary,
+            toolbarContentColor = MaterialTheme.colorScheme.onPrimary,
             fabContainerColor = MaterialTheme.colorScheme.tertiary,
             fabContentColor = MaterialTheme.colorScheme.onTertiary,
         ),
@@ -571,8 +572,8 @@ fun MealInputTypeToolbar(
                 shapes = ToggleButtonDefaults.shapes(checkedShape = MaterialTheme.shapes.large),
                 colors = ToggleButtonDefaults.toggleButtonColors(
                     checkedContainerColor = Secondary,
-                    checkedContentColor = MaterialTheme.colorScheme.onSurface,
-                    containerColor = MaterialTheme.colorScheme.surface,
+                    checkedContentColor = MaterialTheme.colorScheme.onSecondary,
+                    containerColor = Primary,
                 ),
             ) {
                 Text(label.displayName, maxLines = 1)

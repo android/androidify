@@ -32,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import app.getnuri.theme.AndroidifyTheme
+import app.getnuri.theme.Primary
 import app.getnuri.theme.components.AndroidifyTopAppBar
 
 
@@ -52,7 +53,7 @@ fun WellbeingScreen(
                 onAboutClicked = onBackPressed,
             )
         },
-        containerColor = MaterialTheme.colorScheme.surface,
+        containerColor = Primary,
     ) { paddingValues ->
         // Display the tracking content directly without tabs
         TrackNowContent(

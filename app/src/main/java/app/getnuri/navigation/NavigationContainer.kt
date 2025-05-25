@@ -25,6 +25,7 @@ import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import app.getnuri.theme.Primary
 
 /**
  * Container that wraps content with bottom navigation when appropriate.
@@ -64,7 +65,7 @@ fun NavigationContainer(
                 }
             }
         },
-        containerColor = MaterialTheme.colorScheme.surface
+        containerColor = Primary
     ) { paddingValues ->
         content(paddingValues)
     }
