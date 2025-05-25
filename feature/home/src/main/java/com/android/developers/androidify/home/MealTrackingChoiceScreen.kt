@@ -121,6 +121,7 @@ import coil3.request.ImageRequest
 import coil3.request.crossfade
 import app.getnuri.theme.AndroidifyTheme
 import app.getnuri.theme.LocalSharedTransitionScope
+import app.getnuri.theme.NavigationBarBackground
 import app.getnuri.theme.SharedElementKey
 import app.getnuri.theme.components.AndroidifyTopAppBar
 import app.getnuri.theme.components.PrimaryButton
@@ -511,7 +512,7 @@ fun MealTextPrompt(
         modifier = modifier
             .dashedRoundedRectBorder(
                 2.dp,
-                MaterialTheme.colorScheme.outline,
+                NavigationBarBackground,
                 cornerRadius = 28.dp,
             )
             .padding(horizontal = 16.dp)
@@ -551,7 +552,7 @@ fun MealInputTypeToolbar(
     HorizontalFloatingToolbar(
         modifier = modifier.border(
             2.dp,
-            color = MaterialTheme.colorScheme.outline,
+            color = NavigationBarBackground,
             shape = MaterialTheme.shapes.large,
         ),
         colors = FloatingToolbarColors(
@@ -590,13 +591,9 @@ private fun MealPhotoEmptyState(
 ) {
     Column(
         modifier = modifier
-            .background(
-                color = MaterialTheme.colorScheme.surface,
-                shape = RoundedCornerShape(28.dp),
-            )
             .dashedRoundedRectBorder(
                 2.dp,
-                MaterialTheme.colorScheme.outline,
+                NavigationBarBackground,
                 cornerRadius = 28.dp,
             )
             .verticalScroll(rememberScrollState())
