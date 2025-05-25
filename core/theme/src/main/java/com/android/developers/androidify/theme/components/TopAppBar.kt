@@ -61,6 +61,7 @@ fun AndroidifyTopAppBar(
     isMediumWindowSize: Boolean = false,
     backEnabled: Boolean = false,
     aboutEnabled: Boolean = true,
+    customTitle: String? = null,
     expandedCenterButtons: @Composable () -> Unit = {},
     onBackPressed: () -> Unit = {},
     onAboutClicked: () -> Unit = {},
@@ -92,7 +93,11 @@ fun AndroidifyTopAppBar(
                 } else {
                     Spacer(modifier.size(16.dp))
                 }
-                AndroidifyTitle(contentColor)
+                if (customTitle != null) {
+                    CustomTitle(customTitle, contentColor)
+                } else {
+                    AndroidifyTitle(contentColor)
+                }
             }
 
             Box(
@@ -118,7 +123,11 @@ fun AndroidifyTopAppBar(
     } else {
         CenterAlignedTopAppBar(
             title = {
-                AndroidifyTitle(contentColor)
+                if (customTitle != null) {
+                    CustomTitle(customTitle, contentColor)
+                } else {
+                    AndroidifyTitle(contentColor)
+                }
             },
             modifier = modifier
                 .statusBarsPadding()
@@ -187,6 +196,19 @@ fun AndroidifyTranslucentTopAppBar(
 private fun AndroidifyTitle(textColor: Color = MaterialTheme.colorScheme.onSurface) {
     Text(
         text = stringResource(R.string.androidify_title),
+        style = MaterialTheme.typography.titleLarge.copy(
+            fontFamily = displayFontFamily,
+            fontWeight = FontWeight.Black, // Font weight 900 for maximum impact
+            letterSpacing = (-0.5).sp,
+        ),
+        color = textColor
+    )
+}
+
+@Composable
+private fun CustomTitle(title: String, textColor: Color = MaterialTheme.colorScheme.onSurface) {
+    Text(
+        text = title,
         style = MaterialTheme.typography.titleLarge.copy(
             fontFamily = displayFontFamily,
             fontWeight = FontWeight.Black, // Font weight 900 for maximum impact

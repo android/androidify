@@ -32,7 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import app.getnuri.theme.AndroidifyTheme
-import app.getnuri.theme.components.NuriStyledTopAppBar
+import app.getnuri.theme.components.AndroidifyTopAppBar
 
 
 
@@ -45,8 +45,11 @@ fun WellbeingScreen(
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
-            NuriStyledTopAppBar(
-                title = "Wellbeing"
+            AndroidifyTopAppBar(
+                backEnabled = false,
+                aboutEnabled = false,
+                customTitle = "Wellbeing",
+                useNuriStyling = true,
             )
         },
         containerColor = MaterialTheme.colorScheme.surface,
