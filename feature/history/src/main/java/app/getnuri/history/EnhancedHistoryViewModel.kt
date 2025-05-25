@@ -1,4 +1,4 @@
-package app.getnuri.feature.history
+package app.getnuri.history
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -6,9 +6,9 @@ import app.getnuri.data.MealDao
 import app.getnuri.data.UserFeedbackDao
 import app.getnuri.data.Meal
 import app.getnuri.data.UserFeedback
-import app.getnuri.feature.history.model.TimelineEntry
-import app.getnuri.feature.history.model.DayGroup
-import app.getnuri.feature.history.model.toDisplayName
+import app.getnuri.history.model.TimelineEntry
+import app.getnuri.history.model.DayGroup
+import app.getnuri.history.model.toDisplayName
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow

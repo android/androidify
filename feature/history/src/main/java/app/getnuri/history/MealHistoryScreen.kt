@@ -1,4 +1,4 @@
-package app.getnuri.feature.history
+package app.getnuri.history
 
 import android.net.Uri
 import androidx.compose.animation.core.animateFloatAsState
@@ -33,7 +33,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import app.getnuri.feature.history.model.MealWithFeedback
+import app.getnuri.history.model.MealWithFeedback
 import app.getnuri.theme.components.ExpressiveCard
 import app.getnuri.theme.components.ExpressiveGradientBackground
 import coil3.compose.rememberAsyncImagePainter

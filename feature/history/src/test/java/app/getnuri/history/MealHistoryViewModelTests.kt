@@ -1,4 +1,4 @@
-package app.getnuri.feature.history
+package app.getnuri.history
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import app.cash.turbine.test
@@ -6,7 +6,7 @@ import app.getnuri.data.MealDao
 import app.getnuri.data.UserFeedbackDao
 import app.getnuri.data.Meal
 import app.getnuri.data.UserFeedback
-import app.getnuri.feature.history.model.MealWithFeedback
+import app.getnuri.history.model.MealWithFeedback
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf

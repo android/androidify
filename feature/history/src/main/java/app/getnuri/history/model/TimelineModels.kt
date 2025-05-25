@@ -1,4 +1,4 @@
-package app.getnuri.feature.history.model
+package app.getnuri.history.model
 
 import app.getnuri.data.Meal
 import app.getnuri.data.UserFeedback

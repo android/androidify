@@ -1,10 +1,10 @@
-package app.getnuri.feature.history
+package app.getnuri.history
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.getnuri.data.MealDao
 import app.getnuri.data.UserFeedbackDao
-import app.getnuri.feature.history.model.MealWithFeedback
+import app.getnuri.history.model.MealWithFeedback
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
