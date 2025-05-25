@@ -54,12 +54,6 @@ fun WellbeingScreen(
     var selectedSymptoms by remember { mutableStateOf(setOf<String>()) }
     var customSymptoms by remember { mutableStateOf(listOf<String>()) }
     
-    val gradientBackground = Brush.verticalGradient(
-        colors = listOf(Primary, PrimaryContainer),
-        startY = 0f,
-        endY = Float.POSITIVE_INFINITY
-    )
-    
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
@@ -82,7 +76,6 @@ fun WellbeingScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(gradientBackground)
                 .padding(combinedPadding)
         ) {
             TrackNowContent(

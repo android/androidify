@@ -200,7 +200,6 @@ fun ResultsScreenContents(
     shareClicked: () -> Unit,
     defaultSelectedResult: ResultOption = ResultOption.ResultImage,
 ) {
-    ResultsBackground()
     val showResult = state.value.resultImageBitmap != null
     var selectedResultOption by remember {
         mutableStateOf(defaultSelectedResult)
