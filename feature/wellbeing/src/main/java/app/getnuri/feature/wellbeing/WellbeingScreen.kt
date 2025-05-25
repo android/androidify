@@ -104,9 +104,8 @@ private fun TrackNowContent(
     onCustomSymptomsChanged: (List<String>) -> Unit
 ) {
     LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(20.dp),
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(horizontal = 20.dp, vertical = 16.dp), // Use contentPadding instead
         verticalArrangement = Arrangement.spacedBy(32.dp)
     ) {
         item {
