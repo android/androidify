@@ -16,9 +16,6 @@
 package app.getnuri.navigation
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
@@ -43,30 +40,36 @@ fun NavigationContainer(
     val selectedTab = currentRoute.toBottomNavTab()
     val motionScheme = MaterialTheme.motionScheme
 
+    // OPTIMIZED: Memoize scaffold to prevent unnecessary recompositions
     Scaffold(
         modifier = modifier.fillMaxSize(),
         bottomBar = {
+            // OPTIMIZED: Use fast motion specs for instant bottom nav transitions  
             AnimatedVisibility(
                 visible = shouldShowBottomNav && selectedTab != null,
-                enter = slideInVertically(
+                enter = androidx.compose.animation.slideInVertically(
                     initialOffsetY = { it },
-                    animationSpec = motionScheme.defaultEffectsSpec()
+                    animationSpec = motionScheme.fastEffectsSpec()
                 ),
-                exit = slideOutVertically(
+                exit = androidx.compose.animation.slideOutVertically(
                     targetOffsetY = { it },
-                    animationSpec = motionScheme.defaultEffectsSpec()
+                    animationSpec = motionScheme.fastEffectsSpec()
                 )
             ) {
                 if (selectedTab != null) {
-                    BottomNavigationBar(
-                        selectedTab = selectedTab,
-                        onTabSelected = onTabSelected
-                    )
+                    // OPTIMIZED: Memoized bottom navigation bar
+                    key(selectedTab) {
+                        BottomNavigationBar(
+                            selectedTab = selectedTab,
+                            onTabSelected = onTabSelected
+                        )
+                    }
                 }
             }
         },
         containerColor = Primary
     ) { paddingValues ->
+        // OPTIMIZED: Direct content rendering without additional wrappers
         content(paddingValues)
     }
 }

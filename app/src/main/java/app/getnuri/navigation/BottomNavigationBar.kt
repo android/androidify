@@ -17,12 +17,8 @@ package app.getnuri.navigation
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -49,7 +45,6 @@ import app.getnuri.theme.AndroidifyTheme
 import app.getnuri.theme.Primary
 import app.getnuri.theme.PrimaryContainer
 import app.getnuri.theme.Secondary
-import kotlinx.coroutines.delay
 
 enum class BottomNavTab(
     val label: String,
@@ -71,27 +66,23 @@ fun BottomNavigationBar(
 ) {
     val motionScheme = MaterialTheme.motionScheme
     
-    // Create a subtle gradient that blends with the app's primary theme
+    // Simplified gradient background - remove dynamic calculations
     val gradientBackground = Brush.verticalGradient(
         colors = listOf(
-            Primary.copy(alpha = 0.98f),  // Slightly more opaque at top
-            Primary.copy(alpha = 0.92f)   // Slightly more transparent at bottom
-        ),
-        startY = 0f,
-        endY = 300f
+            Primary.copy(alpha = 0.98f),
+            Primary.copy(alpha = 0.92f)
+        )
     )
 
-    Box(
-        modifier = modifier.fillMaxWidth()
-    ) {
-        // Background gradient
+    Box(modifier = modifier.fillMaxWidth()) {
+        // Static background
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(gradientBackground)
         )
         
-        // Top border for visual separation
+        // Simplified border
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -101,141 +92,95 @@ fun BottomNavigationBar(
         
         NavigationBar(
             modifier = Modifier.fillMaxWidth(),
-            containerColor = Color.Transparent, // Make container transparent to show gradient
+            containerColor = Color.Transparent,
             contentColor = Color.White,
-            tonalElevation = 0.dp, // Remove elevation since we have custom background
+            tonalElevation = 0.dp,
             windowInsets = WindowInsets.navigationBars
         ) {
-        BottomNavTab.entries.forEachIndexed { index, tab ->
-            val selected = selectedTab == tab
-            
-            // Material 3 expressive animations with proper easing curves and durations
-            // Standard curve (FastOutSlowInEasing) for scale - 300ms duration as per Material specs
-            val scale by animateFloatAsState(
-                targetValue = if (selected) 1.15f else 1.0f,
-                animationSpec = spring(
-                    dampingRatio = Spring.DampingRatioMediumBouncy,
-                    stiffness = Spring.StiffnessMedium
-                ),
-                label = "scale_animation"
-            )
-            
-            // Deceleration curve (LinearOutSlowInEasing) for entering elements - 225ms
-            val iconTint by animateColorAsState(
-                targetValue = if (selected) 
-                    Color.Black.copy(alpha = 0.8f)  // Dark icons on secondary highlight for better contrast
-                else 
-                    Color.White.copy(alpha = 0.7f), // Semi-transparent white for unselected
-                animationSpec = tween(
-                    durationMillis = 225,
-                    easing = LinearOutSlowInEasing
-                ),
-                label = "icon_tint_animation"
-            )
-            
-            // Standard curve for text color transitions - 300ms
-            val labelColor by animateColorAsState(
-                targetValue = if (selected) 
-                    Color.Black.copy(alpha = 0.9f) // Dark text for selected to match icon
-                else 
-                    Color.White.copy(alpha = 0.8f), // Semi-transparent white for unselected
-                animationSpec = tween(
-                    durationMillis = 300,
-                    easing = FastOutSlowInEasing
-                ),
-                label = "label_color_animation"
-            )
-            
-            // Additional expressive animation for text size with staggered delay
-            val textSize by animateFloatAsState(
-                targetValue = if (selected) 12f else 10f,
-                animationSpec = tween(
-                    durationMillis = 300,
-                    delayMillis = index * 50, // Staggered animation
-                    easing = FastOutSlowInEasing
-                ),
-                label = "text_size_animation"
-            )
-            
-            // Selection feedback with bounce effect
-            val selectionBounce = remember { Animatable(1f) }
-            LaunchedEffect(selected) {
-                if (selected) {
-                    // Quick bounce effect on selection - Material 3 expressive feedback
-                    selectionBounce.animateTo(
-                        targetValue = 1.2f,
-                        animationSpec = tween(durationMillis = 100, easing = FastOutSlowInEasing)
-                    )
-                    selectionBounce.animateTo(
-                        targetValue = 1f,
-                        animationSpec = spring(
-                            dampingRatio = Spring.DampingRatioMediumBouncy,
-                            stiffness = Spring.StiffnessHigh
-                        )
-                    )
-                }
-            }
-            
-            // Background bubble animation - only for icon area
-            val backgroundAlpha by animateFloatAsState(
-                targetValue = if (selected) 1f else 0f,
-                animationSpec = tween(
-                    durationMillis = 300,
-                    easing = FastOutSlowInEasing
-                ),
-                label = "background_alpha_animation"
-            )
-
-            // Custom navigation item with icon-only background bubble
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .weight(1f)
-                    .clickable(
-                        onClick = { onTabSelected(tab) },
-                        role = Role.Tab
-                    )
-                    .padding(vertical = 8.dp)
-            ) {
-                // Icon with background bubble
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier
-                        .scale(scale)
-                        .scale(selectionBounce.value)
-                ) {
-                    // Background bubble - only behind icon
-                    Box(
-                        modifier = Modifier
-                            .size(40.dp)
-                            .clip(CircleShape)
-                            .background(
-                                color = Secondary.copy(alpha = backgroundAlpha * 0.9f), // Use secondary color for better contrast
-                                shape = CircleShape
-                            )
-                    )
-                    
-                    // Icon
-                    Icon(
-                        imageVector = if (selected) tab.selectedIcon else tab.unselectedIcon,
-                        contentDescription = tab.label,
-                        tint = iconTint,
-                        modifier = Modifier.size(24.dp)
-                    )
-                }
+            BottomNavTab.entries.forEach { tab ->
+                val selected = selectedTab == tab
                 
-                // Text label - separate from background
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = tab.label,
-                    style = MaterialTheme.typography.labelSmall.copy(
-                        fontSize = textSize.sp,
-                        fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium
-                    ),
-                    color = labelColor
+                // OPTIMIZED: Single scale animation using fast motion specs for instant response
+                val scale by animateFloatAsState(
+                    targetValue = if (selected) 1.08f else 1.0f,
+                    animationSpec = motionScheme.fastEffectsSpec(),
+                    label = "scale_animation"
                 )
+                
+                // OPTIMIZED: Single color animation with fast specs
+                val iconTint by animateColorAsState(
+                    targetValue = if (selected) 
+                        Color.Black.copy(alpha = 0.8f)
+                    else 
+                        Color.White.copy(alpha = 0.7f),
+                    animationSpec = motionScheme.fastEffectsSpec(),
+                    label = "icon_tint_animation"
+                )
+                
+                // OPTIMIZED: Simplified label color - remove text size animation
+                val labelColor by animateColorAsState(
+                    targetValue = if (selected) 
+                        Color.Black.copy(alpha = 0.9f)
+                    else 
+                        Color.White.copy(alpha = 0.8f),
+                    animationSpec = motionScheme.fastEffectsSpec(),
+                    label = "label_color_animation"
+                )
+                
+                // OPTIMIZED: Single background animation with fast response
+                val backgroundAlpha by animateFloatAsState(
+                    targetValue = if (selected) 1f else 0f,
+                    animationSpec = motionScheme.fastEffectsSpec(),
+                    label = "background_alpha_animation"
+                )
+
+                // OPTIMIZED: Simplified navigation item without complex bounce effects
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .weight(1f)
+                        .clickable(
+                            onClick = { onTabSelected(tab) },
+                            role = Role.Tab
+                        )
+                        .padding(vertical = 8.dp)
+                ) {
+                    // OPTIMIZED: Single transformation with background bubble
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier.scale(scale)
+                    ) {
+                        // Background bubble with instant response
+                        Box(
+                            modifier = Modifier
+                                .size(40.dp)
+                                .clip(CircleShape)
+                                .background(
+                                    color = Secondary.copy(alpha = backgroundAlpha * 0.9f),
+                                    shape = CircleShape
+                                )
+                        )
+                        
+                        // Icon with simplified state
+                        Icon(
+                            imageVector = if (selected) tab.selectedIcon else tab.unselectedIcon,
+                            contentDescription = tab.label,
+                            tint = iconTint,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
+                    
+                    // OPTIMIZED: Static text label - remove size animations
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = tab.label,
+                        style = MaterialTheme.typography.labelSmall.copy(
+                            fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium
+                        ),
+                        color = labelColor
+                    )
+                }
             }
-        }
         }
     }
 }
