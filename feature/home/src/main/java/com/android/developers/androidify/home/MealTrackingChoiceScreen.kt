@@ -162,7 +162,6 @@ fun MealTrackingChoiceScreen(
     onCameraPressed: () -> Unit = {},
     onBackPressed: () -> Unit = {},
     onMealLogged: (Uri?, String) -> Unit = { _, _ -> },
-    onTestIngredientExtraction: () -> Unit = {},
     onAboutClicked: () -> Unit = {},
 ) {
     // Mock state - in real implementation this would come from a ViewModel
@@ -204,7 +203,6 @@ fun MealTrackingChoiceScreen(
                     val description = uiState.descriptionText.text.toString()
                     onMealLogged(uiState.imageUri, description)
                 },
-                onTestIngredientExtraction = onTestIngredientExtraction,
                 onAboutClicked = onAboutClicked,
             )
         }
@@ -235,7 +233,6 @@ fun MealInputScreen(
     onUndoPressed: () -> Unit,
 
     onTrackMealClicked: () -> Unit,
-    onTestIngredientExtraction: () -> Unit,
     onAboutClicked: () -> Unit,
 ) {
 
@@ -351,19 +348,6 @@ fun MealInputScreen(
                             .padding(16.dp),
                         onClicked = onTrackMealClicked,
                     )
-                    
-                    // Test button for ingredient extraction
-                    Button(
-                        onClick = onTestIngredientExtraction,
-                        modifier = Modifier
-                            .align(Alignment.CenterHorizontally)
-                            .padding(horizontal = 16.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.secondary
-                        )
-                    ) {
-                        Text("Test Ingredient Extraction")
-                    }
                 }
             }
         }

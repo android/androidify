@@ -221,10 +221,6 @@ fun MainNavigation() {
                                 ))
                             }
                         }
-                    },
-                    // Test navigation to ingredient extraction screen
-                    onTestIngredientExtraction = {
-                        backStack.add(IngredientExtraction())
                     }
                 )
             }
@@ -299,10 +295,6 @@ fun MainNavigation() {
                                 ))
                             }
                         }
-                    },
-                    // Test navigation to ingredient extraction screen
-                    onTestIngredientExtraction = {
-                        backStack.add(IngredientExtraction())
                     }
                 )
             }
