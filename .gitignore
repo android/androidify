@@ -1,17 +1,23 @@
-/.gradle/buildOutputCleanup/*
-/.idea/*
-/.gradle/*
-/build
+# Gradle
+/.gradle/
+**/build/
 /local.properties
-.DS_Store
+
+# IDE
+/.idea/*
 /.kotlin/
+.DS_Store
+
+# Android
 /app/release.keystore
-/baselineprofile/build/*
-/app/src/release/generated/*
-/core/build/
-/feature/build/
 /app/google-services.json
-tmp
-transformed
-debug
-build
+/app/src/release/generated/*
+
+# Build artifacts
+tmp/
+transformed/
+debug/
+*.tmp
+
+# Generated files
+**/generated/
