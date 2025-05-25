@@ -82,10 +82,23 @@ fun BottomNavigationBar(
     )
 
     Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(gradientBackground)
+        modifier = modifier.fillMaxWidth()
     ) {
+        // Background gradient
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(gradientBackground)
+        )
+        
+        // Top border for visual separation
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
+                .background(Secondary.copy(alpha = 0.6f))
+        )
+        
         NavigationBar(
             modifier = Modifier.fillMaxWidth(),
             containerColor = Color.Transparent, // Make container transparent to show gradient
