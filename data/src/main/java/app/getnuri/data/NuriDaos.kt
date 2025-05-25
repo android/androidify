@@ -29,4 +29,7 @@ interface UserFeedbackDao {
 
     @Query("SELECT * FROM user_feedback WHERE mealId = :mealId ORDER BY feedbackTimestamp DESC")
     fun getFeedbackForMeal(mealId: Long): Flow<List<UserFeedback>>
+    
+    @Query("SELECT * FROM user_feedback ORDER BY feedbackTimestamp DESC")
+    fun getAllFeedback(): Flow<List<UserFeedback>>
 }

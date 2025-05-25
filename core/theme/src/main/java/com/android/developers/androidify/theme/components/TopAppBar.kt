@@ -183,7 +183,7 @@ private fun AndroidifyTitle() {
         text = stringResource(R.string.androidify_title),
         style = MaterialTheme.typography.titleLarge.copy(
             fontFamily = displayFontFamily,
-            fontWeight = FontWeight.Bold,
+            fontWeight = FontWeight.Black, // Font weight 900 for maximum impact
             letterSpacing = (-0.5).sp,
         )
     )
