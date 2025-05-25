@@ -54,11 +54,10 @@ fun EnhancedHistoryScreen(
             containerColor = Color.Transparent,
             topBar = {
                 AndroidifyTopAppBar(
-                    backEnabled = true,
-                    aboutEnabled = false,
-                    customTitle = "Your Journey",
-                    onBackPressed = onBackPressed,
+                    backEnabled = false,
+                    aboutEnabled = true,
                     useNuriStyling = true,
+                    onAboutClicked = onBackPressed,
                 )
             }
         ) { paddingValues ->

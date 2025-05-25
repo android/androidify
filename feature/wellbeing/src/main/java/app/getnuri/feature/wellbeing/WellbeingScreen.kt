@@ -47,9 +47,9 @@ fun WellbeingScreen(
         topBar = {
             AndroidifyTopAppBar(
                 backEnabled = false,
-                aboutEnabled = false,
-                customTitle = "Wellbeing",
+                aboutEnabled = true,
                 useNuriStyling = true,
+                onAboutClicked = onBackPressed,
             )
         },
         containerColor = MaterialTheme.colorScheme.surface,

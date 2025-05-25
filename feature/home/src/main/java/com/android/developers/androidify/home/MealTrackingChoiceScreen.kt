@@ -252,29 +252,13 @@ fun MealInputScreen(
             )
         },
         topBar = {
-            if (isExpanded) {
-                AndroidifyTopAppBar(
-                    backEnabled = true,
-                    isMediumWindowSize = true,
-                    aboutEnabled = false,
-                    onBackPressed = onBackPressed,
-                    useNuriStyling = true,
-                    expandedCenterButtons = {
-                        MealInputTypeToolbar(
-                            uiState.selectedInputType,
-                            modifier = Modifier.padding(start = 16.dp, end = 16.dp),
-                            onOptionSelected = onInputTypeSelected,
-                        )
-                    },
-                )
-            } else {
-                AndroidifyTopAppBar(
-                    backEnabled = false,
-                    aboutEnabled = true,
-                    useNuriStyling = true,
-                    onAboutClicked = onAboutClicked,
-                )
-            }
+            AndroidifyTopAppBar(
+                backEnabled = false,
+                aboutEnabled = true,
+                isMediumWindowSize = isExpanded,
+                useNuriStyling = true,
+                onAboutClicked = onAboutClicked,
+            )
         },
         containerColor = MaterialTheme.colorScheme.surface,
     ) { contentPadding ->

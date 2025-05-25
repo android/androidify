@@ -116,12 +116,10 @@ fun ResultsScreen(
         },
         topBar = {
             AndroidifyTopAppBar(
-                backEnabled = true,
+                backEnabled = false,
+                aboutEnabled = true,
                 isMediumWindowSize = isAtLeastMedium(),
                 useNuriStyling = true,
-                onBackPressed = {
-                    onBackPress()
-                },
                 onAboutClicked = onAboutPress,
             )
         },
