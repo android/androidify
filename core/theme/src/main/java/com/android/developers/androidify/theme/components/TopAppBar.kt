@@ -64,7 +64,11 @@ fun AndroidifyTopAppBar(
     expandedCenterButtons: @Composable () -> Unit = {},
     onBackPressed: () -> Unit = {},
     onAboutClicked: () -> Unit = {},
+    useNuriStyling: Boolean = false,
 ) {
+    val backgroundColor = if (useNuriStyling) Color(0xFFF5FF8C) else MaterialTheme.colorScheme.surfaceContainerLowest
+    val contentColor = if (useNuriStyling) Color(0xFF800080) else MaterialTheme.colorScheme.onSurface
+    
     if (isMediumWindowSize) {
         Box(
             modifier = modifier
@@ -77,18 +81,18 @@ fun AndroidifyTopAppBar(
                     .height(64.dp)
                     .padding(start = 8.dp)
                     .background(
-                        color = MaterialTheme.colorScheme.surfaceContainerLowest,
+                        color = backgroundColor,
                         shape = MaterialTheme.shapes.large,
                     )
                     .padding(top = 8.dp, bottom = 8.dp, end = 16.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 if (backEnabled) {
-                    BackButton(onBackPressed)
+                    BackButton(onBackPressed, contentColor)
                 } else {
                     Spacer(modifier.size(16.dp))
                 }
-                AndroidifyTitle()
+                AndroidifyTitle(contentColor)
             }
 
             Box(
@@ -103,17 +107,18 @@ fun AndroidifyTopAppBar(
                     modifier = Modifier
                         .align(Alignment.CenterEnd)
                         .background(
-                            color = MaterialTheme.colorScheme.surfaceContainerLowest,
+                            color = backgroundColor,
                             shape = CircleShape,
                         ),
                     onAboutClicked = onAboutClicked,
+                    contentColor = contentColor,
                 )
             }
         }
     } else {
         CenterAlignedTopAppBar(
             title = {
-                AndroidifyTitle()
+                AndroidifyTitle(contentColor)
             },
             modifier = modifier
                 .statusBarsPadding()
@@ -123,25 +128,26 @@ fun AndroidifyTopAppBar(
                 ),
             navigationIcon = {
                 if (backEnabled) {
-                    BackButton(onBackPressed)
+                    BackButton(onBackPressed, contentColor)
                 }
             },
             actions = {
                 if (aboutEnabled) {
-                    AboutButton(onAboutClicked = onAboutClicked)
+                    AboutButton(onAboutClicked = onAboutClicked, contentColor = contentColor)
                 }
             },
-            colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLowest),
+            colors = TopAppBarDefaults.topAppBarColors(containerColor = backgroundColor),
         )
     }
 }
 
 @Composable
-private fun BackButton(onBackPressed: () -> Unit) {
+private fun BackButton(onBackPressed: () -> Unit, tintColor: Color = MaterialTheme.colorScheme.onSurface) {
     IconButton(onClick = onBackPressed) {
         Icon(
             ImageVector.vectorResource(R.drawable.rounded_arrow_back_24),
             contentDescription = "Back",
+            tint = tintColor,
         )
     }
 }
@@ -178,20 +184,21 @@ fun AndroidifyTranslucentTopAppBar(
 }
 
 @Composable
-private fun AndroidifyTitle() {
+private fun AndroidifyTitle(textColor: Color = MaterialTheme.colorScheme.onSurface) {
     Text(
         text = stringResource(R.string.androidify_title),
         style = MaterialTheme.typography.titleLarge.copy(
             fontFamily = displayFontFamily,
             fontWeight = FontWeight.Black, // Font weight 900 for maximum impact
             letterSpacing = (-0.5).sp,
-        )
+        ),
+        color = textColor
     )
 }
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-private fun AboutButton(modifier: Modifier = Modifier, onAboutClicked: () -> Unit = {}) {
+private fun AboutButton(modifier: Modifier = Modifier, onAboutClicked: () -> Unit = {}, contentColor: Color = MaterialTheme.colorScheme.onSurface) {
     val sharedTransitionScope = LocalSharedTransitionScope.current
     with(sharedTransitionScope) {
         IconButton(
@@ -206,7 +213,36 @@ private fun AboutButton(modifier: Modifier = Modifier, onAboutClicked: () -> Uni
             Icon(
                 ImageVector.vectorResource(R.drawable.outline_info_24),
                 contentDescription = "About",
+                tint = contentColor,
             )
         }
     }
+}
+
+// New styled top app bar specifically for nuri branded screens
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+fun NuriStyledTopAppBar(
+    title: String,
+    modifier: Modifier = Modifier,
+    navigationIcon: @Composable (() -> Unit)? = null,
+    actions: @Composable (() -> Unit)? = null,
+) {
+    CenterAlignedTopAppBar(
+        title = { 
+            Text(
+                title,
+                style = MaterialTheme.typography.headlineSmall.copy(
+                    fontWeight = FontWeight.Bold
+                ),
+                color = Color(0xFF800080) // Purple
+            )
+        },
+        modifier = modifier,
+        navigationIcon = navigationIcon ?: { },
+        actions = { actions?.invoke() },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = Color(0xFFF5FF8C) // Light yellow-green background
+        )
+    )
 }

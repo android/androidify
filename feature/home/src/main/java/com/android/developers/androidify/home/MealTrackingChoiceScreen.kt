@@ -258,6 +258,7 @@ fun MealInputScreen(
                     isMediumWindowSize = true,
                     aboutEnabled = false,
                     onBackPressed = onBackPressed,
+                    useNuriStyling = true,
                     expandedCenterButtons = {
                         MealInputTypeToolbar(
                             uiState.selectedInputType,
@@ -270,6 +271,7 @@ fun MealInputScreen(
                 AndroidifyTopAppBar(
                     backEnabled = false,
                     aboutEnabled = true,
+                    useNuriStyling = true,
                     onAboutClicked = onAboutClicked,
                 )
             }

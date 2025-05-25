@@ -33,6 +33,7 @@ import app.getnuri.feature.history.model.TimelineEntry
 import app.getnuri.feature.history.model.DayGroup
 import app.getnuri.theme.components.ExpressiveCard
 import app.getnuri.theme.components.ExpressiveGradientBackground
+import app.getnuri.theme.components.NuriStyledTopAppBar
 import coil3.compose.rememberAsyncImagePainter
 import coil3.request.ImageRequest
 import java.text.SimpleDateFormat
@@ -52,29 +53,17 @@ fun EnhancedHistoryScreen(
             modifier = modifier.fillMaxSize(),
             containerColor = Color.Transparent,
             topBar = {
-                CenterAlignedTopAppBar(
-                    title = { 
-                        Text(
-                            "Your Journey",
-                            style = MaterialTheme.typography.headlineSmall.copy(
-                                fontWeight = FontWeight.Black,
-                                letterSpacing = 0.5.sp
-                            ),
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                    },
+                NuriStyledTopAppBar(
+                    title = "Your Journey",
                     navigationIcon = {
                         IconButton(onClick = onBackPressed) {
                             Icon(
                                 imageVector = Icons.Filled.ArrowBack,
                                 contentDescription = "Back",
-                                tint = MaterialTheme.colorScheme.onSurface
+                                tint = Color(0xFF800080) // Purple to match nuri styling
                             )
                         }
-                    },
-                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                        containerColor = Color.Transparent
-                    )
+                    }
                 )
             }
         ) { paddingValues ->
