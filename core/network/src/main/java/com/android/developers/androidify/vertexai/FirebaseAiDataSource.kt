@@ -80,8 +80,10 @@ class FirebaseAiDataSourceImpl @Inject constructor(
             remoteConfigDataSource.imageModelName(),
             safetySettings =
             ImagenSafetySettings(
-                ImagenSafetyFilterLevel.BLOCK_LOW_AND_ABOVE,
-                personFilterLevel = ImagenPersonFilterLevel.ALLOW_ALL,
+                safetyFilterLevel = ImagenSafetyFilterLevel.BLOCK_LOW_AND_ABOVE,
+                // Uses `ALLOW_ADULT` filter since `ALLOW_ALL` requires a special approval
+                // See https://cloud.google.com/vertex-ai/generative-ai/docs/image/responsible-ai-imagen#person-face-gen
+                personFilterLevel = ImagenPersonFilterLevel.ALLOW_ADULT,
             ),
         )
     }
