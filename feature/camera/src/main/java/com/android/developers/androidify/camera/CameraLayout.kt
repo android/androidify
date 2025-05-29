@@ -15,8 +15,12 @@
  */
 package com.android.developers.androidify.camera
 
+import android.content.Context
+import android.hardware.display.DisplayManager
+import android.view.Surface.ROTATION_90
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -33,12 +37,18 @@ import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.LifecycleStartEffect
 import com.android.developers.androidify.theme.AndroidifyTheme
 import com.android.developers.androidify.theme.TertiaryContainer
 import com.android.developers.androidify.util.FoldablePreviewParameters
@@ -61,6 +71,23 @@ internal fun CameraLayout(
     isTabletop: Boolean = false,
     modifier: Modifier = Modifier,
 ) {
+    val mContext = LocalContext.current
+    var isCameraLeft by remember { mutableStateOf(false) }
+    LifecycleStartEffect(Unit){
+        val displayManager = mContext.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
+        val displayListener = object : DisplayManager.DisplayListener {
+            override fun onDisplayChanged(displayId: Int) {
+                val rotation = displayManager.getDisplay(displayId).rotation
+                isCameraLeft = rotation == ROTATION_90
+            }
+            override fun onDisplayAdded(displayId: Int) {}
+            override fun onDisplayRemoved(displayId: Int) {}
+        }
+        displayManager.registerDisplayListener(displayListener, null)
+        onStopOrDispose {
+            displayManager.unregisterDisplayListener(displayListener)
+        }
+    }
     BoxWithConstraints(
         modifier
             .fillMaxSize()
@@ -88,6 +115,7 @@ internal fun CameraLayout(
                 zoomButton,
                 guideText,
                 guide,
+                isCameraLeft
             )
 
             this.maxWidth > maxHeight && allowsFullContent() -> CompactHorizontalCameraLayout(
@@ -314,15 +342,25 @@ private fun MediumHorizontalCameraLayout(
     zoomButton: @Composable (modifier: Modifier) -> Unit,
     guideText: @Composable (modifier: Modifier) -> Unit,
     guide: @Composable (modifier: Modifier) -> Unit,
+    isCameraLeft: Boolean = false,
     modifier: Modifier = Modifier,
 ) {
     Row(modifier.fillMaxSize()) {
-        VerticalControlsLayout(
-            captureButton,
-            flipCameraButton,
-            zoomButton = null,
-            Modifier.weight(1f),
-        )
+        if (isCameraLeft) {
+            Spacer(
+                Modifier
+                    .fillMaxHeight()
+                    .weight(1f),
+            )
+        } else {
+            VerticalControlsLayout(
+                captureButton,
+                flipCameraButton,
+                zoomButton = null,
+                Modifier.weight(1f),
+                isCameraLeft,
+            )
+        }
 
         Box(
             Modifier
@@ -342,11 +380,21 @@ private fun MediumHorizontalCameraLayout(
                 zoomButton(Modifier)
             }
         }
-        Spacer(
-            Modifier
-                .fillMaxHeight()
-                .weight(1f),
-        )
+        if (isCameraLeft) {
+            VerticalControlsLayout(
+                captureButton,
+                flipCameraButton,
+                zoomButton = null,
+                Modifier.weight(1f),
+                isCameraLeft,
+            )
+        } else {
+            Spacer(
+                Modifier
+                    .fillMaxHeight()
+                    .weight(1f),
+            )
+        }
     }
 }
 
@@ -418,20 +466,34 @@ private fun VerticalControlsLayout(
     flipCameraButton: (@Composable (modifier: Modifier) -> Unit)?,
     zoomButton: (@Composable (modifier: Modifier) -> Unit)?,
     modifier: Modifier = Modifier,
+    isCameraLeft: Boolean = false,
 ) {
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = if(isCameraLeft) Arrangement.End else Arrangement.Start,
     ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Box(Modifier.weight(1f), contentAlignment = Alignment.Center) {
-                if (flipCameraButton != null) flipCameraButton(Modifier)
+        if(isCameraLeft){
+            if (zoomButton != null) zoomButton(Modifier)
+            Spacer(Modifier.width(12.dp))
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Box(Modifier.weight(1f), contentAlignment = Alignment.Center) {
+                    if (flipCameraButton != null) flipCameraButton(Modifier)
+                }
+                captureButton(Modifier)
+                Spacer(modifier = Modifier.weight(1f))
             }
-            captureButton(Modifier)
-            Spacer(modifier = Modifier.weight(1f))
+        }else{
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Box(Modifier.weight(1f), contentAlignment = Alignment.Center) {
+                    if (flipCameraButton != null) flipCameraButton(Modifier)
+                }
+                captureButton(Modifier)
+                Spacer(modifier = Modifier.weight(1f))
+            }
+            Spacer(Modifier.width(12.dp))
+            if (zoomButton != null) zoomButton(Modifier)
         }
-        Spacer(Modifier.width(12.dp))
-        if (zoomButton != null) zoomButton(Modifier)
     }
 }
 
