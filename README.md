@@ -38,7 +38,7 @@ The app combines a variety of different Google technologies, such as:
 4. If you'd like to change the font that the app renders with, an optional spec can be placed in
    `~/gradlew/gradle.properties` file:
 
-```
+```properties
 fontName="Roboto Flex"
 ```
 
