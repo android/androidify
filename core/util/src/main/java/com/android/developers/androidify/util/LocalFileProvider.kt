@@ -15,8 +15,8 @@
  */
 package com.android.developers.androidify.util
 
+import android.app.Application
 import android.content.ContentValues
-import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
@@ -46,7 +46,7 @@ interface LocalFileProvider {
 }
 
 @Singleton
-open class LocalFileProviderImpl @Inject constructor(val application: Context) : LocalFileProvider {
+class LocalFileProviderImpl @Inject constructor(private val application: Application) : LocalFileProvider {
 
     override fun saveBitmapToFile(bitmap: Bitmap, file: File): File {
         var outputStream: FileOutputStream? = null
