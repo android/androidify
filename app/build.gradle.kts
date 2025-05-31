@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
-import java.io.FileInputStream
-import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
@@ -28,20 +26,6 @@ plugins {
     alias(libs.plugins.crashlytics)
     alias(libs.plugins.baselineprofile)
 }
-
-
-// Function to load properties from a file (e.g., local.properties)
-fun loadProperties(filePath: String): Properties {
-    val properties = Properties()
-    try {
-        FileInputStream(filePath).use { properties.load(it) }
-    } catch (e: Exception) {
-        println("Error loading properties: ${e.message}")
-    }
-    return properties
-}
-
-val localProperties = loadProperties(rootProject.file("local.properties").absolutePath)
 
 android {
     namespace = "com.android.developers.androidify"
