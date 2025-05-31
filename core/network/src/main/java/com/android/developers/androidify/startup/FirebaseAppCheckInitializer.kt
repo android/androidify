@@ -15,6 +15,7 @@
  */
 package com.android.developers.androidify.startup
 
+import android.annotation.SuppressLint
 import android.content.Context
 import androidx.startup.Initializer
 import com.google.firebase.appcheck.FirebaseAppCheck
@@ -25,6 +26,7 @@ import com.google.firebase.ktx.Firebase
 /**
  * Initialize [FirebaseAppCheck] using the App Startup Library.
  */
+@SuppressLint("EnsureInitializerMetadata") // Registered in :app module
 class FirebaseAppCheckInitializer : Initializer<FirebaseAppCheck> {
     override fun create(context: Context): FirebaseAppCheck {
         return Firebase.appCheck.apply {

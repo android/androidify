@@ -15,6 +15,7 @@
  */
 package com.android.developers.androidify.startup
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import androidx.startup.Initializer
@@ -27,6 +28,7 @@ import com.google.firebase.remoteconfig.remoteConfigSettings
 /**
  * Initialize [FirebaseRemoteConfig] using the App Startup Library.
  */
+@SuppressLint("EnsureInitializerMetadata") // Registered in :app module
 class FirebaseRemoteConfigInitializer : Initializer<FirebaseRemoteConfig> {
     override fun create(context: Context): FirebaseRemoteConfig {
         return Firebase.remoteConfig.apply {
