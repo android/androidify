@@ -53,13 +53,13 @@ import com.android.developers.androidify.theme.components.PrimaryButton
 @OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalSharedTransitionApi::class)
 @Composable
 fun ColorSplashTransitionScreen(
+    modifier: Modifier = Modifier,
     enterSpec: AnimationSpec<DpSize> = MaterialTheme.motionScheme.fastSpatialSpec(),
     exitSpec: AnimationSpec<DpSize> = MaterialTheme.motionScheme.slowSpatialSpec(),
     startPoint: IntOffset = IntOffset(0, 0),
     color: Color = Blue,
     onTransitionMidpoint: () -> Unit = {},
     onTransitionFinished: () -> Unit = {},
-    modifier: Modifier = Modifier,
 ) {
     val sizeAnimation = remember {
         Animatable(DpSize(0.dp, 0.dp), DpSizeToVector)

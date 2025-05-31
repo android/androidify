@@ -63,8 +63,8 @@ fun Modifier.skipToLookaheadPlacement(scope: SharedTransitionScope): Modifier =
 @Composable
 fun AnimatedTextField(
     textFieldState: TextFieldState,
-    targetEndState: String? = null, // when this value is null, no animation will happen
     modifier: Modifier = Modifier,
+    targetEndState: String? = null, // when this value is null, no animation will happen
     textStyle: TextStyle = TextStyle.Default,
     decorator: TextFieldDecorator? = null,
 ) {

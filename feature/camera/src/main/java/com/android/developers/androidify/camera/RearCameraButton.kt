@@ -33,9 +33,9 @@ import com.android.developers.androidify.theme.Primary80
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun RearCameraButton(
+    modifier: Modifier = Modifier,
     isRearCameraEnabled: Boolean = false,
     toggleRearCamera: () -> Unit,
-    modifier: Modifier = Modifier,
 ) {
     val actionLabel = stringResource(R.string.rear_camera_description)
     val colors = if (isRearCameraEnabled) {

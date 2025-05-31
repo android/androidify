@@ -99,8 +99,8 @@ internal fun CameraGuide(
 
 @Composable
 private fun BoxScope.DecorativeSquiggle(
-    color: Color = MaterialTheme.colorScheme.primary,
     modifier: Modifier = Modifier,
+    color: Color = MaterialTheme.colorScheme.primary,
     alignment: Alignment = Alignment.TopEnd,
 ) {
     val infiniteAnimation = rememberInfiniteTransition()
