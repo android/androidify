@@ -12,14 +12,13 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
   cancel-in-progress: true
 
-permissions:
-  contents: write # Needed for git-auto-commit-action
-
 jobs:
   build_test_lint:
     name: "Build, Test, and Lint"
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    permissions:
+      contents: write # Needed for git-auto-commit-action
 
     steps:
       - name: Checkout code
@@ -40,9 +39,6 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Build debug APK
-        run: ./gradlew assembleDebug --no-configuration-cache
-
       - name: Apply Spotless
         run: ./gradlew spotlessApply --init-script gradle/init.gradle.kts --no-configuration-cache
 
@@ -51,6 +47,9 @@ jobs:
         with:
           commit_message: 🤖 Apply Spotless formatting
           file_pattern: '**/*.kt **/*.kts **/*.java **/*.xml'
+
+      - name: Build debug APK
+        run: ./gradlew assembleDebug --no-configuration-cache
 
       - name: Verify Screenshot Tests (AndroidX)
         run: ./gradlew validateDebugScreenshotTest
