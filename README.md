@@ -28,15 +28,15 @@ The app combines a variety of different Google technologies, such as:
 1. Clone the repository.
 2. Create a [Firebase project](https://firebase.google.com/products/firebase-ai-logic) and
    generate a `google-services.json` file.
-   Replace the current placeholder app/google-services.json file with your own json file created
-   above. Be sure to enable Vertex AI SDK.
-   Ensure to also enable AppCheck on your Firebase project to prevent API abuse.
+   Replace the current placeholder [`app/google-services.json`](app/google-services.json) file with your own JSON file created
+   above. Be sure to enable [Vertex AI API](https://console.cloud.google.com/apis/library/aiplatform.googleapis.com).
+   Ensure to also enable [AppCheck](https://console.firebase.google.com/project/_/appcheck) on your Firebase project to prevent API abuse.
 
 3. This project makes use of remote config on Firebase too, you can import the [Firebase Remote config](https://firebase.google.com/docs/remote-config) settings from 
 [`remote_config_defaults.xml`](core/network/src/main/res/xml/remote_config_defaults.xml)
 
 4. If you'd like to change the font that the app renders with, an optional spec can be placed in
-   `~/gradlew/gradle.properties` file:
+   `~/.gradle/gradle.properties` file:
 
 ```
 fontName="Roboto Flex"
