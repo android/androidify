@@ -103,8 +103,8 @@ internal class ImageGenerationRepositoryImpl @Inject constructor(
 
     override suspend fun saveImage(imageBitmap: Bitmap): Uri {
         val cacheFile = localFileProvider.createCacheFile("shared_image_${UUID.randomUUID()}.jpg")
-        val file = localFileProvider.saveBitmapToFile(imageBitmap, cacheFile)
-        return localFileProvider.sharingUriForFile(file)
+        localFileProvider.saveBitmapToFile(imageBitmap, cacheFile)
+        return localFileProvider.sharingUriForFile(cacheFile)
     }
 
     override suspend fun saveImageToExternalStorage(imageBitmap: Bitmap): Uri {

@@ -57,7 +57,6 @@ class CreationViewModelTest {
             imageGenerationRepository,
             TestTextGenerationRepository(),
             TestFileProvider(),
-            UnconfinedTestDispatcher(),
             context = RuntimeEnvironment.getApplication(),
         )
     }

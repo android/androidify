@@ -42,8 +42,8 @@ internal object DataModule {
 
     @Provides
     @Singleton
-    fun provideLocalFileProvider(@ApplicationContext appContext: Context): LocalFileProvider =
-        LocalFileProviderImpl(appContext)
+    fun provideLocalFileProvider(@ApplicationContext appContext: Context, @Named("IO") ioDispatcher: CoroutineDispatcher): LocalFileProvider =
+        LocalFileProviderImpl(appContext, ioDispatcher)
 
     @Provides
     @Singleton

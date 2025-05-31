@@ -26,22 +26,22 @@ import java.io.File
  * It does not perform any actual file operations.
  */
 class TestFileProvider : LocalFileProvider {
-    override fun saveBitmapToFile(
+    override suspend fun saveBitmapToFile(
         bitmap: Bitmap,
         file: File,
-    ): File {
+    ) {
         TODO("Not yet implemented")
     }
 
-    override fun getFileFromCache(fileName: String): File {
+    override suspend fun getFileFromCache(fileName: String): File {
         TODO("Not yet implemented")
     }
 
-    override fun createCacheFile(fileName: String): File {
+    override suspend fun createCacheFile(fileName: String): File {
         TODO("Not yet implemented")
     }
 
-    override fun saveToSharedStorage(
+    override suspend fun saveToSharedStorage(
         file: File,
         fileName: String,
         mimeType: String,
@@ -53,11 +53,11 @@ class TestFileProvider : LocalFileProvider {
         TODO("Not yet implemented")
     }
 
-    override fun copyToInternalStorage(uri: Uri): File {
+    override suspend fun copyToInternalStorage(uri: Uri): File {
         return File("")
     }
 
-    override fun saveUriToSharedStorage(
+    override suspend fun saveUriToSharedStorage(
         inputUri: Uri,
         fileName: String,
         mimeType: String,

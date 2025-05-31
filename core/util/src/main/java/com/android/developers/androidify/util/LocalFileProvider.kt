@@ -22,109 +22,114 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
+import androidx.annotation.WorkerThread
 import androidx.core.content.FileProvider
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.File
-import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
+import java.nio.file.Files
 import java.util.UUID
 import javax.inject.Inject
+import javax.inject.Named
 import javax.inject.Singleton
 
 interface LocalFileProvider {
-    fun saveBitmapToFile(bitmap: Bitmap, file: File): File
-    fun getFileFromCache(fileName: String): File
-    fun createCacheFile(fileName: String): File
-    fun saveToSharedStorage(file: File, fileName: String, mimeType: String): Uri
+    @WorkerThread
+    suspend fun saveBitmapToFile(bitmap: Bitmap, file: File)
+    @WorkerThread
+    suspend fun getFileFromCache(fileName: String): File
+    @WorkerThread
+    suspend fun createCacheFile(fileName: String): File
+    @WorkerThread
+    suspend fun saveToSharedStorage(file: File, fileName: String, mimeType: String): Uri
     fun sharingUriForFile(file: File): Uri
-    fun copyToInternalStorage(uri: Uri): File
-    fun saveUriToSharedStorage(
-        inputUri: Uri,
-        fileName: String,
-        mimeType: String,
-    ): Uri
+    @WorkerThread
+    suspend fun copyToInternalStorage(uri: Uri): File
+    @WorkerThread
+    suspend fun saveUriToSharedStorage(inputUri: Uri, fileName: String, mimeType: String): Uri
 }
 
 @Singleton
-open class LocalFileProviderImpl @Inject constructor(val application: Context) : LocalFileProvider {
+open class LocalFileProviderImpl @Inject constructor(
+    val application: Context,
+    @Named("IO")
+    val ioDispatcher: CoroutineDispatcher,
+) : LocalFileProvider {
 
-    override fun saveBitmapToFile(bitmap: Bitmap, file: File): File {
+    override suspend fun saveBitmapToFile(bitmap: Bitmap, file: File) = withContext(ioDispatcher) {
         var outputStream: FileOutputStream? = null
         try {
             outputStream = FileOutputStream(file)
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
             outputStream.flush()
-            return file
         } catch (e: IOException) {
             throw e
         } finally {
             outputStream?.close()
         }
     }
-    override fun getFileFromCache(fileName: String): File {
-        return File(application.cacheDir, fileName)
+
+    override suspend fun getFileFromCache(fileName: String): File = withContext(ioDispatcher) {
+        File(application.cacheDir, fileName)
     }
 
     @Throws(IOException::class)
-    override fun createCacheFile(fileName: String): File {
+    override suspend fun createCacheFile(fileName: String): File = withContext(ioDispatcher) {
         val cacheDir = application.cacheDir
         val imageFile = File(cacheDir, fileName)
         if (!imageFile.createNewFile()) {
             throw IOException("Unable to create file: ${imageFile.absolutePath}")
         }
-        return imageFile
+        return@withContext imageFile
     }
 
-    override fun saveToSharedStorage(
+    override suspend fun saveToSharedStorage(
         file: File,
         fileName: String,
         mimeType: String,
-    ): Uri {
+    ): Uri = withContext(ioDispatcher) {
         val (uri, contentValues) = createSharedStorageEntry(fileName, mimeType)
         saveFileToUri(file, uri)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             contentValues.put(MediaStore.Images.ImageColumns.IS_PENDING, 0)
         }
         application.contentResolver.update(uri, contentValues, null, null)
-        return uri
+        return@withContext uri
     }
 
-    override fun saveUriToSharedStorage(
+    override suspend fun saveUriToSharedStorage(
         inputUri: Uri,
         fileName: String,
         mimeType: String,
-    ): Uri {
+    ): Uri = withContext(ioDispatcher)  {
         val (newUri, contentValues) = createSharedStorageEntry(fileName, mimeType)
         application.contentResolver.openOutputStream(newUri)?.use { outputStream ->
             application.contentResolver.openInputStream(inputUri)?.use { inputStream ->
-                val buffer = ByteArray(4 * 1024) // 4 KB buffer size - adjust as needed
-                var bytesRead: Int
-                while (inputStream.read(buffer).also { bytesRead = it } != -1) {
-                    outputStream.write(buffer, 0, bytesRead)
-                }
+                inputStream.copyTo(outputStream)
             }
         } ?: throw IOException("Failed to open output stream.")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             contentValues.put(MediaStore.Images.ImageColumns.IS_PENDING, 0)
         }
         application.contentResolver.update(newUri, contentValues, null, null)
-        return newUri
+        return@withContext newUri
     }
 
     @Throws(IOException::class)
+    @WorkerThread
     private fun saveFileToUri(file: File, uri: Uri) {
         application.contentResolver.openOutputStream(uri)?.use { outputStream ->
-            FileInputStream(file).use { inputStream ->
-                val buffer = ByteArray(4 * 1024) // 4 KB buffer size - adjust as needed
-                var bytesRead: Int
-                while (inputStream.read(buffer).also { bytesRead = it } != -1) {
-                    outputStream.write(buffer, 0, bytesRead)
-                }
+            file.inputStream().use { inputStream ->
+                inputStream.copyTo(outputStream)
             }
         } ?: throw IOException("Failed to open output stream for uri: $uri")
     }
 
     @Throws(IOException::class)
+    @WorkerThread
     private fun createSharedStorageEntry(fileName: String, mimeType: String): Pair<Uri, ContentValues> {
         val resolver = application.contentResolver
         val contentValues = ContentValues().apply {
@@ -160,7 +165,7 @@ open class LocalFileProviderImpl @Inject constructor(val application: Context) :
     }
 
     @Throws(IOException::class)
-    override fun copyToInternalStorage(uri: Uri): File {
+    override suspend fun copyToInternalStorage(uri: Uri): File = withContext(ioDispatcher) {
         val uuid = UUID.randomUUID()
         val file = File(application.cacheDir, "temp_file_$uuid")
         application.contentResolver.openInputStream(uri)?.use { inputStream ->
@@ -168,6 +173,6 @@ open class LocalFileProviderImpl @Inject constructor(val application: Context) :
                 inputStream.copyTo(outputStream)
             }
         }
-        return file
+        return@withContext file
     }
 }

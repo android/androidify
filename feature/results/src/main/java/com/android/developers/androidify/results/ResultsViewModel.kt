@@ -22,21 +22,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.developers.androidify.data.ImageGenerationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import javax.inject.Named
 
 @HiltViewModel
 class ResultsViewModel @Inject constructor(
     val imageGenerationRepository: ImageGenerationRepository,
-    @Named("IO")
-    val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ResultState())
@@ -58,7 +53,7 @@ class ResultsViewModel @Inject constructor(
     }
 
     fun shareClicked() {
-        viewModelScope.launch(ioDispatcher) {
+        viewModelScope.launch {
             val resultUrl = state.value.resultImageBitmap
             if (resultUrl != null) {
                 val imageFileUri = imageGenerationRepository.saveImage(resultUrl)
@@ -70,7 +65,7 @@ class ResultsViewModel @Inject constructor(
         }
     }
     fun downloadClicked() {
-        viewModelScope.launch(ioDispatcher) {
+        viewModelScope.launch {
             val resultBitmap = state.value.resultImageBitmap
             val originalImage = state.value.originalImageUrl
             if (originalImage != null) {

@@ -48,7 +48,6 @@ class ResultsViewModelTest {
     fun setup() {
         viewModel = ResultsViewModel(
             FakeImageGenerationRepository(),
-            UnconfinedTestDispatcher(),
         )
     }
 
