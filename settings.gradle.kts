@@ -30,14 +30,11 @@ dependencyResolutionManagement {
 
 rootProject.name = "Androidify"
 include(":app")
-
-include(":feature")
 include(":feature:camera")
 include(":feature:creation")
 include(":feature:home")
 include(":feature:results")
 include(":data")
-include(":core")
 include(":core:network")
 include(":core:util")
 include(":core:theme")
