@@ -64,12 +64,12 @@ dependencies {
 
     testImplementation(libs.hilt.android.testing)
     testImplementation(libs.robolectric)
-    testImplementation(project(":core:testing"))
-    implementation(project(":core:network"))
+    testImplementation(projects.core.testing)
+    implementation(projects.core.network)
 
-    implementation(project(":core:theme"))
-    implementation(project(":core:util"))
-    implementation(project(":data"))
+    implementation(projects.core.theme)
+    implementation(projects.core.util)
+    implementation(projects.data)
     testImplementation(kotlin("test"))
 
     // Android Instrumented Tests
@@ -78,7 +78,7 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.hilt.android.testing)
-    androidTestImplementation(project(":core:testing"))
+    androidTestImplementation(projects.core.testing)
     kspAndroidTest(libs.hilt.compiler)
 
     debugImplementation(libs.androidx.ui.test.manifest)

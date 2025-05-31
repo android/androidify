@@ -95,5 +95,5 @@ dependencies {
     implementation(libs.androidx.uiautomator)
     implementation(libs.androidx.benchmark.macro.junit4)
     implementation(libs.hilt.android.testing)
-    implementation(project(":core:testing"))
+    implementation(projects.core.testing)
 }

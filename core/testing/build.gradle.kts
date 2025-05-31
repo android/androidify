@@ -55,9 +55,9 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.androidx.runner)
     implementation(libs.hilt.android.testing)
-    implementation(project(":data"))
-    implementation(project(":core:network"))
-    implementation(project(":core:util"))
+    implementation(projects.data)
+    implementation(projects.core.network)
+    implementation(projects.core.util)
     ksp(libs.hilt.compiler)
 
     androidTestImplementation(platform(libs.androidx.compose.bom))

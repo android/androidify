@@ -56,7 +56,7 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation(project(":core:util"))
+    implementation(projects.core.util)
 
     implementation(libs.androidx.adaptive)
     implementation(libs.androidx.adaptive.layout)
@@ -70,7 +70,7 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.hilt.android.testing)
-    androidTestImplementation(project(":core:testing"))
+    androidTestImplementation(projects.core.testing)
 
     debugImplementation(libs.androidx.ui.test.manifest)
 }

@@ -45,8 +45,8 @@ androidComponents {
 }
 
 dependencies {
-    implementation(project(":core:network"))
-    implementation(project(":core:util"))
+    implementation(projects.core.network)
+    implementation(projects.core.util)
 
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.retrofit)

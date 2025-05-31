@@ -77,12 +77,12 @@ dependencies {
     }
     implementation(libs.firebase.app.check)
     implementation(libs.firebase.config)
-    implementation(project(":core:util"))
+    implementation(projects.core.util)
     implementation(libs.firebase.config.ktx)
     ksp(libs.hilt.compiler)
 
     androidTestImplementation(libs.androidx.ui.test.junit4)
     androidTestImplementation(libs.hilt.android.testing)
-    androidTestImplementation(project(":core:testing"))
+    androidTestImplementation(projects.core.testing)
     kspAndroidTest(libs.hilt.compiler)
 }

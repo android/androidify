@@ -128,14 +128,14 @@ dependencies {
 
     implementation(libs.androidx.window)
 
-    implementation(project(":feature:camera"))
-    implementation(project(":feature:creation"))
-    implementation(project(":feature:home"))
-    implementation(project(":feature:results"))
+    implementation(projects.feature.camera)
+    implementation(projects.feature.creation)
+    implementation(projects.feature.home)
+    implementation(projects.feature.results)
 
-    implementation(project(":core:theme"))
+    implementation(projects.core.theme)
 
-    baselineProfile(project(":benchmark"))
+    baselineProfile(projects.benchmark)
 
     // Android Instrumented Tests
     androidTestImplementation(platform(libs.androidx.compose.bom))
@@ -143,7 +143,7 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.hilt.android.testing)
-    androidTestImplementation(project(":core:testing"))
+    androidTestImplementation(projects.core.testing)
     kspAndroidTest(libs.hilt.compiler)
 
     debugImplementation(libs.androidx.ui.test.manifest)
