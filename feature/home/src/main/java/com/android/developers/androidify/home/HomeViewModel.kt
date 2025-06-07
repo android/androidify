@@ -18,29 +18,38 @@ package com.android.developers.androidify.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.developers.androidify.data.ConfigProvider
+import com.android.developers.androidify.home.model.HomeState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(val configProvider: ConfigProvider) : ViewModel() {
+class HomeViewModel @Inject constructor(
+    private val configProvider: ConfigProvider,
+) : ViewModel() {
+
     private val _state = MutableStateFlow(HomeState())
-    val state = _state.asStateFlow()
-    init {
-        viewModelScope.launch {
-            _state.value = _state.value.copy(
+    val state: StateFlow<HomeState> = _state
+        .onStart { initializeStateFromConfig() }
+        .stateIn(
+            scope = viewModelScope,
+            started = WhileSubscribed(stopTimeoutMillis = 5_000),
+            initialValue = HomeState(),
+        )
+
+    private fun initializeStateFromConfig() {
+        _state.update {
+            HomeState(
                 isAppActive = !configProvider.isAppInactive(),
                 dancingDroidLink = configProvider.getDancingDroidLink(),
                 videoLink = configProvider.getPromoVideoLink(),
             )
         }
     }
-}
 
-data class HomeState(
-    val isAppActive: Boolean = true,
-    val videoLink: String? = null,
-    val dancingDroidLink: String? = null,
-)
+}
