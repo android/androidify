@@ -29,19 +29,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.unit.IntOffset
-import androidx.lifecycle.viewmodel.navigation3.ViewModelStoreNavEntryDecorator
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
-import androidx.navigation3.runtime.SavedStateNavEntryDecorator
 import androidx.navigation3.runtime.entry
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
-import androidx.navigation3.ui.SceneSetupNavEntryDecorator
+import com.android.developers.androidify.about.AboutScreen
 import com.android.developers.androidify.camera.CameraPreviewScreen
 import com.android.developers.androidify.creation.CreationScreen
-import com.android.developers.androidify.home.AboutScreen
 import com.android.developers.androidify.home.HomeScreen
 import com.android.developers.androidify.theme.transitions.ColorSplashTransitionScreen
 
@@ -49,13 +45,11 @@ import com.android.developers.androidify.theme.transitions.ColorSplashTransition
 @Composable
 fun MainNavigation() {
     val backStack = rememberMutableStateListOf<NavigationRoute>(Home)
-    var positionReveal by remember {
-        mutableStateOf(IntOffset.Zero)
-    }
-    var showSplash by remember {
-        mutableStateOf(false)
-    }
+
+    var positionReveal by remember { mutableStateOf(IntOffset.Zero) }
+    var showSplash by remember { mutableStateOf(false) }
     val motionScheme = MaterialTheme.motionScheme
+
     NavDisplay(
         backStack = backStack,
         onBack = { backStack.removeLastOrNull() },
@@ -78,7 +72,7 @@ fun MainNavigation() {
             )
         },
         entryProvider = entryProvider {
-            entry<Home> { entry ->
+            entry<Home> {
                 HomeScreen(
                     onClickLetsGo = { positionOffset ->
                         showSplash = true
@@ -115,9 +109,7 @@ fun MainNavigation() {
             }
             entry<About> {
                 AboutScreen(
-                    onBackPressed = {
-                        backStack.removeLastOrNull()
-                    },
+                    onBackPressed = { backStack.removeLastOrNull() },
                 )
             }
         },

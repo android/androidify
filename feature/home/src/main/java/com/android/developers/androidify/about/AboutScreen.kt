@@ -15,7 +15,7 @@
  */
 @file:OptIn(ExperimentalSharedTransitionApi::class, ExperimentalMaterial3ExpressiveApi::class)
 
-package com.android.developers.androidify.home
+package com.android.developers.androidify.about
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.background
@@ -55,6 +55,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation3.ui.LocalNavAnimatedContentScope
+import com.android.developers.androidify.home.R
 import com.android.developers.androidify.theme.AndroidifyTheme
 import com.android.developers.androidify.theme.LocalSharedTransitionScope
 import com.android.developers.androidify.theme.SharedElementContextPreview
@@ -65,22 +66,6 @@ import com.android.developers.androidify.util.LargeScreensPreview
 import com.android.developers.androidify.util.PhonePreview
 import com.android.developers.androidify.util.isAtLeastMedium
 
-@PhonePreview
-@Composable
-private fun AboutPreviewCompact() {
-    SharedElementContextPreview {
-        AboutScreen(isMediumWindowSize = false) {}
-    }
-}
-
-@LargeScreensPreview
-@Composable
-private fun AboutPreviewLargeScreens() {
-    SharedElementContextPreview {
-        AboutScreen(isMediumWindowSize = true) {}
-    }
-}
-
 @Composable
 fun AboutScreen(
     isMediumWindowSize: Boolean = isAtLeastMedium(),
@@ -88,11 +73,13 @@ fun AboutScreen(
 ) {
     val sharedElementScope = LocalSharedTransitionScope.current
     val navScope = LocalNavAnimatedContentScope.current
+
     with(sharedElementScope) {
         Scaffold(
             topBar = {
                 IconButton(
-                    modifier = Modifier.safeDrawingPadding()
+                    modifier = Modifier
+                        .safeDrawingPadding()
                         .padding(16.dp),
                     shape = CircleShape,
                     colors = IconButtonDefaults.iconButtonColors(
@@ -208,16 +195,12 @@ private fun FooterButtons() {
     val uriHandler = LocalUriHandler.current
     Row {
         SecondaryOutlinedButton(
-            onClick = {
-                uriHandler.openUri("https://policies.google.com/terms")
-            },
+            onClick = { uriHandler.openUri("https://policies.google.com/terms") },
             buttonText = stringResource(R.string.terms),
         )
         Spacer(modifier = Modifier.size(16.dp))
         SecondaryOutlinedButton(
-            onClick = {
-                uriHandler.openUri("https://policies.google.com/privacy")
-            },
+            onClick = { uriHandler.openUri("https://policies.google.com/privacy") },
             buttonText = stringResource(R.string.privacy),
         )
     }
@@ -232,7 +215,7 @@ private fun AboutMessage(textStyle: TextStyle = MaterialTheme.typography.bodyLar
 }
 
 @Composable
-fun BulletPoint(
+private fun BulletPoint(
     bulletText: String,
     title: String,
     text: String,
@@ -269,10 +252,36 @@ fun BulletPoint(
     }
 }
 
+@PhonePreview
+@Composable
+private fun AboutPreviewCompact() {
+    SharedElementContextPreview {
+        AboutScreen(
+            isMediumWindowSize = false,
+            onBackPressed = {},
+        )
+    }
+}
+
+@LargeScreensPreview
+@Composable
+private fun AboutPreviewLargeScreens() {
+    SharedElementContextPreview {
+        AboutScreen(
+            isMediumWindowSize = true,
+            onBackPressed = {},
+        )
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 private fun BulletPointPreview() {
     AndroidifyTheme {
-        BulletPoint("1", "Photo", "Take a photo")
+        BulletPoint(
+            bulletText = "1",
+            title = "Photo",
+            text = "Take a photo",
+        )
     }
 }

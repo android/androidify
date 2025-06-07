@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.developers.androidify.home
+package com.android.developers.androidify.home.content
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -32,29 +32,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.android.developers.androidify.home.R
 import com.android.developers.androidify.theme.SharedElementContextPreview
 import com.android.developers.androidify.theme.components.AndroidifyTopAppBar
 
-@Preview
 @Composable
-fun AppInactivePreview() {
-    SharedElementContextPreview {
-        AppInactiveScreen()
-    }
-}
-
-@Composable
-fun AppInactiveScreen() {
+internal fun InactiveAppHomeContent() {
     Scaffold(
-        topBar = {
-            AndroidifyTopAppBar()
-        },
-    ) { padding ->
+        topBar = { AndroidifyTopAppBar() },
+    ) { paddingValues ->
         Column(
             modifier = Modifier
                 .background(MaterialTheme.colorScheme.secondary)
                 .fillMaxSize()
-                .padding(padding)
+                .padding(paddingValues)
                 .padding(64.dp),
             verticalArrangement = Arrangement.Center,
         ) {
@@ -71,5 +62,13 @@ fun AppInactiveScreen() {
                 modifier = Modifier.fillMaxWidth(),
             )
         }
+    }
+}
+
+@Preview(showSystemUi = true)
+@Composable
+private fun InactiveAppHomeContentPreview() {
+    SharedElementContextPreview {
+        InactiveAppHomeContent()
     }
 }
