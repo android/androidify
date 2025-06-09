@@ -25,7 +25,7 @@ interface GeminiNanoGenerationDataSource {
 }
 
 @Singleton
-class GeminiNanoGenerationDataSourceImpl @Inject constructor(val downloader: GeminiNanoDownloader) :
+internal class GeminiNanoGenerationDataSourceImpl @Inject constructor(private val downloader: GeminiNanoDownloader) :
     GeminiNanoGenerationDataSource {
 
     override suspend fun initialize() {

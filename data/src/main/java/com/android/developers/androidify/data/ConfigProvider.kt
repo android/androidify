@@ -16,10 +16,11 @@
 package com.android.developers.androidify.data
 
 import com.android.developers.androidify.RemoteConfigDataSource
+import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class ConfigProvider(val remoteConfigDataSource: RemoteConfigDataSource) {
+class ConfigProvider @Inject constructor(val remoteConfigDataSource: RemoteConfigDataSource) {
 
     fun isAppInactive(): Boolean {
         return remoteConfigDataSource.isAppInactive()
