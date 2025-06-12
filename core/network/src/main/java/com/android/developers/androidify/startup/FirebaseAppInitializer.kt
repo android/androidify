@@ -15,6 +15,7 @@
  */
 package com.android.developers.androidify.startup
 
+import android.annotation.SuppressLint
 import android.content.Context
 import androidx.startup.Initializer
 import com.google.firebase.Firebase
@@ -24,6 +25,7 @@ import com.google.firebase.initialize
 /**
  * Initialize [FirebaseApp] using the App Startup Library.
  */
+@SuppressLint("EnsureInitializerMetadata") // Registered in :app module
 class FirebaseAppInitializer : Initializer<FirebaseApp> {
     override fun create(context: Context): FirebaseApp {
         return Firebase.initialize(context)!!
