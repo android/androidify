@@ -20,7 +20,7 @@ package com.android.developers.androidify.navigation
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 
-interface NavigationRoute
+sealed interface NavigationRoute
 
 @Serializable
 data object Home : NavigationRoute
