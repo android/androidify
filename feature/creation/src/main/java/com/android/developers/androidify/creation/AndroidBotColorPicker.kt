@@ -33,7 +33,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -61,6 +63,7 @@ fun AndroidBotColorPicker(
     onBotColorSelected: (BotColor) -> Unit,
     listBotColor: List<BotColor>,
 ) {
+    val scrollState = rememberScrollState()
     Column(
         modifier
             .fillMaxWidth()
@@ -73,7 +76,9 @@ fun AndroidBotColorPicker(
         FlowRow(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
-            modifier = Modifier.align(Alignment.CenterHorizontally),
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .verticalScroll(scrollState),
         ) {
             listBotColors.forEach {
                 AndroidBotIndividualColor(

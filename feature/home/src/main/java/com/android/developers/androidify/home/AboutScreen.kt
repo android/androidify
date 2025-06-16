@@ -92,7 +92,8 @@ fun AboutScreen(
         Scaffold(
             topBar = {
                 IconButton(
-                    modifier = Modifier.safeDrawingPadding()
+                    modifier = Modifier
+                        .safeDrawingPadding()
                         .padding(16.dp),
                     shape = CircleShape,
                     colors = IconButtonDefaults.iconButtonColors(
@@ -162,7 +163,7 @@ fun AboutScreen(
                             )
                         }
                         Spacer(Modifier.size(48.dp))
-                        FooterButtons()
+                        FooterButtons(modifier = Modifier.padding(bottom = 8.dp))
                     }
                 }
             } else {
@@ -196,7 +197,7 @@ fun AboutScreen(
                         stringResource(R.string.about_step3_label),
                     )
                     Spacer(modifier = Modifier.size(24.dp))
-                    FooterButtons()
+                    FooterButtons(modifier = Modifier.padding(bottom = 8.dp))
                 }
             }
         }
@@ -204,9 +205,9 @@ fun AboutScreen(
 }
 
 @Composable
-private fun FooterButtons() {
+private fun FooterButtons(modifier: Modifier = Modifier) {
     val uriHandler = LocalUriHandler.current
-    Row {
+    Row(modifier) {
         SecondaryOutlinedButton(
             onClick = {
                 uriHandler.openUri("https://policies.google.com/terms")
