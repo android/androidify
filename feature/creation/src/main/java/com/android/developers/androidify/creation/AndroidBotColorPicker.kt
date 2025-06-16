@@ -64,6 +64,7 @@ fun AndroidBotColorPicker(
     listBotColor: List<BotColor>,
 ) {
     val scrollState = rememberScrollState()
+
     Column(
         modifier
             .fillMaxWidth()
