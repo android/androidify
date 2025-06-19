@@ -20,6 +20,7 @@ import com.android.developers.androidify.RemoteConfigDataSource
 import com.android.developers.androidify.RemoteConfigDataSourceImpl
 import com.android.developers.androidify.util.LocalFileProvider
 import com.android.developers.androidify.util.LocalFileProviderImpl
+import com.android.developers.androidify.vertexai.FakeFirebaseAiDataSource
 import com.android.developers.androidify.vertexai.FirebaseAiDataSource
 import com.android.developers.androidify.vertexai.FirebaseAiDataSourceImpl
 import dagger.Module
@@ -65,8 +66,14 @@ internal object DataModule {
 
     @Provides
     @Singleton
-    fun providesFirebaseVertexAiDataSource(remoteConfigDataSource: RemoteConfigDataSource): FirebaseAiDataSource =
-        FirebaseAiDataSourceImpl(remoteConfigDataSource)
+    fun providesFirebaseVertexAiDataSource(remoteConfigDataSource: RemoteConfigDataSource, @ApplicationContext context: Context): FirebaseAiDataSource {
+        val demo = true
+        return if (demo) {
+            FakeFirebaseAiDataSource(context)
+        } else {
+            FirebaseAiDataSourceImpl(remoteConfigDataSource)
+        }
+    }
 
     @Provides
     @Singleton

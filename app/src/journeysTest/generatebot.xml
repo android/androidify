@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<journey name="">
+    <description></description>
+    <actions>
+        <action>Click Create a prompt</action>
+        <action>type &quot;plaid shirt, white tshirt, green stripey pants, black boots, holding a
+            guitar, wearing a smart watch&quot;</action>
+        <action>Click on the orange colored circle for the bot color</action>
+        <action>Click Start transformation</action>
+    </actions>
+</journey>

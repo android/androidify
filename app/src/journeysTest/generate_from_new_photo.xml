@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<journey name="Create a bot from a photo">
+    <description>
+    </description>
+    <actions>
+        <action>Click Start with photo</action>
+        <action>click the green squiggle circle button to take a photo</action>
+        <action>Click Start transformation</action>
+        <action>Verify that an error is shown that it couldn't find a person in the image.</action>
+    </actions>
+</journey>

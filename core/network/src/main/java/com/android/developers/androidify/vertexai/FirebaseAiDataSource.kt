@@ -15,12 +15,15 @@
  */
 package com.android.developers.androidify.vertexai
 
+import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import com.android.developers.androidify.RemoteConfigDataSource
 import com.android.developers.androidify.model.GeneratedPrompt
 import com.android.developers.androidify.model.ImageValidationError
 import com.android.developers.androidify.model.ValidatedDescription
 import com.android.developers.androidify.model.ValidatedImage
+import com.android.developers.androidify.network.R
 import com.google.firebase.Firebase
 import com.google.firebase.ai.GenerativeModel
 import com.google.firebase.ai.ImagenModel
@@ -36,6 +39,7 @@ import com.google.firebase.ai.type.content
 import com.google.firebase.ai.type.generationConfig
 import com.google.firebase.ai.ai
 import com.google.firebase.ai.type.GenerativeBackend
+import kotlinx.coroutines.delay
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.booleanOrNull
 import kotlinx.serialization.json.decodeFromJsonElement
@@ -240,4 +244,37 @@ class FirebaseAiDataSourceImpl @Inject constructor(
         }
         return GeneratedPrompt(isSuccess, generatedPrompts)
     }
+}
+
+@Singleton
+class FakeFirebaseAiDataSource @Inject constructor(
+    val context: Context,
+) : FirebaseAiDataSource {
+
+    override suspend fun validatePromptHasEnoughInformation(inputPrompt: String): ValidatedDescription {
+        return ValidatedDescription(success = true, userDescription = "A woman with an umbrella")
+    }
+
+    override suspend fun validateImageHasEnoughInformation(image: Bitmap): ValidatedImage {
+        return ValidatedImage(success = true, errorMessage = null)
+    }
+
+    override suspend fun generateDescriptivePromptFromImage(image: Bitmap): ValidatedDescription {
+        return ValidatedDescription(success = true, userDescription = "A woman with an umbrella")
+    }
+
+    override suspend fun generateImageFromPromptAndSkinTone(
+        prompt: String,
+        skinTone: String,
+    ): Bitmap {
+        delay(2000)
+        val resId = R.drawable.rebecca_result
+        val bitmap = BitmapFactory.decodeResource(context.resources, resId)
+        return bitmap
+    }
+
+    override suspend fun generatePrompt(prompt: String): GeneratedPrompt {
+        return GeneratedPrompt(success = true, generatedPrompts = listOf("This is a prompt"))
+    }
+
 }
