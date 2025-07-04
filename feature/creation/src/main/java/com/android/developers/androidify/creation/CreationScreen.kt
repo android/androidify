@@ -91,6 +91,7 @@ import androidx.compose.material3.ripple
 import androidx.compose.material3.toShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -461,16 +462,23 @@ private fun MainCreationPane(
                 }
 
                 PromptType.TEXT.ordinal -> {
-                    TextPrompt(
-                        textFieldState = uiState.descriptionText,
-                        promptGenerationInProgress = uiState.promptGenerationInProgress,
-                        generatedPrompt = uiState.generatedPrompt,
-                        onPromptGenerationPressed = onPromptGenerationPressed,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .heightIn(min = 200.dp)
-                            .padding(2.dp),
-                    )
+
+                    val showTextPrompt by remember {
+                        derivedStateOf { pagerState.currentPage == PromptType.TEXT.ordinal && pagerState.targetPage == pagerState.currentPage }
+                    }
+
+                    if (showTextPrompt) {
+                        TextPrompt(
+                            textFieldState = uiState.descriptionText,
+                            promptGenerationInProgress = uiState.promptGenerationInProgress,
+                            generatedPrompt = uiState.generatedPrompt,
+                            onPromptGenerationPressed = onPromptGenerationPressed,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .heightIn(min = 200.dp)
+                                .padding(2.dp),
+                        )
+                    }
                 }
             }
         }
