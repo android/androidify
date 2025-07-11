@@ -17,10 +17,8 @@
 
 package com.android.developers.androidify.results
 
-import android.Manifest
 import android.graphics.Bitmap
 import android.net.Uri
-import android.os.Build
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.EaseOutBack
 import androidx.compose.animation.core.tween
@@ -57,7 +55,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringArrayResource
@@ -78,9 +75,6 @@ import com.android.developers.androidify.util.SmallPhonePreview
 import com.android.developers.androidify.util.allowsFullContent
 import com.android.developers.androidify.util.isAtLeastMedium
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.isGranted
-import com.google.accompanist.permissions.rememberPermissionState
-import com.google.accompanist.permissions.shouldShowRationale
 
 @Composable
 fun ResultsScreen(
@@ -91,18 +85,12 @@ fun ResultsScreen(
     verboseLayout: Boolean = allowsFullContent(),
     onBackPress: () -> Unit,
     onAboutPress: () -> Unit,
+    onNextPress: () -> Unit,
     viewModel: ResultsViewModel = hiltViewModel<ResultsViewModel>(),
 ) {
     val state = viewModel.state.collectAsStateWithLifecycle()
     LaunchedEffect(resultImage, originalImageUri, promptText) {
         viewModel.setArguments(resultImage, originalImageUri, promptText)
-    }
-    val context = LocalContext.current
-    LaunchedEffect(state.value.savedUri) {
-        val savedImageUri = state.value.savedUri
-        if (savedImageUri != null) {
-            shareImage(context, savedImageUri)
-        }
     }
     val snackbarHostState by viewModel.snackbarHostState.collectAsStateWithLifecycle()
     Scaffold(
@@ -133,12 +121,7 @@ fun ResultsScreen(
             contentPadding,
             state,
             verboseLayout = verboseLayout,
-            {
-                viewModel.downloadClicked()
-            },
-            shareClicked = {
-                viewModel.shareClicked()
-            },
+            onCustomizeShareClicked = onNextPress,
         )
     }
 }
@@ -162,8 +145,7 @@ private fun ResultsScreenPreview() {
         ResultsScreenContents(
             contentPadding = PaddingValues(0.dp),
             state = state,
-            downloadClicked = {},
-            shareClicked = {},
+            onCustomizeShareClicked = {},
         )
     }
 }
@@ -186,8 +168,7 @@ private fun ResultsScreenPreviewSmall() {
             contentPadding = PaddingValues(0.dp),
             state = state,
             verboseLayout = false,
-            downloadClicked = {},
-            shareClicked = {},
+            onCustomizeShareClicked = {},
         )
     }
 }
@@ -197,8 +178,7 @@ fun ResultsScreenContents(
     contentPadding: PaddingValues,
     state: State<ResultState>,
     verboseLayout: Boolean = allowsFullContent(),
-    downloadClicked: () -> Unit,
-    shareClicked: () -> Unit,
+    onCustomizeShareClicked: () -> Unit,
     defaultSelectedResult: ResultOption = ResultOption.ResultImage,
 ) {
     ResultsBackground()
@@ -247,11 +227,8 @@ fun ResultsScreenContents(
     }
     val buttonRow = @Composable { modifier: Modifier ->
         BotActionsButtonRow(
-            onShareClicked = {
-                shareClicked()
-            },
-            onDownloadClicked = {
-                downloadClicked()
+            onCustomizeShareClicked = {
+                onCustomizeShareClicked()
             },
             modifier = modifier,
             verboseLayout = verboseLayout,
@@ -327,7 +304,12 @@ private fun BackgroundRandomQuotes(verboseLayout: Boolean = true) {
             fontSize = 120.sp,
             modifier = Modifier
                 .align(if (verboseLayout) Alignment.TopCenter else Alignment.Center)
-                .basicMarquee(iterations = iterations, repeatDelayMillis = 0, velocity = 80.dp, initialDelayMillis = 500),
+                .basicMarquee(
+                    iterations = iterations,
+                    repeatDelayMillis = 0,
+                    velocity = 80.dp,
+                    initialDelayMillis = 500,
+                ),
         )
         if (verboseLayout) {
             val listMinusOther = listResultCompliments.asList().minus(randomQuote)
@@ -344,7 +326,12 @@ private fun BackgroundRandomQuotes(verboseLayout: Boolean = true) {
                 fontSize = 110.sp,
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
-                    .basicMarquee(iterations = iterations, repeatDelayMillis = 0, velocity = 60.dp, initialDelayMillis = 500),
+                    .basicMarquee(
+                        iterations = iterations,
+                        repeatDelayMillis = 0,
+                        velocity = 60.dp,
+                        initialDelayMillis = 500,
+                    ),
             )
         }
     }
@@ -352,67 +339,26 @@ private fun BackgroundRandomQuotes(verboseLayout: Boolean = true) {
 
 @Composable
 private fun BotActionsButtonRow(
-    onShareClicked: () -> Unit,
-    onDownloadClicked: () -> Unit,
+    onCustomizeShareClicked: () -> Unit,
     modifier: Modifier = Modifier,
     verboseLayout: Boolean = false,
 ) {
     Row(modifier) {
         PrimaryButton(
             onClick = {
-                onShareClicked()
+                onCustomizeShareClicked()
             },
-            leadingIcon = {
+            trailingIcon = {
                 Row {
+                    Spacer(modifier = Modifier.width(8.dp))
                     Icon(
                         ImageVector
-                            .vectorResource(com.android.developers.androidify.theme.R.drawable.sharp_share_24),
+                            .vectorResource(com.android.developers.androidify.theme.R.drawable.rounded_arrow_forward_24),
                         contentDescription = null, // decorative element
                     )
-                    Spacer(modifier = Modifier.width(8.dp))
                 }
             },
-            buttonText = if (verboseLayout) stringResource(R.string.share_your_bot) else null,
-        )
-        Spacer(Modifier.width(8.dp))
-        val externalStoragePermission = rememberPermissionState(
-            permission = Manifest.permission.WRITE_EXTERNAL_STORAGE,
-        )
-        val mustGrantPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            false
-        } else {
-            !externalStoragePermission.status.isGranted
-        }
-        var showRationaleDialog by remember {
-            mutableStateOf(false)
-        }
-        PrimaryButton(
-            onClick = {
-                if (mustGrantPermission) {
-                    if (externalStoragePermission.status.shouldShowRationale) {
-                        showRationaleDialog = true
-                    } else {
-                        externalStoragePermission.launchPermissionRequest()
-                    }
-                    externalStoragePermission.launchPermissionRequest()
-                } else {
-                    onDownloadClicked()
-                }
-            },
-            leadingIcon = {
-                Icon(
-                    ImageVector
-                        .vectorResource(R.drawable.rounded_download_24),
-                    contentDescription = stringResource(R.string.download_bot),
-                )
-            },
-        )
-        PermissionRationaleDialog(
-            showRationaleDialog,
-            onDismiss = {
-                showRationaleDialog = false
-            },
-            externalStoragePermission,
+            buttonText = if (verboseLayout) stringResource(R.string.customize_and_share) else null,
         )
     }
 }

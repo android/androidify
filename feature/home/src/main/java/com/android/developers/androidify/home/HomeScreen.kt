@@ -539,7 +539,7 @@ private fun VideoPlayer(
     }
 
     var videoFullyOnScreen by remember { mutableStateOf(false) }
-    val isWindowOccluded  = LocalOcclusion.current
+    val isWindowOccluded = LocalOcclusion.current
     Box(
         Modifier
             .background(MaterialTheme.colorScheme.surfaceContainerLowest)

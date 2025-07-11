@@ -54,8 +54,7 @@ class ResultsScreenScreenshotTest {
                     contentPadding = PaddingValues(0.dp),
                     state = state,
                     verboseLayout = true, // Replicates ResultsScreenPreview
-                    downloadClicked = {},
-                    shareClicked = {},
+                    onCustomizeShareClicked = {}
                 )
             }
         }
@@ -80,8 +79,7 @@ class ResultsScreenScreenshotTest {
                     contentPadding = PaddingValues(0.dp),
                     state = state,
                     verboseLayout = false, // Replicates ResultsScreenPreviewSmall
-                    downloadClicked = {},
-                    shareClicked = {},
+                    onCustomizeShareClicked = {}
                 )
             }
         }
@@ -105,8 +103,7 @@ class ResultsScreenScreenshotTest {
                     contentPadding = PaddingValues(0.dp),
                     state = state,
                     verboseLayout = true,
-                    downloadClicked = {},
-                    shareClicked = {},
+                    onCustomizeShareClicked = {},
                     defaultSelectedResult = ResultOption.OriginalInput, // Set the non-default option
                 )
             }

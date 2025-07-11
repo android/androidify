@@ -46,9 +46,7 @@ class ResultsViewModelTest {
 
     @Before
     fun setup() {
-        viewModel = ResultsViewModel(
-            FakeImageGenerationRepository(),
-        )
+        viewModel = ResultsViewModel()
     }
 
     @Test
@@ -92,44 +90,4 @@ class ResultsViewModelTest {
         )
     }
 
-    @Test
-    fun downloadClicked() = runTest {
-        val values = mutableListOf<ResultState>()
-        backgroundScope.launch(UnconfinedTestDispatcher()) {
-            viewModel.state.collect {
-                values.add(it)
-            }
-        }
-
-        viewModel.setArguments(
-            fakeBitmap,
-            originalFakeUri,
-            promptText = null,
-        )
-
-        viewModel.downloadClicked()
-        assertNotNull(values.last().externalOriginalSavedUri)
-        assertEquals(
-            originalFakeUri,
-            values.last().externalOriginalSavedUri,
-        )
-    }
-
-    @Test
-    fun shareClicked() = runTest {
-        val values = mutableListOf<ResultState>()
-        backgroundScope.launch(UnconfinedTestDispatcher()) {
-            viewModel.state.collect {
-                values.add(it)
-            }
-        }
-        viewModel.setArguments(
-            fakeBitmap,
-            originalFakeUri,
-            promptText = null,
-        )
-
-        viewModel.shareClicked()
-        assertNotNull(values.last().savedUri)
-    }
 }

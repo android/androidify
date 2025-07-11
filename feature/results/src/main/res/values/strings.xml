@@ -29,6 +29,10 @@
     <string name="share_text">Share your customized Android bot</string>
     <string name="download_bot">Download bot</string>
     <string name="prompt">Prompt</string>
+    <string name="customize_and_share">Customize and Share</string>
+    <string name="info">Info</string>
+    <string name="back">Back</string>
+    <string name="customize_and_export">Customize and Export</string>
     <string-array name="list_compliments">
         <item>You are in your bot era!</item>
         <item>Say hello to mini you!</item>

@@ -86,7 +86,7 @@ private fun AboutPreviewLargeScreens() {
 fun AboutScreen(
     isMediumWindowSize: Boolean = isAtLeastMedium(),
     onBackPressed: () -> Unit,
-    onLicensesClicked: () -> Unit
+    onLicensesClicked: () -> Unit,
 ) {
     val sharedElementScope = LocalSharedTransitionScope.current
     val navScope = LocalNavAnimatedContentScope.current
@@ -165,8 +165,10 @@ fun AboutScreen(
                             )
                         }
                         Spacer(Modifier.size(48.dp))
-                        FooterButtons(modifier = Modifier.padding(bottom = 8.dp),
-                            onLicensesClicked)
+                        FooterButtons(
+                            modifier = Modifier.padding(bottom = 8.dp),
+                            onLicensesClicked,
+                        )
                     }
                 }
             } else {
@@ -208,13 +210,15 @@ fun AboutScreen(
 }
 
 @Composable
-private fun FooterButtons(modifier: Modifier = Modifier,
-                          onLicensesClicked: () -> Unit) {
+private fun FooterButtons(
+    modifier: Modifier = Modifier,
+    onLicensesClicked: () -> Unit,
+) {
     val uriHandler = LocalUriHandler.current
     FlowRow(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         SecondaryOutlinedButton(
             onClick = {

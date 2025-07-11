@@ -128,6 +128,8 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.android.developers.androidify.data.DropBehaviourFactory
+import com.android.developers.androidify.customize.CustomizeAndExportScreen
+import com.android.developers.androidify.customize.CustomizeExportViewModel
 import com.android.developers.androidify.results.ResultsScreen
 import com.android.developers.androidify.theme.AndroidifyTheme
 import com.android.developers.androidify.theme.LimeGreen
@@ -228,7 +230,26 @@ fun CreationScreen(
                 viewModel = hiltViewModel(key = key),
                 onAboutPress = onAboutPressed,
                 onBackPress = onBackPressed,
+                onNextPress = creationViewModel::customizeExportClicked,
             )
+        }
+
+        ScreenState.CUSTOMIZE -> {
+            val prompt = uiState.descriptionText.text.toString()
+            val key = if (uiState.descriptionText.text.isBlank()) {
+                uiState.imageUri.toString()
+            } else {
+                prompt
+            }
+            uiState.resultBitmap?.let { bitmap ->
+                CustomizeAndExportScreen(
+                    resultImage = bitmap,
+                    originalImageUri = uiState.imageUri,
+                    onBackPress = onBackPressed,
+                    onInfoPress = onAboutPressed,
+                    viewModel = hiltViewModel<CustomizeExportViewModel>(key = key),
+                )
+            }
         }
     }
 }

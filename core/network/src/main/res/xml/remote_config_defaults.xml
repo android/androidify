@@ -17,22 +17,40 @@
 <defaults>
     <entry>
         <key>prompt_image_validation</key>
-        <value>You are to analyze the provided image and determine if it is acceptable and appropriate based on specific criteria.
-            In the JSON response, respond with the result 'success' as set to true or false based on results.
-            If the image is considered invalid, include the relevant reason as to why it is invalid in the 'error' property. A photo is only valid if:
-            - it is a photo of a person, at least showing their shoulders and head, it can be a full body photo
+        <value>You are to analyze the provided image and determine if it is acceptable and
+            appropriate based on specific criteria.
+            In the JSON response, respond with the result 'success' as set to true or false based on
+            results.
+            If the image is considered invalid, include the relevant reason as to why it is invalid
+            in the 'error' property. A photo is only valid if:
+            - it is a photo of a person, at least showing their shoulders and head, it can be a full
+            body photo
             - it must be a photo of a person
-            - the photo has a clear main person in it, if there are people in the background ignore them
+            - the photo has a clear main person in it, if there are people in the background ignore
+            them
             - it cannot contain nudity or explicit content
             - it cannot contain illegal weapons or violent references
             - it cannot contain references to drugs or other illicit substances
-            - it cannot contain  hate speech or other offensive language
-            -it cannot contain blood or gore or violence.</value>
+            - it cannot contain hate speech or other offensive language
+            -it cannot contain blood or gore or violence.
+        </value>
     </entry>
     <entry>
         <key>prompt_image_generation</key>
-        <value>This 3D rendered, cartoonish Android mascot rendered in a photorealistic style, the pose is relaxed and straightforward, facing directly forward with his shoulders at ease, as if posing for a photo. The cartoonish exaggeration is subtle, lending a playful touch to the otherwise realistic rendering of the figure. The figure is centered against a muted, neutral warm cream coloured background (#F8F2E4) gives the figurine a unique and collectible appeal.
-            The bot should take on the body shape of the newest Google Android Robot (Shape: It has the distinctive rounded body. The main body is a slightly barrel-shaped form with a smooth, continuous surface connecting to the head without a distinct neck, a semi-circular head with Two short, straight antennae protrude vertically from the top of the dome, positioned towards the sides, and simple, cylindrical arms and legs.) but the characteristics of the description should be used. It should NOT use the model shape or color from pre 2024.</value>
+        <value>This 3D rendered, cartoonish Android mascot rendered in a photorealistic style, the
+            pose is relaxed and straightforward, facing directly forward with his shoulders at ease,
+            as if posing for a photo. The cartoonish exaggeration is subtle, lending a playful touch
+            to the otherwise realistic rendering of the figure. The figure is centered against a
+            muted, neutral warm cream coloured background (#F8F2E4) gives the figurine a unique and
+            collectible appeal.
+            The bot should take on the body shape of the newest Google Android Robot (Shape: It has
+            the distinctive rounded body. The main body is a slightly barrel-shaped form with a
+            smooth, continuous surface connecting to the head without a distinct neck, a
+            semi-circular head with Two short, straight antennae protrude vertically from the top of
+            the dome, positioned towards the sides, and simple, cylindrical arms and legs.) but the
+            characteristics of the description should be used. It should NOT use the model shape or
+            color from pre 2024.
+        </value>
     </entry>
     <entry>
         <key>use_gemini_nano</key>
@@ -44,31 +62,53 @@
     </entry>
     <entry>
         <key>system_prompt_image_description</key>
-        <value>Extract detailed information from the provided image. THE GOAL is to using this information to recreate the image with image generation model.
+        <value>Extract detailed information from the provided image. THE GOAL is to using this
+            information to recreate the image with image generation model.
 
-            | Category | Attribute | Description (Focus on visual, descriptive language for image generation) |
+            | Category | Attribute | Description (Focus on visual, descriptive language for image
+            generation) |
             |---|---|---|
             | **Subject** | Type | The central figure in the image. |
-            |  | Hair | The color, length, and style of the hair. Use concise, descriptive adjectives to detail its appearance. |
-            |  | Facial Hair | The style, and color (if applicable) of any facial hair present. Be visually specific about its form and length (if applicable). |
-            |  | Headwear | The type, color, material, and any visually distinct details of the headwear. Describe any patterns, textures, or embellishments, and its position on the head. |
-            |  | Skin Color | The apparent color of the skin, using terms commonly associated with skin tones followed by the approximate hex code for accuracy. |
-            |  | Clothing - Top | The type, color, and pattern of the upper garment. Describe its fit and any observable visual details such as closures, necklines, or textures. |
-            |  | Clothing - Bottom | The type, color, and pattern of the lower garment. Describe its fit and any visual details like rips, pleats, or pockets. |
-            |  | Footwear | The type, color, and material of the footwear. Be visually specific about any details such as laces, buckles, or straps. |
-            |  | Accessories | The type, color, and material of any accessories. Explicitly state their position on or relative to the subject, as well as their arrangement if multiple items are present. |
-            |  | Gadgets | The type, color, and material of any gadgets present. Be specific about their appearance and their position relative to the subject. |
-            |  | Additional Notes | Any other visually distinct details of the subject that have not been covered in the above attributes. |
+            | | Hair | The color, length, and style of the hair. Use concise, descriptive adjectives
+            to detail its appearance. |
+            | | Facial Hair | The style, and color (if applicable) of any facial hair present. Be
+            visually specific about its form and length (if applicable). |
+            | | Headwear | The type, color, material, and any visually distinct details of the
+            headwear. Describe any patterns, textures, or embellishments, and its position on the
+            head. |
+            | | Skin Color | The apparent color of the skin, using terms commonly associated with
+            skin tones followed by the approximate hex code for accuracy. |
+            | | Clothing - Top | The type, color, and pattern of the upper garment. Describe its fit
+            and any observable visual details such as closures, necklines, or textures. |
+            | | Clothing - Bottom | The type, color, and pattern of the lower garment. Describe its
+            fit and any visual details like rips, pleats, or pockets. |
+            | | Footwear | The type, color, and material of the footwear. Be visually specific about
+            any details such as laces, buckles, or straps. |
+            | | Accessories | The type, color, and material of any accessories. Explicitly state
+            their position on or relative to the subject, as well as their arrangement if multiple
+            items are present. |
+            | | Gadgets | The type, color, and material of any gadgets present. Be specific about
+            their appearance and their position relative to the subject. |
+            | | Additional Notes | Any other visually distinct details of the subject that have not
+            been covered in the above attributes. |
 
-            * Remember to replace the bracketed information with your detailed visual analysis of a specific image.
+            * Remember to replace the bracketed information with your detailed visual analysis of a
+            specific image.
             * Provide highly descriptive details for all attributes of the subject.
-            * For accessories, ensure the descriptions are highly detailed and explicitly state their position on or relative to the subject, as well as their arrangement if applicable.
-            * Describe hair and facial hair with rich visual detail, including color, style, and length.
-            * Use color names that accurately reflect human visual perception and are commonly understood by image generation models.
+            * For accessories, ensure the descriptions are highly detailed and explicitly state
+            their position on or relative to the subject, as well as their arrangement if
+            applicable.
+            * Describe hair and facial hair with rich visual detail, including color, style, and
+            length.
+            * Use color names that accurately reflect human visual perception and are commonly
+            understood by image generation models.
             * Do not include any brand logos or brand names in your descriptions.
             * Do not include descriptions of any emblems present.
-            * Do not include any reference to facial features or facial expressions in the description.
-            * Do not include descriptions of anything that appears in the background. Only describe the appearance of the person and what the subject may be wearing or holding.</value>
+            * Do not include any reference to facial features or facial expressions in the
+            description.
+            * Do not include descriptions of anything that appears in the background. Only describe
+            the appearance of the person and what the subject may be wearing or holding.
+        </value>
     </entry>
     <entry>
         <key>is_android_app_inactive</key>
@@ -76,7 +116,9 @@
     </entry>
     <entry>
         <key>prompt_image_description</key>
-        <value>Create a new image description where the subject(s) and surroundings are transformed into subject(s) attributes  hair color, clothing, accessories are important for human subjects.
+        <value>Create a new image description where the subject(s) and surroundings are transformed
+            into subject(s) attributes hair color, clothing, accessories are important for human
+            subjects.
             The goal is a near perfect recreation.
             Describe details of the subject, accessories.
 
@@ -90,23 +132,40 @@
 
             Dont say rendered, rendering, or digital. Do not mention the background.
 
-            The detailed description should become the 'user_description' value in the JSON schema that will be used for the generative image model.
+            The detailed description should become the 'user_description' value in the JSON schema
+            that will be used for the generative image model.
             For the 'user_description' value, describe attributes such as:
             -headwear; for example: hats, hair accessories, glasses, or headphones
-            -hair color, hair style, and hair length; for example: chin-length straight brown hair, long curly blonde hair, short spiky red hair, bald with no hair
-            -facial hair, if applicable; for example: full brown bushy beard, blonde mustache, short black chin patch
-            -upper body clothing style and color; for example: white t-shirt, black dress shirt under a white and pink striped blazer, green lace dress with spaghetti straps
-            -lower body clothing style and color; for example: blue cuffed jeans with a brown leather belt, black slacks, white knee-length skirt
-            -footwear; for example: pink leather sandals, blue flip flops, brown suede ankle boots, black high heels, brown loafers, green sneakers, red socks
-            -accessories; for example: holding a navy blue backpack, holding a tennis racket, using a walking cane, holding a coffee mug
+            -hair color, hair style, and hair length; for example: chin-length straight brown hair,
+            long curly blonde hair, short spiky red hair, bald with no hair
+            -facial hair, if applicable; for example: full brown bushy beard, blonde mustache, short
+            black chin patch
+            -upper body clothing style and color; for example: white t-shirt, black dress shirt
+            under a white and pink striped blazer, green lace dress with spaghetti straps
+            -lower body clothing style and color; for example: blue cuffed jeans with a brown
+            leather belt, black slacks, white knee-length skirt
+            -footwear; for example: pink leather sandals, blue flip flops, brown suede ankle boots,
+            black high heels, brown loafers, green sneakers, red socks
+            -accessories; for example: holding a navy blue backpack, holding a tennis racket, using
+            a walking cane, holding a coffee mug
 
 
-            For all those attributes, include details such as color, shape, length, style, accessories, and textures and materials. When describing clothing on the upper body,
-            include details such as neckline, type of sleeves or straps that go over the shoulders as well as the exact colors in hex codes.
+            For all those attributes, include details such as color, shape, length, style,
+            accessories, and textures and materials. When describing clothing on the upper body,
+            include details such as neckline, type of sleeves or straps that go over the shoulders
+            as well as the exact colors in hex codes.
             For example: v-neck tank top with thin straps, or scoop neck dress with cap sleeves.
-            When describing clothing, use this phrase structure: "wearing (describe clothing) on its body
+            When describing clothing, use this phrase structure: "wearing (describe clothing) on its
+            body
 
-            Do not include brand logos or brand names in the description.    Do not include descriptions of emblems.    The description should be gender neutral. Do not use gendered terms like 'he' or 'she'.    Do not describe skin color or include any reference to skin.    Do not include any reference to facial features or facial expressions in the description.    Dn not include descriptions of anything that appears in the background. Only describe the appearance of the person, and what the subject may be wearing or holding.</value>
+            Do not include brand logos or brand names in the description. Do not include
+            descriptions of emblems. The description should be gender neutral. Do not use gendered
+            terms like 'he' or 'she'. Do not describe skin color or include any reference to skin.
+            Do not include any reference to facial features or facial expressions in the
+            description. Dn not include descriptions of anything that appears in the background.
+            Only describe the appearance of the person, and what the subject may be wearing or
+            holding.
+        </value>
     </entry>
     <entry>
         <key>promo_video_link</key>
@@ -114,7 +173,7 @@
     </entry>
     <entry>
         <key>text_model_name</key>
-        <value>gemini-2.5-pro-preview-03-25</value>
+        <value>gemini-2.5-pro</value>
     </entry>
     <entry>
         <key>is_app_active</key>
@@ -122,7 +181,12 @@
     </entry>
     <entry>
         <key>generate_bot_prompt</key>
-        <value>Generate 10 different random prompts as a comma separated list for a description of what a person looks like for android bot generation: include hair color texture and length, clothing including colors and details (like the persons shirt and pants or dress and collar types), with accessories. Make them, fun, safe and all different, dont include gender or ethnicity or dangerous content. For example "wearing blue jeans, gray ruffly blouse, holding a magnifying glass with sparkly shoes and brown wavy hair."
+        <value>Generate 10 different random prompts as a comma separated list for a description of
+            what a person looks like for android bot generation: include hair color texture and
+            length, clothing including colors and details (like the persons shirt and pants or dress
+            and collar types), with accessories. Make them, fun, safe and all different, dont
+            include gender or ethnicity or dangerous content. For example "wearing blue jeans, gray
+            ruffly blouse, holding a magnifying glass with sparkly shoes and brown wavy hair."
 
             The prompt should:
             - it cannot contain gender or ethnicity or dangerous content.
@@ -131,26 +195,55 @@
             - it cannot contain references to drugs or other illicit substances.
             - it cannot contain hate speech or other offensive language.
             - it cannot contain blood or gore or violence.
-            - it cannot contain political symbolism.</value>
+            - it cannot contain political symbolism.
+        </value>
     </entry>
     <entry>
         <key>prompt_text_verify</key>
-        <value>You are to evaluate the given text string, restructure it, and return it in a JSON format for use with a backend application. First, check that the text describes the attributes of a person and includes some attributes describing what they look like and are wearing. For example, valid attributes may include hair color and style, facial hair, clothing, shoes, and objects and accessories that the person is holding or wearing. If no valid attributes describing a person and their appearance exist in the text, set the value for the 'success' property in the JSON to 'false'.
+        <value>You are to evaluate the given text string, restructure it, and return it in a JSON
+            format for use with a backend application. First, check that the text describes the
+            attributes of a person and includes some attributes describing what they look like and
+            are wearing. For example, valid attributes may include hair color and style, facial
+            hair, clothing, shoes, and objects and accessories that the person is holding or
+            wearing. If no valid attributes describing a person and their appearance exist in the
+            text, set the value for the 'success' property in the JSON to 'false'.
 
-            If the text string includes a valid description of a person, set the value for the 'success' property in the JSON to 'true' and restructure the input text to be part of the response as 'user_description' in the following ways,:
-            -strip out any phrases or descriptors that are inappropriate for a general audience such as racial or cultural stereotypes, political or hate symbols, sexual references, hateful comments, or inappropriate language.
-            -strip out descriptions of weapons and guns, and references to drugs or drug paraphernalia
+            If the text string includes a valid description of a person, set the value for the
+            'success' property in the JSON to 'true' and restructure the input text to be part of
+            the response as 'user_description' in the following ways,:
+            -strip out any phrases or descriptors that are inappropriate for a general audience such
+            as racial or cultural stereotypes, political or hate symbols, sexual references, hateful
+            comments, or inappropriate language.
+            -strip out descriptions of weapons and guns, and references to drugs or drug
+            paraphernalia
             -strip out descriptions of logos or brand names
-            -strip out descriptions of anything that might describe the background behind or around the person or subject in the text
+            -strip out descriptions of anything that might describe the background behind or around
+            the person or subject in the text
 
-            Keep all words and descriptors that describe details such as colors, styles, size and materials of hair, clothing, shoes, accessories that do not allude to any of the inappropriate content listed above.</value>
+            Keep all words and descriptors that describe details such as colors, styles, size and
+            materials of hair, clothing, shoes, accessories that do not allude to any of the
+            inappropriate content listed above.
+        </value>
     </entry>
     <entry>
         <key>image_model_name</key>
-        <value>imagen-3.0-generate-002</value>
+        <value>imagen-4.0-ultra-generate-preview-06-06</value>
     </entry>
     <entry>
         <key>prompt_image_generation_skin_tone</key>
-        <value>This 3D rendered, cartoonish Android mascot rendered in a photorealistic style, with the {skinTone} skin color and {prompt}, the pose is relaxed and straightforward, facing directly forward with his shoulders at ease, as if posing for a photo. The cartoonish exaggeration is subtle, lending a playful touch to the otherwise realistic rendering of the figure. The figure is centered against a muted, neutral warm cream coloured background (#F8F2E4) gives the figurine a unique and collectible appeal. The bot should take on the body shape of the newest Google Android Robot (Shape: It has the distinctive rounded body. The main body is a slightly barrel-shaped form with a smooth, continuous surface connecting to the head without a distinct neck, a semi-circular head with Two short, straight antennae protrude vertically from the top of the dome, positioned towards the sides, and simple, cylindrical arms and legs.) but the characteristics of the description should be used. It should NOT use the model shape or color from pre 2024.</value>
+        <value>This 3D rendered, cartoonish Android mascot rendered in a photorealistic style, with
+            the {skinTone} skin color and {prompt}, the pose is relaxed and straightforward, facing
+            directly forward with his shoulders at ease, as if posing for a photo. The cartoonish
+            exaggeration is subtle, lending a playful touch to the otherwise realistic rendering of
+            the figure. The figure is centered against a muted, neutral warm cream coloured
+            background (#F8F2E4) gives the figurine a unique and collectible appeal. The bot should
+            take on the body shape of the newest Google Android Robot (Shape: It has the distinctive
+            rounded body. The main body is a slightly barrel-shaped form with a smooth, continuous
+            surface connecting to the head without a distinct neck, a semi-circular head with Two
+            short, straight antennae protrude vertically from the top of the dome, positioned
+            towards the sides, and simple, cylindrical arms and legs.) but the characteristics of
+            the description should be used. It should NOT use the model shape or color from pre
+            2024.
+        </value>
     </entry>
 </defaults>

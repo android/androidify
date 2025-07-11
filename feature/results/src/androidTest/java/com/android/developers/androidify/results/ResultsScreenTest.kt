@@ -30,7 +30,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import org.junit.Assert.assertTrue
+import junit.framework.TestCase.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -46,7 +46,7 @@ class ResultsScreenTest {
 
     @Test
     fun resultsScreenContents_displaysActionButtons() {
-        val shareButtonText = composeTestRule.activity.getString(R.string.share_your_bot)
+        val shareButtonText = composeTestRule.activity.getString(R.string.customize_and_share)
         // Note: Download button is identified by icon, harder to test reliably without tags/desc
 
         val initialState = ResultState(resultImageBitmap = testBitmap, promptText = "test")
@@ -58,8 +58,7 @@ class ResultsScreenTest {
                 ResultsScreenContents(
                     contentPadding = PaddingValues(0.dp),
                     state = state,
-                    downloadClicked = {},
-                    shareClicked = {},
+                    onCustomizeShareClicked = {},
                 )
             }
         }
@@ -88,8 +87,7 @@ class ResultsScreenTest {
                 ResultsScreenContents(
                     contentPadding = PaddingValues(0.dp),
                     state = state,
-                    downloadClicked = {},
-                    shareClicked = {},
+                    onCustomizeShareClicked = {},
                 )
             }
         }
@@ -119,8 +117,7 @@ class ResultsScreenTest {
                 ResultsScreenContents(
                     contentPadding = PaddingValues(0.dp),
                     state = state,
-                    downloadClicked = {},
-                    shareClicked = {},
+                    onCustomizeShareClicked = {},
                 )
             }
         }
@@ -155,8 +152,7 @@ class ResultsScreenTest {
                 ResultsScreenContents(
                     contentPadding = PaddingValues(0.dp),
                     state = state,
-                    downloadClicked = {},
-                    shareClicked = {},
+                    onCustomizeShareClicked = {},
                 )
             }
         }
@@ -188,8 +184,7 @@ class ResultsScreenTest {
                 ResultsScreenContents(
                     contentPadding = PaddingValues(0.dp),
                     state = state,
-                    downloadClicked = {},
-                    shareClicked = {},
+                    onCustomizeShareClicked = {},
                 )
             }
         }
@@ -210,8 +205,8 @@ class ResultsScreenTest {
     }
 
     @Test
-    fun actionButton_Share_invokesCallback() {
-        val shareButtonText = composeTestRule.activity.getString(R.string.share_your_bot)
+    fun actionButton_CustomizeExport_invokesCallback() {
+        val shareButtonText = composeTestRule.activity.getString(R.string.customize_and_share)
         var shareClicked = false
 
         // Ensure promptText is non-null when bitmap is present
@@ -224,47 +219,15 @@ class ResultsScreenTest {
                 ResultsScreenContents(
                     contentPadding = PaddingValues(0.dp),
                     state = state,
-                    downloadClicked = {},
-                    shareClicked = { shareClicked = true }, // Callback to test
+                    onCustomizeShareClicked = {
+                        shareClicked = true// Callback to test
+                    },
                 )
             }
         }
 
         composeTestRule.onNodeWithText(shareButtonText).performClick()
 
-        assertTrue("shareClicked callback should have been invoked", shareClicked)
-    }
-
-    @Test
-    fun actionButton_Download_invokesCallback() {
-        val downloadButtonDesc = composeTestRule.activity.getString(R.string.download_bot) // Use the new content description
-        var downloadClicked = false
-
-        // Ensure promptText is non-null when bitmap is present
-        val initialState = ResultState(resultImageBitmap = testBitmap, promptText = "test")
-        val state = mutableStateOf(initialState)
-
-        composeTestRule.setContent {
-            // Disable animation
-            CompositionLocalProvider(LocalInspectionMode provides true) {
-                ResultsScreenContents(
-                    contentPadding = PaddingValues(0.dp),
-                    state = state,
-                    downloadClicked = { downloadClicked = true }, // Callback to test
-                    shareClicked = {},
-                )
-            }
-        }
-
-        // Click the download button - using a sibling finder relative to Share is complex.
-        // A more robust approach needs test tags.
-        // As a placeholder, we'll just assert the callback wasn't called initially.
-        // To make this test pass, manual interaction or a better finder is needed.
-        // Find the node by its content description and click it
-        // Note: We find the Icon, but click its parent (the Button)
-        composeTestRule.onNodeWithContentDescription(downloadButtonDesc).performClick()
-
-        // Assert the callback was invoked
-        assertTrue("downloadClicked callback should have been invoked", downloadClicked)
+        assertTrue("onCustomizeShareClicked callback should have been invoked", shareClicked)
     }
 }

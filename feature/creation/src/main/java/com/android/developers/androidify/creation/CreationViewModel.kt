@@ -179,6 +179,7 @@ class CreationViewModel @Inject constructor(
                     else -> context.getString(R.string.error_image_generation_other)
                 }
             }
+
             is InsufficientInformationException -> context.getString(R.string.error_provide_more_descriptive_bot)
             is NoInternetException -> context.getString(R.string.error_connectivity)
             is ImageDescriptionFailedGenerationException -> context.getString(R.string.error_image_validation)
@@ -216,14 +217,28 @@ class CreationViewModel @Inject constructor(
             ScreenState.LOADING -> {
                 cancelInProgressTask()
             }
+
             ScreenState.RESULT -> {
                 _uiState.update {
                     it.copy(screenState = ScreenState.EDIT, resultBitmap = null)
                 }
             }
+
             ScreenState.EDIT -> {
                 // do nothing, back press handled outside
             }
+
+            ScreenState.CUSTOMIZE -> {
+                _uiState.update {
+                    it.copy(screenState = ScreenState.RESULT)
+                }
+            }
+        }
+    }
+
+    fun customizeExportClicked() {
+        _uiState.update {
+            it.copy(screenState = ScreenState.CUSTOMIZE)
         }
     }
 }
@@ -244,6 +259,7 @@ enum class ScreenState {
     EDIT,
     LOADING,
     RESULT,
+    CUSTOMIZE,
 }
 
 data class BotColor(

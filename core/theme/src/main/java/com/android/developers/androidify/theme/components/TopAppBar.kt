@@ -54,6 +54,7 @@ import com.android.developers.androidify.theme.sharedBoundsReveal
 @OptIn(ExperimentalMaterial3Api::class)
 fun AndroidifyTopAppBar(
     modifier: Modifier = Modifier,
+    titleText: String = stringResource(R.string.androidify_title),
     isMediumWindowSize: Boolean = false,
     backEnabled: Boolean = false,
     aboutEnabled: Boolean = true,
@@ -84,7 +85,7 @@ fun AndroidifyTopAppBar(
                 } else {
                     Spacer(modifier.size(16.dp))
                 }
-                AndroidifyTitle()
+                AndroidifyTitle(titleText)
             }
 
             Box(
@@ -109,7 +110,7 @@ fun AndroidifyTopAppBar(
     } else {
         CenterAlignedTopAppBar(
             title = {
-                AndroidifyTitle()
+                AndroidifyTitle(titleText)
             },
             modifier = modifier
                 .statusBarsPadding()
@@ -146,13 +147,14 @@ private fun BackButton(onBackPressed: () -> Unit) {
 @Composable
 fun AndroidifyTranslucentTopAppBar(
     modifier: Modifier = Modifier,
+    titleText: String = stringResource(R.string.androidify_title),
     isMediumSizeLayout: Boolean = false,
 ) {
     if (isMediumSizeLayout) {
         TopAppBar(
             title = {
                 Spacer(Modifier.statusBarsPadding())
-                AndroidifyTitle()
+                AndroidifyTitle(titleText)
             },
             modifier = modifier.clip(
                 MaterialTheme.shapes.large.copy(topStart = CornerSize(0f), topEnd = CornerSize(0f)),
@@ -163,7 +165,7 @@ fun AndroidifyTranslucentTopAppBar(
         CenterAlignedTopAppBar(
             title = {
                 Spacer(Modifier.statusBarsPadding())
-                AndroidifyTitle()
+                AndroidifyTitle(titleText)
             },
             modifier = modifier.clip(
                 MaterialTheme.shapes.large.copy(topStart = CornerSize(0f), topEnd = CornerSize(0f)),
@@ -174,8 +176,8 @@ fun AndroidifyTranslucentTopAppBar(
 }
 
 @Composable
-private fun AndroidifyTitle() {
-    Text(stringResource(R.string.androidify_title), fontWeight = FontWeight.Bold)
+private fun AndroidifyTitle(text: String) {
+    Text(text, fontWeight = FontWeight.Bold)
 }
 
 @OptIn(ExperimentalSharedTransitionApi::class)

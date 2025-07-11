@@ -60,7 +60,7 @@ fun BotResultCard(
     FlippableCard(
         modifier = modifier
             .rotate(-5f)
-            .aspectRatio(ASPECT_RATIO)
+            .aspectRatio(BOT_ASPECT_RATIO)
             .padding(16.dp)
             .safeContentPadding(),
         flippableState = flippableState,
@@ -86,7 +86,7 @@ private fun FrontCard(bitmap: Bitmap) {
         contentScale = ContentScale.Crop,
         modifier = Modifier
             .fillMaxSize()
-            .aspectRatio(ASPECT_RATIO)
+            .aspectRatio(BOT_ASPECT_RATIO)
             .shadow(8.dp, shape = MaterialTheme.shapes.large)
             .clip(MaterialTheme.shapes.large),
     )
@@ -100,7 +100,7 @@ private fun BackCard(originalImageUrl: Uri) {
         contentScale = ContentScale.Crop,
         modifier = Modifier
             .fillMaxSize()
-            .aspectRatio(ASPECT_RATIO)
+            .aspectRatio(BOT_ASPECT_RATIO)
             .shadow(8.dp, shape = MaterialTheme.shapes.large)
             .clip(MaterialTheme.shapes.large),
     )
@@ -119,7 +119,7 @@ private fun BackCardPrompt(promptText: String) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .aspectRatio(ASPECT_RATIO)
+            .aspectRatio(BOT_ASPECT_RATIO)
             .shadow(8.dp, shape = MaterialTheme.shapes.large)
             .clip(MaterialTheme.shapes.large)
             .background(MaterialTheme.colorScheme.background)
@@ -140,4 +140,4 @@ private fun BackCardPrompt(promptText: String) {
     }
 }
 
-private const val ASPECT_RATIO = 3f / 4f
+const val BOT_ASPECT_RATIO = 3f / 4f
