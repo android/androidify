@@ -20,6 +20,7 @@ import androidx.compose.material3.SnackbarHostState
 import com.android.developers.androidify.data.InsufficientInformationException
 import com.android.developers.testing.data.TestFileProvider
 import com.android.developers.testing.data.TestInternetConnectivityManager
+import com.android.developers.testing.repository.FakeDropImageFactory
 import com.android.developers.testing.repository.FakeImageGenerationRepository
 import com.android.developers.testing.repository.TestTextGenerationRepository
 import com.android.developers.testing.util.MainDispatcherRule
@@ -57,6 +58,7 @@ class CreationViewModelTest {
             imageGenerationRepository,
             TestTextGenerationRepository(),
             TestFileProvider(),
+            FakeDropImageFactory(),
             context = RuntimeEnvironment.getApplication(),
         )
     }

@@ -123,6 +123,7 @@ dependencies {
     implementation(projects.feature.results)
 
     implementation(projects.core.theme)
+    implementation(projects.core.util)
 
     baselineProfile(projects.benchmark)
 

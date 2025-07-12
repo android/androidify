@@ -23,6 +23,7 @@
 package com.android.developers.androidify.creation
 
 import android.net.Uri
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
@@ -36,6 +37,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.draganddrop.dragAndDropTarget
 import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -126,6 +128,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import com.android.developers.androidify.data.DropBehaviourFactory
 import com.android.developers.androidify.results.ResultsScreen
 import com.android.developers.androidify.theme.AndroidifyTheme
 import com.android.developers.androidify.theme.LimeGreen
@@ -184,6 +187,7 @@ fun CreationScreen(
         ScreenState.EDIT -> {
             EditScreen(
                 snackbarHostState = snackbarHostState,
+                dropBehaviourFactory = creationViewModel.dropBehaviourFactory,
                 isExpanded = isMedium,
                 onCameraPressed = onCameraPressed,
                 onBackPressed = onBackPressed,
@@ -195,6 +199,7 @@ fun CreationScreen(
                 onPromptGenerationPressed = creationViewModel::onPromptGenerationClicked,
                 onBotColorSelected = creationViewModel::onBotColorChanged,
                 onStartClicked = creationViewModel::startClicked,
+                onDropCallback = creationViewModel::onImageSelected,
             )
         }
 
@@ -232,6 +237,7 @@ fun CreationScreen(
 @Composable
 fun EditScreen(
     snackbarHostState: SnackbarHostState,
+    dropBehaviourFactory: DropBehaviourFactory,
     isExpanded: Boolean,
     onCameraPressed: () -> Unit,
     onBackPressed: () -> Unit,
@@ -243,6 +249,7 @@ fun EditScreen(
     onPromptGenerationPressed: () -> Unit,
     onBotColorSelected: (BotColor) -> Unit,
     onStartClicked: () -> Unit,
+    onDropCallback: (Uri) -> Unit = {},
 ) {
     Scaffold(
         snackbarHost = {
@@ -268,8 +275,7 @@ fun EditScreen(
                 expandedCenterButtons = {
                     PromptTypeToolbar(
                         uiState.selectedPromptOption,
-                        modifier = Modifier
-                            .padding(start = 16.dp, end = 16.dp),
+                        modifier = Modifier.padding(start = 16.dp, end = 16.dp),
                         onOptionSelected = onPromptOptionSelected,
                     )
                 },
@@ -306,6 +312,7 @@ fun EditScreen(
                     ) {
                         MainCreationPane(
                             uiState,
+                            dropBehaviourFactory = dropBehaviourFactory,
                             modifier = Modifier.weight(.6f),
                             onCameraPressed = onCameraPressed,
                             onChooseImageClicked = {
@@ -314,6 +321,7 @@ fun EditScreen(
                             onUndoPressed = onUndoPressed,
                             onPromptGenerationPressed = onPromptGenerationPressed,
                             onSelectedPromptOptionChanged = onPromptOptionSelected,
+                            onDropCallback = onDropCallback,
                         )
                         Box(
                             modifier = Modifier
@@ -341,6 +349,7 @@ fun EditScreen(
                 } else {
                     MainCreationPane(
                         uiState,
+                        dropBehaviourFactory = dropBehaviourFactory,
                         modifier = Modifier.weight(1f),
                         onCameraPressed = onCameraPressed,
                         onChooseImageClicked = {
@@ -349,6 +358,7 @@ fun EditScreen(
                         onUndoPressed = onUndoPressed,
                         onPromptGenerationPressed = onPromptGenerationPressed,
                         onSelectedPromptOptionChanged = onPromptOptionSelected,
+                        onDropCallback = onDropCallback,
                     )
                 }
 
@@ -372,8 +382,7 @@ fun EditScreen(
                         },
                         uiState = uiState,
                         onStartClicked = onStartClicked,
-                        modifier = Modifier
-                            .align(Alignment.CenterHorizontally),
+                        modifier = Modifier.align(Alignment.CenterHorizontally),
                     )
                 }
             }
@@ -395,18 +404,36 @@ fun EditScreen(
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 private fun MainCreationPane(
     uiState: CreationState,
+    dropBehaviourFactory: DropBehaviourFactory,
     modifier: Modifier = Modifier,
     onCameraPressed: () -> Unit,
     onChooseImageClicked: () -> Unit = {},
     onUndoPressed: () -> Unit = {},
     onPromptGenerationPressed: () -> Unit,
     onSelectedPromptOptionChanged: (PromptType) -> Unit,
+    onDropCallback: (Uri) -> Unit,
 ) {
+    val defaultDropAreaBackgroundColor = MaterialTheme.colorScheme.surface
+    val alternateDropAreaBackgroundColor = MaterialTheme.colorScheme.surfaceVariant
+    var background by remember { mutableStateOf(defaultDropAreaBackgroundColor) }
+
+    val activity = LocalContext.current as ComponentActivity
+    val externalAppCallback = remember {
+        dropBehaviourFactory.createTargetCallback(
+            activity = activity,
+            onImageDropped = { uri -> onDropCallback(uri) },
+            onDropStarted = { background = alternateDropAreaBackgroundColor },
+            onDropEnded = { background = defaultDropAreaBackgroundColor },
+        )
+    }
+
+
     Box(
         modifier = modifier,
     ) {
         val spatialSpec = MaterialTheme.motionScheme.slowSpatialSpec<Float>()
-        val pagerState = rememberPagerState(uiState.selectedPromptOption.ordinal) { PromptType.entries.size }
+        val pagerState =
+            rememberPagerState(uiState.selectedPromptOption.ordinal) { PromptType.entries.size }
         val focusManager = LocalFocusManager.current
         LaunchedEffect(uiState.selectedPromptOption) {
             launch {
@@ -444,6 +471,23 @@ private fun MainCreationPane(
                     if (imageUri == null) {
                         UploadEmptyState(
                             modifier = Modifier
+                                .background(
+                                    color = background,
+                                    shape = MaterialTheme.shapes.large,
+                                )
+                                .dashedRoundedRectBorder(
+                                    2.dp,
+                                    MaterialTheme.colorScheme.outline,
+                                    cornerRadius = 28.dp,
+                                )
+                                .dragAndDropTarget(
+                                    shouldStartDragAndDrop = { event ->
+                                        dropBehaviourFactory.shouldStartDragAndDrop(
+                                            event,
+                                        )
+                                    },
+                                    target = externalAppCallback,
+                                )
                                 .fillMaxSize()
                                 .padding(2.dp),
                             onCameraPressed = onCameraPressed,
@@ -610,10 +654,7 @@ fun ImagePreview(
     with(sharedElementScope) {
         Box(modifier) {
             AsyncImage(
-                ImageRequest.Builder(LocalContext.current)
-                    .data(uri)
-                    .crossfade(false)
-                    .build(),
+                ImageRequest.Builder(LocalContext.current).data(uri).crossfade(false).build(),
                 placeholder = null,
                 contentDescription = stringResource(CreationR.string.cd_selected_image),
                 modifier = Modifier
@@ -837,16 +878,14 @@ fun PromptTypeToolbar(
 private fun UploadEmptyPreview() {
     AndroidifyTheme {
         UploadEmptyState(
-            {
-            },
+            {},
             {},
             modifier = Modifier
                 .height(300.dp)
                 .fillMaxWidth(),
         )
         UploadEmptyState(
-            {
-            },
+            {},
             {},
             modifier = Modifier
                 .height(400.dp)
@@ -863,15 +902,6 @@ private fun UploadEmptyState(
 ) {
     Column(
         modifier = modifier
-            .background(
-                color = MaterialTheme.colorScheme.surface,
-                shape = RoundedCornerShape(28.dp),
-            )
-            .dashedRoundedRectBorder(
-                2.dp,
-                MaterialTheme.colorScheme.outline,
-                cornerRadius = 28.dp,
-            )
             .verticalScroll(rememberScrollState())
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,

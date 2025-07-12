@@ -24,6 +24,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.developers.androidify.data.DropBehaviourFactory
 import com.android.developers.androidify.data.ImageDescriptionFailedGenerationException
 import com.android.developers.androidify.data.ImageGenerationRepository
 import com.android.developers.androidify.data.ImageValidationError
@@ -48,6 +49,7 @@ class CreationViewModel @Inject constructor(
     val imageGenerationRepository: ImageGenerationRepository,
     val textGenerationRepository: TextGenerationRepository,
     val fileProvider: LocalFileProvider,
+    val dropBehaviourFactory: DropBehaviourFactory,
     @ApplicationContext
     val context: Context,
 ) : ViewModel() {

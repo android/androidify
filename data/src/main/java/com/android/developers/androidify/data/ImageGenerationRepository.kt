@@ -19,7 +19,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Log
-import com.android.developers.androidify.RemoteConfigDataSource
 import com.android.developers.androidify.model.ValidatedDescription
 import com.android.developers.androidify.model.ValidatedImage
 import com.android.developers.androidify.util.LocalFileProvider
@@ -40,11 +39,10 @@ interface ImageGenerationRepository {
 
 @Singleton
 internal class ImageGenerationRepositoryImpl @Inject constructor(
-    val remoteConfigDataSource: RemoteConfigDataSource,
-    val localFileProvider: LocalFileProvider,
-    val internetConnectivityManager: InternetConnectivityManager,
-    val geminiNanoDataSource: GeminiNanoGenerationDataSource,
-    val firebaseAiDataSource: FirebaseAiDataSource,
+    private val localFileProvider: LocalFileProvider,
+    private val internetConnectivityManager: InternetConnectivityManager,
+    private val geminiNanoDataSource: GeminiNanoGenerationDataSource,
+    private val firebaseAiDataSource: FirebaseAiDataSource,
 ) : ImageGenerationRepository {
 
     override suspend fun initialize() {

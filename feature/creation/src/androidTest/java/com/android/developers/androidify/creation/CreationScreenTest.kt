@@ -26,6 +26,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.developers.androidify.theme.SharedElementContextPreview
+import com.android.developers.testing.repository.FakeDropImageFactory
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -45,6 +46,7 @@ class CreationScreenTest {
             SharedElementContextPreview {
                 EditScreen(
                     snackbarHostState = SnackbarHostState(),
+                    dropBehaviourFactory = FakeDropImageFactory(),
                     isExpanded = false,
                     onCameraPressed = {},
                     onBackPressed = {},
@@ -73,6 +75,7 @@ class CreationScreenTest {
             SharedElementContextPreview {
                 EditScreen(
                     snackbarHostState = SnackbarHostState(),
+                    dropBehaviourFactory = FakeDropImageFactory(),
                     isExpanded = false,
                     onCameraPressed = {},
                     onBackPressed = {},
@@ -102,6 +105,7 @@ class CreationScreenTest {
             SharedElementContextPreview {
                 EditScreen(
                     snackbarHostState = SnackbarHostState(),
+                    dropBehaviourFactory = FakeDropImageFactory(),
                     isExpanded = false,
                     onCameraPressed = {},
                     onBackPressed = {},
@@ -136,6 +140,7 @@ class CreationScreenTest {
             SharedElementContextPreview {
                 EditScreen(
                     snackbarHostState = SnackbarHostState(),
+                    dropBehaviourFactory = FakeDropImageFactory(),
                     isExpanded = false,
                     onCameraPressed = {},
                     onBackPressed = {},
@@ -169,6 +174,7 @@ class CreationScreenTest {
             SharedElementContextPreview {
                 EditScreen(
                     snackbarHostState = SnackbarHostState(),
+                    dropBehaviourFactory = FakeDropImageFactory(),
                     isExpanded = false,
                     onCameraPressed = {},
                     onBackPressed = {},
@@ -203,6 +209,7 @@ class CreationScreenTest {
             SharedElementContextPreview {
                 EditScreen(
                     snackbarHostState = SnackbarHostState(),
+                    dropBehaviourFactory = FakeDropImageFactory(),
                     isExpanded = false,
                     onCameraPressed = {},
                     onBackPressed = {},
@@ -236,6 +243,7 @@ class CreationScreenTest {
             SharedElementContextPreview {
                 EditScreen(
                     snackbarHostState = SnackbarHostState(),
+                    dropBehaviourFactory = FakeDropImageFactory(),
                     isExpanded = false,
                     onCameraPressed = {},
                     onBackPressed = {},
@@ -265,6 +273,7 @@ class CreationScreenTest {
             SharedElementContextPreview {
                 EditScreen(
                     snackbarHostState = SnackbarHostState(),
+                    dropBehaviourFactory = FakeDropImageFactory(),
                     isExpanded = true, // Expanded mode
                     onCameraPressed = {},
                     onBackPressed = {},

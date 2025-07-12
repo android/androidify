@@ -27,9 +27,9 @@ interface TextGenerationRepository {
 
 @Singleton
 class TextGenerationRepositoryImpl @Inject constructor(
-    val remoteConfigDataSource: RemoteConfigDataSource,
-    val geminiNanoDataSource: GeminiNanoGenerationDataSource,
-    val firebaseAiDataSource: FirebaseAiDataSource,
+    private val remoteConfigDataSource: RemoteConfigDataSource,
+    private val geminiNanoDataSource: GeminiNanoGenerationDataSource,
+    private val firebaseAiDataSource: FirebaseAiDataSource,
 ) : TextGenerationRepository {
 
     private var currentPrompts: List<String>? = null
