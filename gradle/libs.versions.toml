@@ -1,6 +1,6 @@
 [versions]
 # build
-agp = "8.11.0"
+agp = "8.11.1"
 compileSdk = "36"
 leakcanaryAndroid = "2.14"
 minSdk = "26"
@@ -61,6 +61,7 @@ uiTooling = "1.8.3"
 window = "1.4.0"
 aiEdge = "0.0.1-exp02"
 lifecycleProcess = "2.9.1"
+screenshotValidationApi = "0.0.1-alpha10"
 
 [libraries]
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanist" }
@@ -135,6 +136,7 @@ ai-edge = { group = "com.google.ai.edge.aicore", name = "aicore", version.ref = 
 google-oss-licenses = { group = "com.google.android.gms", name = "play-services-oss-licenses", version.ref = "googleOss" }
 google-oss-licenses-plugin = { group = "com.google.android.gms", name = "oss-licenses-plugin", version.ref = "googleOssPlugin" }
 androidx-lifecycle-process = { group = "androidx.lifecycle", name = "lifecycle-process", version.ref = "lifecycleProcess" }
+screenshot-validation-api = { group = "com.android.tools.screenshot", name = "screenshot-validation-api", version.ref = "screenshotValidationApi" }
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }

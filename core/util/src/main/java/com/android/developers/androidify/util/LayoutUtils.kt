@@ -18,6 +18,7 @@ package com.android.developers.androidify.util
 import android.annotation.SuppressLint
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.window.WindowSdkExtensions
 import androidx.window.core.layout.WindowSizeClass
@@ -39,6 +40,7 @@ fun calculateWindowSizeClass(): WindowSizeClass {
 
 @Composable
 fun isAtLeastMedium(): Boolean {
+    if (LocalInspectionMode.current) return false // layout-lib doesn't support querying the window size class.
     val sizeClass = calculateWindowSizeClass()
     return sizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND)
 }

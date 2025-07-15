@@ -32,12 +32,14 @@ import androidx.compose.ui.unit.dp
 import com.android.developers.androidify.theme.AndroidifyTheme
 import com.android.developers.androidify.util.AdaptivePreview
 import com.android.developers.androidify.util.SmallPhonePreview
+import com.android.tools.screenshot.PreviewTest
 
 class ResultsScreenScreenshotTest {
 
     @AdaptivePreview
     @Preview(showBackground = true)
     @Composable
+    @PreviewTest
     fun ResultsScreen_AdaptivePreview() {
         val mockBitmap = createMockBitmap()
         val state = remember {
@@ -48,6 +50,7 @@ class ResultsScreenScreenshotTest {
                 ),
             )
         }
+
         CompositionLocalProvider(value = LocalInspectionMode provides true) {
             AndroidifyTheme {
                 ResultsScreenContents(
@@ -62,6 +65,7 @@ class ResultsScreenScreenshotTest {
 
     @SmallPhonePreview
     @Preview(showBackground = true)
+    @PreviewTest
     @Composable
     fun ResultsScreen_SmallPreview() {
         val mockBitmap = createMockBitmap()
@@ -86,6 +90,7 @@ class ResultsScreenScreenshotTest {
     }
 
     @Preview(showBackground = true)
+    @PreviewTest
     @Composable
     fun ResultsScreen_OriginalInputPreview() {
         val mockBitmap = createMockBitmap()

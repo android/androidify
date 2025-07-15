@@ -42,7 +42,6 @@ android {
     buildFeatures {
         compose = true
     }
-
     experimentalProperties["android.experimental.enableScreenshotTest"] = true
 
     testOptions {
@@ -58,6 +57,7 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.accompanist.permissions)
     implementation(libs.androidx.lifecycle.process)
+    implementation(libs.screenshot.validation.api)
     ksp(libs.hilt.compiler)
 
     implementation(libs.androidx.ui.tooling)

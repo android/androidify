@@ -35,6 +35,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -138,16 +139,18 @@ fun ResultsBackground(
     modifier: Modifier = Modifier,
     isMediumWindowSize: Boolean = isAtLeastMedium(),
 ) {
+    val animatedModifier = if (LocalInspectionMode.current) Modifier else
+        Modifier.verticalMarquee(
+            iterations = Int.MAX_VALUE,
+            repeatDelayMillis = 0,
+            spacing = MarqueeSpacing(0.dp),
+        )
     Box(
         modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .background(MaterialTheme.colorScheme.primary)
-            .verticalMarquee(
-                iterations = Int.MAX_VALUE,
-                repeatDelayMillis = 0,
-                spacing = MarqueeSpacing(0.dp),
-            ),
+            .then(animatedModifier),
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
