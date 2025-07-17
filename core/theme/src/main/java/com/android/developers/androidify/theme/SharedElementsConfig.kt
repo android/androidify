@@ -71,6 +71,7 @@ sealed interface SharedElementKey {
     object CameraButtonToFullScreenCamera : SharedElementKey
     object CaptureImageToDetails : SharedElementKey
     object AboutKey : SharedElementKey
+    object ResultCardToCustomize : SharedElementKey
 }
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -79,6 +80,9 @@ val LocalSharedTransitionScope = compositionLocalOf<SharedTransitionScope> {
 }
 
 val LocalAnimateBoundsScope = compositionLocalOf<LookaheadScope?> {
+    null
+}
+val LocalAnimateBoundsVisibilityScope = compositionLocalOf<AnimatedVisibilityScope?> {
     null
 }
 
@@ -124,6 +128,28 @@ fun Modifier.sharedBoundsReveal(
             )
             .skipToLookaheadSize()
             .skipToLookaheadPlacement(sharedTransitionScope)
+    }
+}
+@Composable
+fun Modifier.sharedBoundsWithDefaults(
+    sharedElementKey: SharedElementKey,
+    sharedTransitionScope: SharedTransitionScope = LocalSharedTransitionScope.current,
+    animatedVisibilityScope: AnimatedVisibilityScope = LocalNavAnimatedContentScope.current,
+    boundsTransform: BoundsTransform = MaterialTheme.motionScheme.sharedElementTransitionBounds,
+    resizeMode: SharedTransitionScope.ResizeMode = SharedTransitionScope.ResizeMode.RemeasureToBounds,
+    clipShape: Shape = MaterialTheme.shapes.large,
+    renderInOverlayDuringTransition: Boolean = true,
+): Modifier {
+    with(sharedTransitionScope) {
+        return this@sharedBoundsWithDefaults
+            .sharedBounds(
+                sharedContentState = rememberSharedContentState(sharedElementKey),
+                animatedVisibilityScope = animatedVisibilityScope,
+                boundsTransform = boundsTransform,
+                resizeMode = resizeMode,
+                clipInOverlayDuringTransition = OverlayClip(clipShape),
+                renderInOverlayDuringTransition = renderInOverlayDuringTransition,
+            )
     }
 }
 

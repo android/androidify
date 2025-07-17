@@ -29,6 +29,7 @@ import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterExitState
 import androidx.compose.animation.ExperimentalSharedTransitionApi
@@ -92,6 +93,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.ripple
 import androidx.compose.material3.toShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -133,6 +135,7 @@ import com.android.developers.androidify.data.DropBehaviourFactory
 import com.android.developers.androidify.results.ResultsScreen
 import com.android.developers.androidify.theme.AndroidifyTheme
 import com.android.developers.androidify.theme.LimeGreen
+import com.android.developers.androidify.theme.LocalAnimateBoundsVisibilityScope
 import com.android.developers.androidify.theme.LocalSharedTransitionScope
 import com.android.developers.androidify.theme.Primary90
 import com.android.developers.androidify.theme.R
@@ -184,73 +187,78 @@ fun CreationScreen(
         }
     }
     val snackbarHostState by creationViewModel.snackbarHostState.collectAsStateWithLifecycle()
-    when (uiState.screenState) {
-        ScreenState.EDIT -> {
-            EditScreen(
-                snackbarHostState = snackbarHostState,
-                dropBehaviourFactory = creationViewModel.dropBehaviourFactory,
-                isExpanded = isMedium,
-                onCameraPressed = onCameraPressed,
-                onBackPressed = onBackPressed,
-                onAboutPressed = onAboutPressed,
-                uiState = uiState,
-                onChooseImageClicked = { pickMedia.launch(PickVisualMediaRequest(it)) },
-                onPromptOptionSelected = creationViewModel::onSelectedPromptOptionChanged,
-                onUndoPressed = creationViewModel::onUndoPressed,
-                onPromptGenerationPressed = creationViewModel::onPromptGenerationClicked,
-                onBotColorSelected = creationViewModel::onBotColorChanged,
-                onStartClicked = creationViewModel::startClicked,
-                onDropCallback = creationViewModel::onImageSelected,
-            )
+    AnimatedContent(uiState.screenState) { targetState ->
+        CompositionLocalProvider(LocalAnimateBoundsVisibilityScope provides this) {
+            when (targetState) {
+                ScreenState.EDIT -> {
+                    EditScreen(
+                        snackbarHostState = snackbarHostState,
+                        dropBehaviourFactory = creationViewModel.dropBehaviourFactory,
+                        isExpanded = isMedium,
+                        onCameraPressed = onCameraPressed,
+                        onBackPressed = onBackPressed,
+                        onAboutPressed = onAboutPressed,
+                        uiState = uiState,
+                        onChooseImageClicked = { pickMedia.launch(PickVisualMediaRequest(it)) },
+                        onPromptOptionSelected = creationViewModel::onSelectedPromptOptionChanged,
+                        onUndoPressed = creationViewModel::onUndoPressed,
+                        onPromptGenerationPressed = creationViewModel::onPromptGenerationClicked,
+                        onBotColorSelected = creationViewModel::onBotColorChanged,
+                        onStartClicked = creationViewModel::startClicked,
+                        onDropCallback = creationViewModel::onImageSelected,
+                    )
+                }
+
+                ScreenState.LOADING -> {
+                    LoadingScreen(
+                        onCancelPress = {
+                            creationViewModel.cancelInProgressTask()
+                        },
+                    )
+                }
+
+                ScreenState.RESULT -> {
+                    val prompt = uiState.descriptionText.text.toString()
+                    val key = if (uiState.descriptionText.text.isBlank()) {
+                        uiState.imageUri.toString()
+                    } else {
+                        prompt
+                    }
+                    ResultsScreen(
+                        uiState.resultBitmap!!,
+                        if (uiState.selectedPromptOption == PromptType.PHOTO) {
+                            uiState.imageUri
+                        } else {
+                            null
+                        },
+                        promptText = prompt,
+                        viewModel = hiltViewModel(key = key),
+                        onAboutPress = onAboutPressed,
+                        onBackPress = onBackPressed,
+                        onNextPress = creationViewModel::customizeExportClicked,
+                    )
+                }
+
+                ScreenState.CUSTOMIZE -> {
+                    val prompt = uiState.descriptionText.text.toString()
+                    val key = if (uiState.descriptionText.text.isBlank()) {
+                        uiState.imageUri.toString()
+                    } else {
+                        prompt
+                    }
+                    uiState.resultBitmap?.let { bitmap ->
+                        CustomizeAndExportScreen(
+                            resultImage = bitmap,
+                            originalImageUri = uiState.imageUri,
+                            onBackPress = onBackPressed,
+                            onInfoPress = onAboutPressed,
+                            viewModel = hiltViewModel<CustomizeExportViewModel>(key = key),
+                        )
+                    }
+                }
+            }
         }
 
-        ScreenState.LOADING -> {
-            LoadingScreen(
-                onCancelPress = {
-                    creationViewModel.cancelInProgressTask()
-                },
-            )
-        }
-
-        ScreenState.RESULT -> {
-            val prompt = uiState.descriptionText.text.toString()
-            val key = if (uiState.descriptionText.text.isBlank()) {
-                uiState.imageUri.toString()
-            } else {
-                prompt
-            }
-            ResultsScreen(
-                uiState.resultBitmap!!,
-                if (uiState.selectedPromptOption == PromptType.PHOTO) {
-                    uiState.imageUri
-                } else {
-                    null
-                },
-                promptText = prompt,
-                viewModel = hiltViewModel(key = key),
-                onAboutPress = onAboutPressed,
-                onBackPress = onBackPressed,
-                onNextPress = creationViewModel::customizeExportClicked,
-            )
-        }
-
-        ScreenState.CUSTOMIZE -> {
-            val prompt = uiState.descriptionText.text.toString()
-            val key = if (uiState.descriptionText.text.isBlank()) {
-                uiState.imageUri.toString()
-            } else {
-                prompt
-            }
-            uiState.resultBitmap?.let { bitmap ->
-                CustomizeAndExportScreen(
-                    resultImage = bitmap,
-                    originalImageUri = uiState.imageUri,
-                    onBackPress = onBackPressed,
-                    onInfoPress = onAboutPressed,
-                    viewModel = hiltViewModel<CustomizeExportViewModel>(key = key),
-                )
-            }
-        }
     }
 }
 

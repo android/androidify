@@ -13,13 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-@file:OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalPermissionsApi::class)
+@file:OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalPermissionsApi::class,
+    ExperimentalSharedTransitionApi::class
+)
 
 package com.android.developers.androidify.results
 
 import android.graphics.Bitmap
 import android.net.Uri
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.core.EaseOutBack
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -67,9 +70,12 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.android.developers.androidify.theme.AndroidifyTheme
+import com.android.developers.androidify.theme.LocalAnimateBoundsVisibilityScope
+import com.android.developers.androidify.theme.SharedElementKey
 import com.android.developers.androidify.theme.components.AndroidifyTopAppBar
 import com.android.developers.androidify.theme.components.PrimaryButton
 import com.android.developers.androidify.theme.components.ResultsBackground
+import com.android.developers.androidify.theme.sharedBoundsWithDefaults
 import com.android.developers.androidify.util.AdaptivePreview
 import com.android.developers.androidify.util.SmallPhonePreview
 import com.android.developers.androidify.util.allowsFullContent
@@ -209,6 +215,7 @@ fun ResultsScreenContents(
                 modifier = Modifier
                     .fillMaxSize(),
             ) {
+
                 BotResultCard(
                     state.value.resultImageBitmap!!,
                     state.value.originalImageUrl,

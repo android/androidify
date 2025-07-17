@@ -49,6 +49,10 @@ import androidx.compose.ui.util.fastRoundToInt
 import com.android.developers.androidify.results.R
 import com.android.developers.androidify.theme.AndroidifyTheme
 import com.android.developers.androidify.theme.LocalAnimateBoundsScope
+import com.android.developers.androidify.theme.LocalAnimateBoundsVisibilityScope
+import com.android.developers.androidify.theme.SharedElementKey
+import com.android.developers.androidify.theme.sharedBoundsWithDefaults
+
 @OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalSharedTransitionApi::class)
 @Composable
 fun ImageResult(
@@ -75,10 +79,19 @@ fun ImageResult(
                 modifier = Modifier.fillMaxSize(),
             ) {
                 if (exportImageCanvas.imageBitmap != null) {
+                    val safeSharedBounds = if (LocalAnimateBoundsVisibilityScope.current != null) {
+                        Modifier.sharedBoundsWithDefaults(
+                            SharedElementKey.ResultCardToCustomize,
+                            animatedVisibilityScope = LocalAnimateBoundsVisibilityScope.current!!
+                        )
+                    } else {
+                        Modifier
+                    }
                     Image(
                         bitmap = exportImageCanvas.imageBitmap.asImageBitmap(),
                         modifier = Modifier
-                            .fillMaxSize(),
+                            .fillMaxSize()
+                            .then(safeSharedBounds),
                         contentScale = ContentScale.Crop,
                         contentDescription = null,
                     )

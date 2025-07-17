@@ -13,10 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+@file:OptIn(ExperimentalSharedTransitionApi::class)
+
 package com.android.developers.androidify.results
 
 import android.graphics.Bitmap
 import android.net.Uri
+import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -47,6 +50,9 @@ import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import com.android.developers.androidify.theme.LocalAnimateBoundsVisibilityScope
+import com.android.developers.androidify.theme.SharedElementKey
+import com.android.developers.androidify.theme.sharedBoundsWithDefaults
 
 @Composable
 fun BotResultCard(
@@ -80,6 +86,14 @@ fun BotResultCard(
 
 @Composable
 private fun FrontCard(bitmap: Bitmap) {
+    val safeSharedBounds = if (LocalAnimateBoundsVisibilityScope.current != null) {
+        Modifier.sharedBoundsWithDefaults(
+            SharedElementKey.ResultCardToCustomize,
+            animatedVisibilityScope = LocalAnimateBoundsVisibilityScope.current!!
+        )
+    } else {
+        Modifier
+    }
     AsyncImage(
         model = bitmap,
         contentDescription = stringResource(R.string.resultant_android_bot),
@@ -88,7 +102,8 @@ private fun FrontCard(bitmap: Bitmap) {
             .fillMaxSize()
             .aspectRatio(BOT_ASPECT_RATIO)
             .shadow(8.dp, shape = MaterialTheme.shapes.large)
-            .clip(MaterialTheme.shapes.large),
+            .clip(MaterialTheme.shapes.large)
+            .then(safeSharedBounds),
     )
 }
 
