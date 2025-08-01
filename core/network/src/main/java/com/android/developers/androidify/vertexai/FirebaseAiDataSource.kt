@@ -32,6 +32,7 @@ import com.google.firebase.ai.type.ImagenPersonFilterLevel
 import com.google.firebase.ai.type.ImagenSafetyFilterLevel
 import com.google.firebase.ai.type.ImagenSafetySettings
 import com.google.firebase.ai.type.PublicPreviewAPI
+import com.google.firebase.ai.type.ResponseModality
 import com.google.firebase.ai.type.SafetySetting
 import com.google.firebase.ai.type.Schema
 import com.google.firebase.ai.type.asImageOrNull
@@ -51,6 +52,7 @@ interface FirebaseAiDataSource {
     suspend fun generateDescriptivePromptFromImage(image: Bitmap): ValidatedDescription
     suspend fun generateImageFromPromptAndSkinTone(prompt: String, skinTone: String): Bitmap
     suspend fun generatePrompt(prompt: String): GeneratedPrompt
+    suspend fun generateImageWithEdit(image: Bitmap, backgroundPrompt: String): Bitmap
 }
 
 @OptIn(PublicPreviewAPI::class)
@@ -58,7 +60,10 @@ interface FirebaseAiDataSource {
 class FirebaseAiDataSourceImpl @Inject constructor(
     private val remoteConfigDataSource: RemoteConfigDataSource,
 ) : FirebaseAiDataSource {
-    private fun createGenerativeTextModel(jsonSchema: Schema, temperature: Float? = null): GenerativeModel {
+    private fun createGenerativeTextModel(
+        jsonSchema: Schema,
+        temperature: Float? = null,
+    ): GenerativeModel {
         return Firebase.ai(backend = GenerativeBackend.vertexAI()).generativeModel(
             modelName = remoteConfigDataSource.textModelName(),
             generationConfig = generationConfig {
@@ -139,6 +144,7 @@ class FirebaseAiDataSourceImpl @Inject constructor(
             image,
         )
     }
+
     private fun createFineTunedModel(): GenerativeModel {
         return Firebase.ai.generativeModel(
             remoteConfigDataSource.getFineTunedModelName(),
@@ -152,7 +158,10 @@ class FirebaseAiDataSourceImpl @Inject constructor(
         )
     }
 
-    override suspend fun generateImageFromPromptAndSkinTone(prompt: String, skinTone: String): Bitmap {
+    override suspend fun generateImageFromPromptAndSkinTone(
+        prompt: String,
+        skinTone: String,
+    ): Bitmap {
         val basePromptTemplate = remoteConfigDataSource.promptImageGenerationWithSkinTone()
         val imageGenerationPrompt = basePromptTemplate
             .replace("{prompt}", prompt)
@@ -235,6 +244,29 @@ class FirebaseAiDataSourceImpl @Inject constructor(
         )
         val generativeModel = createGenerativeTextModel(jsonSchema, temperature = 0.75f)
         return executePromptGeneration(generativeModel, prompt)
+    }
+
+    override suspend fun generateImageWithEdit(
+        image: Bitmap,
+        backgroundPrompt: String,
+    ): Bitmap {
+        val model = Firebase.ai(backend = GenerativeBackend.googleAI()).generativeModel(
+            modelName = remoteConfigDataSource.getImageGenerationEditsModelName(),
+            generationConfig = generationConfig {
+                responseModalities = listOf(
+                    ResponseModality.TEXT,
+                    ResponseModality.IMAGE,
+                )
+            },
+        )
+        val prompt = content {
+            image(image)
+            text(backgroundPrompt)
+        }
+        val response = model.generateContent(prompt)
+        val image = response.candidates.firstOrNull()
+            ?.content?.parts?.firstNotNullOfOrNull { it.asImageOrNull() }
+        return image ?: throw IllegalStateException("Could not extract image from model response")
     }
 
     private suspend fun executePromptGeneration(

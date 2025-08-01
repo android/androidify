@@ -15,12 +15,10 @@
  */
 package com.android.developers.androidify.customize
 
-import android.R.attr.rotation
 import android.graphics.Bitmap
 import android.net.Uri
 import androidx.annotation.DrawableRes
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.R
 import androidx.compose.ui.geometry.Size
 
 data class CustomizeExportState(
@@ -35,7 +33,7 @@ data class CustomizeExportState(
         CustomizeTool.Background to BackgroundToolState(),
     ),
     val exportImageCanvas: ExportImageCanvas = ExportImageCanvas(),
-
+    val showImageEditProgress: Boolean = false,
 )
 
 interface ToolState {
@@ -61,6 +59,9 @@ data class BackgroundToolState(
         BackgroundOption.Plain,
         BackgroundOption.Lightspeed,
         BackgroundOption.IO,
+        BackgroundOption.Yeehaw,
+        BackgroundOption.Island,
+        BackgroundOption.Intergalactic,
     ),
 ) : ToolState
 
@@ -77,6 +78,7 @@ data class ExportImageCanvas(
     @param:DrawableRes
     val selectedBackgroundDrawable: Int? = com.android.developers.androidify.results.R.drawable.background_square_blocks,
     val includeWatermark: Boolean = true,
+    val imageWithEdit: Bitmap? = null,
 ) {
     fun updateAspectRatioAndBackground(
         backgroundOption: BackgroundOption,
@@ -102,6 +104,12 @@ data class ExportImageCanvas(
                         null
                     }
                     BackgroundOption.Plain -> com.android.developers.androidify.results.R.drawable.background_square_none
+                    else -> {
+                        offset = Offset(0f, 0f)
+                        rotation = 0f
+                        imageSize = Size(newCanvasSize.width, newCanvasSize.height)
+                        null
+                    }
                 }
             }
             SizeOption.Banner -> {
@@ -119,6 +127,12 @@ data class ExportImageCanvas(
                         null
                     }
                     BackgroundOption.Plain -> com.android.developers.androidify.results.R.drawable.background_banner_plain
+                    else -> {
+                        offset = Offset(0f, 0f)
+                        rotation = 0f
+                        imageSize = Size(newCanvasSize.width, newCanvasSize.height)
+                        null
+                    }
                 }
             }
             SizeOption.SocialHeader -> {
@@ -135,6 +149,12 @@ data class ExportImageCanvas(
                         null
                     }
                     BackgroundOption.Plain -> com.android.developers.androidify.results.R.drawable.background_social_header_plain
+                    else -> {
+                        offset = Offset(0f, 0f)
+                        rotation = 0f
+                        imageSize = Size(newCanvasSize.width, newCanvasSize.height)
+                        null
+                    }
                 }
             }
 
@@ -152,6 +172,12 @@ data class ExportImageCanvas(
                         null
                     }
                     BackgroundOption.Plain -> com.android.developers.androidify.results.R.drawable.background_wallpaper_plain
+                    else -> {
+                        offset = Offset(0f, 0f)
+                        rotation = 0f
+                        imageSize = Size(newCanvasSize.width, newCanvasSize.height)
+                        null
+                    }
                 }
             }
 
@@ -169,6 +195,12 @@ data class ExportImageCanvas(
                         null
                     }
                     BackgroundOption.Plain -> com.android.developers.androidify.results.R.drawable.background_wallpaper_tablet_light
+                    else -> {
+                        offset = Offset(0f, 0f)
+                        rotation = 0f
+                        imageSize = Size(newCanvasSize.width, newCanvasSize.height)
+                        null
+                    }
                 }
             }
         }

@@ -67,4 +67,8 @@ class TestRemoteConfigDataSource(private val useGeminiNano: Boolean) : RemoteCon
     override fun getFineTunedModelName(): String {
         return "test-fine-tuned-model"
     }
+
+    override fun getImageGenerationEditsModelName(): String {
+        return "test_image_model"
+    }
 }

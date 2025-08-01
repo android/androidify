@@ -18,6 +18,7 @@
 package com.android.developers.androidify.customize
 
 import android.Manifest
+import android.R.attr.visible
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
@@ -82,6 +83,7 @@ import com.android.developers.androidify.theme.LocalAnimateBoundsScope
 import com.android.developers.androidify.theme.components.AndroidifyTopAppBar
 import com.android.developers.androidify.theme.components.PrimaryButton
 import com.android.developers.androidify.theme.components.SecondaryOutlinedButton
+import com.android.developers.androidify.theme.transitions.loadingShimmerOverlay
 import com.android.developers.androidify.util.LargeScreensPreview
 import com.android.developers.androidify.util.PhonePreview
 import com.android.developers.androidify.util.allowsFullContent
@@ -162,23 +164,32 @@ private fun CustomizeExportContents(
         },
         containerColor = MaterialTheme.colorScheme.surface,
     ) { paddingValues ->
-        val imageResult = remember {
+        val imageResult = remember(state.showImageEditProgress) {
             movableContentWithReceiverOf<ExportImageCanvas> {
-                ImageResult(
-                    this,
-                    modifier = Modifier
+                Box(
+                    Modifier
                         .padding(16.dp),
-                    outerChromeModifier = Modifier
-                        .dropShadow(
-                            RoundedCornerShape(6),
-                            shadow = Shadow(
-                                radius = 26.dp,
-                                spread = 10.dp,
-                                color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.2f),
+                ) {
+                    ImageResult(
+                        this@movableContentWithReceiverOf,
+                        modifier = Modifier
+                            .padding(16.dp),
+                        outerChromeModifier = Modifier
+                            .dropShadow(
+                                RoundedCornerShape(6),
+                                shadow = Shadow(
+                                    radius = 26.dp,
+                                    spread = 10.dp,
+                                    color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.2f),
+                                ),
+                            )
+                            .clip(RoundedCornerShape(6))
+                            .loadingShimmerOverlay(
+                                visible = state.showImageEditProgress,
+                                clipShape = RoundedCornerShape(percent = 6),
                             ),
-                        )
-                        .clip(RoundedCornerShape(6)),
-                )
+                    )
+                }
             }
         }
         val toolSelector = @Composable { modifier: Modifier, horizontal: Boolean ->

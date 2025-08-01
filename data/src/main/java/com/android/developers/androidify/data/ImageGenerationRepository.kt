@@ -35,6 +35,7 @@ interface ImageGenerationRepository {
     suspend fun saveImage(imageBitmap: Bitmap): Uri
     suspend fun saveImageToExternalStorage(imageBitmap: Bitmap): Uri
     suspend fun saveImageToExternalStorage(imageUri: Uri): Uri
+    suspend fun generateImageWithEdit(image: Bitmap, editPrompt: String): Bitmap
 }
 
 @Singleton
@@ -123,5 +124,9 @@ internal class ImageGenerationRepositoryImpl @Inject constructor(
         if (!internetConnectivityManager.isInternetAvailable()) {
             throw NoInternetException()
         }
+    }
+
+    override suspend fun generateImageWithEdit(image: Bitmap, editPrompt: String): Bitmap {
+        return firebaseAiDataSource.generateImageWithEdit(image, editPrompt)
     }
 }

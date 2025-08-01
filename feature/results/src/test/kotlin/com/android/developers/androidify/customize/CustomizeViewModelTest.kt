@@ -34,8 +34,9 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import kotlin.test.DefaultAsserter.assertNotNull
 import kotlin.test.assertNotNull
+import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 @RunWith(RobolectricTestRunner::class)
 class CustomizeViewModelTest {
@@ -134,5 +135,66 @@ class CustomizeViewModelTest {
         // Ensure all coroutines on the test scheduler complete
         advanceUntilIdle()
         assertNotNull(values.last().savedUri)
+    }
+
+    @Test
+    fun changeBackground_NotNull() = runTest {
+        val values = mutableListOf<CustomizeExportState>()
+        // Launch collector on the backgroundScope directly to use runTest's scheduler
+        backgroundScope.launch(UnconfinedTestDispatcher()) {
+            viewModel.state.collect {
+                values.add(it)
+            }
+        }
+        viewModel.setArguments(
+            fakeBitmap,
+            originalFakeUri,
+        )
+        advanceUntilIdle()
+        viewModel.selectedToolStateChanged(
+            BackgroundToolState(
+                selectedToolOption = BackgroundOption.Yeehaw,
+                options = listOf(
+                    BackgroundOption.None,
+                    BackgroundOption.Yeehaw,
+                    BackgroundOption.Intergalactic,
+                    BackgroundOption.Island,
+                ),
+            ),
+        )
+        advanceUntilIdle()
+        assertTrue { !values[values.lastIndex].showImageEditProgress }
+        assertTrue { values[values.lastIndex - 1].showImageEditProgress }
+        assertNotNull(values.last().exportImageCanvas.imageWithEdit)
+    }
+
+    @Test
+    fun changeBackground_None() = runTest {
+        val values = mutableListOf<CustomizeExportState>()
+        // Launch collector on the backgroundScope directly to use runTest's scheduler
+        backgroundScope.launch(UnconfinedTestDispatcher()) {
+            viewModel.state.collect {
+                values.add(it)
+            }
+        }
+        viewModel.setArguments(
+            fakeBitmap,
+            originalFakeUri,
+        )
+        advanceUntilIdle()
+        viewModel.selectedToolStateChanged(
+            BackgroundToolState(
+                selectedToolOption = BackgroundOption.None,
+                options = listOf(
+                    BackgroundOption.None,
+                    BackgroundOption.Yeehaw,
+                    BackgroundOption.Intergalactic,
+                    BackgroundOption.Island,
+                ),
+            ),
+        )
+        advanceUntilIdle()
+        assertTrue { !values[values.lastIndex].showImageEditProgress }
+        assertNull(values.last().exportImageCanvas.imageWithEdit)
     }
 }

@@ -46,6 +46,8 @@ sealed class BackgroundOption(
     override val displayName: String,
     override val key: String,
     val previewDrawableInt: Int?,
+    val aiBackground: Boolean = false,
+    val prompt: String? = null,
 ) : ToolOption {
     object None : BackgroundOption("None", "None", null)
     object Plain : BackgroundOption("Plain", "Plain", null)
@@ -59,6 +61,29 @@ sealed class BackgroundOption(
         "IO",
         R.drawable.background_option_io,
     )
-    // todo add Create with AI background option
-    /* object Create : BackgroundOption("Create", "Create", R.drawable.background_create)*/
+    object Yeehaw : BackgroundOption(
+        "Yeehaw",
+        "Yeehaw",
+        R.drawable.yeehaw,
+        aiBackground = true,
+        prompt = "Add a background that has a vibe a vibrant and stylized 3D farm scene with soft colours, featuring a classic red barn set against rolling golden hills, with round hay bales in the foreground and puffy, cartoon-like trees and clouds.The overall aesthetic is very soft, clean, and cartoon-like, with a warm and inviting color palette dominated by reds, yellows, and pinks. The lighting is gentle, giving the entire scene a serene and idyllic feel. ",
+    )
+    object Island : BackgroundOption(
+        "Island",
+        "island",
+        R.drawable.island,
+        aiBackground = true,
+        prompt =
+        "Add a background that has a vibe of island, beach party style background. The style must be 3D collectable style. Vibrant and cheerful 3D digital illustration of an idyllic beach scene.\n" +
+            "\n" +
+            "The image features a collection of classic beach items on a sandy shore next to a calm blue ocean under a bright blue sky with a few puffy, cartoon-like clouds.The overall style is clean, bright, and whimsical, with smooth textures and a playful, holiday atmosphere.",
+    )
+    object Intergalactic : BackgroundOption(
+        "Intergalactic",
+        "Intergalactic",
+        R.drawable.intergalatic,
+        aiBackground = true,
+        prompt =
+        "Add a background that has a intergalactic vibe, A whimsical 3D alien landscape for an android bot to explore. The scene features rolling, soft-pink hills dotted with colorful, stylized mushroom-like and coral-like plants in shades of blue and orange. The background is a dreamy, pastel sky of pink and lavender, filled with soft nebulae and stars, with a large, dark planet with prominent golden rings hanging in the distance.",
+    )
 }

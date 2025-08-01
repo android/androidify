@@ -45,4 +45,11 @@ class TestFirebaseAiDataSource(val promptOutput: List<String>) : FirebaseAiDataS
     override suspend fun generatePrompt(prompt: String): GeneratedPrompt {
         return GeneratedPrompt(true, promptOutput)
     }
+
+    override suspend fun generateImageWithEdit(
+        image: Bitmap,
+        backgroundPrompt: String,
+    ): Bitmap {
+        return createBitmap(1, 1)
+    }
 }

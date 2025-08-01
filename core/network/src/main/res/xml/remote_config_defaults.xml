@@ -16,6 +16,10 @@
 -->
 <defaults>
     <entry>
+        <key>image_generation_model_edits</key>
+        <value>gemini-2.0-flash-preview-image-generation</value>
+    </entry>
+    <entry>
         <key>use_imagen</key>
         <value>true</value>
     </entry>

@@ -57,4 +57,11 @@ class FakeImageGenerationRepository : ImageGenerationRepository {
         if (exceptionToThrow != null) throw exceptionToThrow!!
         return imageUri
     }
+
+    override suspend fun generateImageWithEdit(
+        image: Bitmap,
+        editPrompt: String,
+    ): Bitmap {
+        return createBitmap(1, 1)
+    }
 }
