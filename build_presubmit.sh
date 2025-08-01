@@ -6,7 +6,7 @@ set -e
 # --- Configuration ---
 # Get the script's directory.
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
+echo DIR
 # Define the Android SDK version you want to target.
 ANDROID_SDK_VERSION="36"
 ANDROID_BUILD_TOOLS_VERSION="35.0.0"
@@ -65,6 +65,7 @@ cp /tmpfs/src/git/androidify-prebuilts/google-services.json ${DIR}/app
 echo "Copying gradle.properties"
 echo "" >> ${DIR}/gradle.properties # add a new line to the file
 cat /tmpfs/src/git/androidify-prebuilts/gradle.properties >> ${DIR}/gradle.properties
+ls
 
 # --- Build Process ---
 
@@ -78,7 +79,7 @@ echo "INFO: Cleaning the project..."
 
 # Build the production release bundle without generating a baseline profile.
 echo "INFO: Building the production release bundle..."
-./gradlew app:bundleRelease -x test -Pandroid.sdk.path=$ANDROID_HOME
+./gradlew app:bundleRelease -x test -x uploadCrashlyticsMappingFileRelease -Pandroid.sdk.path=$ANDROID_HOME
 
 # Check if the build was successful
 if [ $? -eq 0 ]; then
@@ -86,6 +87,29 @@ if [ $? -eq 0 ]; then
 else
   echo "FAILURE: Build failed. Please check the console output for errors."
   exit 1
+fi
+# --- Artifact Collection ---
+echo "INFO: Preparing artifacts for Kokoro..."
+
+# Default output path for the bundle
+AAB_SRC_DIR="app/build/outputs/bundle/release"
+# The default name of the AAB for a release bundle
+AAB_FILE="app-release.aab"
+AAB_PATH="${AAB_SRC_DIR}/${AAB_FILE}"
+
+# Check if the AAB exists
+if [[ -f "$AAB_PATH" ]]; then
+  # Create a directory within Kokoro's artifact collection area
+  ARTIFACT_DEST_DIR="${KOKORO_ARTIFACTS_DIR}/artifacts"
+  mkdir -p "${ARTIFACT_DEST_DIR}"
+
+  # Copy the AAB
+  cp "${AAB_PATH}" "${ARTIFACT_DEST_DIR}/app-release-unsigned.aab"
+  echo "SUCCESS: AAB copied to ${ARTIFACT_DEST_DIR}"
+
+else
+  echo "FAILURE: AAB not found at ${AAB_PATH}"
+  # Optionally fail the build: exit 1
 fi
 
 exit 0

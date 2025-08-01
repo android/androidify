@@ -61,7 +61,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
-            baselineProfile.automaticGenerationDuringBuild = true
+            baselineProfile.automaticGenerationDuringBuild = false
             configure<CrashlyticsExtension> {
                 mappingFileUploadEnabled = true
             }
