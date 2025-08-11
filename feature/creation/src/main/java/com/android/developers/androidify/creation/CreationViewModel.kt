@@ -16,7 +16,6 @@
 package com.android.developers.androidify.creation
 
 import android.content.Context
-import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.text.input.TextFieldState
@@ -153,7 +152,7 @@ class CreationViewModel @Inject constructor(
                         )
                     }
                     _uiState.update {
-                        it.copy(resultBitmap = bitmap, screenState = ScreenState.RESULT)
+                        it.copy(resultBitmapUri = imageGenerationRepository.saveImage(bitmap), screenState = ScreenState.RESULT)
                     }
                 } catch (e: Exception) {
                     handleImageGenerationError(e)
@@ -220,25 +219,13 @@ class CreationViewModel @Inject constructor(
 
             ScreenState.RESULT -> {
                 _uiState.update {
-                    it.copy(screenState = ScreenState.EDIT, resultBitmap = null)
+                    it.copy(screenState = ScreenState.EDIT, resultBitmapUri = null)
                 }
             }
 
             ScreenState.EDIT -> {
                 // do nothing, back press handled outside
             }
-
-            ScreenState.CUSTOMIZE -> {
-                _uiState.update {
-                    it.copy(screenState = ScreenState.RESULT)
-                }
-            }
-        }
-    }
-
-    fun customizeExportClicked() {
-        _uiState.update {
-            it.copy(screenState = ScreenState.CUSTOMIZE)
         }
     }
 }
@@ -252,14 +239,13 @@ data class CreationState(
     val generatedPrompt: String? = null,
     val promptGenerationInProgress: Boolean = false,
     val screenState: ScreenState = ScreenState.EDIT,
-    val resultBitmap: Bitmap? = null,
+    val resultBitmapUri: Uri? = null,
 )
 
 enum class ScreenState {
     EDIT,
     LOADING,
     RESULT,
-    CUSTOMIZE,
 }
 
 data class BotColor(

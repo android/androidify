@@ -73,7 +73,7 @@ data class BackgroundToolState(
 ) : ToolState
 
 data class ExportImageCanvas(
-    val imageBitmap: Bitmap? = null,
+    val imageUri: Uri? = null,
     val aspectRatioOption: SizeOption = SizeOption.Square,
     val canvasSize: Size = Size(1000f, 1000f),
     val mainImageUri: Uri? = null,

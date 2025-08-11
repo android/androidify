@@ -32,6 +32,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.IntOffset
+import androidx.core.net.toUri
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.entry
 import androidx.navigation3.runtime.entryProvider
@@ -39,8 +40,10 @@ import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import com.android.developers.androidify.camera.CameraPreviewScreen
 import com.android.developers.androidify.creation.CreationScreen
+import com.android.developers.androidify.customize.CustomizeAndExportScreen
 import com.android.developers.androidify.home.AboutScreen
 import com.android.developers.androidify.home.HomeScreen
+import com.android.developers.androidify.results.ResultsScreen
 import com.android.developers.androidify.theme.transitions.ColorSplashTransitionScreen
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 
@@ -110,6 +113,51 @@ fun MainNavigation() {
                     onAboutPressed = {
                         backStack.add(About)
                     },
+                    onImageCreated = { resultImageUri, prompt, originalImageUri ->
+                        backStack.removeAll{ it is ImageResult}
+                        backStack.add(
+                            ImageResult(
+                                result = resultImageUri.toString(),
+                                prompt = prompt,
+                                originalImageUri = originalImageUri?.toString()
+                            )
+                        )
+                    }
+                )
+            }
+            entry<ImageResult> { resultKey ->
+                ResultsScreen(
+                    resultImageUri = resultKey.result.toUri(),
+                    originalImageUri = resultKey.originalImageUri?.toUri(),
+                    onNextPress = { resultImageUri, originalImageUri ->
+                        backStack.removeAll{ it is ImageResult}
+                        backStack.add(
+                            ShareResult(
+                                resultUri = resultImageUri.toString(),
+                                originalImageUri = originalImageUri?.toString()
+                            )
+                        )
+                    },
+                    promptText = resultKey.prompt,
+                    onAboutPress = {
+                        backStack.add(About)
+                    },
+                    onBackPress = {
+                        backStack.removeLastOrNull()
+                        backStack.add(Create(fileName = resultKey.originalImageUri, prompt = resultKey.prompt))
+                    }
+                )
+            }
+            entry<ShareResult> { shareKey ->
+                CustomizeAndExportScreen(
+                    resultImageUri = shareKey.resultUri.toUri(),
+                    originalImageUri = shareKey.originalImageUri?.toUri(),
+                    onBackPress = {
+                        backStack.removeLastOrNull()
+                    },
+                    onInfoPress = {
+                        backStack.add(About)
+                    }
                 )
             }
             entry<About> {
