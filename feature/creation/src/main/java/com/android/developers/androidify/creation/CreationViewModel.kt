@@ -36,11 +36,15 @@ import com.android.developers.androidify.data.TextGenerationRepository
 import com.android.developers.androidify.util.LocalFileProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.File
+import java.io.FileOutputStream
 import javax.inject.Inject
 
 @HiltViewModel
@@ -153,7 +157,7 @@ class CreationViewModel @Inject constructor(
                         )
                     }
                     _uiState.update {
-                        it.copy(resultBitmap = bitmap, screenState = ScreenState.RESULT)
+                        it.copy(resultBitmapUri = saveBitmapToCache(context, bitmap), screenState = ScreenState.RESULT)
                     }
                 } catch (e: Exception) {
                     handleImageGenerationError(e)
@@ -220,25 +224,13 @@ class CreationViewModel @Inject constructor(
 
             ScreenState.RESULT -> {
                 _uiState.update {
-                    it.copy(screenState = ScreenState.EDIT, resultBitmap = null)
+                    it.copy(screenState = ScreenState.EDIT, resultBitmapUri = null)
                 }
             }
 
             ScreenState.EDIT -> {
                 // do nothing, back press handled outside
             }
-
-            ScreenState.CUSTOMIZE -> {
-                _uiState.update {
-                    it.copy(screenState = ScreenState.RESULT)
-                }
-            }
-        }
-    }
-
-    fun customizeExportClicked() {
-        _uiState.update {
-            it.copy(screenState = ScreenState.CUSTOMIZE)
         }
     }
 }
@@ -252,14 +244,13 @@ data class CreationState(
     val generatedPrompt: String? = null,
     val promptGenerationInProgress: Boolean = false,
     val screenState: ScreenState = ScreenState.EDIT,
-    val resultBitmap: Bitmap? = null,
+    val resultBitmapUri: Uri? = null,
 )
 
 enum class ScreenState {
     EDIT,
     LOADING,
     RESULT,
-    CUSTOMIZE,
 }
 
 data class BotColor(
@@ -300,4 +291,25 @@ private fun getBotColors(): List<BotColor> {
 enum class PromptType(val displayName: String) {
     PHOTO("Photo"),
     TEXT("Prompt"),
+}
+
+suspend fun saveBitmapToCache(
+    context: Context,
+    bitmap: Bitmap,
+    compressionFormat: Bitmap.CompressFormat = Bitmap.CompressFormat.JPEG,
+    quality: Int = 100
+): Uri? = withContext(Dispatchers.IO) {
+
+    val cacheDir = context.cacheDir
+    val fileName = File(cacheDir, "temp_image_${System.currentTimeMillis()}.jpg")
+    try {
+        FileOutputStream(fileName).use { outputStream ->
+            bitmap.compress(compressionFormat, quality, outputStream)
+        }
+        Uri.fromFile(fileName)
+    } catch (e: Exception) {
+        e.printStackTrace()
+        null
+    }
+
 }

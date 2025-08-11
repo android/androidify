@@ -17,7 +17,6 @@
 
 package com.android.developers.androidify.results
 
-import android.graphics.Bitmap
 import android.net.Uri
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.EaseOutBack
@@ -75,22 +74,23 @@ import com.android.developers.androidify.util.SmallPhonePreview
 import com.android.developers.androidify.util.allowsFullContent
 import com.android.developers.androidify.util.isAtLeastMedium
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import androidx.core.net.toUri
 
 @Composable
 fun ResultsScreen(
-    resultImage: Bitmap,
+    resultImageUri: Uri,
     originalImageUri: Uri?,
     promptText: String?,
     modifier: Modifier = Modifier,
     verboseLayout: Boolean = allowsFullContent(),
     onBackPress: () -> Unit,
     onAboutPress: () -> Unit,
-    onNextPress: () -> Unit,
-    viewModel: ResultsViewModel = hiltViewModel<ResultsViewModel>(),
+    onNextPress: (resultImageUri:Uri, originalImageUri:Uri?) -> Unit,
+    viewModel: ResultsViewModel = hiltViewModel(),
 ) {
     val state = viewModel.state.collectAsStateWithLifecycle()
-    LaunchedEffect(resultImage, originalImageUri, promptText) {
-        viewModel.setArguments(resultImage, originalImageUri, promptText)
+    LaunchedEffect(resultImageUri, originalImageUri, promptText) {
+        viewModel.setArguments(resultImageUri, originalImageUri, promptText)
     }
     val snackbarHostState by viewModel.snackbarHostState.collectAsStateWithLifecycle()
     Scaffold(
@@ -121,7 +121,12 @@ fun ResultsScreen(
             contentPadding,
             state,
             verboseLayout = verboseLayout,
-            onCustomizeShareClicked = onNextPress,
+            onCustomizeShareClicked = {
+                onNextPress(
+                    resultImageUri,
+                    originalImageUri,
+                )
+            },
         )
     }
 }
@@ -132,11 +137,11 @@ fun ResultsScreen(
 @Composable
 private fun ResultsScreenPreview() {
     AndroidifyTheme {
-        val bitmap = ImageBitmap.imageResource(R.drawable.placeholderbot)
+        val imageUri = ("android.resource://com.android.developers.androidify.results/" + R.drawable.placeholderbot).toUri()
         val state = remember {
             mutableStateOf(
                 ResultState(
-                    resultImageBitmap = bitmap.asAndroidBitmap(),
+                    resultImageUri = imageUri,
                     promptText = "wearing a hat with straw hair",
                 ),
             )
@@ -154,11 +159,11 @@ private fun ResultsScreenPreview() {
 @Composable
 private fun ResultsScreenPreviewSmall() {
     AndroidifyTheme {
-        val bitmap = ImageBitmap.imageResource(R.drawable.placeholderbot)
+        val imageUri = ("android.resource://com.android.developers.androidify.results/" + R.drawable.placeholderbot).toUri()
         val state = remember {
             mutableStateOf(
                 ResultState(
-                    resultImageBitmap = bitmap.asAndroidBitmap(),
+                    resultImageUri = imageUri,
                     promptText = "wearing a hat with straw hair",
                 ),
             )
@@ -182,7 +187,7 @@ fun ResultsScreenContents(
     defaultSelectedResult: ResultOption = ResultOption.ResultImage,
 ) {
     ResultsBackground()
-    val showResult = state.value.resultImageBitmap != null
+    val showResult = state.value.resultImageUri != null
     var selectedResultOption by remember {
         mutableStateOf(defaultSelectedResult)
     }
@@ -210,7 +215,7 @@ fun ResultsScreenContents(
                     .fillMaxSize(),
             ) {
                 BotResultCard(
-                    state.value.resultImageBitmap!!,
+                    state.value.resultImageUri!!,
                     state.value.originalImageUrl,
                     state.value.promptText,
                     modifier = Modifier.align(Alignment.Center),

@@ -164,6 +164,7 @@ fun CreationScreen(
     onCameraPressed: () -> Unit = {},
     onBackPressed: () -> Unit,
     onAboutPressed: () -> Unit,
+    onImageCreated: (resultImageUri: Uri, prompt: String?, originalImageUri: Uri?) -> Unit,
 ) {
     val uiState by creationViewModel.uiState.collectAsStateWithLifecycle()
     BackHandler(
@@ -213,43 +214,15 @@ fun CreationScreen(
         }
 
         ScreenState.RESULT -> {
-            val prompt = uiState.descriptionText.text.toString()
-            val key = if (uiState.descriptionText.text.isBlank()) {
-                uiState.imageUri.toString()
-            } else {
-                prompt
-            }
-            ResultsScreen(
-                uiState.resultBitmap!!,
+            onImageCreated(
+                uiState.resultBitmapUri!!,
+                uiState.descriptionText.text.toString(),
                 if (uiState.selectedPromptOption == PromptType.PHOTO) {
                     uiState.imageUri
                 } else {
                     null
-                },
-                promptText = prompt,
-                viewModel = hiltViewModel(key = key),
-                onAboutPress = onAboutPressed,
-                onBackPress = onBackPressed,
-                onNextPress = creationViewModel::customizeExportClicked,
+                }
             )
-        }
-
-        ScreenState.CUSTOMIZE -> {
-            val prompt = uiState.descriptionText.text.toString()
-            val key = if (uiState.descriptionText.text.isBlank()) {
-                uiState.imageUri.toString()
-            } else {
-                prompt
-            }
-            uiState.resultBitmap?.let { bitmap ->
-                CustomizeAndExportScreen(
-                    resultImage = bitmap,
-                    originalImageUri = uiState.imageUri,
-                    onBackPress = onBackPressed,
-                    onInfoPress = onAboutPressed,
-                    viewModel = hiltViewModel<CustomizeExportViewModel>(key = key),
-                )
-            }
         }
     }
 }

@@ -38,7 +38,7 @@ class ResultsViewModel @Inject constructor() : ViewModel() {
         get() = _snackbarHostState
 
     fun setArguments(
-        resultImageUrl: Bitmap,
+        resultImageUrl: Uri?,
         originalImageUrl: Uri?,
         promptText: String?,
     ) {
@@ -49,7 +49,7 @@ class ResultsViewModel @Inject constructor() : ViewModel() {
 }
 
 data class ResultState(
-    val resultImageBitmap: Bitmap? = null,
+    val resultImageUri: Uri? = null,
     val originalImageUrl: Uri? = null,
     val promptText: String? = null,
 )

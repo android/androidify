@@ -57,13 +57,13 @@ class CustomizeExportViewModel @Inject constructor(
         composableBitmapRenderer.dispose()
     }
     fun setArguments(
-        resultImageUrl: Bitmap,
+        resultImageUrl: Uri,
         originalImageUrl: Uri?,
     ) {
         _state.update {
             CustomizeExportState(
                 originalImageUrl,
-                exportImageCanvas = it.exportImageCanvas.copy(imageBitmap = resultImageUrl),
+                exportImageCanvas = it.exportImageCanvas.copy(imageUri = resultImageUrl),
             )
         }
     }
