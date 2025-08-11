@@ -17,25 +17,25 @@ package com.android.developers.androidify.customize
 
 import android.app.Application
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.application
 import androidx.lifecycle.viewModelScope
 import com.android.developers.androidify.data.DataModule_Companion_IoDispatcherFactory.ioDispatcher
 import com.android.developers.androidify.data.ImageGenerationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
-import javax.inject.Named
 
 @HiltViewModel
 class CustomizeExportViewModel @Inject constructor(
@@ -141,7 +141,7 @@ class CustomizeExportViewModel @Inject constructor(
                 return@launch
             }
 
-            val image = state.value.exportImageCanvas.imageBitmap
+            val image = state.value.exportImageCanvas.imageUri?.let { uri -> convertUriToBitmap(uri) }
             if (image == null) {
                 return@launch
             }
@@ -196,6 +196,24 @@ class CustomizeExportViewModel @Inject constructor(
     fun changeSelectedTool(tool: CustomizeTool) {
         _state.update {
             it.copy(selectedTool = tool)
+        }
+    }
+
+    suspend fun convertUriToBitmap(uri: Uri): Bitmap? {
+        return withContext(ioDispatcher()) {
+            try {
+                val inputStream = application.contentResolver.openInputStream(uri)
+                if (inputStream != null) {
+                    val bitmap = BitmapFactory.decodeStream(inputStream)
+                    inputStream.close()
+                    bitmap
+                } else {
+                    null
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
         }
     }
 }
