@@ -53,7 +53,9 @@ class CreationViewModelTest {
 
     @Before
     fun setup() {
+        val fakeUri = Uri.parse("content://test/image.jpg")
         viewModel = CreationViewModel(
+            originalImageUrl = fakeUri,
             internetConnectivityManager,
             imageGenerationRepository,
             TestTextGenerationRepository(),
@@ -116,8 +118,8 @@ class CreationViewModelTest {
         viewModel.onImageSelected(Uri.parse("content://test/image.jpg"))
         viewModel.onSelectedPromptOptionChanged(PromptType.PHOTO)
         viewModel.startClicked()
-        assertEquals(ScreenState.RESULT, viewModel.uiState.value.screenState)
-        assertNotNull(viewModel.uiState.value.resultBitmap)
+        assertEquals(ScreenState.EDIT, viewModel.uiState.value.screenState)
+        assertNotNull(viewModel.uiState.value.resultBitmapUri)
     }
 
     @Test
@@ -177,8 +179,8 @@ class CreationViewModelTest {
             "testing input description"
         }
         viewModel.startClicked()
-        assertEquals(ScreenState.RESULT, viewModel.uiState.value.screenState)
-        assertNotNull(viewModel.uiState.value.resultBitmap)
+        assertEquals(ScreenState.EDIT, viewModel.uiState.value.screenState)
+        assertNotNull(viewModel.uiState.value.resultBitmapUri)
     }
 
     @Test

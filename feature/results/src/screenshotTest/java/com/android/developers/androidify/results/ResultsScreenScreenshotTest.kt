@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import com.android.developers.androidify.theme.AndroidifyTheme
 import com.android.developers.androidify.util.AdaptivePreview
 import com.android.developers.androidify.util.SmallPhonePreview
+import androidx.core.net.toUri
 
 class ResultsScreenScreenshotTest {
 
@@ -43,7 +44,7 @@ class ResultsScreenScreenshotTest {
         val state = remember {
             mutableStateOf(
                 ResultState(
-                    resultImageBitmap = mockBitmap,
+                    resultImageUri = "test://mockbitmap/${mockBitmap.hashCode()}".toUri(),
                     promptText = "wearing a hat with straw hair",
                 ),
             )
@@ -68,7 +69,7 @@ class ResultsScreenScreenshotTest {
         val state = remember {
             mutableStateOf(
                 ResultState(
-                    resultImageBitmap = mockBitmap,
+                    resultImageUri = "test://mockbitmap/${mockBitmap.hashCode()}".toUri(),
                     promptText = "wearing a hat with straw hair",
                 ),
             )
@@ -92,7 +93,7 @@ class ResultsScreenScreenshotTest {
         val state = remember {
             mutableStateOf(
                 ResultState(
-                    resultImageBitmap = mockBitmap,
+                    resultImageUri = "test://mockbitmap/${mockBitmap.hashCode()}".toUri(),
                     promptText = "wearing a hat with straw hair",
                 ),
             )

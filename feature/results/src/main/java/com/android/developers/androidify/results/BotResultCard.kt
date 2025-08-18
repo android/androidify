@@ -50,7 +50,7 @@ import coil3.compose.AsyncImage
 
 @Composable
 fun BotResultCard(
-    resultImage: Bitmap,
+    resultImageUri: Uri,
     originalImageUrl: Uri?,
     promptText: String?,
     flippableState: FlippableState,
@@ -66,7 +66,7 @@ fun BotResultCard(
         flippableState = flippableState,
         onFlipStateChanged = onFlipStateChanged,
         front = {
-            FrontCard(resultImage)
+            FrontCard(resultImageUri)
         },
         back = {
             if (originalImageUrl != null) {
@@ -79,9 +79,9 @@ fun BotResultCard(
 }
 
 @Composable
-private fun FrontCard(bitmap: Bitmap) {
+private fun FrontCard(resultImageUri: Uri) {
     AsyncImage(
-        model = bitmap,
+        model = resultImageUri,
         contentDescription = stringResource(R.string.resultant_android_bot),
         contentScale = ContentScale.Crop,
         modifier = Modifier

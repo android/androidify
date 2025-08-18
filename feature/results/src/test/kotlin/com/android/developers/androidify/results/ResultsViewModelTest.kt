@@ -40,9 +40,15 @@ class ResultsViewModelTest {
     private val fakePromptText = "Pink Hair, plaid shirt, jeans"
     private val originalFakeUri = Uri.parse("content://com.example.app/images/original.jpg")
 
+    private val fakeUri = Uri.parse("content://test/image.jpg")
+
     @Before
     fun setup() {
-        viewModel = ResultsViewModel()
+        viewModel = ResultsViewModel(
+            fakeUri,
+            originalFakeUri,
+            fakePromptText
+        )
     }
 
     @Test
@@ -55,14 +61,9 @@ class ResultsViewModelTest {
 
     @Test
     fun setArgumentsWithOriginalImage() = runTest {
-        viewModel.setArguments(
-            fakeBitmap,
-            originalFakeUri,
-            promptText = null,
-        )
         assertEquals(
             ResultState(
-                resultImageBitmap = fakeBitmap,
+                resultImageUri = fakeUri,
                 originalImageUrl = originalFakeUri,
             ),
             viewModel.state.value,
@@ -71,14 +72,9 @@ class ResultsViewModelTest {
 
     @Test
     fun setArgumentsWithPrompt() = runTest {
-        viewModel.setArguments(
-            fakeBitmap,
-            null,
-            promptText = fakePromptText,
-        )
         assertEquals(
             ResultState(
-                resultImageBitmap = fakeBitmap,
+                resultImageUri = fakeUri,
                 originalImageUrl = null,
                 promptText = fakePromptText,
             ),

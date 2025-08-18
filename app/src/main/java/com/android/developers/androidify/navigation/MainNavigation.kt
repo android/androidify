@@ -32,6 +32,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.IntOffset
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.entry
 import androidx.navigation3.runtime.entryProvider
@@ -39,8 +40,13 @@ import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import com.android.developers.androidify.camera.CameraPreviewScreen
 import com.android.developers.androidify.creation.CreationScreen
+import com.android.developers.androidify.creation.CreationViewModel
+import com.android.developers.androidify.customize.CustomizeAndExportScreen
+import com.android.developers.androidify.customize.CustomizeExportViewModel
 import com.android.developers.androidify.home.AboutScreen
 import com.android.developers.androidify.home.HomeScreen
+import com.android.developers.androidify.results.ResultsScreen
+import com.android.developers.androidify.results.ResultsViewModel
 import com.android.developers.androidify.theme.transitions.ColorSplashTransitionScreen
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 
@@ -92,14 +98,20 @@ fun MainNavigation() {
                 CameraPreviewScreen(
                     onImageCaptured = { uri ->
                         backStack.removeAll { it is Create }
-                        backStack.add(Create(uri.toString()))
+                        backStack.add(Create(uri))
                         backStack.removeAll { it is Camera }
                     },
                 )
             }
             entry<Create> { createKey ->
+                val creationViewModel = hiltViewModel<CreationViewModel, CreationViewModel.Factory>(
+                    creationCallback = {    factory ->
+                        factory.create(
+                            originalImageUrl = createKey.fileName
+                        )
+                    }
+                )
                 CreationScreen(
-                    createKey.fileName,
                     onCameraPressed = {
                         backStack.removeAll { it is Camera }
                         backStack.add(Camera)
@@ -110,6 +122,65 @@ fun MainNavigation() {
                     onAboutPressed = {
                         backStack.add(About)
                     },
+                    onImageCreated = { resultImageUri, prompt, originalImageUri ->
+                        backStack.removeAll{ it is Result}
+                        backStack.add(
+                            Result(
+                                resultImageUri = resultImageUri,
+                                prompt = prompt,
+                                originalImageUri = originalImageUri
+                            )
+                        )
+                    },
+                    creationViewModel = creationViewModel
+                )
+            }
+            entry<Result> { resultKey ->
+                val resultsViewModel = hiltViewModel<ResultsViewModel, ResultsViewModel.Factory>(
+                    creationCallback = { factory ->
+                        factory.create(
+                            resultImageUrl = resultKey.resultImageUri,
+                            originalImageUrl = resultKey.originalImageUri,
+                            promptText = resultKey.prompt
+                        )
+                    }
+                )
+                ResultsScreen(
+                    onNextPress = { resultImageUri, originalImageUri ->
+                        backStack.removeAll{ it is Result}
+                        backStack.add(
+                            CustomizeExport(
+                                resultImageUri = resultImageUri,
+                                originalImageUri = originalImageUri
+                            )
+                        )
+                    },
+                    onAboutPress = {
+                        backStack.add(About)
+                    },
+                    onBackPress = {
+                        backStack.removeLastOrNull()
+                    },
+                    viewModel = resultsViewModel
+                )
+            }
+            entry<CustomizeExport> { shareKey ->
+                val customizeExportViewModel = hiltViewModel<CustomizeExportViewModel, CustomizeExportViewModel.Factory>(
+                    creationCallback = { factory ->
+                        factory.create(
+                            resultImageUrl = shareKey.resultImageUri,
+                            originalImageUrl = shareKey.originalImageUri
+                        )
+                    }
+                )
+                CustomizeAndExportScreen(
+                    onBackPress = {
+                        backStack.removeLastOrNull()
+                    },
+                    onInfoPress = {
+                        backStack.add(About)
+                    },
+                    viewModel = customizeExportViewModel
                 )
             }
             entry<About> {

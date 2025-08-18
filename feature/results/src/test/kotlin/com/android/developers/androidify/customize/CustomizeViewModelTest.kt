@@ -20,6 +20,7 @@ package com.android.developers.androidify.customize
 import android.graphics.Bitmap
 import android.net.Uri
 import androidx.test.core.app.ApplicationProvider
+import com.android.developers.testing.data.TestFileProvider
 import com.android.developers.testing.repository.FakeImageGenerationRepository
 import com.android.developers.testing.util.FakeComposableBitmapRenderer
 import com.android.developers.testing.util.MainDispatcherRule
@@ -49,12 +50,17 @@ class CustomizeViewModelTest {
     private val fakeBitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
     private val originalFakeUri = Uri.parse("content://com.example.app/images/original.jpg")
 
+    val fakeUri = Uri.parse("content://test/image.jpg")
+
     @Before
     fun setup() {
         viewModel = CustomizeExportViewModel(
+            fakeUri,
+            originalFakeUri,
             FakeImageGenerationRepository(),
             composableBitmapRenderer = FakeComposableBitmapRenderer(),
             application = ApplicationProvider.getApplicationContext(),
+            localFileProvider = TestFileProvider()
         )
     }
 
@@ -69,7 +75,7 @@ class CustomizeViewModelTest {
     @Test
     fun setArgumentsWithOriginalImage() = runTest {
         viewModel.setArguments(
-            fakeBitmap,
+            fakeUri,
             originalFakeUri,
         )
         assertEquals(
@@ -84,7 +90,7 @@ class CustomizeViewModelTest {
     @Test
     fun setArgumentsWithPrompt() = runTest {
         viewModel.setArguments(
-            fakeBitmap,
+            fakeUri,
             null,
         )
         assertEquals(
@@ -106,7 +112,7 @@ class CustomizeViewModelTest {
         }
 
         viewModel.setArguments(
-            fakeBitmap,
+            fakeUri,
             originalFakeUri,
         )
 
@@ -128,7 +134,7 @@ class CustomizeViewModelTest {
             }
         }
         viewModel.setArguments(
-            fakeBitmap,
+            fakeUri,
             originalFakeUri,
         )
         advanceUntilIdle()
@@ -141,9 +147,12 @@ class CustomizeViewModelTest {
     @Test
     fun changeBackground_NotNull() = runTest {
         val viewModel = CustomizeExportViewModel(
+            fakeUri,
+            originalFakeUri,
             FakeImageGenerationRepository(),
             composableBitmapRenderer = FakeComposableBitmapRenderer(),
             application = ApplicationProvider.getApplicationContext(),
+            localFileProvider = TestFileProvider()
         )
         val values = mutableListOf<CustomizeExportState>()
         // Launch collector on the backgroundScope directly to use runTest's scheduler
@@ -153,7 +162,7 @@ class CustomizeViewModelTest {
             }
         }
         viewModel.setArguments(
-            fakeBitmap,
+            fakeUri,
             originalFakeUri,
         )
         advanceUntilIdle()
@@ -183,7 +192,7 @@ class CustomizeViewModelTest {
             }
         }
         viewModel.setArguments(
-            fakeBitmap,
+            fakeUri,
             originalFakeUri,
         )
         advanceUntilIdle()

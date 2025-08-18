@@ -18,6 +18,7 @@ package com.android.developers.androidify.util
 import android.app.Application
 import android.content.ContentValues
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
@@ -53,6 +54,9 @@ interface LocalFileProvider {
 
     @WorkerThread
     suspend fun saveUriToSharedStorage(inputUri: Uri, fileName: String, mimeType: String): Uri
+
+    @WorkerThread
+    suspend fun loadBitmapFromUri(uri: Uri): Bitmap?
 }
 
 @Singleton
@@ -118,6 +122,20 @@ class LocalFileProviderImpl @Inject constructor(
         }
         application.contentResolver.update(newUri, contentValues, null, null)
         return@withContext newUri
+    }
+
+    override suspend fun loadBitmapFromUri(uri: Uri): Bitmap? {
+        return withContext(ioDispatcher) {
+            try {
+                application.contentResolver.openInputStream(uri)?.use {
+                    return@withContext BitmapFactory.decodeStream(it)
+                }
+                null
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
+        }
     }
 
     @Throws(IOException::class)

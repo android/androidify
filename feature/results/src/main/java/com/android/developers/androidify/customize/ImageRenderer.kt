@@ -17,6 +17,7 @@
 
 package com.android.developers.androidify.customize
 
+import android.content.ContentResolver
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.animateBounds
 import androidx.compose.animation.core.animateFloatAsState
@@ -38,13 +39,15 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layout
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.util.fastRoundToInt
+import androidx.core.net.toUri
+import coil3.compose.AsyncImage
 import com.android.developers.androidify.results.R
 import com.android.developers.androidify.theme.AndroidifyTheme
 import com.android.developers.androidify.theme.LocalAnimateBoundsScope
@@ -91,9 +94,9 @@ fun ImageResult(
                         contentScale = ContentScale.Crop,
                         contentDescription = null,
                     )
-                } else if (exportImageCanvas.imageBitmap != null) {
-                    Image(
-                        bitmap = exportImageCanvas.imageBitmap.asImageBitmap(),
+                } else if (exportImageCanvas.imageUri != null) {
+                    AsyncImage(
+                        model = exportImageCanvas.imageUri,
                         modifier = Modifier
                             .fillMaxSize(),
                         contentScale = ContentScale.Crop,
@@ -208,12 +211,12 @@ private fun Modifier.safeAnimateBounds(): Modifier {
 @Preview
 @Composable
 private fun ImageRendererPreviewSquare() {
-    val bitmap = ImageBitmap.imageResource(R.drawable.placeholderbot)
+    val imageUri = ("${ContentResolver.SCHEME_ANDROID_RESOURCE}://${LocalContext.current.packageName}/${R.drawable.placeholderbot}").toUri()
 
     AndroidifyTheme {
         ImageResult(
             ExportImageCanvas(
-                imageBitmap = bitmap.asAndroidBitmap(),
+                imageUri = imageUri,
                 canvasSize = Size(1000f, 1000f),
                 aspectRatioOption = SizeOption.Square,
                 selectedBackgroundOption = BackgroundOption.IO,
@@ -231,11 +234,11 @@ private fun ImageRendererPreviewSquare() {
 @Preview
 @Composable
 private fun ImageRendererPreviewBanner() {
-    val bitmap = ImageBitmap.imageResource(R.drawable.placeholderbot)
+    val imageUri = ("${ContentResolver.SCHEME_ANDROID_RESOURCE}://${LocalContext.current.packageName}/${R.drawable.placeholderbot}").toUri()
     AndroidifyTheme {
         ImageResult(
             ExportImageCanvas(
-                imageBitmap = bitmap.asAndroidBitmap(),
+                imageUri = imageUri,
                 canvasSize = Size(1000f, 1000f),
                 aspectRatioOption = SizeOption.Banner,
                 selectedBackgroundOption = BackgroundOption.Lightspeed,
@@ -253,11 +256,11 @@ private fun ImageRendererPreviewBanner() {
 @Preview
 @Composable
 private fun ImageRendererPreviewWallpaper() {
-    val bitmap = ImageBitmap.imageResource(R.drawable.placeholderbot)
+    val imageUri = ("${ContentResolver.SCHEME_ANDROID_RESOURCE}://${LocalContext.current.packageName}/${R.drawable.placeholderbot}").toUri()
     AndroidifyTheme {
         ImageResult(
             ExportImageCanvas(
-                imageBitmap = bitmap.asAndroidBitmap(),
+                imageUri = imageUri,
                 canvasSize = Size(1000f, 1000f),
                 aspectRatioOption = SizeOption.Wallpaper,
                 selectedBackgroundOption = BackgroundOption.Lightspeed,
@@ -275,11 +278,11 @@ private fun ImageRendererPreviewWallpaper() {
 @Preview(widthDp = 1280, heightDp = 800)
 @Composable
 private fun ImageRendererPreviewWallpaperTablet() {
-    val bitmap = ImageBitmap.imageResource(R.drawable.placeholderbot)
+    val imageUri = ("${ContentResolver.SCHEME_ANDROID_RESOURCE}://${LocalContext.current.packageName}/${R.drawable.placeholderbot}").toUri()
     AndroidifyTheme {
         ImageResult(
             ExportImageCanvas(
-                imageBitmap = bitmap.asAndroidBitmap(),
+                imageUri = imageUri,
                 canvasSize = Size(1280f, 800f),
                 aspectRatioOption = SizeOption.WallpaperTablet,
                 selectedBackgroundOption = BackgroundOption.Lightspeed,
@@ -297,11 +300,11 @@ private fun ImageRendererPreviewWallpaperTablet() {
 @Preview
 @Composable
 private fun ImageRendererPreviewWallpaperSocial() {
-    val bitmap = ImageBitmap.imageResource(R.drawable.placeholderbot)
+    val imageUri = ("${ContentResolver.SCHEME_ANDROID_RESOURCE}://${LocalContext.current.packageName}/${R.drawable.placeholderbot}").toUri()
     AndroidifyTheme {
         ImageResult(
             ExportImageCanvas(
-                imageBitmap = bitmap.asAndroidBitmap(),
+                imageUri = imageUri,
                 canvasSize = Size(1600f, 900f),
                 aspectRatioOption = SizeOption.SocialHeader,
                 selectedBackgroundOption = BackgroundOption.Lightspeed,
@@ -319,11 +322,11 @@ private fun ImageRendererPreviewWallpaperSocial() {
 @Preview
 @Composable
 fun ImageRendererPreviewWallpaperIO() {
-    val bitmap = ImageBitmap.imageResource(R.drawable.placeholderbot)
+    val imageUri = ("${ContentResolver.SCHEME_ANDROID_RESOURCE}://${LocalContext.current.packageName}/${R.drawable.placeholderbot}").toUri()
     AndroidifyTheme {
         ImageResult(
             ExportImageCanvas(
-                imageBitmap = bitmap.asAndroidBitmap(),
+                imageUri = imageUri,
                 canvasSize = Size(1600f, 900f),
                 aspectRatioOption = SizeOption.SocialHeader,
                 selectedBackgroundOption = BackgroundOption.IO,
