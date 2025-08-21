@@ -55,6 +55,7 @@ import com.android.developers.androidify.theme.components.AboutButton
 import com.android.developers.androidify.theme.components.AndroidifyTopAppBar
 import com.android.developers.androidify.theme.components.SquiggleBackgroundFull
 import com.android.developers.androidify.util.TabletPreview
+import com.android.developers.androidify.xr.MainPanelWorkaround
 import com.android.developers.androidify.xr.RequestHomeSpaceIconButton
 
 @Composable
@@ -65,6 +66,7 @@ fun HomeScreenContentsSpatial(
     onAboutClicked: () -> Unit,
 ) {
     Subspace {
+        MainPanelWorkaround()
         SpatialPanel(
             SubspaceModifier
                 .movable()
