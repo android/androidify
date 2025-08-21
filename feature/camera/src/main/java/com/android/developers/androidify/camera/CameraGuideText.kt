@@ -25,6 +25,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
@@ -33,10 +34,10 @@ fun CameraGuideText(
     modifier: Modifier = Modifier,
 ) {
     BasicText(
-        stringResource(R.string.camera_guide_text_label),
-        style = MaterialTheme.typography.bodyMediumEmphasized,
+        text = stringResource(R.string.camera_guide_text_label),
+        style = MaterialTheme.typography.bodyMediumEmphasized.copy(textAlign = TextAlign.Center),
         autoSize = TextAutoSize.StepBased(maxFontSize = MaterialTheme.typography.bodyMediumEmphasized.fontSize),
-        maxLines = 1,
+        maxLines = 2,
         modifier = modifier
             .background(
                 MaterialTheme.colorScheme.surfaceContainerHighest,
