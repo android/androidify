@@ -34,7 +34,7 @@ android {
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "com.android.developers.androidify"
+        applicationId = "com.google.samples.apps.androidify"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = 36
         versionCode = 3
