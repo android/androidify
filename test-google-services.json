@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "APlaceholderAPIKeyWith-ThirtyNineCharsX",
         "android_client_info": {
-          "package_name": "com.android.developers.androidify"
+          "package_name": "com.google.samples.apps.androidify"
         }
       },
       "oauth_client": [],
