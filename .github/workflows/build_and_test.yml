@@ -125,18 +125,10 @@ jobs:
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-      - name: Decode google-services.json
-        env:
-          DEBUG_GOOGLE_SERVICES_JSON_BASE64: ${{ secrets.DEBUG_GOOGLE_SERVICES_JSON_BASE64 }}
+      - name: Change google-services.json
         run: |
-          if [ -z "$DEBUG_GOOGLE_SERVICES_JSON_BASE64" ]; then
-            echo "DEBUG_GOOGLE_SERVICES_JSON_BASE64 is empty. Copying test-google-services.json."
+            echo "Copying test-google-services.json."
             cp test-google-services.json app/google-services.json
-          else
-            echo "Decoding DEBUG_GOOGLE_SERVICES_JSON_BASE64."
-            echo $DEBUG_GOOGLE_SERVICES_JSON_BASE64 | base64 --decode > app/google-services.json
-          fi
-
       - name: Build
         run: ./gradlew assembleDebug assembleDebugAndroidTest
 
