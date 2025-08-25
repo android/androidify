@@ -45,6 +45,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
@@ -72,8 +73,10 @@ internal fun CameraLayout(
     isTabletop: Boolean = false,
 ) {
     val mContext = LocalContext.current
+    val inspection = LocalInspectionMode.current
     var isCameraLeft by remember { mutableStateOf(false) }
     LifecycleStartEffect(Unit) {
+        if (inspection) return@LifecycleStartEffect onStopOrDispose {  }
         val displayManager = mContext.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
         val displayListener = object : DisplayManager.DisplayListener {
             override fun onDisplayChanged(displayId: Int) {
