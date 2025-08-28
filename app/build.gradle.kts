@@ -55,7 +55,7 @@ android {
             initWith(buildTypes.getByName("release"))
             matchingFallbacks += listOf("release")
             isDebuggable = false
-            baselineProfile.automaticGenerationDuringBuild = false
+            baselineProfile.automaticGenerationDuringBuild = true
         }
         release {
             isShrinkResources = true
