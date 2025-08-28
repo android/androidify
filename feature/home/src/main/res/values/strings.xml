@@ -28,6 +28,7 @@
     <string name="customize_your_own">Customize your own\n</string>
     <string name="into_an_android_bot">\n\nAndroid bot</string>
     <string name="home_button_label">Let\'s Go</string>
+    <string name="full_space_button_label">To Full Space</string>
     <string name="check_back_later">Check back later.</string>
     <string name="app_is_under_construction">App is under construction.</string>
     <string name="how_it_works">How it works</string>

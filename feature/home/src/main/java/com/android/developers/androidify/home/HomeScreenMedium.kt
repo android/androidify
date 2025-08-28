@@ -17,6 +17,7 @@ package com.android.developers.androidify.home
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -34,6 +35,10 @@ import androidx.compose.ui.unit.dp
 import com.android.developers.androidify.theme.SharedElementContextPreview
 import com.android.developers.androidify.theme.components.AndroidifyTranslucentTopAppBar
 import com.android.developers.androidify.util.LargeScreensPreview
+import com.android.developers.androidify.xr.NoXrSupportPreview
+import com.android.developers.androidify.xr.SupportsFullSpaceModeRequestProvider
+import com.android.developers.androidify.xr.XrHomeSpaceMediumPreview
+import com.android.developers.androidify.xr.couldRequestFullSpace
 
 @Composable
 fun HomeScreenMediumContents(
@@ -68,19 +73,27 @@ fun HomeScreenMediumContents(
                 .align(Alignment.CenterVertically),
         ) {
             MainHomeContent(dancingBotLink)
-            HomePageButton(
+            Row(
                 modifier = Modifier
-                    .onLayoutRectChanged {
-                        positionButtonClick = it.boundsInWindow.center
-                    }
                     .align(Alignment.BottomCenter)
                     .padding(bottom = 16.dp)
-                    .height(64.dp)
-                    .width(220.dp),
-                onClick = {
-                    onClickLetsGo(positionButtonClick)
-                },
-            )
+                    .height(64.dp),
+            ) {
+                if (couldRequestFullSpace()) {
+                    ViewInFullSpaceButton()
+                    Spacer(Modifier.width(16.dp))
+                }
+                HomePageButton(
+                    modifier = Modifier
+                        .onLayoutRectChanged {
+                            positionButtonClick = it.boundsInWindow.center
+                        }
+                        .width(220.dp),
+                    onClick = {
+                        onClickLetsGo(positionButtonClick)
+                    },
+                )
+            }
         }
     }
 }
@@ -89,13 +102,32 @@ fun HomeScreenMediumContents(
 @LargeScreensPreview
 @Composable
 private fun HomeScreenLargeScreensPreview() {
+    NoXrSupportPreview {
+        SharedElementContextPreview {
+            HomeScreenContents(
+                layoutType = HomeScreenLayoutType.Medium,
+                onClickLetsGo = { },
+                videoLink = "",
+                dancingBotLink = "https://services.google.com/fh/files/misc/android_dancing.gif",
+                onAboutClicked = {},
+            )
+        }
+    }
+}
+
+@XrHomeSpaceMediumPreview
+@ExperimentalMaterial3ExpressiveApi
+@Composable
+private fun HomeScreenXrHomeSpacePreview() {
     SharedElementContextPreview {
-        HomeScreenContents(
-            isMediumWindowSize = true,
-            onClickLetsGo = { },
-            videoLink = "",
-            dancingBotLink = "https://services.google.com/fh/files/misc/android_dancing.gif",
-            onAboutClicked = {},
-        )
+        SupportsFullSpaceModeRequestProvider {
+            HomeScreenContents(
+                layoutType = HomeScreenLayoutType.Medium,
+                onClickLetsGo = { },
+                videoLink = "",
+                dancingBotLink = "https://services.google.com/fh/files/misc/android_dancing.gif",
+                onAboutClicked = {},
+            )
+        }
     }
 }

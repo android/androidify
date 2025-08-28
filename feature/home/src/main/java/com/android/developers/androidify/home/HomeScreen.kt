@@ -17,7 +17,6 @@ package com.android.developers.androidify.home
 
 import androidx.annotation.OptIn
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -31,18 +30,17 @@ import com.android.developers.androidify.theme.SharedElementContextPreview
 import com.android.developers.androidify.theme.components.SquiggleBackground
 import com.android.developers.androidify.util.LargeScreensPreview
 import com.android.developers.androidify.util.PhonePreview
-import com.android.developers.androidify.util.isAtLeastMedium
 
 @ExperimentalMaterial3ExpressiveApi
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun HomeScreen(
     homeScreenViewModel: HomeViewModel = hiltViewModel(),
-    isMediumWindowSize: Boolean = isAtLeastMedium(),
     onClickLetsGo: (IntOffset) -> Unit = {},
     onAboutClicked: () -> Unit = {},
 ) {
     val state = homeScreenViewModel.state.collectAsStateWithLifecycle()
+    val layoutType = calculateLayoutType(state.value.isXrDisabled)
 
     if (!state.value.isAppActive) {
         AppInactiveScreen()
@@ -50,7 +48,7 @@ fun HomeScreen(
         HomeScreenContents(
             state.value.videoLink,
             state.value.dancingDroidLink,
-            isMediumWindowSize,
+            layoutType,
             onClickLetsGo,
             onAboutClicked,
         )
@@ -61,21 +59,13 @@ fun HomeScreen(
 fun HomeScreenContents(
     videoLink: String?,
     dancingBotLink: String?,
-    isMediumWindowSize: Boolean,
+    layoutType: HomeScreenLayoutType,
     onClickLetsGo: (IntOffset) -> Unit,
     onAboutClicked: () -> Unit,
 ) {
-    Box {
-        SquiggleBackground()
-
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .safeDrawingPadding(),
-        ) {
-            if (isMediumWindowSize) {
-                HomeScreenMediumContents(Modifier.weight(1f), videoLink, dancingBotLink, onClickLetsGo)
-            } else {
+    when (layoutType) {
+        HomeScreenLayoutType.Compact ->
+            SquiggleBackgroundBox {
                 HomeScreenCompactPager(
                     videoLink,
                     dancingBotLink,
@@ -83,6 +73,38 @@ fun HomeScreenContents(
                     onAboutClicked,
                 )
             }
+
+        HomeScreenLayoutType.Medium ->
+            SquiggleBackgroundBox {
+                HomeScreenMediumContents(
+                    Modifier,
+                    videoLink,
+                    dancingBotLink,
+                    onClickLetsGo,
+                )
+            }
+
+        HomeScreenLayoutType.Spatial ->
+            HomeScreenContentsSpatial(
+                videoLink,
+                dancingBotLink,
+                onClickLetsGo,
+                onAboutClicked,
+            )
+    }
+}
+
+@Composable
+private fun SquiggleBackgroundBox(contents: @Composable () -> Unit) {
+    Box {
+        SquiggleBackground()
+
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .safeDrawingPadding(),
+        ) {
+            contents()
         }
     }
 }
@@ -93,7 +115,7 @@ fun HomeScreenContents(
 private fun HomeScreenPhonePreview() {
     SharedElementContextPreview {
         HomeScreenContents(
-            isMediumWindowSize = false,
+            layoutType = HomeScreenLayoutType.Compact,
             onClickLetsGo = {},
             videoLink = "",
             dancingBotLink = "https://services.google.com/fh/files/misc/android_dancing.gif",
@@ -108,7 +130,7 @@ private fun HomeScreenPhonePreview() {
 private fun HomeScreenLargeScreensPreview() {
     SharedElementContextPreview {
         HomeScreenContents(
-            isMediumWindowSize = true,
+            layoutType = HomeScreenLayoutType.Medium,
             onClickLetsGo = { },
             videoLink = "",
             dancingBotLink = "https://services.google.com/fh/files/misc/android_dancing.gif",

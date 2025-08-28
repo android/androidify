@@ -51,6 +51,10 @@ import com.android.developers.androidify.theme.Blue
 import com.android.developers.androidify.theme.SharedElementContextPreview
 import com.android.developers.androidify.theme.components.AndroidifyTopAppBar
 import com.android.developers.androidify.util.PhonePreview
+import com.android.developers.androidify.xr.NoXrSupportPreview
+import com.android.developers.androidify.xr.SupportsFullSpaceModeRequestProvider
+import com.android.developers.androidify.xr.XrHomeSpaceCompactPreview
+import com.android.developers.androidify.xr.couldRequestFullSpace
 
 @Composable
 fun HomeScreenCompactPager(
@@ -124,20 +128,29 @@ fun HomeScreenCompactPager(
         var buttonPosition by remember {
             mutableStateOf(IntOffset.Zero)
         }
-        HomePageButton(
-            modifier = Modifier
-                .onLayoutRectChanged {
-                    buttonPosition = it.boundsInWindow.center
-                }
-                .padding(bottom = 16.dp)
-                .height(64.dp)
-                .width(220.dp),
-            colors = ButtonDefaults.buttonColors()
-                .copy(containerColor = Blue),
-            onClick = {
-                onClick(buttonPosition)
-            },
-        )
+        Column {
+            if (couldRequestFullSpace()) {
+                ViewInFullSpaceButton(
+                    modifier = Modifier
+                        .height(64.dp),
+                )
+                Spacer(modifier = Modifier.size(12.dp))
+            }
+            HomePageButton(
+                modifier = Modifier
+                    .onLayoutRectChanged {
+                        buttonPosition = it.boundsInWindow.center
+                    }
+                    .padding(bottom = 16.dp)
+                    .height(64.dp)
+                    .width(220.dp),
+                colors = ButtonDefaults.buttonColors()
+                    .copy(containerColor = Blue),
+                onClick = {
+                    onClick(buttonPosition)
+                },
+            )
+        }
     }
 }
 
@@ -145,13 +158,32 @@ fun HomeScreenCompactPager(
 @PhonePreview
 @Composable
 private fun HomeScreenPhonePreview() {
-    SharedElementContextPreview {
-        HomeScreenContents(
-            isMediumWindowSize = false,
-            onClickLetsGo = {},
-            videoLink = "",
-            dancingBotLink = "https://services.google.com/fh/files/misc/android_dancing.gif",
-            onAboutClicked = {},
-        )
+    NoXrSupportPreview {
+        SharedElementContextPreview {
+            HomeScreenContents(
+                layoutType = HomeScreenLayoutType.Compact,
+                onClickLetsGo = {},
+                videoLink = "",
+                dancingBotLink = "https://services.google.com/fh/files/misc/android_dancing.gif",
+                onAboutClicked = {},
+            )
+        }
+    }
+}
+
+@ExperimentalMaterial3ExpressiveApi
+@XrHomeSpaceCompactPreview
+@Composable
+private fun HomeScreenCompactXrHomeSpacePreview() {
+    SupportsFullSpaceModeRequestProvider {
+        SharedElementContextPreview {
+            HomeScreenContents(
+                layoutType = HomeScreenLayoutType.Compact,
+                onClickLetsGo = {},
+                videoLink = "",
+                dancingBotLink = "https://services.google.com/fh/files/misc/android_dancing.gif",
+                onAboutClicked = {},
+            )
+        }
     }
 }

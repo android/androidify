@@ -25,9 +25,11 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.foundation.text.TextAutoSize
@@ -35,6 +37,7 @@ import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -58,8 +61,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.xr.compose.platform.LocalSession
+import androidx.xr.scenecore.scene
 import coil3.compose.AsyncImage
 import com.android.developers.androidify.theme.Blue
+import com.android.developers.androidify.xr.FullSpaceIcon
 import com.android.developers.androidify.theme.R as ThemeR
 
 @Composable
@@ -151,6 +157,34 @@ fun HomePageButton(
     ) {
         Text(
             stringResource(R.string.home_button_label),
+            style = style,
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+@Composable
+fun ViewInFullSpaceButton(
+    modifier: Modifier = Modifier,
+    colors: ButtonColors = ButtonDefaults.buttonColors().copy(containerColor = Blue),
+) {
+    val style = MaterialTheme.typography.titleLarge.copy(
+        fontWeight = FontWeight(700),
+        letterSpacing = .15f.sp,
+    )
+    val session = LocalSession.current
+
+    Button(
+        onClick = {
+            session?.scene?.requestFullSpaceMode()
+        },
+        modifier = modifier,
+        colors = colors,
+    ) {
+        FullSpaceIcon(Modifier.size(ButtonDefaults.LargeIconSize))
+        Spacer(Modifier.width(ButtonDefaults.LargeIconSpacing))
+        Text(
+            stringResource(R.string.full_space_button_label),
             style = style,
         )
     }
