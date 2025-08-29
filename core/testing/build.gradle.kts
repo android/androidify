@@ -59,6 +59,8 @@ dependencies {
     implementation(projects.core.network)
     implementation(projects.core.util)
     implementation(projects.feature.results)
+    implementation(projects.watchface)
+    implementation(projects.wear.common)
 
     ksp(libs.hilt.compiler)
 

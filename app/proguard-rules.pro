@@ -33,3 +33,13 @@
 -keepattributes Signature
 -keepattributes *Annotation*
 -keepattributes InnerClasses
+
+# Ignore missing Java SE image classes from TwelveMonkeys ImageIO
+-dontwarn javax.imageio.**
+
+# Ignore missing Java SE XML classes from Xerces and other XML processors
+-dontwarn org.apache.xml.resolver.**
+-dontwarn org.eclipse.wst.xml.xpath2.processor.**
+
+# Ignore missing Java SE annotation processing classes, often from libraries like AutoValue
+-dontwarn javax.lang.model.**

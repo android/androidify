@@ -38,7 +38,7 @@ interface ImageGenerationRepository {
     suspend fun saveImageToExternalStorage(imageBitmap: Bitmap): Uri
     suspend fun saveImageToExternalStorage(imageUri: Uri): Uri
 
-    suspend fun addBackgroundToBot(image: Bitmap, backgroundPrompt: String) : Bitmap
+    suspend fun addBackgroundToBot(image: Bitmap, backgroundPrompt: String): Bitmap
     suspend fun removeBackground(image: Bitmap): Bitmap
 }
 
@@ -134,7 +134,7 @@ internal class ImageGenerationRepositoryImpl @Inject constructor(
 
     override suspend fun addBackgroundToBot(image: Bitmap, backgroundPrompt: String): Bitmap {
         val backgroundBotInstructions = remoteConfigDataSource.getBotBackgroundInstructionPrompt() +
-               "\"" +  backgroundPrompt + "\""
+            "\"" + backgroundPrompt + "\""
         return firebaseAiDataSource.generateImageWithEdit(image, backgroundBotInstructions)
     }
 

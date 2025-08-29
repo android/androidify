@@ -42,6 +42,8 @@ interface RemoteConfigDataSource {
     fun getImageGenerationEditsModelName(): String
 
     fun getBotBackgroundInstructionPrompt(): String
+
+    fun watchfaceFeatureEnabled(): Boolean
 }
 
 @Singleton
@@ -105,5 +107,9 @@ class RemoteConfigDataSourceImpl @Inject constructor() : RemoteConfigDataSource 
 
     override fun getBotBackgroundInstructionPrompt(): String {
         return remoteConfig.getString("bot_background_instruction_prompt")
+    }
+
+    override fun watchfaceFeatureEnabled(): Boolean {
+        return remoteConfig.getBoolean("watchface_feature_enabled")
     }
 }

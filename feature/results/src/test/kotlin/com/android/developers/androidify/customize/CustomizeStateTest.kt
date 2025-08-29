@@ -53,7 +53,7 @@ class CustomizeStateTest {
                 SizeOption.WallpaperTablet,
                 SizeOption.Banner,
                 SizeOption.SocialHeader,
-                SizeOption.Sticker
+                SizeOption.Sticker,
             ),
             state.options,
         )

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright 2025 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          https://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<WatchFace width="450" height="450">
+  <Metadata key="CLOCK_TYPE" value="ANALOG"/>
+  <Metadata key="PREVIEW_TIME" value="10:10:30"/>
+  <Scene backgroundColor="#ff000000">
+    <Group name="group0" x="0" y="0" width="449" height="450" alpha="255">
+      <Variant mode="AMBIENT" target="alpha" value="0"/>
+      <PartImage x="0" y="0" width="449" height="450">
+        <Image resource="res_87612002"/>
+      </PartImage>
+    </Group>
+    <AnalogClock x="208" y="13" width="34" height="107" alpha="255">
+      <Variant mode="AMBIENT" target="alpha" value="0"/>
+      <SecondHand x="0" y="0" pivotX="0.500" pivotY="1.981" resource="res_87612008" width="34" height="107">
+        <Sweep frequency="SYNC_TO_DEVICE"/>
+      </SecondHand>
+    </AnalogClock>
+    <AnalogClock x="202" y="13" width="46" height="88" alpha="255">
+      <Variant mode="AMBIENT" target="alpha" value="0"/>
+      <MinuteHand x="0" y="0" pivotX="0.500" pivotY="2.409" resource="res_87612010" width="46" height="88"/>
+    </AnalogClock>
+    <AnalogClock x="192" y="13" width="66" height="88" alpha="255">
+      <Variant mode="AMBIENT" target="alpha" value="0"/>
+      <HourHand x="0" y="0" pivotX="0.500" pivotY="2.409" resource="res_87612012" width="66" height="88"/>
+    </AnalogClock>
+    <Group name="group1" x="71" y="71" width="308" height="308" alpha="255">
+      <Variant mode="AMBIENT" target="alpha" value="0"/>
+      <PartImage x="0" y="0" width="308" height="308">
+        <Image resource="bot"/>
+      </PartImage>
+    </Group>
+    <AnalogClock x="202" y="13" width="46" height="88" alpha="0">
+      <Variant mode="AMBIENT" target="alpha" value="255"/>
+      <MinuteHand x="0" y="0" pivotX="0.500" pivotY="2.409" resource="res_87619278" width="46" height="88"/>
+    </AnalogClock>
+    <AnalogClock x="192" y="13" width="66" height="88" alpha="0">
+      <Variant mode="AMBIENT" target="alpha" value="255"/>
+      <HourHand x="0" y="0" pivotX="0.500" pivotY="2.409" resource="res_87619280" width="66" height="88"/>
+    </AnalogClock>
+  </Scene>
+</WatchFace>

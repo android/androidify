@@ -1,13 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
      Copyright 2025 The Android Open Source Project
-
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
      You may obtain a copy of the License at
-
           https://www.apache.org/licenses/LICENSE-2.0
-
      Unless required by applicable law or agreed to in writing, software
      distributed under the License is distributed on an "AS IS" BASIS,
      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,21 +13,8 @@
 -->
 <defaults>
     <entry>
-        <key>bot_background_instruction_prompt</key>
-        <value>Add the input image android bot as the main subject to the result,
-            it should be the most prominent element of the resultant image, large and
-            filling the foreground - more than 50% of the resultant frame,
-            standing in the center of the frame with the central
-            focus, and the background just underneath the content.
-
-            Always include the input Android Bot in the final result image as the subject of the image.
-            It should be prominently featured in the foreground, center of the frame, without any adjustments other
-            than the lighting of the surrounding environment. There should only be one of the bots in the image.
-            style="3d animation style, simplified shapes, mouthless character, realistic physics simulation"
-
-            Do not alter the input Android Bot image, do not change its shape or add any hands, eyes, mouths etc. Do not change the characters color scheme.
-
-            The background is described as follows:</value>
+        <key>watchface_feature_enabled</key>
+        <value>false</value>
     </entry>
     <entry>
         <key>use_imagen</key>
@@ -177,6 +161,23 @@
             -strip out descriptions of anything that might describe the background behind or around the person or subject in the text
 
             Keep all words and descriptors that describe details such as colors, styles, size and materials of hair, clothing, shoes, accessories that do not allude to any of the inappropriate content listed above.</value>
+    </entry>
+    <entry>
+        <key>bot_background_instruction_prompt</key>
+        <value>Add the input image android bot as the main subject to the result,
+            it should be the most prominent element of the resultant image, large and
+            filling the foreground - more than 50% of the resultant frame,
+            standing in the center of the frame with the central
+            focus, and the background just underneath the content.
+
+            Always include the input Android Bot in the final result image as the subject of the image.
+            It should be prominently featured in the foreground, center of the frame, without any adjustments other
+            than the lighting of the surrounding environment. There should only be one of the bots in the image.
+            style="3d animation style, simplified shapes, mouthless character, realistic physics simulation"
+
+            Do not alter the input Android Bot image, do not change its shape or add any hands, eyes, mouths etc. Do not change the characters color scheme.
+
+            The background is described as follows:</value>
     </entry>
     <entry>
         <key>image_model_name</key>

@@ -16,7 +16,6 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.serialization)
     alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.hilt)
 }
@@ -47,6 +46,7 @@ androidComponents {
 dependencies {
     implementation(projects.core.network)
     implementation(projects.core.util)
+    //implementation(projects.watchface)
 
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.retrofit)
@@ -59,5 +59,6 @@ dependencies {
     implementation(libs.ai.edge) {
         exclude(group = "com.google.guava")
     }
+
     ksp(libs.hilt.compiler)
 }

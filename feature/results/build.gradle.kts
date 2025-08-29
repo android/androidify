@@ -48,6 +48,12 @@ android {
     testOptions {
         targetSdk = 36
     }
+    // To avoid packaging conflicts when using bouncycastle
+    packaging {
+        resources {
+            excludes.add("META-INF/versions/9/OSGI-INF/MANIFEST.MF")
+        }
+    }
 }
 
 dependencies {
@@ -72,6 +78,8 @@ dependencies {
     implementation(projects.core.theme)
     implementation(projects.core.util)
     implementation(projects.data)
+    implementation(projects.wear.common)
+    implementation(projects.watchface)
     testImplementation(kotlin("test"))
 
     // Android Instrumented Tests

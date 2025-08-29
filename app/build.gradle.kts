@@ -37,8 +37,8 @@ android {
         applicationId = "com.android.developers.androidify"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = 36
-        versionCode = 3
-        versionName = "1.1.1"
+        versionCode = libs.versions.appVersionCode.get().toInt()
+        versionName = libs.versions.appVersionName.get()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -94,6 +94,12 @@ android {
     testOptions {
         unitTests {
             isIncludeAndroidResources = true
+        }
+    }
+    // To avoid packaging conflicts when using bouncycastle
+    packaging {
+        resources {
+            excludes.add("META-INF/versions/9/OSGI-INF/MANIFEST.MF")
         }
     }
 }

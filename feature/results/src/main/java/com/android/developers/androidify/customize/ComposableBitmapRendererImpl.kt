@@ -80,14 +80,14 @@ class ComposableBitmapRendererImpl @Inject constructor(private val application: 
         val texture = SurfaceTexture(false)
         val surface = Surface(texture)
         val virtualDisplay: VirtualDisplay? =
-                (application.getSystemService(DISPLAY_SERVICE) as DisplayManager).createVirtualDisplay(
-                    "virtualDisplay",
-                    1,
-                    1,
-                    72,
-                    surface,
-                    DisplayManager.VIRTUAL_DISPLAY_FLAG_OWN_CONTENT_ONLY,
-                )
+            (application.getSystemService(DISPLAY_SERVICE) as DisplayManager).createVirtualDisplay(
+                "virtualDisplay",
+                1,
+                1,
+                72,
+                surface,
+                DisplayManager.VIRTUAL_DISPLAY_FLAG_OWN_CONTENT_ONLY,
+            )
 
         val result = callback(virtualDisplay!!.display)
         virtualDisplay.release()

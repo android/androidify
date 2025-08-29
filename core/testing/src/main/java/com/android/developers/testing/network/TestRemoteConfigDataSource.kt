@@ -75,4 +75,8 @@ class TestRemoteConfigDataSource(private val useGeminiNano: Boolean) : RemoteCon
     override fun getBotBackgroundInstructionPrompt(): String {
         return "bot_background_instruction_prompt"
     }
+
+    override fun watchfaceFeatureEnabled(): Boolean {
+        return true
+    }
 }

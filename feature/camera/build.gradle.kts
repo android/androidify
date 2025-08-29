@@ -47,6 +47,12 @@ android {
     testOptions {
         targetSdk = 36
     }
+    // To avoid packaging conflicts when using bouncycastle
+    packaging {
+        resources {
+            excludes.add("META-INF/versions/9/OSGI-INF/MANIFEST.MF")
+        }
+    }
 }
 
 dependencies {
@@ -66,6 +72,7 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.kotlinx.coroutines.play.services)
     implementation(libs.mlkit.pose.detection)
+    implementation(libs.guava)
     ksp(libs.hilt.compiler)
 
     implementation(libs.androidx.ui.tooling)

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright 2025 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          https://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources>
+    <string name="app_name">Androidify</string>
+    <string name="set_as_active">Set as active</string>
+    <string name="continue_on_phone">Continue on phone</string>
+    <string name="logo_description">Androidify logo</string>
+
+    <string name="long_press_prompt">
+        To set the Androidify watch face, long-press on the current watch face.
+    </string>
+    <string name="long_press_button_text">Got it!</string>
+    <string name="open_settings_prompt">
+        You must allow the app permission to change the active watch face, from the settings menu.
+    </string>
+    <string name="open_settings_button_text">Open settings</string>
+    <string name="permissions_prompt">
+        You must grant the app permission to change the active watch face.
+    </string>
+    <string name="permissions_button_text">Launch</string>
+    <string name="all_done_prompt">You\'re all set!</string>
+    <string name="all_done_button_text">Great!</string>
+    <string name="receiving">Receiving watch face…</string>
+    <string name="welcome">Welcome to Androidify!</string>
+    <string name="error">Oh dear! An error occurred</string>
+    <string name="error_ack">OK</string>
+</resources>
