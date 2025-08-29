@@ -31,6 +31,7 @@ import com.android.developers.androidify.theme.SharedElementContextPreview
 import com.android.developers.androidify.theme.components.SquiggleBackground
 import com.android.developers.androidify.util.LargeScreensPreview
 import com.android.developers.androidify.util.PhonePreview
+import com.android.developers.androidify.xr.NoXrSupportPreview
 
 @ExperimentalMaterial3ExpressiveApi
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
@@ -114,14 +115,16 @@ private fun SquiggleBackgroundBox(contents: @Composable () -> Unit) {
 @PhonePreview
 @Composable
 private fun HomeScreenPhonePreview() {
-    SharedElementContextPreview {
-        HomeScreenContents(
-            layoutType = HomeScreenLayoutType.Compact,
-            onClickLetsGo = {},
-            videoLink = "",
-            dancingBotLink = "https://services.google.com/fh/files/misc/android_dancing.gif",
-            onAboutClicked = {},
-        )
+    NoXrSupportPreview {
+        SharedElementContextPreview {
+            HomeScreenContents(
+                layoutType = HomeScreenLayoutType.Compact,
+                onClickLetsGo = {},
+                videoLink = "",
+                dancingBotLink = "https://services.google.com/fh/files/misc/android_dancing.gif",
+                onAboutClicked = {},
+            )
+        }
     }
 }
 
@@ -129,13 +132,15 @@ private fun HomeScreenPhonePreview() {
 @LargeScreensPreview
 @Composable
 private fun HomeScreenLargeScreensPreview() {
-    SharedElementContextPreview {
-        HomeScreenContents(
-            layoutType = HomeScreenLayoutType.Medium,
-            onClickLetsGo = { },
-            videoLink = "",
-            dancingBotLink = "https://services.google.com/fh/files/misc/android_dancing.gif",
-            onAboutClicked = {},
-        )
+    NoXrSupportPreview {
+        SharedElementContextPreview {
+            HomeScreenContents(
+                layoutType = HomeScreenLayoutType.Medium,
+                onClickLetsGo = { },
+                videoLink = "",
+                dancingBotLink = "https://services.google.com/fh/files/misc/android_dancing.gif",
+                onAboutClicked = {},
+            )
+        }
     }
 }
