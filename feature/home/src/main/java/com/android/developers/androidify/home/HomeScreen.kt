@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.IntOffset
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.android.developers.androidify.home.xr.HomeScreenContentsSpatial
 import com.android.developers.androidify.theme.SharedElementContextPreview
 import com.android.developers.androidify.theme.components.SquiggleBackground
 import com.android.developers.androidify.util.LargeScreensPreview

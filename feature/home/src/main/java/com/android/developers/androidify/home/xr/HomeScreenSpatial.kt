@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.developers.androidify.home
+package com.android.developers.androidify.home.xr
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -47,9 +47,11 @@ import androidx.xr.compose.subspace.layout.movable
 import androidx.xr.compose.subspace.layout.offset
 import androidx.xr.compose.subspace.layout.resizable
 import androidx.xr.compose.subspace.layout.rotate
+import com.android.developers.androidify.home.HomePageButton
+import com.android.developers.androidify.home.MainHomeContent
+import com.android.developers.androidify.home.VideoPlayer
 import com.android.developers.androidify.theme.SharedElementContextPreview
 import com.android.developers.androidify.theme.components.AndroidifyTopAppBar
-import com.android.developers.androidify.theme.components.SquiggleBackground
 import com.android.developers.androidify.theme.components.SquiggleBackgroundFull
 import com.android.developers.androidify.util.TabletPreview
 import com.android.developers.androidify.xr.RequestHomeSpaceIconButton

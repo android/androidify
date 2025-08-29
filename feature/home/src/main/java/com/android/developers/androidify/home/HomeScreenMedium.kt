@@ -32,12 +32,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onLayoutRectChanged
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import com.android.developers.androidify.home.xr.ViewInFullSpaceModeButton
 import com.android.developers.androidify.theme.SharedElementContextPreview
 import com.android.developers.androidify.theme.components.AndroidifyTranslucentTopAppBar
 import com.android.developers.androidify.util.LargeScreensPreview
 import com.android.developers.androidify.xr.NoXrSupportPreview
-import com.android.developers.androidify.xr.SupportsFullSpaceModeRequestProvider
-import com.android.developers.androidify.xr.XrHomeSpaceMediumPreview
 import com.android.developers.androidify.xr.couldRequestFullSpace
 
 @Composable
@@ -80,7 +79,7 @@ fun HomeScreenMediumContents(
                     .height(64.dp),
             ) {
                 if (couldRequestFullSpace()) {
-                    ViewInFullSpaceButton()
+                    ViewInFullSpaceModeButton()
                     Spacer(Modifier.width(16.dp))
                 }
                 HomePageButton(
@@ -104,23 +103,6 @@ fun HomeScreenMediumContents(
 private fun HomeScreenLargeScreensPreview() {
     NoXrSupportPreview {
         SharedElementContextPreview {
-            HomeScreenContents(
-                layoutType = HomeScreenLayoutType.Medium,
-                onClickLetsGo = { },
-                videoLink = "",
-                dancingBotLink = "https://services.google.com/fh/files/misc/android_dancing.gif",
-                onAboutClicked = {},
-            )
-        }
-    }
-}
-
-@XrHomeSpaceMediumPreview
-@ExperimentalMaterial3ExpressiveApi
-@Composable
-private fun HomeScreenXrHomeSpacePreview() {
-    SharedElementContextPreview {
-        SupportsFullSpaceModeRequestProvider {
             HomeScreenContents(
                 layoutType = HomeScreenLayoutType.Medium,
                 onClickLetsGo = { },
