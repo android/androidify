@@ -52,7 +52,6 @@ import com.android.developers.androidify.theme.Blue
 import com.android.developers.androidify.theme.SharedElementContextPreview
 import com.android.developers.androidify.theme.components.AndroidifyTopAppBar
 import com.android.developers.androidify.util.PhonePreview
-import com.android.developers.androidify.xr.NoXrSupportPreview
 import com.android.developers.androidify.xr.couldRequestFullSpace
 
 @Composable
@@ -157,15 +156,13 @@ fun HomeScreenCompactPager(
 @PhonePreview
 @Composable
 private fun HomeScreenPhonePreview() {
-    NoXrSupportPreview {
-        SharedElementContextPreview {
-            HomeScreenContents(
-                layoutType = HomeScreenLayoutType.Compact,
-                onClickLetsGo = {},
-                videoLink = "",
-                dancingBotLink = "https://services.google.com/fh/files/misc/android_dancing.gif",
-                onAboutClicked = {},
-            )
-        }
+    SharedElementContextPreview {
+        HomeScreenContents(
+            layoutType = HomeScreenLayoutType.Compact,
+            onClickLetsGo = {},
+            videoLink = "",
+            dancingBotLink = "https://services.google.com/fh/files/misc/android_dancing.gif",
+            onAboutClicked = {},
+        )
     }
 }

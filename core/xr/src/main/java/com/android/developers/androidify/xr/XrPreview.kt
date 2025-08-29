@@ -17,14 +17,14 @@ package com.android.developers.androidify.xr
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.ProvidableCompositionLocal
+import androidx.compose.runtime.compositionLocalWithComputedDefaultOf
 import androidx.compose.ui.tooling.preview.Devices.PIXEL_7_PRO
 import androidx.compose.ui.tooling.preview.Devices.PIXEL_TABLET
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.xr.compose.platform.LocalSession
-import androidx.xr.compose.platform.LocalSpatialCapabilities
-import androidx.xr.compose.platform.LocalSpatialConfiguration
 import androidx.xr.compose.platform.SpatialCapabilities
 import androidx.xr.compose.platform.SpatialConfiguration
+import androidx.xr.runtime.Session
 
 /**
  * Preview for a layout that could go into Full Space Mode.
@@ -40,23 +40,9 @@ fun SupportsFullSpaceModeRequestProvider(contents: @Composable () -> Unit) {
     }
 }
 
-/**
- * Workaround for b/441901724.
- * Any composable referencing LocalSpatialConfiguration or LocalSpatialCapabilities will
- * fail to preview instead of gracefully degrading due to failing to resolve XR capabilities.
- *
- * This can be removed when the default for XR capabilities under the preview is no capabilities
- * instead of throwing an exception.
- * */
-@Composable
-fun NoXrSupportPreview(contents: @Composable () -> Unit) {
-    CompositionLocalProvider(LocalSpatialConfiguration provides LacksSpatialFeatureSpatialConfiguration) {
-        CompositionLocalProvider(LocalSpatialCapabilities provides NoSpatialCapabilities) {
-            CompositionLocalProvider(LocalSession provides null) {
-                contents()
-            }
-        }
-    }
+private object HasSpatialFeatureSpatialConfiguration : SpatialConfiguration {
+    override val hasXrSpatialFeature: Boolean
+        get() = true
 }
 
 private object SupportsFullSpaceModeRequestCapabilities : SpatialCapabilities {
@@ -72,6 +58,51 @@ private object SupportsFullSpaceModeRequestCapabilities : SpatialCapabilities {
         get() = true
 }
 
+/**
+ * Workaround composition locals for b/441901724.
+ * Any composable referencing XR composition locals will fail to preview instead of gracefully
+ * degrading due to failing to resolve XR capabilities.
+ *
+ * This can be removed when the default for XR capabilities under the preview is no capabilities
+ * instead of throwing an exception.
+ * */
+val LocalSpatialCapabilities: ProvidableCompositionLocal<SpatialCapabilities> =
+    compositionLocalWithComputedDefaultOf {
+        runCatching {
+            androidx.xr.compose.platform.LocalSpatialCapabilities.currentValue
+        }.getOrDefault(NoSpatialCapabilities)
+    }
+
+/**
+ * Workaround composition locals for b/441901724.
+ * Any composable referencing XR composition locals will fail to preview instead of gracefully
+ * degrading due to failing to resolve XR capabilities.
+ *
+ * This can be removed when the default for XR capabilities under the preview is no capabilities
+ * instead of throwing an exception.
+ * */
+val LocalSpatialConfiguration: ProvidableCompositionLocal<SpatialConfiguration> =
+    compositionLocalWithComputedDefaultOf {
+        runCatching {
+            androidx.xr.compose.platform.LocalSpatialConfiguration.currentValue
+        }.getOrDefault(LacksSpatialFeatureSpatialConfiguration)
+    }
+
+/**
+ * Workaround composition locals for b/441901724.
+ * Any composable referencing XR composition locals will fail to preview instead of gracefully
+ * degrading due to failing to resolve XR capabilities.
+ *
+ * This can be removed when the default for XR capabilities under the preview is no capabilities
+ * instead of throwing an exception.
+ * */
+val LocalSession: ProvidableCompositionLocal<Session?> =
+    compositionLocalWithComputedDefaultOf {
+        runCatching {
+            androidx.xr.compose.platform.LocalSession.currentValue
+        }.getOrNull()
+    }
+
 private object NoSpatialCapabilities : SpatialCapabilities {
     override val isSpatialUiEnabled: Boolean
         get() = false
@@ -83,11 +114,6 @@ private object NoSpatialCapabilities : SpatialCapabilities {
         get() = false
     override val isSpatialAudioEnabled: Boolean
         get() = false
-}
-
-private object HasSpatialFeatureSpatialConfiguration : SpatialConfiguration {
-    override val hasXrSpatialFeature: Boolean
-        get() = true
 }
 
 private object LacksSpatialFeatureSpatialConfiguration : SpatialConfiguration {

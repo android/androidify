@@ -36,7 +36,6 @@ import com.android.developers.androidify.home.xr.ViewInFullSpaceModeButton
 import com.android.developers.androidify.theme.SharedElementContextPreview
 import com.android.developers.androidify.theme.components.AndroidifyTranslucentTopAppBar
 import com.android.developers.androidify.util.LargeScreensPreview
-import com.android.developers.androidify.xr.NoXrSupportPreview
 import com.android.developers.androidify.xr.couldRequestFullSpace
 
 @Composable
@@ -101,15 +100,13 @@ fun HomeScreenMediumContents(
 @LargeScreensPreview
 @Composable
 private fun HomeScreenLargeScreensPreview() {
-    NoXrSupportPreview {
-        SharedElementContextPreview {
-            HomeScreenContents(
-                layoutType = HomeScreenLayoutType.Medium,
-                onClickLetsGo = { },
-                videoLink = "",
-                dancingBotLink = "https://services.google.com/fh/files/misc/android_dancing.gif",
-                onAboutClicked = {},
-            )
-        }
+    SharedElementContextPreview {
+        HomeScreenContents(
+            layoutType = HomeScreenLayoutType.Medium,
+            onClickLetsGo = { },
+            videoLink = "",
+            dancingBotLink = "https://services.google.com/fh/files/misc/android_dancing.gif",
+            onAboutClicked = {},
+        )
     }
 }

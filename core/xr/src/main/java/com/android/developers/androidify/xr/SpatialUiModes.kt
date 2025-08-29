@@ -24,9 +24,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
-import androidx.xr.compose.platform.LocalSession
-import androidx.xr.compose.platform.LocalSpatialCapabilities
-import androidx.xr.compose.platform.LocalSpatialConfiguration
 import androidx.xr.compose.platform.SpatialCapabilities
 import androidx.xr.scenecore.scene
 
