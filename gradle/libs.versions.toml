@@ -65,6 +65,8 @@ lifecycleProcess = "2.9.1"
 mlkitCommon = "18.11.0"
 mlkitSegmentation = "16.0.0-beta1"
 playServicesBase = "18.4.0"
+xr-compose = "1.0.0-alpha06"
+
 
 [libraries]
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanist" }
@@ -143,6 +145,8 @@ google-oss-licenses = { group = "com.google.android.gms", name = "play-services-
 google-oss-licenses-plugin = { group = "com.google.android.gms", name = "oss-licenses-plugin", version.ref = "googleOssPlugin" }
 androidx-lifecycle-process = { group = "androidx.lifecycle", name = "lifecycle-process", version.ref = "lifecycleProcess" }
 play-services-base = { group = "com.google.android.gms", name = "play-services-base", version.ref = "playServicesBase" }
+androidx-xr-compose = { group = "androidx.xr.compose", name="compose", version.ref = "xr-compose"}
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }

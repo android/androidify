@@ -33,4 +33,8 @@ class ConfigProvider @Inject constructor(val remoteConfigDataSource: RemoteConfi
     fun getDancingDroidLink(): String {
         return remoteConfigDataSource.getDancingDroidLink()
     }
+
+    fun isXrDisabled(): Boolean {
+        return remoteConfigDataSource.isXrDisabled()
+    }
 }

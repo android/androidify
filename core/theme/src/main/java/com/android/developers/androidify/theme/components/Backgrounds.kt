@@ -36,6 +36,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Devices.PIXEL_TABLET
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.android.developers.androidify.theme.AndroidifyTheme
@@ -75,6 +77,31 @@ fun SquiggleBackground(
                 .padding(top = verticalPadding, bottom = verticalPadding),
             contentScale = ContentScale.FillHeight,
         )
+    }
+}
+
+/**
+ * Background squiggle that tries to fit in its parent.
+ */
+@Composable
+fun SquiggleBackgroundFull() {
+    val vectorBackground =
+        rememberVectorPainter(ImageVector.vectorResource(R.drawable.squiggle_full))
+    Box(modifier = Modifier.fillMaxSize()) {
+        Image(
+            painter = vectorBackground,
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Fit,
+        )
+    }
+}
+
+@Preview(device = PIXEL_TABLET)
+@Composable
+fun SquiggleFullImagePreview() {
+    AndroidifyTheme {
+        SquiggleBackgroundFull()
     }
 }
 
