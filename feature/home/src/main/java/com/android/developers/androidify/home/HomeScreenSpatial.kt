@@ -50,6 +50,7 @@ import androidx.xr.compose.subspace.layout.rotate
 import com.android.developers.androidify.theme.SharedElementContextPreview
 import com.android.developers.androidify.theme.components.AndroidifyTopAppBar
 import com.android.developers.androidify.theme.components.SquiggleBackground
+import com.android.developers.androidify.theme.components.SquiggleBackgroundFull
 import com.android.developers.androidify.util.TabletPreview
 import com.android.developers.androidify.xr.RequestHomeSpaceIconButton
 
@@ -109,7 +110,7 @@ private fun HomeScreenSpatialMainContent(
         mutableStateOf(IntOffset.Zero)
     }
     Box {
-        SquiggleBackground()
+        SquiggleBackgroundFull()
         Box(
             modifier = Modifier
                 .fillMaxWidth(0.55f)

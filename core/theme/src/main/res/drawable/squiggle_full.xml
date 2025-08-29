@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+     Copyright 2025 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          https://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<!-- The squiggle but cropped to the viewport. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="1425dp"
+    android:height="822dp"
+    android:viewportWidth="1290"
+    android:viewportHeight="668">
+    <group
+        android:translateX="-66.87"
+        android:translateY="-76.47">
+        <path
+            android:fillColor="#34A853"
+            android:pathData="M1308.7,428.8L1040.3,129.2A184.5,161.6 89.4,0 0,811.8 131.8L811.8,131.8A184.5,161.6 89.4,0 0,814.7 392.7L1083.1,692.4A184.5,161.6 89.4,0 0,1311.6 689.8L1311.6,689.8A184.5,161.6 89.4,0 0,1308.7 428.8z" />
+        <path
+            android:fillColor="#34A853"
+            android:pathData="M959.2,428.8L690.8,129.2A184.5,161.6 89.4,0 0,462.3 131.8L462.3,131.8A184.5,161.6 89.4,0 0,465.2 392.7L733.6,692.4A184.5,161.6 89.4,0 0,962.2 689.8L962.2,689.8A184.5,161.6 89.4,0 0,959.2 428.8z" />
+        <path
+            android:fillColor="#34A853"
+            android:pathData="M609.7,429L341.3,129.4A184.5,161.6 89.4,0 0,112.8 131.9L112.8,131.9A184.5,161.6 89.4,0 0,115.7 392.9L384.1,692.5A184.5,161.6 89.4,0 0,612.7 690L612.7,690A184.5,161.6 89.4,0 0,609.7 429z" />
+    </group>
+</vector>
