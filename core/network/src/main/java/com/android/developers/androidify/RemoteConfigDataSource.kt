@@ -43,7 +43,7 @@ interface RemoteConfigDataSource {
 
     fun getBotBackgroundInstructionPrompt(): String
 
-    fun isXrDisabled(): Boolean
+    fun isXrEnabled(): Boolean
 }
 
 @Singleton
@@ -109,7 +109,7 @@ class RemoteConfigDataSourceImpl @Inject constructor() : RemoteConfigDataSource 
         return remoteConfig.getString("bot_background_instruction_prompt")
     }
 
-    override fun isXrDisabled(): Boolean {
-        return remoteConfig.getBoolean("is_xr_disabled")
+    override fun isXrEnabled(): Boolean {
+        return remoteConfig.getBoolean("xr_feature_enabled")
     }
 }

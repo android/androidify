@@ -41,7 +41,7 @@ fun HomeScreen(
     onAboutClicked: () -> Unit = {},
 ) {
     val state = homeScreenViewModel.state.collectAsStateWithLifecycle()
-    val layoutType = calculateLayoutType(state.value.isXrDisabled)
+    val layoutType = calculateLayoutType(state.value.isXrEnabled)
 
     if (!state.value.isAppActive) {
         AppInactiveScreen()

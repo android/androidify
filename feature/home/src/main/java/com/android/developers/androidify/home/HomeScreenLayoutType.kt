@@ -26,9 +26,9 @@ enum class HomeScreenLayoutType {
 }
 
 @Composable
-fun calculateLayoutType(disableXr: Boolean = false): HomeScreenLayoutType {
+fun calculateLayoutType(enableXr: Boolean = false): HomeScreenLayoutType {
     return when {
-        LocalSpatialCapabilities.current.isSpatialUiEnabled && !disableXr -> HomeScreenLayoutType.Spatial
+        LocalSpatialCapabilities.current.isSpatialUiEnabled && enableXr -> HomeScreenLayoutType.Spatial
         isAtLeastMedium() -> HomeScreenLayoutType.Medium
         else -> HomeScreenLayoutType.Compact
     }

@@ -76,7 +76,7 @@ class TestRemoteConfigDataSource(private val useGeminiNano: Boolean) : RemoteCon
         return "bot_background_instruction_prompt"
     }
 
-    override fun isXrDisabled(): Boolean {
+    override fun isXrEnabled(): Boolean {
         return false
     }
 }

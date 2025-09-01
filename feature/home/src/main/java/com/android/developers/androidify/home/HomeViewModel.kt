@@ -29,7 +29,7 @@ class HomeViewModel @Inject constructor(configProvider: ConfigProvider) : ViewMo
             isAppActive = !configProvider.isAppInactive(),
             dancingDroidLink = configProvider.getDancingDroidLink(),
             videoLink = configProvider.getPromoVideoLink(),
-            isXrDisabled = configProvider.isXrDisabled(),
+            isXrEnabled = configProvider.isXrEnabled(),
         ),
     )
     val state = _state.asStateFlow()
@@ -37,7 +37,7 @@ class HomeViewModel @Inject constructor(configProvider: ConfigProvider) : ViewMo
 
 data class HomeState(
     val isAppActive: Boolean = true,
-    val isXrDisabled: Boolean = false,
+    val isXrEnabled: Boolean = false,
     val videoLink: String? = null,
     val dancingDroidLink: String? = null,
 )
