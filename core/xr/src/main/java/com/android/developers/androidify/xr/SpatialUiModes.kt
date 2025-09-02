@@ -24,6 +24,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.xr.compose.platform.SpatialCapabilities
@@ -79,16 +80,7 @@ fun RequestFullSpaceIconButton(modifier: Modifier = Modifier) {
     ) {
         Icon(
             ImageVector.vectorResource(R.drawable.expand_content_24px),
-            contentDescription = "To Full Space Mode",
+            contentDescription = stringResource(R.string.xr_to_full_space_mode),
         )
     }
-}
-
-@Composable
-fun FullSpaceIcon(modifier: Modifier = Modifier) {
-    Icon(
-        modifier = modifier,
-        imageVector = ImageVector.vectorResource(R.drawable.expand_content_24px),
-        contentDescription = "To Full Space Mode",
-    )
 }
