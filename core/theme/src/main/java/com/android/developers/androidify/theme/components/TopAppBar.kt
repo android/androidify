@@ -26,20 +26,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -139,38 +136,6 @@ private fun BackButton(onBackPressed: () -> Unit) {
         Icon(
             ImageVector.vectorResource(R.drawable.rounded_arrow_back_24),
             contentDescription = "Back",
-        )
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun AndroidifyTranslucentTopAppBar(
-    modifier: Modifier = Modifier,
-    titleText: String = stringResource(R.string.androidify_title),
-    isMediumSizeLayout: Boolean = false,
-) {
-    if (isMediumSizeLayout) {
-        TopAppBar(
-            title = {
-                Spacer(Modifier.statusBarsPadding())
-                AndroidifyTitle(titleText)
-            },
-            modifier = modifier.clip(
-                MaterialTheme.shapes.large.copy(topStart = CornerSize(0f), topEnd = CornerSize(0f)),
-            ),
-            colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
-        )
-    } else {
-        CenterAlignedTopAppBar(
-            title = {
-                Spacer(Modifier.statusBarsPadding())
-                AndroidifyTitle(titleText)
-            },
-            modifier = modifier.clip(
-                MaterialTheme.shapes.large.copy(topStart = CornerSize(0f), topEnd = CornerSize(0f)),
-            ),
-            colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
         )
     }
 }

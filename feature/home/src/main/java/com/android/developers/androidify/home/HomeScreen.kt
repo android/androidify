@@ -82,6 +82,7 @@ fun HomeScreenContents(
                     videoLink,
                     dancingBotLink,
                     onClickLetsGo,
+                    onAboutClicked,
                 )
             }
 

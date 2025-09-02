@@ -73,7 +73,8 @@ fun HomeScreenContentsSpatial(
         ) {
             Orbiter(
                 position = ContentEdge.Top,
-                offsetType = OrbiterOffsetType.InnerEdge,
+                offsetType = OrbiterOffsetType.OuterEdge,
+                offset = 32.dp,
                 alignment = Alignment.End,
             ) {
                 RequestHomeSpaceIconButton(
@@ -113,42 +114,40 @@ private fun HomeScreenSpatialMainContent(
     }
     Box {
         SquiggleBackgroundFull()
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxWidth(0.55f)
                 .fillMaxHeight(1f)
                 .align(Alignment.Center),
         ) {
+            AndroidifyTopAppBar(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .width(220.dp)
+                    .padding(bottom = 16.dp, top = 48.dp),
+                aboutEnabled = true,
+                onAboutClicked = onAboutClicked,
+            )
             MainHomeContent(
                 modifier = Modifier
-                    .fillMaxHeight(0.6f)
-                    .align(Alignment.Center),
+                    .align(Alignment.CenterHorizontally)
+                    .fillMaxHeight(0.8f),
                 dancingBotLink = dancingBotLink,
             )
-            Column(
+
+            HomePageButton(
                 modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(bottom = 16.dp),
-            ) {
-                AndroidifyTopAppBar(
-                    modifier = Modifier
-                        .width(220.dp)
-                        .padding(bottom = 16.dp),
-                    aboutEnabled = true,
-                    onAboutClicked = onAboutClicked,
-                )
-                HomePageButton(
-                    modifier = Modifier
-                        .onLayoutRectChanged {
-                            positionButtonClick = it.boundsInWindow.center
-                        }
-                        .height(64.dp)
-                        .width(220.dp),
-                    onClick = {
-                        onClickLetsGo(positionButtonClick)
-                    },
-                )
-            }
+                    .align(Alignment.CenterHorizontally)
+                    .padding(bottom = 48.dp)
+                    .onLayoutRectChanged {
+                        positionButtonClick = it.boundsInWindow.center
+                    }
+                    .height(64.dp)
+                    .width(220.dp),
+                onClick = {
+                    onClickLetsGo(positionButtonClick)
+                },
+            )
         }
     }
 }

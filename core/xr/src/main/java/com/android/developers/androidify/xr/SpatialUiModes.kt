@@ -16,14 +16,16 @@
 package com.android.developers.androidify.xr
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.unit.dp
 import androidx.xr.compose.platform.SpatialCapabilities
 import androidx.xr.scenecore.scene
 
@@ -45,11 +47,10 @@ fun SpatialCapabilities.couldRequestHomeSpace(): Boolean {
 fun RequestHomeSpaceIconButton(modifier: Modifier = Modifier) {
     val session = LocalSession.current ?: return
 
-    OutlinedIconButton(
+    IconButton(
         modifier = modifier,
-        colors = IconButtonDefaults.outlinedIconButtonColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
-            disabledContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+        colors = IconButtonDefaults.iconButtonColors(
+            containerColor = MaterialTheme.colorScheme.secondaryContainer,
         ),
         onClick = {
             session.scene.requestHomeSpaceMode()
@@ -57,7 +58,8 @@ fun RequestHomeSpaceIconButton(modifier: Modifier = Modifier) {
     ) {
         Icon(
             modifier = Modifier
-                .fillMaxSize(),
+                .fillMaxSize()
+                .padding(8.dp),
             imageVector = ImageVector.vectorResource(R.drawable.collapse_content_24px),
             contentDescription = "To Home Space Mode",
         )

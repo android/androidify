@@ -17,7 +17,6 @@ package com.android.developers.androidify.home
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -32,11 +31,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onLayoutRectChanged
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import com.android.developers.androidify.home.xr.ViewInFullSpaceModeButton
 import com.android.developers.androidify.theme.SharedElementContextPreview
-import com.android.developers.androidify.theme.components.AndroidifyTranslucentTopAppBar
+import com.android.developers.androidify.theme.components.AndroidifyTopAppBar
 import com.android.developers.androidify.util.LargeScreensPreview
-import com.android.developers.androidify.xr.couldRequestFullSpace
 
 @Composable
 fun HomeScreenMediumContents(
@@ -44,11 +41,16 @@ fun HomeScreenMediumContents(
     videoLink: String?,
     dancingBotLink: String?,
     onClickLetsGo: (IntOffset) -> Unit,
+    onAboutClicked: () -> Unit,
 ) {
     var positionButtonClick by remember {
         mutableStateOf(IntOffset.Zero)
     }
-    AndroidifyTranslucentTopAppBar(isMediumSizeLayout = true)
+    AndroidifyTopAppBar(
+        isMediumWindowSize = true,
+        aboutEnabled = true,
+        onAboutClicked = onAboutClicked,
+    )
 
     Row(
         modifier = modifier
@@ -71,27 +73,20 @@ fun HomeScreenMediumContents(
                 .align(Alignment.CenterVertically),
         ) {
             MainHomeContent(dancingBotLink)
-            Row(
+
+            HomePageButton(
                 modifier = Modifier
+                    .onLayoutRectChanged {
+                        positionButtonClick = it.boundsInWindow.center
+                    }
                     .align(Alignment.BottomCenter)
                     .padding(bottom = 16.dp)
-                    .height(64.dp),
-            ) {
-                if (couldRequestFullSpace()) {
-                    ViewInFullSpaceModeButton()
-                    Spacer(Modifier.width(16.dp))
-                }
-                HomePageButton(
-                    modifier = Modifier
-                        .onLayoutRectChanged {
-                            positionButtonClick = it.boundsInWindow.center
-                        }
-                        .width(220.dp),
-                    onClick = {
-                        onClickLetsGo(positionButtonClick)
-                    },
-                )
-            }
+                    .height(64.dp)
+                    .width(220.dp),
+                onClick = {
+                    onClickLetsGo(positionButtonClick)
+                },
+            )
         }
     }
 }
