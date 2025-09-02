@@ -35,6 +35,10 @@ import com.android.developers.androidify.theme.SharedElementContextPreview
 import com.android.developers.androidify.theme.components.AboutButton
 import com.android.developers.androidify.theme.components.AndroidifyTopAppBar
 import com.android.developers.androidify.util.LargeScreensPreview
+import com.android.developers.androidify.xr.RequestFullSpaceIconButton
+import com.android.developers.androidify.xr.SupportsFullSpaceModeRequestProvider
+import com.android.developers.androidify.xr.XrHomeSpaceMediumPreview
+import com.android.developers.androidify.xr.couldRequestFullSpace
 
 @Composable
 fun HomeScreenMediumContents(
@@ -51,6 +55,9 @@ fun HomeScreenMediumContents(
         isMediumWindowSize = true,
         actions = {
             AboutButton(onAboutClicked = onAboutClicked)
+            if (couldRequestFullSpace()) {
+                RequestFullSpaceIconButton()
+            }
         },
     )
 
@@ -105,5 +112,22 @@ private fun HomeScreenLargeScreensPreview() {
             dancingBotLink = "https://services.google.com/fh/files/misc/android_dancing.gif",
             onAboutClicked = {},
         )
+    }
+}
+
+@ExperimentalMaterial3ExpressiveApi
+@XrHomeSpaceMediumPreview
+@Composable
+private fun HomeScreenLargeScreensHomeSpaceModePreview() {
+    SupportsFullSpaceModeRequestProvider {
+        SharedElementContextPreview {
+            HomeScreenContents(
+                layoutType = HomeScreenLayoutType.Medium,
+                onClickLetsGo = { },
+                videoLink = "",
+                dancingBotLink = "https://services.google.com/fh/files/misc/android_dancing.gif",
+                onAboutClicked = {},
+            )
+        }
     }
 }

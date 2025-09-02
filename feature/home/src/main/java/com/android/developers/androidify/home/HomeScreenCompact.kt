@@ -52,6 +52,8 @@ import com.android.developers.androidify.theme.SharedElementContextPreview
 import com.android.developers.androidify.theme.components.AboutButton
 import com.android.developers.androidify.theme.components.AndroidifyTopAppBar
 import com.android.developers.androidify.util.PhonePreview
+import com.android.developers.androidify.xr.RequestFullSpaceIconButton
+import com.android.developers.androidify.xr.couldRequestFullSpace
 
 @Composable
 fun HomeScreenCompactPager(
@@ -69,6 +71,9 @@ fun HomeScreenCompactPager(
         AndroidifyTopAppBar(
             actions = {
                 AboutButton { onAboutClicked() }
+                if (couldRequestFullSpace()) {
+                    RequestFullSpaceIconButton()
+                }
             },
         )
         HorizontalPager(

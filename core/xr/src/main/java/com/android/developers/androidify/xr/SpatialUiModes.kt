@@ -66,6 +66,24 @@ fun RequestHomeSpaceIconButton(modifier: Modifier = Modifier) {
     }
 }
 
+/** Default styling for an TopAppBar Button with a full space button and behavior. */
+@Composable
+fun RequestFullSpaceIconButton(modifier: Modifier = Modifier) {
+    val session = LocalSession.current ?: return
+
+    IconButton(
+        modifier = modifier,
+        onClick = {
+            session.scene.requestFullSpaceMode()
+        },
+    ) {
+        Icon(
+            ImageVector.vectorResource(R.drawable.expand_content_24px),
+            contentDescription = "To Full Space Mode",
+        )
+    }
+}
+
 @Composable
 fun FullSpaceIcon(modifier: Modifier = Modifier) {
     Icon(
