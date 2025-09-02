@@ -54,10 +54,9 @@ fun AndroidifyTopAppBar(
     titleText: String = stringResource(R.string.androidify_title),
     isMediumWindowSize: Boolean = false,
     backEnabled: Boolean = false,
-    aboutEnabled: Boolean = true,
     expandedCenterButtons: @Composable () -> Unit = {},
     onBackPressed: () -> Unit = {},
-    onAboutClicked: () -> Unit = {},
+    actions: (@Composable () -> Unit)? = null,
 ) {
     if (isMediumWindowSize) {
         Box(
@@ -92,16 +91,16 @@ fun AndroidifyTopAppBar(
                 expandedCenterButtons()
             }
 
-            if (aboutEnabled) {
-                AboutButton(
-                    modifier = Modifier
-                        .align(Alignment.CenterEnd)
-                        .background(
-                            color = MaterialTheme.colorScheme.surfaceContainerLowest,
-                            shape = CircleShape,
-                        ),
-                    onAboutClicked = onAboutClicked,
-                )
+            Row(
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .background(
+                        color = MaterialTheme.colorScheme.surfaceContainerLowest,
+                        shape = CircleShape,
+                    ),
+
+            ) {
+                actions?.invoke()
             }
         }
     } else {
@@ -121,9 +120,7 @@ fun AndroidifyTopAppBar(
                 }
             },
             actions = {
-                if (aboutEnabled) {
-                    AboutButton(onAboutClicked = onAboutClicked)
-                }
+                actions?.invoke()
             },
             colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLowest),
         )
@@ -147,7 +144,7 @@ private fun AndroidifyTitle(text: String) {
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-private fun AboutButton(modifier: Modifier = Modifier, onAboutClicked: () -> Unit = {}) {
+fun AboutButton(modifier: Modifier = Modifier, onAboutClicked: () -> Unit = {}) {
     val sharedTransitionScope = LocalSharedTransitionScope.current
     with(sharedTransitionScope) {
         IconButton(

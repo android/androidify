@@ -80,6 +80,7 @@ import com.android.developers.androidify.results.R
 import com.android.developers.androidify.results.shareImage
 import com.android.developers.androidify.theme.AndroidifyTheme
 import com.android.developers.androidify.theme.LocalAnimateBoundsScope
+import com.android.developers.androidify.theme.components.AboutButton
 import com.android.developers.androidify.theme.components.AndroidifyTopAppBar
 import com.android.developers.androidify.theme.components.PrimaryButton
 import com.android.developers.androidify.theme.components.SecondaryOutlinedButton
@@ -159,7 +160,9 @@ private fun CustomizeExportContents(
                 titleText = stringResource(R.string.customize_and_export),
                 isMediumWindowSize = isMediumWindowSize,
                 onBackPressed = onBackPress,
-                onAboutClicked = onInfoPress,
+                actions = {
+                    AboutButton { onInfoPress() }
+                },
             )
         },
         containerColor = MaterialTheme.colorScheme.surface,

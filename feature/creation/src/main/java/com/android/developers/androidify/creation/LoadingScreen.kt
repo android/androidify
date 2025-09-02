@@ -87,7 +87,7 @@ fun LoadingScreen(
 ) {
     Scaffold(
         topBar = {
-            AndroidifyTopAppBar(isMediumWindowSize = isMediumScreen, aboutEnabled = false)
+            AndroidifyTopAppBar(isMediumWindowSize = isMediumScreen)
         },
         bottomBar = {
             Box(

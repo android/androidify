@@ -138,6 +138,7 @@ import com.android.developers.androidify.theme.Primary90
 import com.android.developers.androidify.theme.R
 import com.android.developers.androidify.theme.Secondary
 import com.android.developers.androidify.theme.SharedElementKey
+import com.android.developers.androidify.theme.components.AboutButton
 import com.android.developers.androidify.theme.components.AndroidifyTopAppBar
 import com.android.developers.androidify.theme.components.GradientAssistElevatedChip
 import com.android.developers.androidify.theme.components.PrimaryButton
@@ -289,9 +290,10 @@ fun EditScreen(
             AndroidifyTopAppBar(
                 backEnabled = true,
                 isMediumWindowSize = isExpanded,
-                aboutEnabled = true,
+                actions = {
+                    AboutButton { onAboutPressed() }
+                },
                 onBackPressed = onBackPressed,
-                onAboutClicked = onAboutPressed,
                 expandedCenterButtons = {
                     PromptTypeToolbar(
                         uiState.selectedPromptOption,

@@ -32,6 +32,7 @@ import androidx.compose.ui.layout.onLayoutRectChanged
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.android.developers.androidify.theme.SharedElementContextPreview
+import com.android.developers.androidify.theme.components.AboutButton
 import com.android.developers.androidify.theme.components.AndroidifyTopAppBar
 import com.android.developers.androidify.util.LargeScreensPreview
 
@@ -48,8 +49,9 @@ fun HomeScreenMediumContents(
     }
     AndroidifyTopAppBar(
         isMediumWindowSize = true,
-        aboutEnabled = true,
-        onAboutClicked = onAboutClicked,
+        actions = {
+            AboutButton(onAboutClicked = onAboutClicked)
+        },
     )
 
     Row(

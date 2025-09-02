@@ -67,6 +67,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.android.developers.androidify.theme.AndroidifyTheme
+import com.android.developers.androidify.theme.components.AboutButton
 import com.android.developers.androidify.theme.components.AndroidifyTopAppBar
 import com.android.developers.androidify.theme.components.PrimaryButton
 import com.android.developers.androidify.theme.components.ResultsBackground
@@ -109,7 +110,9 @@ fun ResultsScreen(
                 onBackPressed = {
                     onBackPress()
                 },
-                onAboutClicked = onAboutPress,
+                actions = {
+                    AboutButton { onAboutPress() }
+                },
             )
         },
         modifier = modifier

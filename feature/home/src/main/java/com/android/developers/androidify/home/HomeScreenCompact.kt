@@ -49,6 +49,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.android.developers.androidify.theme.Blue
 import com.android.developers.androidify.theme.SharedElementContextPreview
+import com.android.developers.androidify.theme.components.AboutButton
 import com.android.developers.androidify.theme.components.AndroidifyTopAppBar
 import com.android.developers.androidify.util.PhonePreview
 
@@ -66,8 +67,9 @@ fun HomeScreenCompactPager(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         AndroidifyTopAppBar(
-            aboutEnabled = true,
-            onAboutClicked = onAboutClicked,
+            actions = {
+                AboutButton { onAboutClicked() }
+            },
         )
         HorizontalPager(
             state = pagerState,

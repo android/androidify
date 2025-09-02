@@ -51,6 +51,7 @@ import com.android.developers.androidify.home.HomePageButton
 import com.android.developers.androidify.home.MainHomeContent
 import com.android.developers.androidify.home.VideoPlayer
 import com.android.developers.androidify.theme.SharedElementContextPreview
+import com.android.developers.androidify.theme.components.AboutButton
 import com.android.developers.androidify.theme.components.AndroidifyTopAppBar
 import com.android.developers.androidify.theme.components.SquiggleBackgroundFull
 import com.android.developers.androidify.util.TabletPreview
@@ -125,8 +126,10 @@ private fun HomeScreenSpatialMainContent(
                     .align(Alignment.CenterHorizontally)
                     .width(220.dp)
                     .padding(bottom = 16.dp, top = 48.dp),
-                aboutEnabled = true,
-                onAboutClicked = onAboutClicked,
+
+                actions = {
+                    AboutButton { onAboutClicked() }
+                },
             )
             MainHomeContent(
                 modifier = Modifier
