@@ -47,6 +47,7 @@ fun HomeScreenMediumContents(
     dancingBotLink: String?,
     onClickLetsGo: (IntOffset) -> Unit,
     onAboutClicked: () -> Unit,
+    xrEnabled: Boolean = false,
 ) {
     var positionButtonClick by remember {
         mutableStateOf(IntOffset.Zero)
@@ -55,7 +56,7 @@ fun HomeScreenMediumContents(
         isMediumWindowSize = true,
         actions = {
             AboutButton(onAboutClicked = onAboutClicked)
-            if (couldRequestFullSpace()) {
+            if (xrEnabled && couldRequestFullSpace()) {
                 RequestFullSpaceIconButton()
             }
         },

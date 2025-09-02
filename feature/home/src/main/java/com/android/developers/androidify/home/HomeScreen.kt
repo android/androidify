@@ -41,7 +41,8 @@ fun HomeScreen(
     onAboutClicked: () -> Unit = {},
 ) {
     val state = homeScreenViewModel.state.collectAsStateWithLifecycle()
-    val layoutType = calculateLayoutType(state.value.isXrEnabled)
+    val xrEnabled = state.value.isXrEnabled
+    val layoutType = calculateLayoutType(xrEnabled)
 
     if (!state.value.isAppActive) {
         AppInactiveScreen()
@@ -52,6 +53,7 @@ fun HomeScreen(
             layoutType,
             onClickLetsGo,
             onAboutClicked,
+            xrEnabled,
         )
     }
 }
@@ -63,6 +65,7 @@ fun HomeScreenContents(
     layoutType: HomeScreenLayoutType,
     onClickLetsGo: (IntOffset) -> Unit,
     onAboutClicked: () -> Unit,
+    xrEnabled: Boolean = false,
 ) {
     when (layoutType) {
         HomeScreenLayoutType.Compact ->
@@ -72,6 +75,7 @@ fun HomeScreenContents(
                     dancingBotLink,
                     onClickLetsGo,
                     onAboutClicked,
+                    xrEnabled,
                 )
             }
 
@@ -83,6 +87,7 @@ fun HomeScreenContents(
                     dancingBotLink,
                     onClickLetsGo,
                     onAboutClicked,
+                    xrEnabled,
                 )
             }
 

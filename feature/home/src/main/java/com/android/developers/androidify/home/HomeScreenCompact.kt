@@ -61,6 +61,7 @@ fun HomeScreenCompactPager(
     dancingBotLink: String?,
     onClick: (IntOffset) -> Unit,
     onAboutClicked: () -> Unit,
+    xrEnabled: Boolean = false,
 ) {
     val pagerState = rememberPagerState(pageCount = { 2 })
 
@@ -71,7 +72,7 @@ fun HomeScreenCompactPager(
         AndroidifyTopAppBar(
             actions = {
                 AboutButton { onAboutClicked() }
-                if (couldRequestFullSpace()) {
+                if (xrEnabled && couldRequestFullSpace()) {
                     RequestFullSpaceIconButton()
                 }
             },
