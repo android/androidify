@@ -62,7 +62,7 @@ fun RequestHomeSpaceIconButton(modifier: Modifier = Modifier) {
                 .fillMaxSize()
                 .padding(8.dp),
             imageVector = ImageVector.vectorResource(R.drawable.collapse_content_24px),
-            contentDescription = "To Home Space Mode",
+            contentDescription = stringResource(R.string.xr_to_home_space_mode),
         )
     }
 }

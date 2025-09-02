@@ -16,4 +16,5 @@
 -->
 <resources>
     <string name="xr_to_full_space_mode">To Full Space Mode</string>
+    <string name="xr_to_home_space_mode">To Home Space Mode</string>
 </resources>
