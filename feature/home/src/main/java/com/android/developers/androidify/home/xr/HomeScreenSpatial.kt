@@ -55,6 +55,7 @@ import com.android.developers.androidify.theme.components.AboutButton
 import com.android.developers.androidify.theme.components.AndroidifyTopAppBar
 import com.android.developers.androidify.theme.components.SquiggleBackgroundFull
 import com.android.developers.androidify.util.TabletPreview
+import com.android.developers.androidify.xr.DisableSharedTransition
 import com.android.developers.androidify.xr.MainPanelWorkaround
 import com.android.developers.androidify.xr.RequestHomeSpaceIconButton
 
@@ -65,41 +66,43 @@ fun HomeScreenContentsSpatial(
     onClickLetsGo: (IntOffset) -> Unit,
     onAboutClicked: () -> Unit,
 ) {
-    Subspace {
-        MainPanelWorkaround()
-        SpatialPanel(
-            SubspaceModifier
-                .movable()
-                .resizable()
-                .fillMaxWidth(1f)
-                .aspectRatio(1.7f),
-        ) {
-            Orbiter(
-                position = ContentEdge.Top,
-                offsetType = OrbiterOffsetType.OuterEdge,
-                offset = 32.dp,
-                alignment = Alignment.End,
+    DisableSharedTransition {
+        Subspace {
+            MainPanelWorkaround()
+            SpatialPanel(
+                SubspaceModifier
+                    .movable()
+                    .resizable()
+                    .fillMaxWidth(1f)
+                    .aspectRatio(1.7f),
             ) {
-                RequestHomeSpaceIconButton(
-                    modifier = Modifier
-                        .size(64.dp, 64.dp)
-                        .padding(8.dp),
-                )
-            }
-            HomeScreenSpatialMainContent(dancingBotLink, onClickLetsGo, onAboutClicked)
-            Subspace {
-                SpatialPanel(
-                    SubspaceModifier
-                        .fillMaxWidth(0.2f)
-                        .fillMaxHeight(0.8f)
-                        .aspectRatio(0.77f)
-                        .resizable(maintainAspectRatio = true)
-                        .movable()
-                        .align(SpatialAlignment.CenterRight)
-                        .offset(z = 10.dp)
-                        .rotate(0f, 0f, 5f),
+                Orbiter(
+                    position = ContentEdge.Top,
+                    offsetType = OrbiterOffsetType.OuterEdge,
+                    offset = 32.dp,
+                    alignment = Alignment.End,
                 ) {
-                    VideoPlayer(videoLink)
+                    RequestHomeSpaceIconButton(
+                        modifier = Modifier
+                            .size(64.dp, 64.dp)
+                            .padding(8.dp),
+                    )
+                }
+                HomeScreenSpatialMainContent(dancingBotLink, onClickLetsGo, onAboutClicked)
+                Subspace {
+                    SpatialPanel(
+                        SubspaceModifier
+                            .fillMaxWidth(0.2f)
+                            .fillMaxHeight(0.8f)
+                            .aspectRatio(0.77f)
+                            .resizable(maintainAspectRatio = true)
+                            .movable()
+                            .align(SpatialAlignment.CenterRight)
+                            .offset(z = 10.dp)
+                            .rotate(0f, 0f, 5f),
+                    ) {
+                        VideoPlayer(videoLink)
+                    }
                 }
             }
         }
