@@ -145,6 +145,7 @@ google-oss-licenses = { group = "com.google.android.gms", name = "play-services-
 google-oss-licenses-plugin = { group = "com.google.android.gms", name = "oss-licenses-plugin", version.ref = "googleOssPlugin" }
 androidx-lifecycle-process = { group = "androidx.lifecycle", name = "lifecycle-process", version.ref = "lifecycleProcess" }
 play-services-base = { group = "com.google.android.gms", name = "play-services-base", version.ref = "playServicesBase" }
+google-firebase-appcheck-debug = { group = "com.google.firebase", name = "firebase-appcheck-debug"}
 androidx-xr-compose = { group = "androidx.xr.compose", name="compose", version.ref = "xr-compose"}
 
 [plugins]
