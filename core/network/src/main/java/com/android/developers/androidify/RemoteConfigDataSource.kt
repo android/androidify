@@ -42,6 +42,8 @@ interface RemoteConfigDataSource {
     fun getImageGenerationEditsModelName(): String
 
     fun getBotBackgroundInstructionPrompt(): String
+
+    fun isXrEnabled(): Boolean
 }
 
 @Singleton
@@ -105,5 +107,9 @@ class RemoteConfigDataSourceImpl @Inject constructor() : RemoteConfigDataSource 
 
     override fun getBotBackgroundInstructionPrompt(): String {
         return remoteConfig.getString("bot_background_instruction_prompt")
+    }
+
+    override fun isXrEnabled(): Boolean {
+        return remoteConfig.getBoolean("xr_feature_enabled")
     }
 }

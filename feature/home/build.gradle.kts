@@ -68,6 +68,9 @@ dependencies {
         exclude(group = "com.google.guava")
     }
 
+    implementation(libs.androidx.xr.compose)
+    implementation(projects.core.xr)
+
     implementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.tooling.preview)
 

@@ -26,20 +26,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -57,10 +54,9 @@ fun AndroidifyTopAppBar(
     titleText: String = stringResource(R.string.androidify_title),
     isMediumWindowSize: Boolean = false,
     backEnabled: Boolean = false,
-    aboutEnabled: Boolean = true,
     expandedCenterButtons: @Composable () -> Unit = {},
     onBackPressed: () -> Unit = {},
-    onAboutClicked: () -> Unit = {},
+    actions: (@Composable () -> Unit)? = null,
 ) {
     if (isMediumWindowSize) {
         Box(
@@ -95,16 +91,16 @@ fun AndroidifyTopAppBar(
                 expandedCenterButtons()
             }
 
-            if (aboutEnabled) {
-                AboutButton(
-                    modifier = Modifier
-                        .align(Alignment.CenterEnd)
-                        .background(
-                            color = MaterialTheme.colorScheme.surfaceContainerLowest,
-                            shape = CircleShape,
-                        ),
-                    onAboutClicked = onAboutClicked,
-                )
+            Row(
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .background(
+                        color = MaterialTheme.colorScheme.surfaceContainerLowest,
+                        shape = CircleShape,
+                    ),
+
+            ) {
+                actions?.invoke()
             }
         }
     } else {
@@ -124,9 +120,7 @@ fun AndroidifyTopAppBar(
                 }
             },
             actions = {
-                if (aboutEnabled) {
-                    AboutButton(onAboutClicked = onAboutClicked)
-                }
+                actions?.invoke()
             },
             colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLowest),
         )
@@ -143,38 +137,6 @@ private fun BackButton(onBackPressed: () -> Unit) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun AndroidifyTranslucentTopAppBar(
-    modifier: Modifier = Modifier,
-    titleText: String = stringResource(R.string.androidify_title),
-    isMediumSizeLayout: Boolean = false,
-) {
-    if (isMediumSizeLayout) {
-        TopAppBar(
-            title = {
-                Spacer(Modifier.statusBarsPadding())
-                AndroidifyTitle(titleText)
-            },
-            modifier = modifier.clip(
-                MaterialTheme.shapes.large.copy(topStart = CornerSize(0f), topEnd = CornerSize(0f)),
-            ),
-            colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
-        )
-    } else {
-        CenterAlignedTopAppBar(
-            title = {
-                Spacer(Modifier.statusBarsPadding())
-                AndroidifyTitle(titleText)
-            },
-            modifier = modifier.clip(
-                MaterialTheme.shapes.large.copy(topStart = CornerSize(0f), topEnd = CornerSize(0f)),
-            ),
-            colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
-        )
-    }
-}
-
 @Composable
 private fun AndroidifyTitle(text: String) {
     Text(text, fontWeight = FontWeight.Bold)
@@ -182,7 +144,7 @@ private fun AndroidifyTitle(text: String) {
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-private fun AboutButton(modifier: Modifier = Modifier, onAboutClicked: () -> Unit = {}) {
+fun AboutButton(modifier: Modifier = Modifier, onAboutClicked: () -> Unit = {}) {
     val sharedTransitionScope = LocalSharedTransitionScope.current
     with(sharedTransitionScope) {
         IconButton(
