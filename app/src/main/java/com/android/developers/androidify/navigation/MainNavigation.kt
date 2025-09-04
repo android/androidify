@@ -18,6 +18,7 @@
 package com.android.developers.androidify.navigation
 
 import android.content.Intent
+import android.net.Uri
 import androidx.compose.animation.ContentTransform
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.fadeIn
@@ -46,8 +47,13 @@ import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 
 @ExperimentalMaterial3ExpressiveApi
 @Composable
-fun MainNavigation() {
-    val backStack = rememberMutableStateListOf<NavigationRoute>(Home)
+fun MainNavigation(sharedImageUri: String? = null) {
+    val backStack = if (sharedImageUri != null) {
+        rememberMutableStateListOf(Home, Create(sharedImageUri))
+    } else {
+        rememberMutableStateListOf<NavigationRoute>(Home)
+    }
+
     var positionReveal by remember {
         mutableStateOf(IntOffset.Zero)
     }
