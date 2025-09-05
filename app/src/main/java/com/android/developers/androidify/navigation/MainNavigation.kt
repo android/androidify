@@ -48,10 +48,12 @@ import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 @ExperimentalMaterial3ExpressiveApi
 @Composable
 fun MainNavigation(sharedImageUri: String? = null) {
-    val backStack = if (sharedImageUri != null) {
-        rememberMutableStateListOf(Home, Create(sharedImageUri))
-    } else {
-        rememberMutableStateListOf<NavigationRoute>(Home)
+    val backStack = rememberMutableStateListOf<NavigationRoute>(Home)
+
+    LaunchedEffect(sharedImageUri) {
+        if (sharedImageUri != null) {
+            backStack.add(Create(sharedImageUri))
+        }
     }
 
     var positionReveal by remember {
