@@ -15,6 +15,8 @@
  */
 package com.android.developers.androidify
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
@@ -28,6 +30,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.core.os.BundleCompat
 import com.android.developers.androidify.navigation.MainNavigation
 import com.android.developers.androidify.theme.AndroidifyTheme
 import com.android.developers.androidify.util.LocalOcclusion
@@ -46,6 +49,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val sharedImageUri: String? = maybeRetrieveSharedImage()
+
         setContent {
             AndroidifyTheme {
                 enableEdgeToEdge(
@@ -59,7 +64,7 @@ class MainActivity : ComponentActivity() {
                     ),
                 )
                 CompositionLocalProvider(LocalOcclusion provides isWindowOccluded) {
-                    MainNavigation()
+                    MainNavigation(sharedImageUri = sharedImageUri)
                 }
             }
         }
@@ -94,4 +99,18 @@ class MainActivity : ComponentActivity() {
             windowManager.unregisterTrustedPresentationListener(presentationListener)
         }
     }
+
+    private fun maybeRetrieveSharedImage(): String? {
+        if (intent?.action != Intent.ACTION_SEND || intent.type?.startsWith("image/") != true) {
+            return null
+        }
+        val extras = intent.extras ?: return null
+
+        return BundleCompat.getParcelable(
+            extras,
+            Intent.EXTRA_STREAM,
+            Uri::class.java,
+        )?.toString()
+    }
+
 }

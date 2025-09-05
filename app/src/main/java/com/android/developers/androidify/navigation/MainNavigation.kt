@@ -18,6 +18,7 @@
 package com.android.developers.androidify.navigation
 
 import android.content.Intent
+import android.net.Uri
 import androidx.compose.animation.ContentTransform
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.fadeIn
@@ -26,6 +27,7 @@ import androidx.compose.animation.scaleOut
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,8 +48,15 @@ import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 
 @ExperimentalMaterial3ExpressiveApi
 @Composable
-fun MainNavigation() {
+fun MainNavigation(sharedImageUri: String? = null) {
     val backStack = rememberMutableStateListOf<NavigationRoute>(Home)
+
+    LaunchedEffect(sharedImageUri) {
+        if (sharedImageUri != null) {
+            backStack.add(Create(sharedImageUri))
+        }
+    }
+
     var positionReveal by remember {
         mutableStateOf(IntOffset.Zero)
     }
