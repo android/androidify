@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright 2025 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          https://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<WatchFace width="450" height="450">
+  <Metadata key="CLOCK_TYPE" value="ANALOG"/>
+  <Metadata key="PREVIEW_TIME" value="10:10:30"/>
+  <BitmapFonts>
+    <BitmapFont name="googlesansflexsemibold">
+      <Character name="0" resource="font_googlesansflexsemibold_0" width="125" height="200"/>
+      <Character name="1" resource="font_googlesansflexsemibold_1" width="84" height="200"/>
+      <Character name="2" resource="font_googlesansflexsemibold_2" width="111" height="200"/>
+      <Character name="3" resource="font_googlesansflexsemibold_3" width="115" height="200"/>
+      <Character name="4" resource="font_googlesansflexsemibold_4" width="118" height="200"/>
+      <Character name="5" resource="font_googlesansflexsemibold_5" width="117" height="200"/>
+      <Character name="6" resource="font_googlesansflexsemibold_6" width="117" height="200"/>
+      <Character name="7" resource="font_googlesansflexsemibold_7" width="101" height="200"/>
+      <Character name="8" resource="font_googlesansflexsemibold_8" width="116" height="200"/>
+      <Character name="9" resource="font_googlesansflexsemibold_9" width="117" height="200"/>
+      <Character name=":" resource="font_googlesansflexsemibold_colon" width="51" height="200"/>
+      <Character name="." resource="font_googlesansflexsemibold_dot" width="51" height="200"/>
+      <Character name="-" resource="font_googlesansflexsemibold_hyphen" width="67" height="200"/>
+      <Character name="A" resource="font_googlesansflexsemibold_a_upper" width="139" height="200"/>
+      <Character name="P" resource="font_googlesansflexsemibold_p_upper" width="124" height="200"/>
+      <Character name="M" resource="font_googlesansflexsemibold_m_upper" width="186" height="200"/>
+      <Character name="a" resource="font_googlesansflexsemibold_a" width="113" height="200"/>
+      <Character name="p" resource="font_googlesansflexsemibold_p" width="127" height="200"/>
+      <Character name="m" resource="font_googlesansflexsemibold_m" width="182" height="200"/>
+    </BitmapFont>
+  </BitmapFonts>
+  <Scene backgroundColor="#ff000000">
+    <Group name="group0" x="118" y="46" width="276" height="186" alpha="255">
+      <Variant mode="AMBIENT" target="alpha" value="0"/>
+      <PartImage x="0" y="0" width="276" height="186">
+        <Image resource="res_8774180"/>
+      </PartImage>
+    </Group>
+    <Group name="group1" x="-33" y="171" width="312" height="312" alpha="255">
+      <Variant mode="AMBIENT" target="alpha" value="0"/>
+      <PartImage x="0" y="0" width="312" height="312" angle="45">
+        <Image resource="bot"/>
+      </PartImage>
+    </Group>
+    <ComplicationSlot x="248" y="318" width="85" height="94" slotId="2" supportedTypes="EMPTY RANGED_VALUE SHORT_TEXT MONOCHROMATIC_IMAGE SMALL_IMAGE" alpha="255">
+      <Variant mode="AMBIENT" target="alpha" value="0"/>
+      <DefaultProviderPolicy defaultSystemProvider="DAY_AND_DATE" defaultSystemProviderType="SHORT_TEXT"/>
+      <BoundingBox x="0" y="0" width="85" height="94"/>
+      <Complication type="EMPTY">
+        <Group name="group3" x="0" y="9" width="85" height="85">
+          <PartImage x="0" y="0" width="85" height="85">
+            <Image resource="res_19462929"/>
+          </PartImage>
+        </Group>
+        <Group name="group4" x="35" y="44" width="14" height="15">
+          <PartImage x="0" y="0" width="14" height="15">
+            <Image resource="res_19462930"/>
+          </PartImage>
+        </Group>
+      </Complication>
+      <Complication type="SHORT_TEXT">
+        <Group name="group5" x="0" y="16" width="85" height="78">
+          <PartImage x="0" y="0" width="85" height="78">
+            <Image resource="res_19462932"/>
+          </PartImage>
+        </Group>
+        <Group name="group6" x="5" y="31" width="76" height="28">
+          <PartText x="0" y="0" width="76" height="28">
+            <Text align="CENTER" ellipsis="TRUE">
+              <Font family="SYNC_TO_DEVICE" size="23" color="#ffe5e2e1" weight="SEMI_BOLD">
+                <Upper>
+                  <Template>%s<Parameter expression="[COMPLICATION.TITLE]"/></Template>
+                </Upper>
+              </Font>
+            </Text>
+          </PartText>
+        </Group>
+        <Group name="group7" x="5" y="57" width="76" height="20">
+          <PartText x="0" y="0" width="76" height="20">
+            <Text align="CENTER" ellipsis="TRUE">
+              <Font family="SYNC_TO_DEVICE" size="17" color="#ffffffff" weight="SEMI_BOLD">
+                <Upper>
+                  <Template>%s<Parameter expression="[COMPLICATION.TEXT]"/></Template>
+                </Upper>
+              </Font>
+            </Text>
+          </PartText>
+        </Group>
+        <Group name="group8" x="29" y="1" width="26" height="26">
+          <PartImage x="0" y="0" width="26" height="26" tintColor="#ffe5e2e1">
+            <Image resource="[COMPLICATION.MONOCHROMATIC_IMAGE]"/>
+          </PartImage>
+        </Group>
+      </Complication>
+      <Complication type="RANGED_VALUE">
+        <Group name="group9" x="1" y="16" width="83" height="77">
+          <PartImage x="0" y="0" width="83" height="77">
+            <Image resource="res_19462939"/>
+          </PartImage>
+        </Group>
+        <Group name="group10" x="1" y="15" width="83" height="78">
+          <PartImage x="0" y="0" width="83" height="78" pivotX="0.5" pivotY="1">
+            <Transform target="scaleY" value="([COMPLICATION.RANGED_VALUE_VALUE] - [COMPLICATION.RANGED_VALUE_MIN]) / [COMPLICATION.RANGED_VALUE_MAX]"/>
+            <Image resource="res_19462940"/>
+          </PartImage>
+        </Group>
+        <Group name="group11" x="0" y="6" width="85" height="88">
+          <PartImage x="0" y="0" width="85" height="88">
+            <Image resource="res_19462941"/>
+          </PartImage>
+        </Group>
+        <Group name="group12" x="5" y="38" width="76" height="30">
+          <PartText x="0" y="0" width="76" height="30">
+            <Text align="CENTER" ellipsis="TRUE">
+              <Font family="SYNC_TO_DEVICE" size="25" color="#ffffffff" weight="SEMI_BOLD">
+                <Upper>
+                  <Template>%s<Parameter expression="[COMPLICATION.TEXT]"/></Template>
+                </Upper>
+              </Font>
+            </Text>
+          </PartText>
+        </Group>
+        <Group name="group13" x="29" y="1" width="26" height="26">
+          <PartImage x="0" y="0" width="26" height="26" tintColor="#ffe5e2e1">
+            <Image resource="[COMPLICATION.MONOCHROMATIC_IMAGE]"/>
+          </PartImage>
+        </Group>
+      </Complication>
+      <Complication type="SMALL_IMAGE">
+        <Group name="group14" x="6" y="15" width="73" height="73">
+          <PartImage x="0" y="0" width="73" height="73">
+            <Image resource="[COMPLICATION.SMALL_IMAGE]"/>
+          </PartImage>
+        </Group>
+        <Group name="group15" x="5" y="14" width="75" height="75">
+          <PartImage x="0" y="0" width="75" height="75">
+            <Image resource="res_19462950"/>
+          </PartImage>
+        </Group>
+        <Group name="group16" x="0" y="9" width="85" height="85">
+          <PartImage x="0" y="0" width="85" height="85">
+            <Image resource="res_19462953"/>
+          </PartImage>
+        </Group>
+      </Complication>
+      <Complication type="MONOCHROMATIC_IMAGE">
+        <Group name="group17" x="6" y="15" width="73" height="73">
+          <PartImage x="0" y="0" width="73" height="73" tintColor="#ffe5e2e1">
+            <Image resource="[COMPLICATION.MONOCHROMATIC_IMAGE]"/>
+          </PartImage>
+        </Group>
+        <Group name="group18" x="5" y="14" width="75" height="75">
+          <PartImage x="0" y="0" width="75" height="75">
+            <Image resource="res_19462956"/>
+          </PartImage>
+        </Group>
+        <Group name="group19" x="0" y="9" width="85" height="85">
+          <PartImage x="0" y="0" width="85" height="85">
+            <Image resource="res_19462959"/>
+          </PartImage>
+        </Group>
+      </Complication>
+    </ComplicationSlot>
+    <ComplicationSlot x="316" y="209" width="85" height="94" slotId="20" supportedTypes="EMPTY RANGED_VALUE SHORT_TEXT MONOCHROMATIC_IMAGE SMALL_IMAGE" alpha="255">
+      <Variant mode="AMBIENT" target="alpha" value="0"/>
+      <DefaultProviderPolicy defaultSystemProvider="WATCH_BATTERY" defaultSystemProviderType="RANGED_VALUE"/>
+      <BoundingBox x="0" y="0" width="85" height="94"/>
+      <Complication type="EMPTY">
+        <Group name="group21" x="0" y="9" width="85" height="85">
+          <PartImage x="0" y="0" width="85" height="85">
+            <Image resource="res_19462929"/>
+          </PartImage>
+        </Group>
+        <Group name="group22" x="35" y="44" width="14" height="15">
+          <PartImage x="0" y="0" width="14" height="15">
+            <Image resource="res_19462930"/>
+          </PartImage>
+        </Group>
+      </Complication>
+      <Complication type="SHORT_TEXT">
+        <Group name="group23" x="0" y="16" width="85" height="78">
+          <PartImage x="0" y="0" width="85" height="78">
+            <Image resource="res_19462932"/>
+          </PartImage>
+        </Group>
+        <Group name="group24" x="5" y="31" width="76" height="28">
+          <PartText x="0" y="0" width="76" height="28">
+            <Text align="CENTER" ellipsis="TRUE">
+              <Font family="SYNC_TO_DEVICE" size="23" color="#ffe5e2e1" weight="SEMI_BOLD">
+                <Upper>
+                  <Template>%s<Parameter expression="[COMPLICATION.TITLE]"/></Template>
+                </Upper>
+              </Font>
+            </Text>
+          </PartText>
+        </Group>
+        <Group name="group25" x="5" y="57" width="76" height="20">
+          <PartText x="0" y="0" width="76" height="20">
+            <Text align="CENTER" ellipsis="TRUE">
+              <Font family="SYNC_TO_DEVICE" size="17" color="#ffffffff" weight="SEMI_BOLD">
+                <Upper>
+                  <Template>%s<Parameter expression="[COMPLICATION.TEXT]"/></Template>
+                </Upper>
+              </Font>
+            </Text>
+          </PartText>
+        </Group>
+        <Group name="group26" x="29" y="1" width="26" height="26">
+          <PartImage x="0" y="0" width="26" height="26" tintColor="#ffe5e2e1">
+            <Image resource="[COMPLICATION.MONOCHROMATIC_IMAGE]"/>
+          </PartImage>
+        </Group>
+      </Complication>
+      <Complication type="RANGED_VALUE">
+        <Group name="group27" x="1" y="16" width="83" height="77">
+          <PartImage x="0" y="0" width="83" height="77">
+            <Image resource="res_19462939"/>
+          </PartImage>
+        </Group>
+        <Group name="group28" x="1" y="15" width="83" height="78">
+          <PartImage x="0" y="0" width="83" height="78" pivotX="0.5" pivotY="1">
+            <Transform target="scaleY" value="([COMPLICATION.RANGED_VALUE_VALUE] - [COMPLICATION.RANGED_VALUE_MIN]) / [COMPLICATION.RANGED_VALUE_MAX]"/>
+            <Image resource="res_19462940"/>
+          </PartImage>
+        </Group>
+        <Group name="group29" x="0" y="6" width="85" height="88">
+          <PartImage x="0" y="0" width="85" height="88">
+            <Image resource="res_19462941"/>
+          </PartImage>
+        </Group>
+        <Group name="group30" x="5" y="38" width="76" height="30">
+          <PartText x="0" y="0" width="76" height="30">
+            <Text align="CENTER" ellipsis="TRUE">
+              <Font family="SYNC_TO_DEVICE" size="25" color="#ffffffff" weight="SEMI_BOLD">
+                <Upper>
+                  <Template>%s<Parameter expression="[COMPLICATION.TEXT]"/></Template>
+                </Upper>
+              </Font>
+            </Text>
+          </PartText>
+        </Group>
+        <Group name="group31" x="29" y="1" width="26" height="26">
+          <PartImage x="0" y="0" width="26" height="26" tintColor="#ffe5e2e1">
+            <Image resource="[COMPLICATION.MONOCHROMATIC_IMAGE]"/>
+          </PartImage>
+        </Group>
+      </Complication>
+      <Complication type="SMALL_IMAGE">
+        <Group name="group32" x="6" y="15" width="73" height="73">
+          <PartImage x="0" y="0" width="73" height="73">
+            <Image resource="[COMPLICATION.SMALL_IMAGE]"/>
+          </PartImage>
+        </Group>
+        <Group name="group33" x="5" y="14" width="75" height="75">
+          <PartImage x="0" y="0" width="75" height="75">
+            <Image resource="res_19462950"/>
+          </PartImage>
+        </Group>
+        <Group name="group34" x="0" y="9" width="85" height="85">
+          <PartImage x="0" y="0" width="85" height="85">
+            <Image resource="res_19462953"/>
+          </PartImage>
+        </Group>
+      </Complication>
+      <Complication type="MONOCHROMATIC_IMAGE">
+        <Group name="group35" x="6" y="15" width="73" height="73">
+          <PartImage x="0" y="0" width="73" height="73" tintColor="#ffe5e2e1">
+            <Image resource="[COMPLICATION.MONOCHROMATIC_IMAGE]"/>
+          </PartImage>
+        </Group>
+        <Group name="group36" x="5" y="14" width="75" height="75">
+          <PartImage x="0" y="0" width="75" height="75">
+            <Image resource="res_19462956"/>
+          </PartImage>
+        </Group>
+        <Group name="group37" x="0" y="9" width="85" height="85">
+          <PartImage x="0" y="0" width="85" height="85">
+            <Image resource="res_19462959"/>
+          </PartImage>
+        </Group>
+      </Complication>
+    </ComplicationSlot>
+    <Group name="group38" x="-130" y="-131" width="770" height="538" alpha="255">
+      <Variant mode="AMBIENT" target="alpha" value="0"/>
+      <PartText x="0" y="0" width="770" height="538" angle="-3.3444517610590054">
+        <Text align="CENTER">
+          <BitmapFont family="googlesansflexsemibold" size="96" color="#ff000000">
+            <Upper>
+              <Template>%s%s:%s%s<Parameter expression="(floor([HOUR_0_23]/10))"/><Parameter expression="([HOUR_0_23]%10)"/><Parameter expression="(floor([MINUTE]/10))"/><Parameter expression="([MINUTE]%10)"/></Template>
+            </Upper>
+          </BitmapFont>
+        </Text>
+      </PartText>
+    </Group>
+    <Group name="group39" x="89" y="124" width="276" height="186" alpha="0">
+      <Variant mode="AMBIENT" target="alpha" value="255"/>
+      <PartImage x="0" y="0" width="276" height="186">
+        <Image resource="res_194623869"/>
+      </PartImage>
+    </Group>
+    <Group name="group40" x="-159" y="-53" width="770" height="538" alpha="0">
+      <Variant mode="AMBIENT" target="alpha" value="255"/>
+      <PartText x="0" y="0" width="770" height="538" angle="-3.3444517610590054">
+        <Text align="CENTER">
+          <BitmapFont family="googlesansflexsemibold" size="96" color="#ff000000">
+            <Upper>
+              <Template>%s%s:%s%s<Parameter expression="(floor([HOUR_0_23]/10))"/><Parameter expression="([HOUR_0_23]%10)"/><Parameter expression="(floor([MINUTE]/10))"/><Parameter expression="([MINUTE]%10)"/></Template>
+            </Upper>
+          </BitmapFont>
+        </Text>
+      </PartText>
+    </Group>
+  </Scene>
+</WatchFace>

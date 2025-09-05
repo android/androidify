@@ -16,6 +16,10 @@
 -->
 <defaults>
     <entry>
+        <key>watchface_feature_enabled</key>
+        <value>false</value>
+    </entry>
+    <entry>
         <key>background_vibes_feature_enabled</key>
         <value>false</value>
     </entry>

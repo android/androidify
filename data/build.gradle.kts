@@ -16,7 +16,6 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.serialization)
     alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.hilt)
 }
@@ -59,5 +58,6 @@ dependencies {
     implementation(libs.ai.edge) {
         exclude(group = "com.google.guava")
     }
+
     ksp(libs.hilt.compiler)
 }

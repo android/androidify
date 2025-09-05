@@ -78,6 +78,14 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <!-- Required deeplink to make the app launchable from the watch -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="androidify"
+                    android:host="launch" />
+            </intent-filter>
         </activity>
         <!-- need to use Theme.AppCompat -->
         <activity

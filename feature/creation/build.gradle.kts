@@ -53,6 +53,12 @@ android {
         }
         targetSdk = 36
     }
+    // To avoid packaging conflicts when using bouncycastle
+    packaging {
+        resources {
+            excludes.add("META-INF/versions/9/OSGI-INF/MANIFEST.MF")
+        }
+    }
 }
 
 dependencies {

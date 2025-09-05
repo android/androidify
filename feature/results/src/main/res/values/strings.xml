@@ -41,4 +41,21 @@
         <item>Dressed to impress!</item>
         <item>Hey good looking!</item>
     </string-array>
+    <string name="send_to_watch">Send to watch</string>
+    <string name="sending_to_watch">Sending to watch…</string>
+    <string name="watch_face_sent">Watch face sent</string>
+    <string name="send_to_watch_device">%s detected.</string>
+    <string name="send_to_watch_cta">Tap to continue on the watch.</string>
+    <string name="install_androidify_cta">Androidify not detected on the %s. Tap to install Androidify on the watch</string>
+    <string name="install_androidify">Install Androidify</string>
+    <string name="complete_headline_continue">Continue on your watch</string>
+    <string name="complete_headline_all_done">You\'re all set!</string>
+    <string name="complete_long_press">Long-press the current watch face to set the watch face manually</string>
+    <string name="complete_settings">Update permissions for Androidify to set the active watch face</string>
+    <string name="complete_permissions">Grant permission for Androidify to set the active watch face</string>
+    <string name="complete_all_done">All done!</string>
+    <string name="complete_error_headline">Something went wrong</string>
+    <string name="complete_error_message">Check your watch is connected and try again</string>
+    <string name="no_watch_faces">"No available watch faces"</string>
+    <string name="error_dismiss">OK</string>
 </resources>
