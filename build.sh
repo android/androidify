@@ -95,7 +95,7 @@ echo "INFO: Cleaning the project..."
 
 # Build the production release bundle without generating a baseline profile.
 echo "INFO: Building the production release bundle..."
-./gradlew app:bundleRelease app:spdxSbomForRelease -x test -Pandroid.sdk.path=$ANDROID_HOME -PCI_BUILD=true
+./gradlew app:bundleRelease app:spdxSbomForRelease -Pandroid.sdk.path=$ANDROID_HOME -PCI_BUILD=true
 
 # --- Artifact Collection ---
 echo "INFO: Preparing artifacts for Kokoro..."
