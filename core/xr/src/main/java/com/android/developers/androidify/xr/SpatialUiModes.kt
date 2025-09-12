@@ -19,8 +19,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -45,14 +45,15 @@ fun SpatialCapabilities.couldRequestHomeSpace(): Boolean {
 
 /** Default styling for an IconButton with a home space button and behavior. */
 @Composable
-fun RequestHomeSpaceIconButton(modifier: Modifier = Modifier) {
+fun RequestHomeSpaceIconButton(
+    modifier: Modifier = Modifier,
+    colors: IconButtonColors = IconButtonDefaults.iconButtonColors(),
+) {
     val session = LocalSession.current ?: return
 
     IconButton(
         modifier = modifier,
-        colors = IconButtonDefaults.iconButtonColors(
-            containerColor = MaterialTheme.colorScheme.secondaryContainer,
-        ),
+        colors = colors,
         onClick = {
             session.scene.requestHomeSpaceMode()
         },

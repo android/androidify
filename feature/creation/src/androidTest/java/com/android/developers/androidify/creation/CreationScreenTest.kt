@@ -47,7 +47,7 @@ class CreationScreenTest {
                 EditScreen(
                     snackbarHostState = SnackbarHostState(),
                     dropBehaviourFactory = FakeDropImageFactory(),
-                    isExpanded = false,
+                    layoutType = EditScreenLayoutType.Compact,
                     onCameraPressed = {},
                     onBackPressed = {},
                     onAboutPressed = {},
@@ -76,7 +76,7 @@ class CreationScreenTest {
                 EditScreen(
                     snackbarHostState = SnackbarHostState(),
                     dropBehaviourFactory = FakeDropImageFactory(),
-                    isExpanded = false,
+                    layoutType = EditScreenLayoutType.Compact,
                     onCameraPressed = {},
                     onBackPressed = {},
                     onAboutPressed = {},
@@ -106,7 +106,7 @@ class CreationScreenTest {
                 EditScreen(
                     snackbarHostState = SnackbarHostState(),
                     dropBehaviourFactory = FakeDropImageFactory(),
-                    isExpanded = false,
+                    layoutType = EditScreenLayoutType.Compact,
                     onCameraPressed = {},
                     onBackPressed = {},
                     onAboutPressed = {},
@@ -141,7 +141,7 @@ class CreationScreenTest {
                 EditScreen(
                     snackbarHostState = SnackbarHostState(),
                     dropBehaviourFactory = FakeDropImageFactory(),
-                    isExpanded = false,
+                    layoutType = EditScreenLayoutType.Compact,
                     onCameraPressed = {},
                     onBackPressed = {},
                     onAboutPressed = {},
@@ -175,7 +175,7 @@ class CreationScreenTest {
                 EditScreen(
                     snackbarHostState = SnackbarHostState(),
                     dropBehaviourFactory = FakeDropImageFactory(),
-                    isExpanded = false,
+                    layoutType = EditScreenLayoutType.Compact,
                     onCameraPressed = {},
                     onBackPressed = {},
                     onAboutPressed = {},
@@ -210,7 +210,7 @@ class CreationScreenTest {
                 EditScreen(
                     snackbarHostState = SnackbarHostState(),
                     dropBehaviourFactory = FakeDropImageFactory(),
-                    isExpanded = false,
+                    layoutType = EditScreenLayoutType.Compact,
                     onCameraPressed = {},
                     onBackPressed = {},
                     onAboutPressed = {},
@@ -244,7 +244,7 @@ class CreationScreenTest {
                 EditScreen(
                     snackbarHostState = SnackbarHostState(),
                     dropBehaviourFactory = FakeDropImageFactory(),
-                    isExpanded = false,
+                    layoutType = EditScreenLayoutType.Compact,
                     onCameraPressed = {},
                     onBackPressed = {},
                     onAboutPressed = {},
@@ -274,7 +274,7 @@ class CreationScreenTest {
                 EditScreen(
                     snackbarHostState = SnackbarHostState(),
                     dropBehaviourFactory = FakeDropImageFactory(),
-                    isExpanded = true, // Expanded mode
+                    layoutType = EditScreenLayoutType.Medium,
                     onCameraPressed = {},
                     onBackPressed = {},
                     onAboutPressed = {},

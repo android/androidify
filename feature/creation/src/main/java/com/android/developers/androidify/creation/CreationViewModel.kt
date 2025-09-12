@@ -23,6 +23,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.developers.androidify.data.ConfigProvider
 import com.android.developers.androidify.data.DropBehaviourFactory
 import com.android.developers.androidify.data.ImageDescriptionFailedGenerationException
 import com.android.developers.androidify.data.ImageGenerationRepository
@@ -52,6 +53,7 @@ class CreationViewModel @Inject constructor(
     val dropBehaviourFactory: DropBehaviourFactory,
     @ApplicationContext
     val context: Context,
+    configProvider: ConfigProvider,
 ) : ViewModel() {
 
     init {
@@ -61,7 +63,7 @@ class CreationViewModel @Inject constructor(
         }
     }
 
-    private var _uiState = MutableStateFlow(CreationState())
+    private var _uiState = MutableStateFlow(CreationState(xrEnabled = configProvider.isXrEnabled()))
 
     val uiState: StateFlow<CreationState>
         get() = _uiState
@@ -253,6 +255,7 @@ data class CreationState(
     val promptGenerationInProgress: Boolean = false,
     val screenState: ScreenState = ScreenState.EDIT,
     val resultBitmap: Bitmap? = null,
+    val xrEnabled: Boolean = false,
 )
 
 enum class ScreenState {

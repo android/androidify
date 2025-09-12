@@ -17,9 +17,11 @@ package com.android.developers.androidify.creation
 
 import android.net.Uri
 import androidx.compose.material3.SnackbarHostState
+import com.android.developers.androidify.data.ConfigProvider
 import com.android.developers.androidify.data.InsufficientInformationException
 import com.android.developers.testing.data.TestFileProvider
 import com.android.developers.testing.data.TestInternetConnectivityManager
+import com.android.developers.testing.network.TestRemoteConfigDataSource
 import com.android.developers.testing.repository.FakeDropImageFactory
 import com.android.developers.testing.repository.FakeImageGenerationRepository
 import com.android.developers.testing.repository.TestTextGenerationRepository
@@ -62,6 +64,7 @@ class CreationViewModelTest {
             TestFileProvider(),
             FakeDropImageFactory(),
             context = RuntimeEnvironment.getApplication(),
+            configProvider = ConfigProvider(TestRemoteConfigDataSource(false)),
         )
     }
 
@@ -85,6 +88,7 @@ class CreationViewModelTest {
             TestFileProvider(),
             FakeDropImageFactory(),
             context = RuntimeEnvironment.getApplication(),
+            configProvider = ConfigProvider(TestRemoteConfigDataSource(false)),
         )
         assertEquals(
             ScreenState.EDIT,
@@ -153,7 +157,10 @@ class CreationViewModelTest {
         viewModel.onSelectedPromptOptionChanged(PromptType.PHOTO)
         viewModel.startClicked()
         assertEquals(ScreenState.EDIT, viewModel.uiState.value.screenState)
-        assertNotNull("Choose an image or use a prompt instead.", values.last().currentSnackbarData?.visuals?.message)
+        assertNotNull(
+            "Choose an image or use a prompt instead.",
+            values.last().currentSnackbarData?.visuals?.message,
+        )
     }
 
     @Test
