@@ -63,7 +63,6 @@ import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.layout.LookaheadScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -71,11 +70,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.ui.LocalNavAnimatedContentScope
+import com.android.developers.androidify.customize.xr.CustomizeExportLayoutSpatial
 import com.android.developers.androidify.results.PermissionRationaleDialog
 import com.android.developers.androidify.results.R
 import com.android.developers.androidify.results.shareImage
 import com.android.developers.androidify.theme.AndroidifyTheme
-import com.android.developers.androidify.theme.LocalAnimateBoundsScope
 import com.android.developers.androidify.theme.components.AboutButton
 import com.android.developers.androidify.theme.components.AndroidifyTopAppBar
 import com.android.developers.androidify.theme.components.PrimaryButton
@@ -86,6 +85,10 @@ import com.android.developers.androidify.util.PhonePreview
 import com.android.developers.androidify.util.allowsFullContent
 import com.android.developers.androidify.watchface.WatchFaceAsset
 import com.android.developers.androidify.wear.common.ConnectedWatch
+import com.android.developers.androidify.xr.RequestFullSpaceIconButton
+import com.android.developers.androidify.xr.RequestHomeSpaceIconButton
+import com.android.developers.androidify.xr.couldRequestFullSpace
+import com.android.developers.androidify.xr.couldRequestHomeSpace
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
@@ -110,7 +113,7 @@ fun CustomizeAndExportScreen(
         }
     }
 
-    val layoutType = calculateLayoutType()
+    val layoutType = calculateLayoutType(enableXr = state.value.xrEnabled)
     CustomizeExportContents(
         state.value,
         onBackPress,
@@ -197,6 +200,14 @@ private fun CustomizeExportContents(
             onBackPressed = onBackPress,
             actions = {
                 AboutButton { onInfoPress() }
+                if (state.xrEnabled) {
+                    if (couldRequestFullSpace()) {
+                        RequestFullSpaceIconButton()
+                    }
+                    if (couldRequestHomeSpace()) {
+                        RequestHomeSpaceIconButton()
+                    }
+                }
             },
         )
     }
@@ -255,40 +266,46 @@ private fun CustomizeExportContents(
             )
         }
     }
-    LookaheadScope {
-        CompositionLocalProvider(LocalAnimateBoundsScope provides this) {
-            when (layoutType) {
-                CustomizeExportLayoutType.Medium -> CustomizeExportScreenScaffold(
-                    snackbarHostState,
-                    topBar = topBar,
-                    containerColor = MaterialTheme.colorScheme.surface,
-                ) { paddingValues ->
-                    CustomizeExportLayoutMedium(
-                        paddingValues = paddingValues,
-                        imageResult = imageResult,
-                        state = state,
-                        toolDetail = toolDetail,
-                        toolSelector = toolSelector,
-                        actionButtons = actionButtons,
-                    )
-                }
-
-                else -> CustomizeExportScreenScaffold(
-                    snackbarHostState,
-                    topBar = topBar,
-                    containerColor = MaterialTheme.colorScheme.surface,
-                ) { paddingValues ->
-                    CustomizeExportLayoutCompact(
-                        paddingValues = paddingValues,
-                        imageResult = imageResult,
-                        state = state,
-                        toolSelector = toolSelector,
-                        toolDetail = toolDetail,
-                        actionButtons = actionButtons,
-                    )
-                }
-            }
+    when (layoutType) {
+        CustomizeExportLayoutType.Medium -> CustomizeExportScreenScaffold(
+            snackbarHostState,
+            topBar = topBar,
+            containerColor = MaterialTheme.colorScheme.surface,
+        ) { paddingValues ->
+            CustomizeExportLayoutMedium(
+                paddingValues = paddingValues,
+                imageResult = imageResult,
+                state = state,
+                toolDetail = toolDetail,
+                toolSelector = toolSelector,
+                actionButtons = actionButtons,
+            )
         }
+
+        CustomizeExportLayoutType.Compact -> CustomizeExportScreenScaffold(
+            snackbarHostState,
+            topBar = topBar,
+            containerColor = MaterialTheme.colorScheme.surface,
+        ) { paddingValues ->
+            CustomizeExportLayoutCompact(
+                paddingValues = paddingValues,
+                imageResult = imageResult,
+                state = state,
+                toolSelector = toolSelector,
+                toolDetail = toolDetail,
+                actionButtons = actionButtons,
+            )
+        }
+
+        CustomizeExportLayoutType.Spatial -> CustomizeExportLayoutSpatial(
+            imageResult = imageResult,
+            state = state,
+            toolSelector = toolSelector,
+            toolDetail = toolDetail,
+            actionButtons = actionButtons,
+            snackbarHostState = snackbarHostState,
+            topBar = topBar,
+        )
     }
 }
 
@@ -533,7 +550,7 @@ fun CustomizeExportScreenScaffold(
         },
         topBar = topBar,
         containerColor = containerColor,
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier,
         content = content,
     )
 }
