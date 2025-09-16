@@ -40,6 +40,7 @@ data class CustomizeExportState(
     val connectedWatch: ConnectedWatch? = null,
     val watchFaceInstallationStatus: WatchFaceInstallationStatus = WatchFaceInstallationStatus.NotStarted,
     val watchFaceSelectionState: WatchFaceSelectionState = WatchFaceSelectionState(),
+    val xrEnabled: Boolean = false,
 )
 
 interface ToolState {
