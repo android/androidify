@@ -26,6 +26,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -59,6 +60,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.dropShadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.LookaheadScope
@@ -82,7 +84,6 @@ import com.android.developers.androidify.theme.transitions.loadingShimmerOverlay
 import com.android.developers.androidify.util.LargeScreensPreview
 import com.android.developers.androidify.util.PhonePreview
 import com.android.developers.androidify.util.allowsFullContent
-import com.android.developers.androidify.util.isAtLeastMedium
 import com.android.developers.androidify.watchface.WatchFaceAsset
 import com.android.developers.androidify.wear.common.ConnectedWatch
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -96,7 +97,6 @@ import com.android.developers.androidify.theme.R as ThemeR
 fun CustomizeAndExportScreen(
     onBackPress: () -> Unit,
     onInfoPress: () -> Unit,
-    isMediumWindowSize: Boolean = isAtLeastMedium(),
     viewModel: CustomizeExportViewModel,
 ) {
     val state = viewModel.state.collectAsStateWithLifecycle()
@@ -109,6 +109,8 @@ fun CustomizeAndExportScreen(
             viewModel.onSavedUriConsumed()
         }
     }
+
+    val layoutType = calculateLayoutType()
     CustomizeExportContents(
         state.value,
         onBackPress,
@@ -125,7 +127,7 @@ fun CustomizeAndExportScreen(
         onResetWatchFaceSend = {
             viewModel.resetWatchFaceSend()
         },
-        isMediumWindowSize = isMediumWindowSize,
+        layoutType = layoutType,
         snackbarHostState = viewModel.snackbarHostState.collectAsStateWithLifecycle().value,
         loadWatchFaces = viewModel::loadWatchFaces,
         onWatchFaceSelect = viewModel::onWatchFaceSelected,
@@ -144,200 +146,240 @@ private fun CustomizeExportContents(
     onSelectedToolStateChanged: (ToolState) -> Unit,
     onInstallWatchFaceClicked: () -> Unit,
     onResetWatchFaceSend: () -> Unit,
-    isMediumWindowSize: Boolean,
+    layoutType: CustomizeExportLayoutType,
     snackbarHostState: SnackbarHostState,
     loadWatchFaces: () -> Unit,
     onWatchFaceSelect: (WatchFaceAsset) -> Unit,
 ) {
-    Scaffold(
-        snackbarHost = {
-            SnackbarHost(
-                hostState = snackbarHostState,
-                snackbar = { snackbarData ->
-                    Snackbar(snackbarData, shape = SnackbarDefaults.shape)
-                },
-            )
-        },
-        topBar = {
-            AndroidifyTopAppBar(
-                backEnabled = true,
-                titleText = stringResource(R.string.customize_and_export),
-                isMediumWindowSize = isMediumWindowSize,
-                onBackPressed = onBackPress,
-                actions = {
-                    AboutButton { onInfoPress() }
-                },
-            )
-        },
-        containerColor = MaterialTheme.colorScheme.surface,
-    ) { paddingValues ->
-        var showWatchFaceBottomSheet by remember { mutableStateOf(false) }
-        val watchFaceSheetState = rememberModalBottomSheetState(
-            skipPartiallyExpanded = true,
-        )
-        val imageResult = remember(state.showImageEditProgress) {
-            movableContentWithReceiverOf<ExportImageCanvas> {
-                val chromeModifier = if (this.showSticker) {
-                    Modifier
-                        .clip(RoundedCornerShape(6))
-                } else {
-                    Modifier.dropShadow(
+    var showWatchFaceBottomSheet by remember { mutableStateOf(false) }
+    val watchFaceSheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true,
+    )
+    val imageResult = remember(state.showImageEditProgress) {
+        movableContentWithReceiverOf<ExportImageCanvas> {
+            val chromeModifier = if (this.showSticker) {
+                Modifier
+                    .clip(RoundedCornerShape(6))
+            } else {
+                Modifier
+                    .dropShadow(
                         RoundedCornerShape(6),
                         shadow = Shadow(
                             radius = 26.dp,
                             spread = 10.dp,
                             color = MaterialTheme.colorScheme.inverseSurface.copy(alpha = 0.2f),
                         ),
-                    ).clip(RoundedCornerShape(6))
+                    )
+                    .clip(RoundedCornerShape(6))
+            }
+            Box(
+                Modifier
+                    .padding(16.dp),
+            ) {
+                ImageResult(
+                    this@movableContentWithReceiverOf,
+                    modifier = Modifier,
+                    outerChromeModifier = Modifier
+                        .then(chromeModifier)
+                        .loadingShimmerOverlay(
+                            visible = state.showImageEditProgress,
+                            clipShape = RoundedCornerShape(percent = 6),
+                        ),
+                )
+            }
+        }
+    }
+    val topBar = @Composable {
+        AndroidifyTopAppBar(
+            backEnabled = true,
+            titleText = stringResource(R.string.customize_and_export),
+            isMediumWindowSize = layoutType == CustomizeExportLayoutType.Medium,
+            onBackPressed = onBackPress,
+            actions = {
+                AboutButton { onInfoPress() }
+            },
+        )
+    }
+    val toolSelector = @Composable { modifier: Modifier, horizontal: Boolean ->
+        ToolSelector(
+            tools = state.tools,
+            selectedOption = state.selectedTool,
+            modifier = modifier,
+            horizontal = horizontal,
+            onToolSelected = { tool ->
+                onToolSelected(tool)
+            },
+        )
+    }
+    val toolDetail = @Composable { modifier: Modifier, singleLine: Boolean ->
+        SelectedToolDetail(
+            state,
+            onSelectedToolStateChanged = { toolState ->
+                onSelectedToolStateChanged(toolState)
+            },
+            singleLine = singleLine,
+            modifier = modifier,
+        )
+    }
+    val actionButtons = @Composable { modifier: Modifier ->
+        BotActionsButtonRow(
+            onShareClicked = {
+                onShareClicked()
+            },
+            onDownloadClicked = {
+                onDownloadClicked()
+            },
+            onWearDeviceClick = {
+                showWatchFaceBottomSheet = true
+            },
+            hasWearDevice = state.connectedWatch != null,
+            modifier = modifier,
+        )
+    }
+    state.connectedWatch?.let { device ->
+        if (showWatchFaceBottomSheet) {
+            WatchFaceModalSheet(
+                sheetState = watchFaceSheetState,
+                onDismiss = {
+                    onResetWatchFaceSend()
+                    showWatchFaceBottomSheet = false
+                },
+                connectedWatch = device,
+                installationStatus = state.watchFaceInstallationStatus,
+                onWatchFaceInstallClick = {
+                    onInstallWatchFaceClicked()
+                },
+                onLoad = loadWatchFaces,
+                watchFaceSelectionState = state.watchFaceSelectionState,
+                onWatchFaceSelect = onWatchFaceSelect,
+            )
+        }
+    }
+    LookaheadScope {
+        CompositionLocalProvider(LocalAnimateBoundsScope provides this) {
+            when (layoutType) {
+                CustomizeExportLayoutType.Medium -> CustomizeExportScreenScaffold(
+                    snackbarHostState,
+                    topBar = topBar,
+                    containerColor = MaterialTheme.colorScheme.surface,
+                ) { paddingValues ->
+                    CustomizeExportLayoutMedium(
+                        paddingValues = paddingValues,
+                        imageResult = imageResult,
+                        state = state,
+                        toolDetail = toolDetail,
+                        toolSelector = toolSelector,
+                        actionButtons = actionButtons,
+                    )
                 }
-                Box(
-                    Modifier
-                        .padding(16.dp),
-                ) {
-                    ImageResult(
-                        this@movableContentWithReceiverOf,
-                        modifier = Modifier,
-                        outerChromeModifier = Modifier
-                            .then(chromeModifier)
-                            .loadingShimmerOverlay(
-                                visible = state.showImageEditProgress,
-                                clipShape = RoundedCornerShape(percent = 6),
-                            ),
+
+                else -> CustomizeExportScreenScaffold(
+                    snackbarHostState,
+                    topBar = topBar,
+                    containerColor = MaterialTheme.colorScheme.surface,
+                ) { paddingValues ->
+                    CustomizeExportLayoutCompact(
+                        paddingValues = paddingValues,
+                        imageResult = imageResult,
+                        state = state,
+                        toolSelector = toolSelector,
+                        toolDetail = toolDetail,
+                        actionButtons = actionButtons,
                     )
                 }
             }
         }
-        val toolSelector = @Composable { modifier: Modifier, horizontal: Boolean ->
-            ToolSelector(
-                tools = state.tools,
-                selectedOption = state.selectedTool,
-                modifier = modifier,
-                horizontal = horizontal,
-                onToolSelected = { tool ->
-                    onToolSelected(tool)
-                },
-            )
-        }
-        val toolDetail = @Composable { modifier: Modifier, singleLine: Boolean ->
-            SelectedToolDetail(
-                state,
-                onSelectedToolStateChanged = { toolState ->
-                    onSelectedToolStateChanged(toolState)
-                },
-                singleLine = singleLine,
-                modifier = modifier,
-            )
-        }
-        val actionButtons = @Composable { modifier: Modifier ->
-            BotActionsButtonRow(
-                onShareClicked = {
-                    onShareClicked()
-                },
-                onDownloadClicked = {
-                    onDownloadClicked()
-                },
-                onWearDeviceClick = {
-                    showWatchFaceBottomSheet = true
-                },
-                hasWearDevice = state.connectedWatch != null,
-                modifier = modifier,
-            )
-        }
-        state.connectedWatch?.let { device ->
-            if (showWatchFaceBottomSheet) {
-                WatchFaceModalSheet(
-                    sheetState = watchFaceSheetState,
-                    onDismiss = {
-                        onResetWatchFaceSend()
-                        showWatchFaceBottomSheet = false
-                    },
-                    connectedWatch = device,
-                    installationStatus = state.watchFaceInstallationStatus,
-                    onWatchFaceInstallClick = {
-                        onInstallWatchFaceClicked()
-                    },
-                    onLoad = loadWatchFaces,
-                    watchFaceSelectionState = state.watchFaceSelectionState,
-                    onWatchFaceSelect = onWatchFaceSelect,
-                )
-            }
-        }
-        LookaheadScope {
-            CompositionLocalProvider(LocalAnimateBoundsScope provides this) {
-                if (isMediumWindowSize) {
-                    Row(
-                        Modifier
-                            .fillMaxSize()
-                            .padding(paddingValues),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                    ) {
-                        Box(
-                            modifier = Modifier.weight(0.6f),
-                            contentAlignment = Alignment.Center,
-                        ) {
-                            imageResult(
-                                state.exportImageCanvas,
-                            )
-                        }
-                        Column(
-                            Modifier
-                                .weight(0.4f)
-                                .fillMaxHeight(),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.SpaceBetween,
-                        ) {
-                            Row(
-                                Modifier
-                                    .weight(1f)
-                                    .fillMaxSize(),
-                                horizontalArrangement = Arrangement.SpaceAround,
-                                verticalAlignment = Alignment.CenterVertically,
+    }
+}
 
-                            ) {
-                                Box(modifier = Modifier.weight(1f)) {
-                                    toolDetail(Modifier.align(Alignment.CenterEnd), false)
-                                }
-                                Spacer(modifier = Modifier.size(16.dp))
-                                toolSelector(Modifier.requiredSizeIn(minWidth = 56.dp), false)
-                                Spacer(modifier = Modifier.size(16.dp))
-                            }
-                            Spacer(modifier = Modifier.size(16.dp))
-                            actionButtons(
-                                Modifier
-                                    .align(Alignment.End)
-                                    .padding(end = 16.dp),
-                            )
-                            Spacer(modifier = Modifier.size(24.dp))
-                        }
-                    }
-                } else {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(paddingValues),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.SpaceBetween,
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .weight(1f, fill = true),
-                            contentAlignment = Alignment.Center,
-                        ) {
-                            imageResult(
-                                state.exportImageCanvas,
-                            )
-                        }
-                        Spacer(modifier = Modifier.height(16.dp))
-                        toolSelector(Modifier, true)
-                        Spacer(modifier = Modifier.height(16.dp))
-                        toolDetail(Modifier, true)
-                        Spacer(modifier = Modifier.height(16.dp))
-                        actionButtons(Modifier)
-                        Spacer(modifier = Modifier.height(24.dp))
-                    }
+@Composable
+private fun CustomizeExportLayoutCompact(
+    paddingValues: PaddingValues,
+    imageResult: @Composable (ExportImageCanvas.() -> Unit),
+    state: CustomizeExportState,
+    toolSelector: @Composable (Modifier, Boolean) -> Unit,
+    toolDetail: @Composable (Modifier, Boolean) -> Unit,
+    actionButtons: @Composable (Modifier) -> Unit,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(paddingValues),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween,
+    ) {
+        Box(
+            modifier = Modifier
+                .weight(1f, fill = true),
+            contentAlignment = Alignment.Center,
+        ) {
+            imageResult(
+                state.exportImageCanvas,
+            )
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        toolSelector(Modifier, true)
+        Spacer(modifier = Modifier.height(16.dp))
+        toolDetail(Modifier, true)
+        Spacer(modifier = Modifier.height(16.dp))
+        actionButtons(Modifier)
+        Spacer(modifier = Modifier.height(24.dp))
+    }
+}
+
+@Composable
+private fun CustomizeExportLayoutMedium(
+    paddingValues: PaddingValues,
+    imageResult: @Composable (ExportImageCanvas.() -> Unit),
+    state: CustomizeExportState,
+    toolDetail: @Composable (Modifier, Boolean) -> Unit,
+    toolSelector: @Composable (Modifier, Boolean) -> Unit,
+    actionButtons: @Composable (Modifier) -> Unit,
+) {
+    Row(
+        Modifier
+            .fillMaxSize()
+            .padding(paddingValues),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+        Box(
+            modifier = Modifier.weight(0.6f),
+            contentAlignment = Alignment.Center,
+        ) {
+            imageResult(
+                state.exportImageCanvas,
+            )
+        }
+        Column(
+            Modifier
+                .weight(0.4f)
+                .fillMaxHeight(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceBetween,
+        ) {
+            Row(
+                Modifier
+                    .weight(1f)
+                    .fillMaxSize(),
+                horizontalArrangement = Arrangement.SpaceAround,
+                verticalAlignment = Alignment.CenterVertically,
+
+            ) {
+                Box(modifier = Modifier.weight(1f)) {
+                    toolDetail(Modifier.align(Alignment.CenterEnd), false)
                 }
+                Spacer(modifier = Modifier.size(16.dp))
+                toolSelector(Modifier.requiredSizeIn(minWidth = 56.dp), false)
+                Spacer(modifier = Modifier.size(16.dp))
             }
+            Spacer(modifier = Modifier.size(16.dp))
+            actionButtons(
+                Modifier
+                    .align(Alignment.End)
+                    .padding(end = 16.dp),
+            )
+            Spacer(modifier = Modifier.size(24.dp))
         }
     }
 }
@@ -472,6 +514,30 @@ private fun BotActionsButtonRow(
     }
 }
 
+@Composable
+fun CustomizeExportScreenScaffold(
+    snackbarHostState: SnackbarHostState,
+    topBar: @Composable () -> Unit,
+    modifier: Modifier = Modifier,
+    containerColor: Color = MaterialTheme.colorScheme.background,
+    content: @Composable (PaddingValues) -> Unit,
+) {
+    Scaffold(
+        snackbarHost = {
+            SnackbarHost(
+                hostState = snackbarHostState,
+                snackbar = { snackbarData ->
+                    Snackbar(snackbarData, shape = SnackbarDefaults.shape)
+                },
+            )
+        },
+        topBar = topBar,
+        containerColor = containerColor,
+        modifier = modifier.fillMaxSize(),
+        content = content,
+    )
+}
+
 @Preview(showBackground = true)
 @PhonePreview
 @Composable
@@ -498,7 +564,7 @@ fun CustomizeExportPreview() {
                     onInfoPress = {},
                     onToolSelected = {},
                     snackbarHostState = SnackbarHostState(),
-                    isMediumWindowSize = false,
+                    layoutType = CustomizeExportLayoutType.Compact,
                     onSelectedToolStateChanged = {},
                     onInstallWatchFaceClicked = {},
                     onResetWatchFaceSend = {},
@@ -539,7 +605,7 @@ fun CustomizeExportPreviewLarge() {
                     onInfoPress = {},
                     onToolSelected = {},
                     snackbarHostState = SnackbarHostState(),
-                    isMediumWindowSize = true,
+                    layoutType = CustomizeExportLayoutType.Medium,
                     onSelectedToolStateChanged = {},
                     onInstallWatchFaceClicked = {},
                     onResetWatchFaceSend = {},
