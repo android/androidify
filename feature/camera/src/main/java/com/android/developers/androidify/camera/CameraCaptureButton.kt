@@ -15,6 +15,7 @@
  */
 package com.android.developers.androidify.camera
 
+import android.view.KeyEvent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -28,7 +29,10 @@ import androidx.compose.material3.ripple
 import androidx.compose.material3.toPath
 import androidx.compose.material3.toShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithCache
@@ -86,7 +90,6 @@ internal fun CameraCaptureButton(
     } else {
         stringResource(R.string.capture_image_button_disabled_content_description)
     }
-
     Spacer(
         modifier
             .indication(interactionSource, ScaleIndicationNodeFactory(animationSpec))
@@ -145,4 +148,39 @@ internal fun CameraCaptureButton(
                 }
             },
     )
+}
+
+@Composable
+internal fun RegisterHardwareShutter(
+    enabled: Boolean,
+    onCapture: () -> Unit,
+) {
+    val currentCapture by rememberUpdatedState(newValue = onCapture)
+
+    DisposableEffect(enabled) {
+        val token = HardwareKeyManager.register(object : HardwareKeyManager.Handler {
+            override val priority = 10
+
+            override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+                if (!enabled || event.repeatCount != 0) return false
+                val isVolumeOrCamera =
+                    keyCode == KeyEvent.KEYCODE_VOLUME_UP ||
+                            keyCode == KeyEvent.KEYCODE_VOLUME_DOWN ||
+                            keyCode == KeyEvent.KEYCODE_CAMERA
+                if (!isVolumeOrCamera) return false
+
+                currentCapture()
+                return true
+            }
+
+            override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
+                val isVolumeOrCamera =
+                    keyCode == KeyEvent.KEYCODE_VOLUME_UP ||
+                            keyCode == KeyEvent.KEYCODE_VOLUME_DOWN ||
+                            keyCode == KeyEvent.KEYCODE_CAMERA
+                return enabled && isVolumeOrCamera
+            }
+        })
+        onDispose { token.close() }
+    }
 }
