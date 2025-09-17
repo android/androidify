@@ -11,17 +11,27 @@ object HardwareKeyManager {
         fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean = false
     }
 
-    private val handlers = CopyOnWriteArrayList<Handler>()
+    private val handlers = mutableListOf<Handler>()
 
     fun register(handler: Handler): AutoCloseable {
-        handlers.add(handler)
-        handlers.sortByDescending { it.priority }
-        return AutoCloseable { handlers.remove(handler) }
+        synchronized(handlers) {
+            handlers.add(handler)
+            handlers.sortByDescending { it.priority }
+        }
+        return AutoCloseable {
+            synchronized(handlers) {
+                handlers.remove(handler)
+            }
+        }
     }
 
-    fun dispatchDown(keyCode: Int, event: KeyEvent): Boolean =
-        handlers.any { it.onKeyDown(keyCode, event) }
+    fun dispatchDown(keyCode: Int, event: KeyEvent): Boolean {
+        val handlersCopy = synchronized(handlers) { handlers.toList() }
+        return handlersCopy.any { it.onKeyDown(keyCode, event) }
+    }
 
-    fun dispatchUp(keyCode: Int, event: KeyEvent): Boolean =
-        handlers.any { it.onKeyUp(keyCode, event) }
+    fun dispatchUp(keyCode: Int, event: KeyEvent): Boolean {
+        val handlersCopy = synchronized(handlers) { handlers.toList() }
+        return handlersCopy.any { it.onKeyUp(keyCode, event) }
+    }
 }

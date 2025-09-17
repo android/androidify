@@ -161,25 +161,27 @@ internal fun RegisterHardwareShutter(
         val token = HardwareKeyManager.register(object : HardwareKeyManager.Handler {
             override val priority = 10
 
-            override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
-                if (!enabled || event.repeatCount != 0) return false
-                val isVolumeOrCamera =
-                    keyCode == KeyEvent.KEYCODE_VOLUME_UP ||
-                            keyCode == KeyEvent.KEYCODE_VOLUME_DOWN ||
-                            keyCode == KeyEvent.KEYCODE_CAMERA
-                if (!isVolumeOrCamera) return false
+            private fun isShutterKey(keyCode: Int): Boolean {
+                return when (keyCode) {
+                    KeyEvent.KEYCODE_VOLUME_UP,
+                    KeyEvent.KEYCODE_VOLUME_DOWN,
+                    KeyEvent.KEYCODE_CAMERA -> true
+                    else -> false
+                }
+            }
 
-                currentCapture()
-                return true
+            override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+                if (enabled && event.repeatCount == 0 && isShutterKey(keyCode)) {
+                    currentCapture()
+                    return true
+                }
+                return false
             }
 
             override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
-                val isVolumeOrCamera =
-                    keyCode == KeyEvent.KEYCODE_VOLUME_UP ||
-                            keyCode == KeyEvent.KEYCODE_VOLUME_DOWN ||
-                            keyCode == KeyEvent.KEYCODE_CAMERA
-                return enabled && isVolumeOrCamera
+                return enabled && isShutterKey(keyCode)
             }
+
         })
         onDispose { token.close() }
     }
