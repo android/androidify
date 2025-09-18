@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.developers.androidify.customize
+package com.android.developers.androidify.customize.watchface
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -31,7 +31,6 @@ import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
-import com.android.developers.androidify.watchface.R
 import com.android.developers.androidify.watchface.WatchFaceAsset
 
 @Composable

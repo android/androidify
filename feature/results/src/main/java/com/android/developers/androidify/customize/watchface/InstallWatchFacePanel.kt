@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.developers.androidify.customize
+package com.android.developers.androidify.customize.watchface
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -115,12 +115,12 @@ private fun InstallWatchFacePanelPreview() {
 @Composable
 fun WatchFacesRow(
     watchFaces: List<WatchFaceAsset>,
+    modifier: Modifier = Modifier,
     selectedWatchFace: WatchFaceAsset? = null,
     onWatchFaceSelect: (WatchFaceAsset) -> Unit = {},
-    modifier: Modifier = Modifier,
 ) {
     LazyRow(
-        modifier = Modifier,
+        modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(horizontal = 8.dp),
     ) {

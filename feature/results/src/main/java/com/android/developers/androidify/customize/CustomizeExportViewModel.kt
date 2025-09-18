@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.developers.androidify.RemoteConfigDataSource
+import com.android.developers.androidify.customize.watchface.WatchFaceSelectionState
 import com.android.developers.androidify.data.ImageGenerationRepository
 import com.android.developers.androidify.util.LocalFileProvider
 import com.android.developers.androidify.watchface.WatchFaceAsset

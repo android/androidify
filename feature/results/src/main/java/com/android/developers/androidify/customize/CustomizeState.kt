@@ -21,6 +21,7 @@ import androidx.annotation.DrawableRes
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import com.android.developers.androidify.customize.watchface.WatchFaceSelectionState
 import com.android.developers.androidify.wear.common.ConnectedWatch
 import com.android.developers.androidify.wear.common.WatchFaceInstallationStatus
 

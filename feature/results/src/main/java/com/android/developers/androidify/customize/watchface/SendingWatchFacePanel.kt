@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.developers.androidify.customize
+package com.android.developers.androidify.customize.watchface
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,7 +23,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,10 +37,9 @@ import com.android.developers.androidify.theme.AndroidifyTheme
 import com.android.developers.androidify.watchface.WatchFaceAsset
 
 @Composable
-fun AllDoneWatchFacePanel(
+fun SendingWatchFacePanel(
     modifier: Modifier = Modifier,
     selectedWatchFace: WatchFaceAsset?,
-    onAllDoneClick: () -> Unit = { },
 ) {
     Column(
         modifier = modifier.fillMaxSize(),
@@ -61,9 +62,12 @@ fun AllDoneWatchFacePanel(
         Spacer(modifier = Modifier.height(24.dp))
         WatchFacePanelButton(
             modifier = modifier.padding(horizontal = 16.dp),
-            buttonText = stringResource(R.string.complete_all_done),
-            iconResId = R.drawable.check_24,
-            onClick = onAllDoneClick,
+            buttonText = stringResource(R.string.sending_to_watch),
+            isSending = true,
+            colors = ButtonDefaults.buttonColors(
+                contentColor = MaterialTheme.colorScheme.onSurface,
+                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+            ),
         )
     }
 }
@@ -71,13 +75,13 @@ fun AllDoneWatchFacePanel(
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
-private fun AllDoneWatchFacePanelPreview() {
+private fun SendingWatchFacePanelPreview() {
     val watchFace1 = WatchFaceAsset(
         id = "watch_face_1",
         previewPath = R.drawable.watch_face_preview,
     )
     AndroidifyTheme {
-        AllDoneWatchFacePanel(
+        SendingWatchFacePanel(
             selectedWatchFace = watchFace1,
         )
     }
