@@ -17,6 +17,7 @@ package com.android.developers.androidify
 
 import android.os.Build
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.WindowManager
 import android.window.TrustedPresentationThresholds
 import androidx.activity.ComponentActivity
@@ -28,6 +29,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import com.android.developers.androidify.camera.HardwareKeyManager
 import com.android.developers.androidify.navigation.MainNavigation
 import com.android.developers.androidify.theme.AndroidifyTheme
 import com.android.developers.androidify.util.LocalOcclusion
@@ -94,4 +96,12 @@ class MainActivity : ComponentActivity() {
             windowManager.unregisterTrustedPresentationListener(presentationListener)
         }
     }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean =
+        if (HardwareKeyManager.dispatchDown(keyCode, event)) true
+        else super.onKeyDown(keyCode, event)
+
+    override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean =
+        if (HardwareKeyManager.dispatchUp(keyCode, event)) true
+        else super.onKeyUp(keyCode, event)
 }
