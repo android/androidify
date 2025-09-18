@@ -68,6 +68,7 @@ dependencies {
     implementation(libs.androidx.concurrent.futures.ktx)
     implementation(libs.androidx.window)
     implementation(libs.androidx.window.core)
+    implementation(libs.androidx.xr.compose)
     implementation(libs.accompanist.permissions)
     implementation(libs.coil.compose)
     implementation(libs.kotlinx.coroutines.play.services)
@@ -82,6 +83,7 @@ dependencies {
     implementation(projects.core.theme)
     implementation(projects.core.util)
     implementation(projects.data)
+    implementation(projects.core.xr)
 
     // Android Instrumented Tests
     androidTestImplementation(platform(libs.androidx.compose.bom))

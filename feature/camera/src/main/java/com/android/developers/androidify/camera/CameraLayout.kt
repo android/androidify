@@ -45,10 +45,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LifecycleStartEffect
+import com.android.developers.androidify.camera.xr.CameraLayoutSpatial
 import com.android.developers.androidify.theme.AndroidifyTheme
 import com.android.developers.androidify.theme.TertiaryContainer
 import com.android.developers.androidify.util.FoldablePreviewParameters
@@ -57,6 +59,7 @@ import com.android.developers.androidify.util.allowsFullContent
 import com.android.developers.androidify.util.isAtLeastMedium
 import com.android.developers.androidify.util.shouldShowTabletopLayout
 import com.android.developers.androidify.util.supportsTabletop
+import com.android.developers.androidify.xr.LocalSpatialCapabilities
 
 @Composable
 internal fun CameraLayout(
@@ -68,12 +71,16 @@ internal fun CameraLayout(
     guideText: @Composable (modifier: Modifier) -> Unit,
     guide: @Composable (modifier: Modifier) -> Unit,
     rearCameraButton: @Composable (modifier: Modifier) -> Unit,
+    surfaceAspectRatio: Float,
+    xrEnabled: Boolean = false,
     supportsTabletop: Boolean = supportsTabletop(),
     isTabletop: Boolean = false,
 ) {
     val mContext = LocalContext.current
+    val inspection = LocalInspectionMode.current
     var isCameraLeft by remember { mutableStateOf(false) }
     LifecycleStartEffect(Unit) {
+        if (inspection) return@LifecycleStartEffect onStopOrDispose { }
         val displayManager = mContext.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
         val displayListener = object : DisplayManager.DisplayListener {
             override fun onDisplayChanged(displayId: Int) {
@@ -94,6 +101,16 @@ internal fun CameraLayout(
             .background(TertiaryContainer),
     ) {
         when {
+            xrEnabled && LocalSpatialCapabilities.current.isSpatialUiEnabled -> CameraLayoutSpatial(
+                viewfinder,
+                captureButton,
+                flipCameraButton,
+                zoomButton,
+                guideText,
+                guide,
+                surfaceAspectRatio,
+            )
+
             isAtLeastMedium() && shouldShowTabletopLayout(
                 supportsTabletop = supportsTabletop,
                 isTabletop = isTabletop,
@@ -565,6 +582,7 @@ private fun CameraOverlayPreview(
             },
             supportsTabletop = parameters.supportsTabletop,
             isTabletop = parameters.isTabletop,
+            surfaceAspectRatio = 16f / 9f,
         )
     }
 }
