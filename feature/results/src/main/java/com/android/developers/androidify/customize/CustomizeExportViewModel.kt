@@ -65,7 +65,7 @@ class CustomizeExportViewModel @AssistedInject constructor(
         ): CustomizeExportViewModel
     }
 
-    private val _state = MutableStateFlow(CustomizeExportState())
+    private val _state = MutableStateFlow(CustomizeExportState(xrEnabled = remoteConfigDataSource.isXrEnabled()))
     val state: StateFlow<CustomizeExportState> = combine(
         _state,
         watchfaceInstallationRepository.connectedWatch,
