@@ -24,7 +24,6 @@ package com.android.developers.androidify.creation
 
 import android.net.Uri
 import androidx.activity.ComponentActivity
-import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -67,7 +66,7 @@ fun EditScreen(
     onBackPressed: () -> Unit,
     onAboutPressed: () -> Unit,
     uiState: CreationState,
-    onChooseImageClicked: (PickVisualMedia.VisualMediaType) -> Unit,
+    onChooseImageClicked: () -> Unit,
     onPromptOptionSelected: (PromptType) -> Unit,
     onUndoPressed: () -> Unit,
     onPromptGenerationPressed: () -> Unit,

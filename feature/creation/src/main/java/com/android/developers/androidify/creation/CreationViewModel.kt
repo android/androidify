@@ -17,6 +17,9 @@ package com.android.developers.androidify.creation
 
 import android.content.Context
 import android.net.Uri
+import androidx.activity.compose.ManagedActivityResultLauncher
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.ui.graphics.Color
@@ -93,6 +96,15 @@ class CreationViewModel @AssistedInject constructor(
         }
     }
 
+    fun launchImageChooser(launcher: ManagedActivityResultLauncher<PickVisualMediaRequest, Uri?>) {
+        try {
+            launcher.launch(PickVisualMediaRequest(PickVisualMedia.ImageOnly))
+        } catch (exception: Exception) {
+            Timber.e(exception, "Failed to open the visual media picker")
+            displayOpenImageChooserError()
+        }
+    }
+
     fun onBotColorChanged(botColor: BotColor) {
         _uiState.update {
             it.copy(botColor = botColor)
@@ -129,6 +141,12 @@ class CreationViewModel @AssistedInject constructor(
                     it.copy(promptGenerationInProgress = false)
                 }
             }
+        }
+    }
+
+    fun displayOpenImageChooserError() {
+        viewModelScope.launch {
+            _snackbarHostState.value.showSnackbar(context.getString(R.string.error_open_visual_media_picker))
         }
     }
 

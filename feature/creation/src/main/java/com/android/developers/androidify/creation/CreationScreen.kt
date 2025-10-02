@@ -25,7 +25,6 @@ package com.android.developers.androidify.creation
 import android.net.Uri
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -52,12 +51,12 @@ fun CreationScreen(
     ) {
         creationViewModel.onBackPress()
     }
-    val pickMedia = rememberLauncherForActivityResult(PickVisualMedia()) { uri ->
+    val snackbarHostState by creationViewModel.snackbarHostState.collectAsStateWithLifecycle()
+    val launcher = rememberLauncherForActivityResult(PickVisualMedia()) { uri ->
         if (uri != null) {
             creationViewModel.onImageSelected(uri)
         }
     }
-    val snackbarHostState by creationViewModel.snackbarHostState.collectAsStateWithLifecycle()
 
     LaunchedEffect(uiState.resultBitmapUri) {
         uiState.resultBitmapUri?.let { resultBitmapUri ->
@@ -84,7 +83,9 @@ fun CreationScreen(
                 onBackPressed = onBackPressed,
                 onAboutPressed = onAboutPressed,
                 uiState = uiState,
-                onChooseImageClicked = { pickMedia.launch(PickVisualMediaRequest(it)) },
+                onChooseImageClicked = {
+                    creationViewModel.launchImageChooser(launcher)
+                },
                 onPromptOptionSelected = creationViewModel::onSelectedPromptOptionChanged,
                 onUndoPressed = creationViewModel::onUndoPressed,
                 onPromptGenerationPressed = creationViewModel::onPromptGenerationClicked,

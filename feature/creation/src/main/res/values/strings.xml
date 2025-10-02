@@ -77,6 +77,7 @@
     <string name="error_upload_generic">An error occurred whilst uploading, try again later.</string>
     <string name="error_image_validation">The image is not a valid picture of a person.</string>
     <string name="error_choose_image_prompt">Choose an image or use a prompt instead.</string>
+    <string name="error_open_visual_media_picker">An error occurred whilst opening the media picker.</string>
     <string-array name="generation_prompts">
         <item>Oh, this one is going to be nice…</item>
         <item>Now… onto the spray paint</item>
