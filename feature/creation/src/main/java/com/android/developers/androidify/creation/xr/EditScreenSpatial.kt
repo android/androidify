@@ -16,7 +16,6 @@
 package com.android.developers.androidify.creation.xr
 
 import android.net.Uri
-import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -66,7 +65,7 @@ fun EditScreenSpatial(
     onAboutPressed: () -> Unit,
     uiState: CreationState,
     snackbarHostState: SnackbarHostState,
-    onChooseImageClicked: (PickVisualMedia.VisualMediaType) -> Unit,
+    onChooseImageClicked: () -> Unit,
     onPromptOptionSelected: (PromptType) -> Unit,
     onUndoPressed: () -> Unit,
     onPromptGenerationPressed: () -> Unit,
@@ -131,9 +130,7 @@ fun EditScreenSpatial(
                                     uiState = uiState,
                                     dropBehaviourFactory = dropBehaviourFactory,
                                     onCameraPressed = onCameraPressed,
-                                    onChooseImageClicked = {
-                                        onChooseImageClicked(PickVisualMedia.ImageOnly)
-                                    },
+                                    onChooseImageClicked = onChooseImageClicked,
                                     onUndoPressed = onUndoPressed,
                                     onPromptGenerationPressed = onPromptGenerationPressed,
                                     onSelectedPromptOptionChanged = onPromptOptionSelected,

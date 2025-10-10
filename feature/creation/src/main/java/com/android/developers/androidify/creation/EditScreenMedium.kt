@@ -23,7 +23,6 @@
 package com.android.developers.androidify.creation
 
 import android.net.Uri
-import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -56,7 +55,7 @@ fun EditScreenContentsMedium(
     dropBehaviourFactory: DropBehaviourFactory,
     onCameraPressed: () -> Unit,
     uiState: CreationState,
-    onChooseImageClicked: (PickVisualMedia.VisualMediaType) -> Unit,
+    onChooseImageClicked: () -> Unit,
     onPromptOptionSelected: (PromptType) -> Unit,
     onUndoPressed: () -> Unit,
     onPromptGenerationPressed: () -> Unit,
@@ -79,9 +78,7 @@ fun EditScreenContentsMedium(
                 dropBehaviourFactory = dropBehaviourFactory,
                 modifier = Modifier.weight(.6f),
                 onCameraPressed = onCameraPressed,
-                onChooseImageClicked = {
-                    onChooseImageClicked(PickVisualMedia.ImageOnly)
-                },
+                onChooseImageClicked = onChooseImageClicked,
                 onUndoPressed = onUndoPressed,
                 onPromptGenerationPressed = onPromptGenerationPressed,
                 onSelectedPromptOptionChanged = onPromptOptionSelected,
