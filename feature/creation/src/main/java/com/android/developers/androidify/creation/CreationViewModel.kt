@@ -132,7 +132,7 @@ class CreationViewModel @AssistedInject constructor(
         }
     }
 
-    fun startClicked() {
+    fun onStartClicked() {
         imageGenerationJob?.cancel()
         imageGenerationJob = viewModelScope.launch {
             if (internetConnectivityManager.isInternetAvailable()) {

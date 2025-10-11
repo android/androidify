@@ -130,7 +130,7 @@ class CreationViewModelTest {
     }
 
     @Test
-    fun startClicked_GenerateBotFromPhoto() = runTest {
+    fun onStartClicked_GenerateBotFromPhoto() = runTest {
         val screenStateValues = mutableListOf<ScreenState>()
         backgroundScope.launch(UnconfinedTestDispatcher()) {
             viewModel.uiState.collect {
@@ -140,13 +140,13 @@ class CreationViewModelTest {
 
         viewModel.onImageSelected(Uri.parse("content://test/image.jpg"))
         viewModel.onSelectedPromptOptionChanged(PromptType.PHOTO)
-        viewModel.startClicked()
+        viewModel.onStartClicked()
         assertEquals(ScreenState.EDIT, viewModel.uiState.value.screenState)
         assertNotNull(viewModel.uiState.value.resultBitmapUri)
     }
 
     @Test
-    fun startClicked_GenerateBotFromPhoto_NoPhotoSelected() = runTest {
+    fun onStartClicked_GenerateBotFromPhoto_NoPhotoSelected() = runTest {
         val values = mutableListOf<SnackbarHostState>()
 
         backgroundScope.launch(UnconfinedTestDispatcher()) {
@@ -156,7 +156,7 @@ class CreationViewModelTest {
         }
 
         viewModel.onSelectedPromptOptionChanged(PromptType.PHOTO)
-        viewModel.startClicked()
+        viewModel.onStartClicked()
         assertEquals(ScreenState.EDIT, viewModel.uiState.value.screenState)
         assertNotNull(
             "Choose an image or use a prompt instead.",
@@ -165,7 +165,7 @@ class CreationViewModelTest {
     }
 
     @Test
-    fun startClicked_GenerateBotFromPrompt_TextEmpty() = runTest {
+    fun onStartClicked_GenerateBotFromPrompt_TextEmpty() = runTest {
         val values = mutableListOf<SnackbarHostState>()
 
         backgroundScope.launch(UnconfinedTestDispatcher()) {
@@ -182,7 +182,7 @@ class CreationViewModelTest {
         imageGenerationRepository.exceptionToThrow = InsufficientInformationException()
 
         viewModel.onSelectedPromptOptionChanged(PromptType.TEXT)
-        viewModel.startClicked()
+        viewModel.onStartClicked()
 
         assertEquals(ScreenState.EDIT, screenStateValues[1])
         assertEquals(
@@ -193,7 +193,7 @@ class CreationViewModelTest {
     }
 
     @Test
-    fun startClicked_GenerateBotFromPrompt() = runTest {
+    fun onStartClicked_GenerateBotFromPrompt() = runTest {
         val screenStateValues = mutableListOf<ScreenState>()
         backgroundScope.launch(UnconfinedTestDispatcher()) {
             viewModel.uiState.collect {
@@ -204,13 +204,13 @@ class CreationViewModelTest {
         viewModel.uiState.value.descriptionText.edit {
             "testing input description"
         }
-        viewModel.startClicked()
+        viewModel.onStartClicked()
         assertEquals(ScreenState.EDIT, viewModel.uiState.value.screenState)
         assertNotNull(viewModel.uiState.value.resultBitmapUri)
     }
 
     @Test
-    fun startClicked_NoInternet_DisplaysError() = runTest {
+    fun onStartClicked_NoInternet_DisplaysError() = runTest {
         val values = mutableListOf<SnackbarHostState>()
         backgroundScope.launch(UnconfinedTestDispatcher()) {
             viewModel.snackbarHostState.collect {
@@ -218,7 +218,7 @@ class CreationViewModelTest {
             }
         }
         internetConnectivityManager.internetAvailable = false
-        viewModel.startClicked()
+        viewModel.onStartClicked()
         advanceUntilIdle()
         assertEquals(ScreenState.EDIT, viewModel.uiState.value.screenState)
         assertEquals(

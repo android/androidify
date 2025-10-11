@@ -89,7 +89,7 @@ fun CreationScreen(
                 onUndoPressed = creationViewModel::onUndoPressed,
                 onPromptGenerationPressed = creationViewModel::onPromptGenerationClicked,
                 onBotColorSelected = creationViewModel::onBotColorChanged,
-                onStartClicked = creationViewModel::startClicked,
+                onStartClicked = creationViewModel::onStartClicked,
                 onDropCallback = creationViewModel::onImageSelected,
             )
         }
