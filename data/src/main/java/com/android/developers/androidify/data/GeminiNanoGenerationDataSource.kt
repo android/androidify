@@ -15,6 +15,7 @@
  */
 package com.android.developers.androidify.data
 
+import com.android.developers.androidify.RemoteConfigDataSource
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -25,11 +26,15 @@ interface GeminiNanoGenerationDataSource {
 }
 
 @Singleton
-internal class GeminiNanoGenerationDataSourceImpl @Inject constructor(private val downloader: GeminiNanoDownloader) :
+internal class GeminiNanoGenerationDataSourceImpl @Inject constructor(
+    private val remoteConfigDataSource: RemoteConfigDataSource,
+    private val downloader: GeminiNanoDownloader) :
     GeminiNanoGenerationDataSource {
 
     override suspend fun initialize() {
-        downloader.downloadModel()
+        if (remoteConfigDataSource.useGeminiNano()) {
+            downloader.downloadModel()
+        }
     }
 
     /**
