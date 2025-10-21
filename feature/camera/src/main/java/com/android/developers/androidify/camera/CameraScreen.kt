@@ -230,6 +230,10 @@ fun StatelessCameraPreviewContent(
                 enabled = detectedPose,
                 captureImageClicked = requestCaptureImage,
             )
+            RegisterHardwareShutter(
+                enabled = detectedPose,
+                onCapture = requestCaptureImage,
+            )
         },
         flipCameraButton = { flipModifier ->
             if (canFlipCamera) {
