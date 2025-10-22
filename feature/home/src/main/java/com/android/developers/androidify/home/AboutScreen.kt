@@ -44,7 +44,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -55,7 +54,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.ui.LocalNavAnimatedContentScope
 import androidx.xr.compose.platform.LocalSpatialCapabilities
@@ -71,21 +70,46 @@ import com.android.developers.androidify.util.PhonePreview
 import com.android.developers.androidify.util.isAtLeastMedium
 
 @Composable
-fun AboutScreen(
-    viewModel: AboutViewModel = hiltViewModel(),
+public fun AboutScreen(
     onBackPressed: () -> Unit,
     onTermsClicked: () -> Unit,
     onPrivacyClicked: () -> Unit,
     onLicensesClicked: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    val state by viewModel.state.collectAsStateWithLifecycle()
-    AboutScreenContents(
+    AboutScreen(
+        viewModel = hiltViewModel(),
         onBackPressed = onBackPressed,
         onTermsClicked = onTermsClicked,
         onPrivacyClicked = onPrivacyClicked,
         onLicensesClicked = onLicensesClicked,
-        xrEnabled = state.isXrEnabled,
+        modifier
     )
+}
+
+@Composable
+internal fun AboutScreen(
+    viewModel: AboutViewModel,
+    onBackPressed: () -> Unit,
+    onTermsClicked: () -> Unit,
+    onPrivacyClicked: () -> Unit,
+    onLicensesClicked: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    when (val state = viewModel.state.collectAsStateWithLifecycle().value) {
+        is AboutState.Content -> {
+            AboutScreenContents(
+                onBackPressed = onBackPressed,
+                onTermsClicked = onTermsClicked,
+                onPrivacyClicked = onPrivacyClicked,
+                onLicensesClicked = onLicensesClicked,
+                xrEnabled = state.isXrEnabled,
+            )
+        }
+        is AboutState.Loading -> {
+            // No loading state for now
+        }
+    }
 }
 
 @Composable
@@ -94,6 +118,7 @@ fun AboutScreenContents(
     onTermsClicked: () -> Unit,
     onPrivacyClicked: () -> Unit,
     onLicensesClicked: () -> Unit,
+    modifier: Modifier = Modifier,
     xrEnabled: Boolean = false,
     isMediumWindowSize: Boolean = isAtLeastMedium(),
 ) {

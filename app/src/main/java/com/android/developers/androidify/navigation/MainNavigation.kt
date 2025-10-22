@@ -197,7 +197,7 @@ fun MainNavigation() {
                     },
                     onTermsClicked = {
                         uriHandler.openUri("https://policies.google.com/terms")
-                    }
+                    },
                 )
             }
         },

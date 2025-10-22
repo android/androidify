@@ -66,7 +66,7 @@ import androidx.compose.ui.util.fastFirst
 import androidx.compose.ui.util.fastFirstOrNull
 import androidx.compose.ui.util.fastMaxOfOrNull
 import androidx.compose.ui.util.fastSumBy
-import com.android.developers.androidify.util.dpToPx
+import com.android.developers.androidify.util.toPx
 
 @Composable
 fun gradientChipColorDefaults(): GradientChipColors = GradientChipColors(
@@ -163,7 +163,7 @@ private fun Chip(
             minHeight = minHeight,
             paddingValues = paddingValues,
             modifier = Modifier.graphicsLayer(
-                shadowElevation = (elevation?.elevation ?: 0.dp).dpToPx(),
+                shadowElevation = (elevation?.elevation ?: 0.dp).toPx(),
                 shape = shape,
                 clip = false,
             )

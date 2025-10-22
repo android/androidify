@@ -64,7 +64,7 @@ class LocalSegmentationDataSourceImpl @Inject constructor(
     ) : InstallStatusListener {
 
         override fun onInstallStatusUpdated(update: ModuleInstallStatusUpdate) {
-            Timber.d("Download progress: ${update.installState}.. ${continuation.hashCode()} ${continuation.isActive}")
+            Timber.d("Download progress: %s.. %s %s", update.installState, continuation.hashCode(), continuation.isActive)
             if (!continuation.isActive) return
             if (update.installState == ModuleInstallStatusUpdate.InstallState.STATE_COMPLETED) {
                 continuation.resume(true)

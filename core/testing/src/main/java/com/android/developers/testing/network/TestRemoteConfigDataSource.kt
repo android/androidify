@@ -18,6 +18,11 @@ package com.android.developers.testing.network
 import com.android.developers.androidify.RemoteConfigDataSource
 
 class TestRemoteConfigDataSource(private val useGeminiNano: Boolean) : RemoteConfigDataSource {
+
+    override fun <T : Any> get(key: RemoteConfigDataSource.Key<T>): T {
+        TODO("Not yet implemented")
+    }
+
     override fun isAppInactive(): Boolean {
         TODO("Not yet implemented")
     }

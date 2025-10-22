@@ -51,7 +51,7 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.timber)
     implementation(libs.converter.gson)
-    implementation(libs.logging.interceptor)
+    implementation(libs.okhttp3.loggingInterceptor)
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.okhttp)

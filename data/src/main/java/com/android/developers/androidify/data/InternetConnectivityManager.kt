@@ -19,6 +19,7 @@ import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -26,12 +27,12 @@ interface InternetConnectivityManager {
     fun isInternetAvailable(): Boolean
 }
 
-@Singleton
-internal class InternetConnectivityManagerImpl @Inject constructor(private val application: Application) :
-    InternetConnectivityManager {
+internal class InternetConnectivityManagerImpl @Inject constructor(
+    @param:ApplicationContext private val context: Context
+) : InternetConnectivityManager {
     override fun isInternetAvailable(): Boolean {
         val connectivityManager =
-            application.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager? ?: return false
         val network = connectivityManager.activeNetwork ?: return false
         val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
         return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)

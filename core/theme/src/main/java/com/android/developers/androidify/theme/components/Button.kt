@@ -49,23 +49,17 @@ fun PrimaryButton(
         onClick = onClick,
     ) {
         Row {
-            if (!loading) {
-                if (leadingIcon != null) {
-                    leadingIcon()
-                }
-                if (buttonText != null) {
-                    Text(buttonText, fontSize = 18.sp)
-                }
-                if (trailingIcon != null) {
-                    trailingIcon()
-                }
-            } else {
+            if (loading) {
                 CircularProgressIndicator(
                     modifier = Modifier
                         .size(28.dp)
                         .align(Alignment.CenterVertically),
                     color = MaterialTheme.colorScheme.onPrimary,
                 )
+            } else {
+                if (leadingIcon != null) leadingIcon()
+                if (buttonText != null) Text(buttonText, fontSize = 18.sp)
+                if (trailingIcon != null) trailingIcon()
             }
         }
     }

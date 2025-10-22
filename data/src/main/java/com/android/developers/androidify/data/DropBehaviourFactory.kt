@@ -38,19 +38,21 @@ interface DropBehaviourFactory {
     ): DragAndDropTarget
 }
 
-class DropBehaviourFactoryImpl @Inject constructor(val localFileProvider: LocalFileProvider) :
-    DropBehaviourFactory {
+class DropBehaviourFactoryImpl @Inject constructor(
+    val localFileProvider: LocalFileProvider,
+) : DropBehaviourFactory {
 
-    override fun shouldStartDragAndDrop(event: DragAndDropEvent): Boolean =
-        event.mimeTypes().contains("image/jpeg")
+    override fun shouldStartDragAndDrop(event: DragAndDropEvent): Boolean {
+        return "image/jpeg" in event.mimeTypes()
+    }
 
     override fun createTargetCallback(
         activity: ComponentActivity,
         onImageDropped: (Uri) -> Unit,
         onDropStarted: () -> Unit,
         onDropEnded: () -> Unit,
-    ) =
-        object : DragAndDropTarget {
+    ): DragAndDropTarget {
+        return object : DragAndDropTarget {
             override fun onStarted(event: DragAndDropEvent) {
                 super.onStarted(event)
                 onDropStarted()
@@ -75,11 +77,14 @@ class DropBehaviourFactoryImpl @Inject constructor(val localFileProvider: LocalF
                 }
 
                 activity.lifecycleScope.launch {
-                    val permission = activity.requestDragAndDropPermissions(targetEvent)
-                    if (permission != null) {
-                        try {
-                            val inputUri = targetEvent.clipData.getItemAt(0).uri
-                            activity.contentResolver.openInputStream(inputUri)?.use { inputStream ->
+                    val permission =
+                        activity.requestDragAndDropPermissions(targetEvent) ?: return@launch
+
+                    try {
+                        val clipData = targetEvent.clipData
+                        if (clipData.itemCount > 0) {
+                            val inputUri = clipData.getItemAt(0).uri
+                            activity.contentResolver.openInputStream(inputUri)?.buffered()?.use { inputStream ->
                                 val bitmap = BitmapFactory.decodeStream(inputStream)
 
                                 bitmap?.let {
@@ -89,12 +94,13 @@ class DropBehaviourFactoryImpl @Inject constructor(val localFileProvider: LocalF
                                     onImageDropped(localFileProvider.sharingUriForFile(cacheFile))
                                 }
                             }
-                        } finally {
-                            permission.release()
                         }
+                    } finally {
+                        permission.release()
                     }
                 }
                 return true
             }
         }
+    }
 }

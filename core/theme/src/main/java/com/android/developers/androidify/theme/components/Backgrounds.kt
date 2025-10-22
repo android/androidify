@@ -42,7 +42,7 @@ import com.android.developers.androidify.theme.AndroidifyTheme
 import com.android.developers.androidify.theme.R
 import com.android.developers.androidify.util.LargeScreensPreview
 import com.android.developers.androidify.util.PhonePreview
-import com.android.developers.androidify.util.dpToPx
+import com.android.developers.androidify.util.toPx
 import com.android.developers.androidify.util.isAtLeastMedium
 
 @Composable
@@ -59,7 +59,7 @@ fun SquiggleBackground(
         modifier.fillMaxSize()
             .background(MaterialTheme.colorScheme.secondary),
     ) {
-        val maxHeight = this@BoxWithConstraints.maxHeight.dpToPx()
+        val maxHeight = this@BoxWithConstraints.maxHeight.toPx()
         Image(
             painter = vectorBackground,
             contentDescription = null,

@@ -18,10 +18,16 @@ package com.android.developers.androidify
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
 import javax.inject.Inject
-import javax.inject.Singleton
+import kotlin.reflect.KClass
 
 interface RemoteConfigDataSource {
-    fun isAppInactive(): Boolean
+
+    @Deprecated(
+        "Use generic get method instead",
+        ReplaceWith("get(RemoteConfigDataSource.Key.IsAppInactive())"),
+    )
+    fun isAppInactive(): Boolean = get(Key.IsAppInactive())
+
     fun textModelName(): String
     fun imageModelName(): String
     fun isBackgroundVibesFeatureEnabled(): Boolean
@@ -47,15 +53,38 @@ interface RemoteConfigDataSource {
     fun watchfaceFeatureEnabled(): Boolean
 
     fun isXrEnabled(): Boolean
+
+    public fun <T : Any> get(key: Key<T>): T
+
+    public abstract class Key<T : Any>(
+        val id: String,
+        val keyType: KClass<T>,
+    ) {
+
+        public class IsAppInactive : Key<Boolean>("is_android_app_inactive", Boolean::class)
+        public class Custom<T : Any>(
+            id: String,
+            keyType: KClass<T>,
+        ) : Key<T>(id, keyType)
+
+        override fun toString(): String {
+            return "Key(id='$id')"
+        }
+    }
 }
 
-@Singleton
 class RemoteConfigDataSourceImpl @Inject constructor() : RemoteConfigDataSource {
     private val remoteConfig = Firebase.remoteConfig
 
-    override fun isAppInactive(): Boolean {
-        return remoteConfig.getBoolean("is_android_app_inactive")
-    }
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : Any> get(key: RemoteConfigDataSource.Key<T>): T = when (key.keyType) {
+        Boolean::class -> Firebase.remoteConfig.getBoolean(key.id)
+        String::class -> Firebase.remoteConfig.getString(key.id)
+        Long::class -> Firebase.remoteConfig.getLong(key.id)
+        Double::class -> Firebase.remoteConfig.getDouble(key.id)
+        Int::class -> Firebase.remoteConfig.getLong(key.id).toInt()
+        else -> throw IllegalArgumentException("Unsupported key type: ${key.keyType}")
+    } as T
 
     override fun textModelName(): String {
         return remoteConfig.getString("text_model_name")
@@ -104,6 +133,7 @@ class RemoteConfigDataSourceImpl @Inject constructor() : RemoteConfigDataSource 
     override fun useImagen(): Boolean {
         return remoteConfig.getBoolean("use_imagen")
     }
+
     override fun getFineTunedModelName(): String {
         return remoteConfig.getString("fine_tuned_model_name")
     }

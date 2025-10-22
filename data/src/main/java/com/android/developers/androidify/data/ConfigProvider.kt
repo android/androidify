@@ -17,13 +17,12 @@ package com.android.developers.androidify.data
 
 import com.android.developers.androidify.RemoteConfigDataSource
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
+// Очень странное решение просто перенаправлять вызовы
 class ConfigProvider @Inject constructor(val remoteConfigDataSource: RemoteConfigDataSource) {
 
     fun isAppInactive(): Boolean {
-        return remoteConfigDataSource.isAppInactive()
+        return remoteConfigDataSource.get(RemoteConfigDataSource.Key.IsAppInactive())
     }
 
     fun getPromoVideoLink(): String {

@@ -33,7 +33,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-internal abstract class DataModule {
+internal interface DataModule {
 
     companion object {
         @Provides
@@ -42,34 +42,26 @@ internal abstract class DataModule {
     }
 
     @Binds
-    @Singleton
-    abstract fun bindsLocalFileProvider(impl: LocalFileProviderImpl): LocalFileProvider
+    fun bindsLocalFileProvider(impl: LocalFileProviderImpl): LocalFileProvider
 
     @Binds
-    @Singleton
-    abstract fun bindsRemoteConfigDataSource(impl: RemoteConfigDataSourceImpl): RemoteConfigDataSource
+    fun bindsRemoteConfigDataSource(impl: RemoteConfigDataSourceImpl): RemoteConfigDataSource
 
     @Binds
-    @Singleton
-    abstract fun bindsGeminiNanoDataSource(impl: GeminiNanoGenerationDataSourceImpl): GeminiNanoGenerationDataSource
+    fun bindsGeminiNanoDataSource(impl: GeminiNanoGenerationDataSourceImpl): GeminiNanoGenerationDataSource
 
     @Binds
-    @Singleton
-    abstract fun bindsInternetConnectivityManager(impl: InternetConnectivityManagerImpl): InternetConnectivityManager
+    fun bindsInternetConnectivityManager(impl: InternetConnectivityManagerImpl): InternetConnectivityManager
 
     @Binds
-    @Singleton
-    abstract fun bindsFirebaseVertexAiDataSource(impl: FirebaseAiDataSourceImpl): FirebaseAiDataSource
+    fun bindsFirebaseVertexAiDataSource(impl: FirebaseAiDataSourceImpl): FirebaseAiDataSource
 
     @Binds
-    @Singleton
-    abstract fun bindsTextGenerationRepository(impl: TextGenerationRepositoryImpl): TextGenerationRepository
+    fun bindsTextGenerationRepository(impl: TextGenerationRepositoryImpl): TextGenerationRepository
 
     @Binds
-    @Singleton
-    abstract fun bindsImageGenerationRepository(impl: ImageGenerationRepositoryImpl): ImageGenerationRepository
+    fun bindsImageGenerationRepository(impl: ImageGenerationRepositoryImpl): ImageGenerationRepository
 
     @Binds
-    @Singleton
-    abstract fun bindsDropBehaviourFactory(impl: DropBehaviourFactoryImpl): DropBehaviourFactory
+    fun bindsDropBehaviourFactory(impl: DropBehaviourFactoryImpl): DropBehaviourFactory
 }

@@ -59,6 +59,7 @@ interface FirebaseAiDataSource {
 @Singleton
 class FirebaseAiDataSourceImpl @Inject constructor(
     private val remoteConfigDataSource: RemoteConfigDataSource,
+    private val json: Json,
 ) : FirebaseAiDataSource {
     private fun createGenerativeTextModel(
         jsonSchema: Schema,
@@ -185,7 +186,7 @@ class FirebaseAiDataSourceImpl @Inject constructor(
         prompt: String,
     ): ValidatedDescription {
         val response = generativeModel.generateContent(prompt)
-        val jsonResponse = Json.parseToJsonElement(response.text!!)
+        val jsonResponse = json.parseToJsonElement(response.text!!)
         val isSuccess = jsonResponse.jsonObject["success"]?.jsonPrimitive?.booleanOrNull == true
         val userDescription = jsonResponse.jsonObject["user_description"]?.jsonPrimitive?.content
         return ValidatedDescription(isSuccess, userDescription)
@@ -202,7 +203,7 @@ class FirebaseAiDataSourceImpl @Inject constructor(
                 image(image)
             },
         )
-        val jsonResponse = Json.parseToJsonElement(response.text!!)
+        val jsonResponse = json.parseToJsonElement(response.text!!)
         val isSuccess = jsonResponse.jsonObject["success"]?.jsonPrimitive?.booleanOrNull == true
         val error = jsonResponse.jsonObject["error"]?.jsonPrimitive?.content
         val errorEnum = ImageValidationError.entries.find { it.description == error }
@@ -220,7 +221,7 @@ class FirebaseAiDataSourceImpl @Inject constructor(
                 image(image)
             },
         )
-        val jsonResponse = Json.parseToJsonElement(response.text!!)
+        val jsonResponse = json.parseToJsonElement(response.text!!)
         val isSuccess = jsonResponse.jsonObject["success"]?.jsonPrimitive?.booleanOrNull == true
         val userDescription = jsonResponse.jsonObject["user_description"]?.jsonPrimitive?.content
         return ValidatedDescription(isSuccess, userDescription)
@@ -278,7 +279,7 @@ class FirebaseAiDataSourceImpl @Inject constructor(
                 text(prompt)
             },
         )
-        val jsonResponse = Json.parseToJsonElement(response.text!!)
+        val jsonResponse = json.parseToJsonElement(response.text!!)
         val isSuccess = jsonResponse.jsonObject["success"]?.jsonPrimitive?.booleanOrNull == true
         val content = jsonResponse.jsonObject["generated_prompt"]
         val generatedPrompts = if (content != null) {

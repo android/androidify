@@ -41,7 +41,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
@@ -56,7 +55,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.graphics.shapes.RoundedPolygon
 import androidx.graphics.shapes.rectangle
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleStartEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.window.layout.FoldingFeature
@@ -72,19 +71,73 @@ import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
 import kotlinx.coroutines.launch
 
+@Composable
+fun CameraPreviewScreen(
+    onImageCaptured: (Uri) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    CameraPreviewScreen(
+        viewModel = hiltViewModel(),
+        modifier = modifier,
+        onImageCaptured = onImageCaptured,
+    )
+}
+
+@ExperimentalPermissionsApi
+@Composable
+internal fun CameraPreviewScreen(
+    viewModel: CameraViewModel,
+    onImageCaptured: (Uri) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val cameraPermissionState = rememberPermissionState(Manifest.permission.CAMERA)
+    if (cameraPermissionState.status.isGranted) {
+        val scope = rememberCoroutineScope()
+        LifecycleStartEffect(viewModel) {
+            val job = scope.launch { viewModel.bindToCamera() }
+            onStopOrDispose { job.cancel() }
+        }
+
+        val activity = LocalActivity.current as ComponentActivity
+        LaunchedEffect(Unit) {
+            viewModel.calculateFoldingFeature(activity)
+            viewModel.initRearDisplayFeature(activity)
+        }
+
+        CameraPreviewScreen(
+            uiState = viewModel.uiState.collectAsStateWithLifecycle().value,
+            foldingFeature = viewModel.foldingFeature.collectAsStateWithLifecycle().value,
+            tapToFocus = viewModel::tapToFocus,
+            onImageCaptured = {
+                onImageCaptured(it)
+                viewModel.setCapturedImage(null)
+            },
+            modifier = modifier,
+        )
+    } else {
+        CameraPermissionGrant(
+            launchPermissionRequest = {
+                cameraPermissionState.launchPermissionRequest()
+            },
+            showRationale = cameraPermissionState.status.shouldShowRationale,
+        )
+    }
+}
+
 @OptIn(
     ExperimentalPermissionsApi::class,
     ExperimentalSharedTransitionApi::class,
     ExperimentalMaterial3ExpressiveApi::class,
 )
 @Composable
-fun CameraPreviewScreen(
-    modifier: Modifier = Modifier,
-    viewModel: CameraViewModel = hiltViewModel(),
+internal fun CameraPreviewScreen(
+    uiState: CameraUiState,
+    foldingFeature: FoldingFeature?,
     onImageCaptured: (Uri) -> Unit,
+    tapToFocus: (Offset) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    val sharedTransitionScope = LocalSharedTransitionScope.current
-    with(sharedTransitionScope) {
+    with(LocalSharedTransitionScope.current) {
         Box(
             modifier
                 .fillMaxSize()
@@ -102,61 +155,37 @@ fun CameraPreviewScreen(
                 )
                 .sharedBoundsWithDefaults(rememberSharedContentState(SharedElementKey.CaptureImageToDetails)),
         ) {
-            val cameraPermissionState = rememberPermissionState(Manifest.permission.CAMERA)
-            if (cameraPermissionState.status.isGranted) {
-                val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-                val activity = LocalActivity.current as ComponentActivity
-                val foldingFeature by viewModel.foldingFeature.collectAsState()
 
-                LaunchedEffect(uiState.imageUri) {
-                    // this is used to navigate to the next screen, when an image is captured, it signals to NavController that we should do something with the URI,
-                    // once the signal has been sent, the value is set to null to not trigger navigation over and over again.
-                    val uri = uiState.imageUri
-                    if (uri != null) {
-                        onImageCaptured(uri)
-                        viewModel.setCapturedImage(null)
-                    }
+            LaunchedEffect(uiState.imageUri) {
+                // this is used to navigate to the next screen, when an image is captured, it signals to NavController that we should do something with the URI,
+                // once the signal has been sent, the value is set to null to not trigger navigation over and over again.
+                val uri = uiState.imageUri
+                if (uri != null) {
+                    onImageCaptured(uri)
                 }
-                val scope = rememberCoroutineScope()
-                LifecycleStartEffect(viewModel) {
-                    val job = scope.launch { viewModel.bindToCamera() }
-                    onStopOrDispose { job.cancel() }
-                }
+            }
 
-                LaunchedEffect(Unit) {
-                    viewModel.calculateFoldingFeature(activity)
-                    viewModel.initRearDisplayFeature(activity)
-                }
-
-                uiState.surfaceRequest?.let { surface ->
-                    CameraPreviewContent(
-                        modifier = Modifier.fillMaxSize(),
-                        surfaceRequest = surface,
-                        autofocusUiState = uiState.autofocusUiState,
-                        tapToFocus = viewModel::tapToFocus,
-                        detectedPose = uiState.detectedPose,
-                        defaultZoomOptions = uiState.zoomOptions,
-                        requestFlipCamera = viewModel::flipCameraDirection,
-                        canFlipCamera = uiState.canFlipCamera,
-                        requestCaptureImage = viewModel::captureImage,
-                        zoomRange = uiState.zoomMinRatio..uiState.zoomMaxRatio,
-                        zoomLevel = { uiState.zoomLevel },
-                        onChangeZoomLevel = viewModel::setZoomLevel,
-                        foldingFeature = foldingFeature,
-                        shouldShowRearCameraFeature = viewModel::shouldShowRearDisplayFeature,
-                        toggleRearCameraFeature = { viewModel.toggleRearDisplayFeature(activity) },
-                        isRearCameraEnabled = uiState.isRearCameraActive,
-                        cameraSessionId = uiState.cameraSessionId,
-                        xrEnabled = uiState.xrEnabled,
-                        surfaceAspectRatio = uiState.surfaceAspectRatio,
-                    )
-                }
-            } else {
-                CameraPermissionGrant(
-                    launchPermissionRequest = {
-                        cameraPermissionState.launchPermissionRequest()
-                    },
-                    showRationale = cameraPermissionState.status.shouldShowRationale,
+            uiState.surfaceRequest?.let { surface ->
+                CameraPreviewContent(
+                    modifier = Modifier.fillMaxSize(),
+                    surfaceRequest = surface,
+                    autofocusUiState = uiState.autofocusUiState,
+                    tapToFocus = tapToFocus,
+                    detectedPose = uiState.detectedPose,
+                    defaultZoomOptions = uiState.zoomOptions,
+                    requestFlipCamera = viewModel::flipCameraDirection,
+                    canFlipCamera = uiState.canFlipCamera,
+                    requestCaptureImage = viewModel::captureImage,
+                    zoomRange = uiState.zoomMinRatio..uiState.zoomMaxRatio,
+                    zoomLevel = { uiState.zoomLevel },
+                    onChangeZoomLevel = viewModel::setZoomLevel,
+                    foldingFeature = foldingFeature,
+                    shouldShowRearCameraFeature = viewModel::shouldShowRearDisplayFeature,
+                    toggleRearCameraFeature = { viewModel.toggleRearDisplayFeature(activity) },
+                    isRearCameraEnabled = uiState.isRearCameraActive,
+                    cameraSessionId = uiState.cameraSessionId,
+                    xrEnabled = uiState.xrEnabled,
+                    surfaceAspectRatio = uiState.surfaceAspectRatio,
                 )
             }
         }
@@ -170,9 +199,7 @@ private fun CameraPermissionGrant(
     modifier: Modifier = Modifier,
 ) {
     LaunchedEffect(showRationale) {
-        if (!showRationale) {
-            launchPermissionRequest()
-        }
+        if (!showRationale) launchPermissionRequest()
     }
 
     Column(
@@ -267,12 +294,12 @@ fun StatelessCameraPreviewContent(
             )
         },
         rearCameraButton = (
-            if (shouldShowRearCameraFeature()) {
-                rearCameraButton
-            } else {
-                emptyComposable
-            }
-            ),
+                if (shouldShowRearCameraFeature()) {
+                    rearCameraButton
+                } else {
+                    emptyComposable
+                }
+                ),
         isTabletop = isTableTopPosture(foldingFeature),
         modifier = modifier.onSizeChanged { size ->
             if (size.height > 0) {

@@ -15,7 +15,8 @@
  */
 package com.android.developers.androidify.data
 
-import android.app.Application
+import android.content.Context
+import androidx.annotation.NonUiContext
 import com.google.ai.edge.aicore.DownloadCallback
 import com.google.ai.edge.aicore.DownloadConfig
 import com.google.ai.edge.aicore.GenerativeAIException
@@ -26,7 +27,9 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class GeminiNanoDownloader @Inject constructor(private val application: Application) {
+class GeminiNanoDownloader @Inject constructor(
+    @param:NonUiContext private val context: Context,
+) {
     var generativeModel: GenerativeModel? = null
         private set
 
@@ -69,7 +72,7 @@ class GeminiNanoDownloader @Inject constructor(private val application: Applicat
         val downloadConfig = DownloadConfig(downloadCallback)
 
         val generationConfig = generationConfig {
-            context = application
+            this.context = this@GeminiNanoDownloader.context
             temperature = 0.2f
             topK = 16
             maxOutputTokens = 256

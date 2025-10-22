@@ -18,4 +18,7 @@ package com.android.developers.androidify.util
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.mutableStateOf
 
+/**
+ * Composition local to provide occlusion state for 3D models.
+ */
 val LocalOcclusion = compositionLocalOf { mutableStateOf(false) }

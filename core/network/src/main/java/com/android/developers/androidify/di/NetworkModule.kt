@@ -23,7 +23,6 @@ import coil3.gif.GifDecoder
 import coil3.network.okhttp.OkHttpNetworkFetcherFactory
 import coil3.request.CachePolicy
 import coil3.request.crossfade
-import com.android.developers.androidify.network.BuildConfig
 import com.android.developers.androidify.ondevice.LocalSegmentationDataSource
 import com.android.developers.androidify.ondevice.LocalSegmentationDataSourceImpl
 import com.google.android.gms.common.moduleinstall.ModuleInstallClient
@@ -34,10 +33,8 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
 import okhttp3.Call
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import javax.inject.Provider
 import javax.inject.Singleton
 
 @Module
@@ -52,27 +49,13 @@ internal class NetworkModule @Inject constructor() {
 
     @Provides
     @Singleton
-    fun okHttpCallFactory(): Call.Factory {
-        return OkHttpClient.Builder()
-            .connectTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
-            .readTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
-            .writeTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
-            .addInterceptor(
-                HttpLoggingInterceptor()
-                    .apply {
-                        if (BuildConfig.DEBUG) {
-                            setLevel(HttpLoggingInterceptor.Level.BODY)
-                        }
-                    },
-            )
-            .build()
-    }
+    fun okHttpCallFactory(): Call.Factory = newOkHttp()
 
     @Provides
     @Singleton
     fun imageLoader(
         // We specifically request dagger.Lazy here, so that it's not instantiated from Dagger.
-        callFactory: dagger.Lazy<Call.Factory>,
+        callFactory: Provider<Call.Factory>,
         @ApplicationContext application: Context,
     ): ImageLoader =
         ImageLoader.Builder(application)
@@ -84,9 +67,7 @@ internal class NetworkModule @Inject constructor() {
                 }
                 add(
                     OkHttpNetworkFetcherFactory(
-                        callFactory = {
-                            callFactory.get()
-                        },
+                        callFactory = callFactory::get,
                     ),
                 )
             }
@@ -98,8 +79,5 @@ internal class NetworkModule @Inject constructor() {
     @Provides
     fun segmentationDataSource(moduleInstallClient: ModuleInstallClient): LocalSegmentationDataSource {
         return LocalSegmentationDataSourceImpl(moduleInstallClient)
-    }
-    companion object {
-        private const val TIMEOUT_SECONDS: Long = 120
     }
 }

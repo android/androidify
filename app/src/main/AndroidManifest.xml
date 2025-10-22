@@ -19,15 +19,21 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!--  Use to save models and images  -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <uses-permission android:name="android.permission.CAMERA" />
+
+
     <uses-feature
         android:name="android.hardware.camera"
-        android:required="true" />
+        android:required="false" />
 
     <!-- Androidify can use XR features if they're available; they're not required. -->
     <uses-feature android:name="android.software.xr.api.spatial" android:required="false" />
 
-    <uses-permission android:name="android.permission.CAMERA" />
     <uses-sdk tools:overrideLibrary="com.google.ai.edge.aicore" />
+
 
     <application
         android:name=".AndroidifyApplication"

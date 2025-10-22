@@ -23,7 +23,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(configProvider: ConfigProvider) : ViewModel() {
+class HomeViewModel @Inject constructor(
+    configProvider: ConfigProvider,
+) : ViewModel() {
+
     private val _state = MutableStateFlow(
         HomeState(
             isAppActive = !configProvider.isAppInactive(),

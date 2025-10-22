@@ -37,7 +37,7 @@ import androidx.core.graphics.PathSegment
 import androidx.core.graphics.flatten
 
 @Composable
-fun Dp.dpToPx() = with(LocalDensity.current) { this@dpToPx.toPx() }
+fun Dp.toPx() = with(LocalDensity.current) { this@toPx.toPx() }
 
 @Composable
 fun Int.pxToDp() = with(LocalDensity.current) { this@pxToDp.toDp() }
@@ -103,7 +103,7 @@ fun Modifier.dashedRoundedRectBorder(
     width: Dp,
     color: Color,
     cornerRadius: Dp,
-    intervals: FloatArray = floatArrayOf(10f.dp.dpToPx(), 10f.dp.dpToPx()),
+    intervals: FloatArray = floatArrayOf(10f.dp.toPx(), 10f.dp.toPx()),
     phase: Float = 0f,
 ): Modifier =
     this.then(

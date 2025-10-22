@@ -46,7 +46,7 @@ import com.android.developers.androidify.theme.AndroidifyTheme
 import com.android.developers.androidify.theme.LimeGreen
 import com.android.developers.androidify.theme.R
 import com.android.developers.androidify.util.dashedRoundedRectBorder
-import com.android.developers.androidify.util.dpToPx
+import com.android.developers.androidify.util.toPx
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -90,7 +90,7 @@ internal fun CameraGuide(
                         width = 4.dp,
                         color = MaterialTheme.colorScheme.secondary,
                         cornerRadius = 28.dp,
-                        intervals = floatArrayOf(10.dp.dpToPx(), 10.dp.dpToPx()),
+                        intervals = floatArrayOf(10.dp.toPx(), 10.dp.toPx()),
                     ),
             )
         }

@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
+
 /*
  * Copyright 2025 The Android Open Source Project
  *
@@ -29,16 +31,9 @@ android {
         minSdk = libs.versions.minSdk.get().toInt()
         testInstrumentationRunner = "com.android.developers.testing.AndroidifyTestRunner"
     }
+
     buildFeatures {
         buildConfig = true
-    }
-    buildTypes {
-        debug {
-            buildConfigField("boolean", "debug", "true")
-        }
-        release {
-            buildConfigField("boolean", "debug", "false")
-        }
     }
 
     compileOptions {
@@ -48,6 +43,10 @@ android {
     kotlinOptions {
         jvmTarget = libs.versions.jvmTarget.get()
     }
+}
+
+kotlin {
+    explicitApi = ExplicitApiMode.Warning
 }
 
 // Explicitly disable the connectedAndroidTest task for this module
@@ -62,7 +61,7 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
-    implementation(libs.logging.interceptor)
+    debugImplementation(libs.okhttp3.loggingInterceptor)
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.okhttp)

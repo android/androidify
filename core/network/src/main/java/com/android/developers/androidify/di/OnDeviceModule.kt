@@ -26,9 +26,12 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-object OnDeviceModule {
+internal object OnDeviceModule {
+
     @Provides
-    fun provideModuleInstallClient(@ApplicationContext context: Context): ModuleInstallClient {
+    fun provideModuleInstallClient(
+        @ApplicationContext context: Context,
+    ): ModuleInstallClient {
         return ModuleInstall.getClient(context)
     }
 }

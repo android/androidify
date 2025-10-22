@@ -80,7 +80,7 @@ fun MainHomeContent(
 }
 
 @Composable
-fun ColumnScope.DecorativeSquiggleLightGreen() {
+internal fun ColumnScope.DecorativeSquiggleLightGreen() {
     val infiniteAnimation = rememberInfiniteTransition()
     val rotationAnimation = infiniteAnimation.animateFloat(
         0f,

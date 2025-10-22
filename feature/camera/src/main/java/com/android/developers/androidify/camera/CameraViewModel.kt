@@ -19,6 +19,7 @@ import android.app.Application
 import android.media.Image
 import android.media.MediaActionSound
 import android.net.Uri
+import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.annotation.OptIn
 import androidx.camera.core.CameraControl
@@ -45,6 +46,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.concurrent.futures.await
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.application
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
@@ -57,9 +60,11 @@ import com.google.mlkit.vision.pose.PoseDetection
 import com.google.mlkit.vision.pose.PoseDetector
 import com.google.mlkit.vision.pose.PoseLandmark
 import com.google.mlkit.vision.pose.defaults.PoseDetectorOptions
+import dagger.Lazy
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.update
@@ -72,20 +77,20 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
 @HiltViewModel
-class CameraViewModel
+internal class CameraViewModel
 @Inject constructor(
-    application: Application,
     val localFileProvider: LocalFileProvider,
     val rearCameraUseCase: RearCameraUseCase,
     configProvider: ConfigProvider,
-) : AndroidViewModel(application) {
+    private val processCameraProvider: dagger.Lazy<ProcessCameraProvider>
+) : ViewModel() {
+
     private var _uiState = MutableStateFlow(CameraUiState(xrEnabled = configProvider.isXrEnabled()))
-    val uiState: StateFlow<CameraUiState>
-        get() = _uiState
+    val uiState: StateFlow<CameraUiState> = _uiState.asStateFlow()
 
     private var _foldingFeature = MutableStateFlow<FoldingFeature?>(null)
-    val foldingFeature: StateFlow<FoldingFeature?>
-        get() = _foldingFeature
+    val foldingFeature = _foldingFeature.asStateFlow()
+
     private var surfaceMeteringPointFactory: SurfaceOrientedMeteringPointFactory? = null
     private var cameraControl: CameraControl? = null
     private var cameraInfo: CameraInfo? = null
@@ -125,13 +130,12 @@ class CameraViewModel
             // automatically be cancelled once the calling coroutine is cancelled.
             launch { runPoseDetection() }
 
-            val processCameraProvider = ProcessCameraProvider.awaitInstance(application)
             val availableCameraLenses =
                 listOf(
                     DEFAULT_BACK_CAMERA,
                     DEFAULT_FRONT_CAMERA,
                 ).filter {
-                    processCameraProvider.hasCamera(it)
+                    processCameraProvider.get().hasCamera(it)
                 }
             _uiState.update { it.copy(canFlipCamera = availableCameraLenses.size == 2) }
             cameraTypeFlow.update { it ?: availableCameraLenses.firstOrNull() }
@@ -293,7 +297,7 @@ class CameraViewModel
         }
 
         activity.lifecycle.addObserver(object : DefaultLifecycleObserver {
-            override fun onDestroy(owner: androidx.lifecycle.LifecycleOwner) {
+            override fun onDestroy(owner: LifecycleOwner) {
                 job.cancel()
             }
         })
@@ -344,7 +348,7 @@ class CameraViewModel
  * @property imageUri The [Uri] of the captured image, or null if no image has been captured.
  * @property detectedPose Indicates whether a pose has been detected, it's true by default.
  */
-data class CameraUiState(
+internal data class CameraUiState(
     val surfaceRequest: SurfaceRequest? = null,
     val cameraSessionId: Int = 0,
     val imageUri: Uri? = null,
@@ -370,7 +374,7 @@ data class CameraUiState(
 /**
  * Represents the UI state of an autofocus event
  */
-sealed interface AutofocusUiState {
+internal sealed interface AutofocusUiState {
 
     data object Unspecified : AutofocusUiState
 

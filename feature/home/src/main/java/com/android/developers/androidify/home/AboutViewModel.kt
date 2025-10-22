@@ -16,22 +16,34 @@
 package com.android.developers.androidify.home
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.android.developers.androidify.data.ConfigProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
-class AboutViewModel @Inject constructor(configProvider: ConfigProvider) : ViewModel() {
-    private val _state = MutableStateFlow(
-        AboutState(
-            isXrEnabled = configProvider.isXrEnabled(),
-        ),
+internal class AboutViewModel @Inject constructor(
+    configProvider: ConfigProvider,
+) : ViewModel() {
+
+    val state: StateFlow<AboutState> = flow {
+        emit(AboutState.Content(isXrEnabled = configProvider.isXrEnabled()))
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000),
+        initialValue = AboutState.Loading(),
     )
-    val state = _state.asStateFlow()
 }
 
-data class AboutState(
-    val isXrEnabled: Boolean = false,
-)
+internal sealed interface AboutState {
+
+    data class Content(
+        val isXrEnabled: Boolean,
+    ) : AboutState
+
+    class Loading : AboutState
+}
