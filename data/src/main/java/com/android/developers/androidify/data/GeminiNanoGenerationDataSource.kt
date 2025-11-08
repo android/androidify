@@ -30,6 +30,7 @@ import javax.inject.Singleton
 
 interface GeminiNanoGenerationDataSource {
     suspend fun generatePrompt(prompt: String): String?
+    suspend fun validatePromptHasEnoughInformation(inputPrompt: String): ValidatedDescription?
     suspend fun validateImageHasEnoughInformation(image: Bitmap): ValidatedImage?
     suspend fun generateDescriptivePromptFromImage(image: Bitmap): ValidatedDescription?
 }
@@ -58,6 +59,28 @@ internal class GeminiNanoGenerationDataSourceImpl @Inject constructor(
         )
         Timber.d("generatePrompt: ${response.candidates[0].text}")
         return response.candidates[0].text
+    }
+
+    override suspend fun validatePromptHasEnoughInformation(inputPrompt: String): ValidatedDescription? {
+        if (!downloader.isModelDownloaded()) return null
+
+        val response = downloader.generativeModel.generateContent(
+            generateContentRequest(
+                TextPart(remoteConfigDataSource.promptTextVerifyNano() + inputPrompt),
+            ) {
+                temperature = 0.0f
+                maxOutputTokens = 256
+            },
+        ).candidates[0].text
+
+        // Parse response to determine if validation succeeded
+        // Expecting response format: "valid" or "invalid"
+        val successValue = response?.trim()?.equals("valid", ignoreCase = true) == true
+
+        return ValidatedDescription(
+            successValue,
+            if (successValue) inputPrompt else null,
+        )
     }
 
     override suspend fun validateImageHasEnoughInformation(image: Bitmap): ValidatedImage? {
