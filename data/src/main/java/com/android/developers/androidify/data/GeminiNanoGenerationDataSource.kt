@@ -75,7 +75,7 @@ internal class GeminiNanoGenerationDataSourceImpl @Inject constructor(
 
         // Parse response to determine if validation succeeded
         // Expecting response format: "valid" or "invalid"
-        val successValue = response?.trim()?.equals("valid", ignoreCase = true) == true
+        val successValue = response.trim().equals("valid", ignoreCase = true)
 
         return ValidatedDescription(
             successValue,
