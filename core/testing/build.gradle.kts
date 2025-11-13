@@ -41,7 +41,7 @@ android {
 
 // Explicitly disable the connectedAndroidTest task for this module
 androidComponents {
-    beforeVariants(selector().all()) { variant ->
+    beforeVariants { variant ->
         variant.enableAndroidTest = false
     }
 }
@@ -61,11 +61,5 @@ dependencies {
     implementation(projects.feature.results)
     implementation(projects.watchface)
     implementation(projects.wear.common)
-
     ksp(libs.hilt.compiler)
-
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    androidTestImplementation(libs.hilt.android.testing)
-    kspAndroidTest(libs.hilt.compiler)
 }
