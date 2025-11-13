@@ -15,6 +15,8 @@
  */
 import java.io.ByteArrayOutputStream
 import java.util.regex.Pattern
+import org.gradle.api.attributes.Attribute
+import java.lang.RuntimeException
 
 evaluationDependsOn(":wear:watchface")
 
@@ -66,9 +68,38 @@ configurations {
         isCanBeConsumed = false
         isCanBeResolved = true
     }
+
+    create("watchfaceApkDebug"){
+        isCanBeResolved = true
+        isCanBeConsumed = false
+
+        attributes {
+            attribute(
+                Attribute.of(com.android.build.api.attributes.BuildTypeAttr::class.java),
+                objects.named(com.android.build.api.attributes.BuildTypeAttr::class.java, "debug")
+            )
+            attribute(Attribute.of("artifactType", String::class.java), "apk")
+        }
+    }
+
+    create("watchfaceApkRelease") {
+        isCanBeResolved = true
+        isCanBeConsumed = false
+
+        attributes {
+            attribute(
+                Attribute.of(com.android.build.api.attributes.BuildTypeAttr::class.java),
+                objects.named(com.android.build.api.attributes.BuildTypeAttr::class.java, "release")
+            )
+            attribute(Attribute.of("artifactType", String::class.java), "apk")
+        }
+    }
 }
 
 dependencies {
+    configurations.getByName("watchfaceApkDebug").dependencies.add(project(":wear:watchface"))
+    configurations.getByName("watchfaceApkRelease").dependencies.add(project(":wear:watchface"))
+
     implementation(projects.wear.common)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.wear.compose.foundation)
@@ -93,29 +124,29 @@ dependencies {
 androidComponents.onVariants { variant ->
     val capsVariant = variant.name.replaceFirstChar { it.uppercase() }
 
-    val copyTaskProvider = tasks.register<Copy>("copyWatchface${capsVariant}Output") {
-        val wfTask = project(":wear:watchface").tasks.named("assemble$capsVariant")
-        dependsOn(wfTask)
-        val buildDir = project(":wear:watchface").layout.buildDirectory.asFileTree.matching {
-            include("**/${variant.name}/**/*.apk")
-            exclude("**/*androidTest*")
-        }
-        from(buildDir)
-        into(layout.buildDirectory.dir("intermediates/watchfaceAssets/${variant.name}"))
+    val watchfaceApkConfig = when (variant.name) {
+        "release" -> configurations.getByName("watchfaceApkRelease")
+        "debug" -> configurations.getByName("watchfaceApkDebug")
+        else -> throw RuntimeException("Cannot find watchface apk configuration")
+    }
 
-        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    val copyWatchfaceApkTask = tasks.register<Copy>("copyWatchface${capsVariant}ApkToAssets") {
+        from(watchfaceApkConfig) {
+            // the resolved directory contains apk and output-metadata.json
+            include("*.apk")
+        }
+        into(layout.buildDirectory.dir("intermediates/watchfaceAssets/${variant.name}"))
 
         eachFile {
             path = "default_watchface.apk"
         }
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
         includeEmptyDirs = false
     }
-
     val tokenTask = tasks.register<ProcessFilesTask>("generateToken${capsVariant}Res") {
         val tokenFile =
             layout.buildDirectory.file("generated/wfTokenRes/${variant.name}/res/values/wf_token.xml")
-
-        inputFile.from(copyTaskProvider.map { it.outputs.files.singleFile })
+        inputFile.from(copyWatchfaceApkTask.map { it.outputs.files.singleFile })
         outputFile.set(tokenFile)
         cliToolClasspath.set(project.configurations["cliToolConfiguration"])
     }
@@ -143,7 +174,8 @@ abstract class ProcessFilesTask : DefaultTask() {
 
     @TaskAction
     fun taskAction() {
-        val apkFile = inputFile.singleFile.resolve("default_watchface.apk")
+        val apkDirectory = inputFile.singleFile
+        val apkFile = apkDirectory.resolve("default_watchface.apk")
 
         val stdOut = ByteArrayOutputStream()
         val stdErr = ByteArrayOutputStream()
