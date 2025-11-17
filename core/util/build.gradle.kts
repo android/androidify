@@ -39,7 +39,7 @@ android {
 }
 // Explicitly disable the connectedAndroidTest task for this module
 androidComponents {
-    beforeVariants(selector().all()) { variant ->
+    beforeVariants { variant ->
         variant.enableAndroidTest = false
     }
 }
