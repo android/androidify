@@ -12,6 +12,7 @@ plugins {
     alias(libs.plugins.android.test) apply false
     alias(libs.plugins.baselineprofile) apply false
     alias(libs.plugins.spotless) apply false
+    alias(libs.plugins.composeScreenshot) apply false
 }
 buildscript {
     repositories {

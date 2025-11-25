@@ -19,35 +19,19 @@ import org.gradle.api.attributes.Attribute
 import com.android.build.api.attributes.BuildTypeAttr
 
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.androidify.androidApplication)
     alias(libs.plugins.serialization)
     alias(libs.plugins.kotlin.ksp)
 }
 
 android {
     namespace = "com.android.developers.androidify"
-    compileSdk = libs.versions.compileSdk.get().toInt()
-
     defaultConfig {
-        minSdk = libs.versions.wearMinSdk.get().toInt()
+        minSdk = 36
         applicationId = "com.android.developers.androidify"
-        targetSdk = 36
         // Ensure Wear OS app has its own version space
         versionCode = libs.versions.appVersionWearOffset.get().toInt() + libs.versions.appVersionCode.get().toInt()
         versionName = libs.versions.appVersionName.get()
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.toVersion(libs.versions.javaVersion.get())
-        targetCompatibility = JavaVersion.toVersion(libs.versions.javaVersion.get())
-    }
-    kotlinOptions {
-        jvmTarget = libs.versions.jvmTarget.get()
-    }
-    buildFeatures {
-        compose = true
     }
     sourceSets {
         getByName("release") {

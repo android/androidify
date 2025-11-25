@@ -14,30 +14,14 @@
  * limitations under the License.
  */
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.androidify.androidComposeLibrary)
 }
+
 android {
     namespace = "com.android.developers.androidify.xr"
-    compileSdk = libs.versions.compileSdk.get().toInt()
-    defaultConfig {
-        minSdk = libs.versions.minSdk.get().toInt()
-    }
-
     buildFeatures {
-        compose = true
         buildConfig = true
     }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.toVersion(libs.versions.javaVersion.get())
-        targetCompatibility = JavaVersion.toVersion(libs.versions.javaVersion.get())
-    }
-    kotlinOptions {
-        jvmTarget = libs.versions.jvmTarget.get()
-    }
-
 }
 
 dependencies {

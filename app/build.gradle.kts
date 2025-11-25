@@ -16,9 +16,7 @@
 import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
 
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.androidify.androidApplication)
     alias(libs.plugins.serialization)
     alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.hilt)
@@ -31,20 +29,10 @@ plugins {
 
 android {
     namespace = "com.android.developers.androidify"
-    compileSdk = libs.versions.compileSdk.get().toInt()
-
     defaultConfig {
         applicationId = "com.android.developers.androidify"
-        minSdk = libs.versions.minSdk.get().toInt()
-        targetSdk = 36
         versionCode = libs.versions.appVersionCode.get().toInt()
         versionName = libs.versions.appVersionName.get()
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    signingConfigs {
-
     }
 
     buildTypes {
@@ -83,13 +71,6 @@ android {
                 signingConfig = signingConfigs.getByName("debug")
             }
         }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.toVersion(libs.versions.javaVersion.get())
-        targetCompatibility = JavaVersion.toVersion(libs.versions.javaVersion.get())
-    }
-    kotlinOptions {
-        jvmTarget = libs.versions.javaVersion.get()
     }
     testOptions {
         unitTests {
