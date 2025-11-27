@@ -56,7 +56,7 @@ import com.android.developers.androidify.theme.TertiaryContainer
 import com.android.developers.androidify.util.FoldablePreviewParameters
 import com.android.developers.androidify.util.FoldablePreviewParametersProvider
 import com.android.developers.androidify.util.allowsFullContent
-import com.android.developers.androidify.util.isAtLeastMedium
+import com.android.developers.androidify.util.isWidthAtLeastMedium
 import com.android.developers.androidify.util.shouldShowTabletopLayout
 import com.android.developers.androidify.util.supportsTabletop
 import com.android.developers.androidify.xr.LocalSpatialCapabilities
@@ -111,7 +111,7 @@ internal fun CameraLayout(
                 surfaceAspectRatio,
             )
 
-            isAtLeastMedium() && shouldShowTabletopLayout(
+            isWidthAtLeastMedium() && shouldShowTabletopLayout(
                 supportsTabletop = supportsTabletop,
                 isTabletop = isTabletop,
             ) -> TableTopSupportedCameraLayout(
@@ -125,7 +125,7 @@ internal fun CameraLayout(
                 isTabletop = isTabletop,
             )
 
-            isAtLeastMedium() && maxWidth > maxHeight -> MediumHorizontalCameraLayout(
+            isWidthAtLeastMedium() && maxWidth > maxHeight -> MediumHorizontalCameraLayout(
                 viewfinder,
                 captureButton,
                 flipCameraButton,
@@ -329,7 +329,7 @@ private fun TableTopCameraLayout(
         Box(
             modifier = Modifier
                 .weight(1f)
-                .aspectRatio(1f),
+                .aspectRatio(9/16f),
         ) {
             viewfinder(Modifier)
             guide(Modifier.fillMaxSize())
@@ -381,7 +381,7 @@ private fun MediumHorizontalCameraLayout(
 
         Box(
             Modifier
-                .aspectRatio(3 / 4f)
+                .aspectRatio(9 / 16f)
                 .navigationBarsPadding(),
         ) {
             viewfinder(Modifier.fillMaxSize())

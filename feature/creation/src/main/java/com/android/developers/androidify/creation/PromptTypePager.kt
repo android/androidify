@@ -57,7 +57,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.android.developers.androidify.data.DropBehaviourFactory
 import com.android.developers.androidify.theme.AndroidifyTheme
+import com.android.developers.androidify.theme.SharedElementContextPreview
 import com.android.developers.androidify.theme.components.HorizontalToolbar
+import com.android.developers.androidify.util.PhonePreview
 import kotlinx.coroutines.launch
 
 @Composable
@@ -110,6 +112,7 @@ fun MainCreationPane(
         }
     }
 }
+
 
 @Composable
 private fun PromptTypePager(
@@ -184,5 +187,24 @@ private fun PromptTypeToolbarPreview() {
             selectedOption = PromptType.PHOTO,
             onOptionSelected = {},
         )
+    }
+}
+
+@Preview
+@Composable
+private fun PromptTypeMainPreview() {
+    AndroidifyTheme {
+        SharedElementContextPreview {
+            MainCreationPane(
+                uiState = CreationState(),
+                dropBehaviourFactory = fakeDropBehaviourFactory,
+                onCameraPressed = { },
+                onChooseImageClicked = {},
+                onUndoPressed = {},
+                onPromptGenerationPressed = {},
+                onSelectedPromptOptionChanged = {},
+                onDropCallback = {}
+            )
+        }
     }
 }
