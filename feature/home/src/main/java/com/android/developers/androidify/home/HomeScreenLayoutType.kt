@@ -17,7 +17,7 @@ package com.android.developers.androidify.home
 
 import androidx.compose.runtime.Composable
 import androidx.xr.compose.platform.LocalSpatialCapabilities
-import com.android.developers.androidify.util.isAtLeastMedium
+import com.android.developers.androidify.util.isWidthAtLeastMedium
 
 enum class HomeScreenLayoutType {
     Compact,
@@ -29,7 +29,7 @@ enum class HomeScreenLayoutType {
 fun calculateLayoutType(enableXr: Boolean = false): HomeScreenLayoutType {
     return when {
         LocalSpatialCapabilities.current.isSpatialUiEnabled && enableXr -> HomeScreenLayoutType.Spatial
-        isAtLeastMedium() -> HomeScreenLayoutType.Medium
+        isWidthAtLeastMedium() -> HomeScreenLayoutType.Medium
         else -> HomeScreenLayoutType.Compact
     }
 }

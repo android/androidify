@@ -17,7 +17,7 @@ package com.android.developers.androidify.customize
 
 import androidx.compose.runtime.Composable
 import androidx.xr.compose.platform.LocalSpatialCapabilities
-import com.android.developers.androidify.util.isAtLeastMedium
+import com.android.developers.androidify.util.isWidthAtLeastMedium
 
 enum class CustomizeExportLayoutType {
     Compact,
@@ -29,7 +29,7 @@ enum class CustomizeExportLayoutType {
 fun calculateLayoutType(enableXr: Boolean = false): CustomizeExportLayoutType {
     return when {
         LocalSpatialCapabilities.current.isSpatialUiEnabled && enableXr -> CustomizeExportLayoutType.Spatial
-        isAtLeastMedium() -> CustomizeExportLayoutType.Medium
+        isWidthAtLeastMedium() -> CustomizeExportLayoutType.Medium
         else -> CustomizeExportLayoutType.Compact
     }
 }

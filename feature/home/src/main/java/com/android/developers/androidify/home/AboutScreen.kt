@@ -68,7 +68,7 @@ import com.android.developers.androidify.theme.components.SecondaryOutlinedButto
 import com.android.developers.androidify.theme.sharedBoundsReveal
 import com.android.developers.androidify.util.LargeScreensPreview
 import com.android.developers.androidify.util.PhonePreview
-import com.android.developers.androidify.util.isAtLeastMedium
+import com.android.developers.androidify.util.isWidthAtLeastMedium
 
 @Composable
 fun AboutScreen(
@@ -95,7 +95,7 @@ fun AboutScreenContents(
     onPrivacyClicked: () -> Unit,
     onLicensesClicked: () -> Unit,
     xrEnabled: Boolean = false,
-    isMediumWindowSize: Boolean = isAtLeastMedium(),
+    isMediumWindowSize: Boolean = isWidthAtLeastMedium(),
 ) {
     val bottomButtons = @Composable {
         FooterButtons(

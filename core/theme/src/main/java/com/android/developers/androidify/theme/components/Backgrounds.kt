@@ -43,13 +43,13 @@ import com.android.developers.androidify.theme.R
 import com.android.developers.androidify.util.LargeScreensPreview
 import com.android.developers.androidify.util.PhonePreview
 import com.android.developers.androidify.util.dpToPx
-import com.android.developers.androidify.util.isAtLeastMedium
+import com.android.developers.androidify.util.isWidthAtLeastMedium
 
 @Composable
 fun SquiggleBackground(
     modifier: Modifier = Modifier,
     offsetHeightFraction: Float = 0f,
-    isMediumWindowSize: Boolean = isAtLeastMedium(),
+    isMediumWindowSize: Boolean = isWidthAtLeastMedium(),
 ) {
     val vectorBackground =
         rememberVectorPainter(ImageVector.vectorResource(R.drawable.squiggle))
@@ -113,7 +113,7 @@ private fun ResultsBackgroundPhonePreview() {
 @Composable
 fun ResultsBackground(
     modifier: Modifier = Modifier,
-    isMediumWindowSize: Boolean = isAtLeastMedium(),
+    isMediumWindowSize: Boolean = isWidthAtLeastMedium(),
 ) {
     Box(
         modifier = modifier

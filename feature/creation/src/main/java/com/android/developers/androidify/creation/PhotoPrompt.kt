@@ -98,6 +98,7 @@ import com.android.developers.androidify.theme.components.SecondaryOutlinedButto
 import com.android.developers.androidify.theme.sharedBoundsRevealWithShapeMorph
 import com.android.developers.androidify.theme.sharedBoundsWithDefaults
 import com.android.developers.androidify.util.dashedRoundedRectBorder
+import com.android.developers.androidify.util.isHorizontalWindow
 import com.android.developers.androidify.creation.R as CreationR
 
 @Composable
@@ -170,6 +171,27 @@ private fun UploadEmptyState(
     onChooseImagePress: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    if (isHorizontalWindow()) {
+        HorizontallyAlignedUploadEmptyState(
+            onCameraPressed = onCameraPressed,
+            onChooseImagePress = onChooseImagePress,
+            modifier = modifier,
+        )
+    } else {
+        VerticallyAlignedUploadEmptyState(
+            onCameraPressed = onCameraPressed,
+            onChooseImagePress = onChooseImagePress,
+            modifier = modifier,
+        )
+    }
+}
+
+@Composable
+private fun VerticallyAlignedUploadEmptyState(
+    onCameraPressed: () -> Unit,
+    onChooseImagePress: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Column(
         modifier = modifier
             .verticalScroll(rememberScrollState())
@@ -188,6 +210,45 @@ private fun UploadEmptyState(
         Spacer(modifier = Modifier.height(16.dp))
         TakePhotoButton(onCameraPressed)
         Spacer(modifier = Modifier.height(32.dp))
+        SecondaryOutlinedButton(
+            onClick = {
+                onChooseImagePress()
+            },
+            leadingIcon = {
+                Image(
+                    painterResource(CreationR.drawable.choose_picture_image),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .padding(end = 8.dp)
+                        .size(24.dp),
+                )
+            },
+            buttonText = stringResource(CreationR.string.photo_picker_choose_photo_label),
+        )
+    }
+}
+
+@Composable
+private fun HorizontallyAlignedUploadEmptyState(
+    onCameraPressed: () -> Unit,
+    onChooseImagePress: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier
+            .padding(16.dp),
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        TakePhotoButton(onCameraPressed)
+        Text(
+            stringResource(CreationR.string.photo_picker_title),
+            fontSize = 28.sp,
+            textAlign = TextAlign.Center,
+            lineHeight = 40.sp,
+            minLines = 2,
+            maxLines = 2,
+        )
         SecondaryOutlinedButton(
             onClick = {
                 onChooseImagePress()

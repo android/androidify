@@ -57,7 +57,7 @@ import com.android.developers.androidify.theme.components.AndroidifyTopAppBar
 import com.android.developers.androidify.theme.components.ResultsBackground
 import com.android.developers.androidify.util.AdaptivePreview
 import com.android.developers.androidify.util.SmallPhonePreview
-import com.android.developers.androidify.util.isAtLeastMedium
+import com.android.developers.androidify.util.isWidthAtLeastMedium
 import com.android.developers.androidify.xr.RequestFullSpaceIconButton
 import com.android.developers.androidify.xr.RequestHomeSpaceIconButton
 import com.android.developers.androidify.xr.couldRequestFullSpace
@@ -129,7 +129,7 @@ fun ResultsScreenContents(
     val topBar = @Composable {
         AndroidifyTopAppBar(
             backEnabled = true,
-            isMediumWindowSize = isAtLeastMedium(),
+            isMediumWindowSize = isWidthAtLeastMedium(),
             onBackPressed = {
                 onBackPress()
             },

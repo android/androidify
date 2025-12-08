@@ -29,11 +29,6 @@ import androidx.compose.ui.geometry.Rect
 )
 val MotionScheme.sharedElementTransitionSpec: BoundsTransform
     @Composable
-    get() = object : BoundsTransform {
-        override fun transform(
-            initialBounds: Rect,
-            targetBounds: Rect,
-        ): FiniteAnimationSpec<Rect> {
-            return this@sharedElementTransitionSpec.slowSpatialSpec()
-        }
+    get() = BoundsTransform { _, _ ->
+        this@sharedElementTransitionSpec.slowSpatialSpec()
     }

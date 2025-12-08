@@ -21,8 +21,10 @@ import androidx.compose.ui.tooling.preview.Devices.PIXEL_7_PRO
 import androidx.compose.ui.tooling.preview.Devices.PIXEL_FOLD
 import androidx.compose.ui.tooling.preview.Devices.PIXEL_TABLET
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 
 @Preview(device = PIXEL_7_PRO, name = "Phone preview")
+@Preview(widthDp = 891, heightDp = 411, name = "Phone landscape preview", )
 annotation class PhonePreview
 
 @Preview(device = PIXEL_3A_XL, name = "Phone small preview", heightDp = 300, widthDp = 500)
