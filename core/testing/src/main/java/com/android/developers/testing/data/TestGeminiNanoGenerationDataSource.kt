@@ -30,6 +30,11 @@ class TestGeminiNanoGenerationDataSource(
         return promptOutput
     }
 
+    override suspend fun validatePromptHasEnoughInformation(inputPrompt: String): ValidatedDescription? {
+        if (!geminiNanoDownloader.isModelDownloaded()) return null
+        return ValidatedDescription(true, inputPrompt)
+    }
+
     override suspend fun validateImageHasEnoughInformation(image: Bitmap): ValidatedImage? {
         return ValidatedImage(true, null)
     }

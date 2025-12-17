@@ -52,8 +52,17 @@ internal class ImageGenerationRepositoryImpl @Inject constructor(
     private val localSegmentationDataSource: LocalSegmentationDataSource,
 ) : ImageGenerationRepository {
 
-    private suspend fun validatePromptHasEnoughInformation(inputPrompt: String): ValidatedDescription =
-        firebaseAiDataSource.validatePromptHasEnoughInformation(inputPrompt)
+    private suspend fun validatePromptHasEnoughInformation(inputPrompt: String): ValidatedDescription {
+        val validatePromptResult = if (remoteConfigDataSource.useGeminiNano()) {
+            geminiNanoDataSource.validatePromptHasEnoughInformation(inputPrompt)
+        } else {
+            null
+        }
+
+        // If validating prompt with Nano is not successful, fallback to using Firebase AI
+        return validatePromptResult
+            ?: firebaseAiDataSource.validatePromptHasEnoughInformation(inputPrompt)
+    }
 
     private suspend fun validateImageIsFullPerson(file: File): ValidatedImage {
         val bitmap = BitmapFactory.decodeFile(file.absolutePath)
