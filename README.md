@@ -46,6 +46,14 @@ fontName="Roboto Flex"
 
 For Googlers, get this info from go/androidify-api-setup
 
+## GitHub Repository
+
+The Play Store description currently includes a GitHub link with an incorrect trailing period.
+Here is the correct repository link without the formatting issue:
+
+[https://github.com/android/androidify](https://github.com/android/androidify)
+
+
 ## Availability
 Due to the background vibe feature using 
 `gemini-2.0-flash-preview-image-generation`, its not currently supported in a number of countries in Europe, Middle East & Africa.
