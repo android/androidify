@@ -14,7 +14,6 @@ class AndroidApplicationPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         with(project) {
             apply(plugin = "com.android.application")
-            apply(plugin = "org.jetbrains.kotlin.android")
             apply(plugin = "org.jetbrains.kotlin.plugin.compose")
 
             extensions.configure<ApplicationExtension> {

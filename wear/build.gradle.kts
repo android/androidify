@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import java.io.ByteArrayOutputStream
 import java.util.regex.Pattern
 import org.gradle.api.attributes.Attribute
@@ -33,16 +34,6 @@ android {
         versionCode = libs.versions.appVersionWearOffset.get().toInt() + libs.versions.appVersionCode.get().toInt()
         versionName = libs.versions.appVersionName.get()
     }
-    sourceSets {
-        getByName("release") {
-            assets.srcDirs(layout.buildDirectory.dir("intermediates/watchfaceAssets/release"))
-            res.srcDirs(layout.buildDirectory.file("generated/wfTokenRes/release/res/"))
-        }
-        getByName("debug") {
-            assets.srcDirs(layout.buildDirectory.dir("intermediates/watchfaceAssets/debug"))
-            res.srcDirs(layout.buildDirectory.file("generated/wfTokenRes/debug/res/"))
-        }
-    }
 }
 
 configurations {
@@ -55,6 +46,7 @@ configurations {
         create("watchfaceApk${buildType.replaceFirstChar { it.uppercase() }}") {
             isCanBeResolved = true
             isCanBeConsumed = false
+            isTransitive = false
 
             attributes {
                 attribute(
@@ -63,15 +55,13 @@ configurations {
                 )
                 attribute(Attribute.of("artifactType", String::class.java), "apk")
             }
+
+            dependencies.add(project.dependencies.create(project(":wear:watchface")))
         }
     }
 }
 
 dependencies {
-    configurations.matching { it.name.startsWith("watchfaceApk") }.all {
-        dependencies.add(project(":wear:watchface"))
-    }
-
     implementation(projects.wear.common)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.wear.compose.foundation)
@@ -95,69 +85,43 @@ dependencies {
 
 androidComponents.onVariants { variant ->
     val capsVariant = variant.name.replaceFirstChar { it.uppercase() }
-    val watchfaceApkConfig = configurations.getByName("watchfaceApk$capsVariant")
-
-    val copyWatchfaceApkTask = tasks.register<Copy>("copyWatchface${capsVariant}ApkToAssets") {
-        from(watchfaceApkConfig) {
-            // the resolved directory contains apk and output-metadata.json
-            include("*.apk")
-        }
-        into(layout.buildDirectory.dir("intermediates/watchfaceAssets/${variant.name}"))
-
-        eachFile {
-            path = "default_watchface.apk"
-        }
-        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-        includeEmptyDirs = false
-    }
     val tokenTask = tasks.register<ProcessFilesTask>("generateToken${capsVariant}Res") {
-        val tokenFile =
-            layout.buildDirectory.file("generated/wfTokenRes/${variant.name}/res/values/wf_token.xml")
-
-        apkDirectory.set(
-            layout.dir( copyWatchfaceApkTask.map {
-                it.destinationDir
-            })
-        )
-
-        outputFile.set(tokenFile)
-        cliToolClasspath.set(project.configurations["cliToolConfiguration"])
+        apkFileCollection.from(configurations.getByName("watchfaceApk$capsVariant"))
+        cliToolClasspath.from(project.configurations["cliToolConfiguration"])
     }
-
-    afterEvaluate {
-        tasks.named("pre${capsVariant}Build").configure {
-            dependsOn(tokenTask)
-        }
-    }
+    variant.sources.assets!!.addGeneratedSourceDirectory(tokenTask) { task -> task.apkDirectory }
+    variant.sources.res!!.addGeneratedSourceDirectory(tokenTask) { task -> task.resDirectory }
 }
 
 abstract class ProcessFilesTask : DefaultTask() {
-    @get:InputDirectory
+    @get:[InputFiles Classpath]
+    abstract val cliToolClasspath: ConfigurableFileCollection
+    @get:[InputFiles PathSensitive(PathSensitivity.NONE)]
+    abstract val apkFileCollection: ConfigurableFileCollection
+
+    @get:OutputDirectory
     abstract val apkDirectory: DirectoryProperty
-
-    @get:OutputFile
-    abstract val outputFile: RegularFileProperty
-
-    @get:InputFiles
-    @get:PathSensitive(PathSensitivity.RELATIVE)
-    abstract val cliToolClasspath: Property<FileCollection>
+    @get:OutputDirectory
+    abstract val resDirectory: DirectoryProperty
 
     @get:Inject
     abstract val execOperations: ExecOperations
 
     @TaskAction
     fun taskAction() {
-        val apkFile = apkDirectory.asFile.get().resolve("default_watchface.apk")
+        val sourceApkFile = apkFileCollection.files.single().listFiles().single { it.extension == "apk" }
+        val destinationApkFile = File(apkDirectory.asFile.get(), "default_watchface.apk")
+        sourceApkFile.copyTo(destinationApkFile, overwrite = true)
 
         val stdOut = ByteArrayOutputStream()
         val stdErr = ByteArrayOutputStream()
 
         execOperations.javaexec {
-            classpath = cliToolClasspath.get()
+            classpath = cliToolClasspath
             mainClass = "com.google.android.wearable.watchface.validator.cli.DwfValidation"
 
             args(
-                "--apk_path=${apkFile.absolutePath}",
+                "--apk_path=${destinationApkFile.absolutePath}",
                 "--package_name=com.android.developers.androidify",
             )
             standardOutput = stdOut
@@ -179,7 +143,7 @@ abstract class ProcessFilesTask : DefaultTask() {
         val match = Pattern.compile("generated token: (\\S+)").matcher(stdOut.toString())
         if (match.find()) {
             val token = match.group(1)
-            val output = outputFile.get().asFile
+            val output = File(resDirectory.get().asFile, "values/wf_token.xml")
             output.parentFile.mkdirs()
             val tokenResText = """<resources>
                          |    <string name="default_wf_token">$token</string>

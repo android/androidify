@@ -20,7 +20,7 @@ plugins {
 
 android {
     namespace = "com.android.developers.androidify.watchfacepush.defaultwf"
-
+    enableKotlin = false
     defaultConfig {
         applicationId = "com.android.developers.androidify.watchfacepush.defaultwf"
         minSdk = 36

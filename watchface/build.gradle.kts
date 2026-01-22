@@ -30,11 +30,6 @@ android {
     buildFeatures {
         buildConfig = true
     }
-    sourceSets {
-        getByName("androidTest") {
-            assets.srcDir("src/androidTest/assets")
-        }
-    }
     // To avoid packaging conflicts when using bouncycastle
     packaging {
         resources {
@@ -60,6 +55,7 @@ dependencies {
 
     // For testing
     androidTestImplementation(libs.robolectric)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     androidTestImplementation(libs.hilt.android.testing)
     androidTestImplementation(libs.androidx.junit)
