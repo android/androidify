@@ -19,6 +19,8 @@ import android.app.Application
 import android.content.pm.ApplicationInfo
 import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy.Builder
+import androidx.compose.runtime.Composer
+import androidx.compose.runtime.tooling.ComposeStackTraceMode
 import coil3.ImageLoader
 import coil3.PlatformContext
 import coil3.SingletonImageLoader
@@ -37,6 +39,7 @@ class AndroidifyApplication : Application(), SingletonImageLoader.Factory {
         if (isDebuggable()) {
             Timber.plant(Timber.DebugTree())
         } else {
+            Composer.setDiagnosticStackTraceMode(ComposeStackTraceMode.Auto)
             Timber.plant(CrashlyticsTree())
         }
         setStrictModePolicy()

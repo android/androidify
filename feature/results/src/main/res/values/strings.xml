@@ -59,4 +59,5 @@
     <string name="complete_error_message">Check your watch is connected and try again</string>
     <string name="no_watch_faces">"No available watch faces"</string>
     <string name="error_dismiss">OK</string>
+    <string name="continue_on_watch">Continue on watch</string>
 </resources>

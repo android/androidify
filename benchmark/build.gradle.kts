@@ -15,6 +15,7 @@
  */
 import com.android.build.api.dsl.ManagedVirtualDevice
 import org.gradle.kotlin.dsl.create
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 /*
  * Copyright 2025 The Android Open Source Project
@@ -39,21 +40,13 @@ plugins {
 
 android {
     namespace = "com.android.developers.androidify.benchmark"
-    compileSdk = libs.versions.compileSdk.get().toInt()
 
     compileOptions {
         sourceCompatibility = JavaVersion.toVersion(libs.versions.javaVersion.get())
         targetCompatibility = JavaVersion.toVersion(libs.versions.javaVersion.get())
     }
 
-    kotlinOptions {
-        jvmTarget = libs.versions.javaVersion.get()
-    }
-
     defaultConfig {
-        minSdk = libs.versions.minSdk.get().toInt()
-        targetSdk = libs.versions.compileSdk.get().toInt()
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -77,6 +70,12 @@ android {
             apiLevel = 34
             systemImageSource = "google"
         }
+    }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget = JvmTarget.fromTarget(libs.versions.javaVersion.get())
     }
 }
 

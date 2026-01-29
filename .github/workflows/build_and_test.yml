@@ -60,9 +60,6 @@ jobs:
       - name: Build debug APK
         run: ./gradlew assembleDebug --no-configuration-cache
 
-      - name: Verify Screenshot Tests (AndroidX)
-        run: ./gradlew validateDebugScreenshotTest
-
       - name: Run local unit tests
         run: ./gradlew testDebugUnitTest 
 

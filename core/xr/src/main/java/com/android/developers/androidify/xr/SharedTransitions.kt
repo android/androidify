@@ -55,18 +55,18 @@ private fun shimSharedTransitionScope(original: SharedTransitionScope): SharedTr
         override val isTransitionActive: Boolean
             get() = false
 
-        override fun Modifier.skipToLookaheadSize(): Modifier = this
+        override fun Modifier.skipToLookaheadSize(enabled: () -> Boolean) = this
 
         override fun Modifier.renderInSharedTransitionScopeOverlay(
             zIndexInOverlay: Float,
-            renderInOverlay: (SharedTransitionScope) -> Boolean,
+            renderInOverlay: () -> Boolean,
         ) = this
 
         override fun Modifier.sharedElement(
             sharedContentState: SharedTransitionScope.SharedContentState,
             animatedVisibilityScope: AnimatedVisibilityScope,
             boundsTransform: BoundsTransform,
-            placeHolderSize: SharedTransitionScope.PlaceHolderSize,
+            placeholderSize: SharedTransitionScope.PlaceholderSize,
             renderInOverlayDuringTransition: Boolean,
             zIndexInOverlay: Float,
             clipInOverlayDuringTransition: SharedTransitionScope.OverlayClip,
@@ -79,7 +79,7 @@ private fun shimSharedTransitionScope(original: SharedTransitionScope): SharedTr
             exit: ExitTransition,
             boundsTransform: BoundsTransform,
             resizeMode: SharedTransitionScope.ResizeMode,
-            placeHolderSize: SharedTransitionScope.PlaceHolderSize,
+            placeholderSize: SharedTransitionScope.PlaceholderSize,
             renderInOverlayDuringTransition: Boolean,
             zIndexInOverlay: Float,
             clipInOverlayDuringTransition: SharedTransitionScope.OverlayClip,
@@ -89,7 +89,7 @@ private fun shimSharedTransitionScope(original: SharedTransitionScope): SharedTr
             sharedContentState: SharedTransitionScope.SharedContentState,
             visible: Boolean,
             boundsTransform: BoundsTransform,
-            placeHolderSize: SharedTransitionScope.PlaceHolderSize,
+            placeholderSize: SharedTransitionScope.PlaceholderSize,
             renderInOverlayDuringTransition: Boolean,
             zIndexInOverlay: Float,
             clipInOverlayDuringTransition: SharedTransitionScope.OverlayClip,

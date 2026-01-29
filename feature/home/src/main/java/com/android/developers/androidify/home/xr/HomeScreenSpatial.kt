@@ -18,6 +18,7 @@ package com.android.developers.androidify.home.xr
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -38,6 +39,8 @@ import androidx.compose.ui.unit.dp
 import androidx.xr.compose.spatial.ContentEdge
 import androidx.xr.compose.spatial.Orbiter
 import androidx.xr.compose.spatial.OrbiterOffsetType
+import androidx.xr.compose.subspace.MovePolicy
+import androidx.xr.compose.subspace.ResizePolicy
 import androidx.xr.compose.subspace.SpatialPanel
 import androidx.xr.compose.subspace.layout.SpatialAlignment
 import androidx.xr.compose.subspace.layout.SubspaceModifier
@@ -45,9 +48,7 @@ import androidx.xr.compose.subspace.layout.aspectRatio
 import androidx.xr.compose.subspace.layout.fillMaxHeight
 import androidx.xr.compose.subspace.layout.fillMaxSize
 import androidx.xr.compose.subspace.layout.fillMaxWidth
-import androidx.xr.compose.subspace.layout.movable
 import androidx.xr.compose.subspace.layout.offset
-import androidx.xr.compose.subspace.layout.resizable
 import androidx.xr.compose.subspace.layout.rotate
 import com.android.developers.androidify.home.HomePageButton
 import com.android.developers.androidify.home.MainHomeContent
@@ -94,11 +95,11 @@ fun HomeScreenContentsSpatial(
                     .fillMaxWidth(0.2f)
                     .fillMaxHeight(0.8f)
                     .aspectRatio(0.77f)
-                    .resizable(maintainAspectRatio = true)
-                    .movable()
-                    .align(SpatialAlignment.CenterRight)
+                    .align(SpatialAlignment.CenterEnd)
                     .offset(z = 10.dp)
                     .rotate(0f, 0f, 5f),
+                resizePolicy = ResizePolicy(shouldMaintainAspectRatio = true),
+                dragPolicy = MovePolicy(),
             ) {
                 VideoPlayer(videoLink)
             }
@@ -115,7 +116,7 @@ private fun HomeScreenSpatialMainContent(
     var positionButtonClick by remember {
         mutableStateOf(IntOffset.Zero)
     }
-    Box {
+    Box(Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
                 .fillMaxWidth(0.55f)

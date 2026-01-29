@@ -36,7 +36,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
-
 @Composable
 fun CreationScreen(
     creationViewModel: CreationViewModel,
@@ -89,7 +88,7 @@ fun CreationScreen(
                 onUndoPressed = creationViewModel::onUndoPressed,
                 onPromptGenerationPressed = creationViewModel::onPromptGenerationClicked,
                 onBotColorSelected = creationViewModel::onBotColorChanged,
-                onStartClicked = creationViewModel::startClicked,
+                onStartClicked = creationViewModel::onStartClicked,
                 onDropCallback = creationViewModel::onImageSelected,
             )
         }

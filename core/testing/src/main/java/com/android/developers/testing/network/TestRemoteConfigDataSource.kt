@@ -42,12 +42,24 @@ class TestRemoteConfigDataSource(private val useGeminiNano: Boolean) : RemoteCon
         TODO("Not yet implemented")
     }
 
+    override fun promptImageValidationNano(): String {
+        TODO("Not yet implemented")
+    }
+
     override fun promptImageDescription(): String {
+        TODO("Not yet implemented")
+    }
+
+    override fun promptImageDescriptionNano(): String {
         TODO("Not yet implemented")
     }
 
     override fun useGeminiNano(): Boolean {
         return useGeminiNano
+    }
+
+    override fun enabledGeminiNanoModelVersions(): String {
+        TODO("Not yet implemented")
     }
 
     override fun generateBotPrompt(): String {

@@ -64,7 +64,7 @@ fun TransferringWatchFacePanel(
         WatchFacePanelButton(
             modifier = Modifier.padding(horizontal = 16.dp),
             buttonText = transferLabel,
-            isSending = true,
+            isInProgress = true,
             colors = ButtonDefaults.buttonColors(
                 contentColor = MaterialTheme.colorScheme.onSurface,
                 containerColor = MaterialTheme.colorScheme.secondaryContainer,

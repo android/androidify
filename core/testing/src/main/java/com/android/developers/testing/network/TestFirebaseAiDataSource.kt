@@ -24,7 +24,7 @@ import com.android.developers.androidify.vertexai.FirebaseAiDataSource
 
 class TestFirebaseAiDataSource(val promptOutput: List<String>) : FirebaseAiDataSource {
     override suspend fun validatePromptHasEnoughInformation(inputPrompt: String): ValidatedDescription {
-        return ValidatedDescription(true, "User description")
+        return ValidatedDescription(true, "Firebase description")
     }
 
     override suspend fun validateImageHasEnoughInformation(image: Bitmap): ValidatedImage {
@@ -32,7 +32,7 @@ class TestFirebaseAiDataSource(val promptOutput: List<String>) : FirebaseAiDataS
     }
 
     override suspend fun generateDescriptivePromptFromImage(image: Bitmap): ValidatedDescription {
-        return ValidatedDescription(true, "User description")
+        return ValidatedDescription(true, "Firebase description")
     }
 
     override suspend fun generateImageFromPromptAndSkinTone(

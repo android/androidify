@@ -69,7 +69,7 @@ class LocalFileProviderImpl @Inject constructor(
         var outputStream: FileOutputStream? = null
         try {
             outputStream = FileOutputStream(file)
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
             outputStream.flush()
         } catch (e: IOException) {
             throw e

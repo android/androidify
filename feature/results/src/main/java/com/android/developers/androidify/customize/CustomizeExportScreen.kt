@@ -130,6 +130,9 @@ fun CustomizeAndExportScreen(
         onInstallWatchFaceClicked = {
             viewModel.installWatchFace()
         },
+        onInstallAndroidifyClicked = {
+            viewModel.launchPlayInstallOnWatch()
+        },
         onResetWatchFaceSend = {
             viewModel.resetWatchFaceSend()
         },
@@ -151,6 +154,7 @@ private fun CustomizeExportContents(
     onToolSelected: (CustomizeTool) -> Unit,
     onSelectedToolStateChanged: (ToolState) -> Unit,
     onInstallWatchFaceClicked: () -> Unit,
+    onInstallAndroidifyClicked: suspend () -> Boolean,
     onResetWatchFaceSend: () -> Unit,
     layoutType: CustomizeExportLayoutType,
     snackbarHostState: SnackbarHostState,
@@ -262,6 +266,9 @@ private fun CustomizeExportContents(
                 installationStatus = state.watchFaceInstallationStatus,
                 onWatchFaceInstallClick = {
                     onInstallWatchFaceClicked()
+                },
+                onAndroidifyInstallClick = {
+                    onInstallAndroidifyClicked()
                 },
                 onLoad = loadWatchFaces,
                 watchFaceSelectionState = state.watchFaceSelectionState,
@@ -599,6 +606,7 @@ fun CustomizeExportPreview() {
                     layoutType = CustomizeExportLayoutType.Compact,
                     onSelectedToolStateChanged = {},
                     onInstallWatchFaceClicked = {},
+                    onInstallAndroidifyClicked = { true },
                     onResetWatchFaceSend = {},
                     loadWatchFaces = {},
                     onWatchFaceSelect = {},
@@ -640,6 +648,7 @@ fun CustomizeExportPreviewLarge() {
                     layoutType = CustomizeExportLayoutType.Medium,
                     onSelectedToolStateChanged = {},
                     onInstallWatchFaceClicked = {},
+                    onInstallAndroidifyClicked = { true },
                     onResetWatchFaceSend = {},
                     loadWatchFaces = {},
                     onWatchFaceSelect = {},

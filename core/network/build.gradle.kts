@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.androidify.androidLibrary)
     alias(libs.plugins.serialization)
     alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.hilt)
@@ -23,10 +22,7 @@ plugins {
 
 android {
     namespace = "com.android.developers.androidify.network"
-    compileSdk = libs.versions.compileSdk.get().toInt()
-
     defaultConfig {
-        minSdk = libs.versions.minSdk.get().toInt()
         testInstrumentationRunner = "com.android.developers.testing.AndroidifyTestRunner"
     }
     buildFeatures {
@@ -40,19 +36,11 @@ android {
             buildConfigField("boolean", "debug", "false")
         }
     }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.toVersion(libs.versions.javaVersion.get())
-        targetCompatibility = JavaVersion.toVersion(libs.versions.javaVersion.get())
-    }
-    kotlinOptions {
-        jvmTarget = libs.versions.jvmTarget.get()
-    }
 }
 
 // Explicitly disable the connectedAndroidTest task for this module
 androidComponents {
-    beforeVariants(selector().all()) { variant ->
+    beforeVariants { variant ->
         variant.enableAndroidTest = false
     }
 }
@@ -91,9 +79,4 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.robolectric)
     testImplementation(libs.androidx.core)
-
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    androidTestImplementation(libs.hilt.android.testing)
-    androidTestImplementation(projects.core.testing)
-    kspAndroidTest(libs.hilt.compiler)
 }

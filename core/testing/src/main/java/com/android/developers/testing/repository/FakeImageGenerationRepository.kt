@@ -20,11 +20,10 @@ import android.net.Uri
 import androidx.core.graphics.createBitmap
 import androidx.core.net.toUri
 import com.android.developers.androidify.data.ImageGenerationRepository
+import com.android.developers.androidify.model.ValidatedDescription
 import java.io.File
 
 class FakeImageGenerationRepository : ImageGenerationRepository {
-    override suspend fun initialize() {
-    }
     var exceptionToThrow: Exception? = null
 
     override suspend fun generateFromDescription(
@@ -33,6 +32,10 @@ class FakeImageGenerationRepository : ImageGenerationRepository {
     ): Bitmap {
         if (exceptionToThrow != null) throw exceptionToThrow!!
         return createBitmap(1, 1)
+    }
+
+    override suspend fun getDescriptionFromImage(file: File): ValidatedDescription {
+        return ValidatedDescription(true, "")
     }
 
     override suspend fun generateFromImage(

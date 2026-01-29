@@ -16,7 +16,11 @@
 package com.android.developers.androidify.watchface.transfer
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
+import android.net.Uri
+import androidx.concurrent.futures.await
+import androidx.wear.remote.interactions.RemoteActivityHelper
 import com.android.developers.androidify.watchface.WatchFaceAsset
 import com.android.developers.androidify.watchface.creator.WatchFaceCreator
 import com.android.developers.androidify.wear.common.ConnectedWatch
@@ -24,6 +28,7 @@ import com.android.developers.androidify.wear.common.WatchFaceInstallError
 import com.android.developers.androidify.wear.common.WatchFaceInstallationStatus
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.asExecutor
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -70,6 +75,8 @@ interface WatchFaceInstallationRepository {
     suspend fun resetInstallationStatus()
 
     suspend fun prepareForTransfer()
+
+    suspend fun installAndroidify(nodeId: String)
 }
 
 class WatchFaceInstallationRepositoryImpl @Inject constructor(
@@ -132,5 +139,19 @@ class WatchFaceInstallationRepositoryImpl @Inject constructor(
 
     override suspend fun prepareForTransfer() {
         manualStatusUpdates.tryEmit(WatchFaceInstallationStatus.Preparing)
+    }
+
+    override suspend fun installAndroidify(nodeId: String) {
+        val backgroundExecutor = Dispatchers.IO.asExecutor()
+        val remoteActivityHelper = RemoteActivityHelper(context, backgroundExecutor)
+
+        remoteActivityHelper.startRemoteActivity(
+            Intent(Intent.ACTION_VIEW)
+                .setData(
+                    Uri.parse("market://details?id=${context.packageName}"),
+                )
+                .addCategory(Intent.CATEGORY_BROWSABLE),
+            nodeId,
+        ).await()
     }
 }

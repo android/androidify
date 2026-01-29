@@ -38,9 +38,16 @@ fun calculateWindowSizeClass(): WindowSizeClass {
 }
 
 @Composable
-fun isAtLeastMedium(): Boolean {
+fun isWidthAtLeastMedium(): Boolean {
     val sizeClass = calculateWindowSizeClass()
     return sizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND)
+}
+
+@Composable
+fun areBothWindowDimensionsAtLeastMedium(): Boolean {
+    val sizeClass = calculateWindowSizeClass()
+    return sizeClass.isHeightAtLeastBreakpoint(WindowSizeClass.HEIGHT_DP_MEDIUM_LOWER_BOUND) &&
+        sizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND)
 }
 
 /***

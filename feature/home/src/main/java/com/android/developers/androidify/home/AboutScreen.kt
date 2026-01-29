@@ -27,7 +27,6 @@ import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
@@ -69,7 +68,7 @@ import com.android.developers.androidify.theme.components.SecondaryOutlinedButto
 import com.android.developers.androidify.theme.sharedBoundsReveal
 import com.android.developers.androidify.util.LargeScreensPreview
 import com.android.developers.androidify.util.PhonePreview
-import com.android.developers.androidify.util.isAtLeastMedium
+import com.android.developers.androidify.util.isWidthAtLeastMedium
 
 @Composable
 fun AboutScreen(
@@ -96,7 +95,7 @@ fun AboutScreenContents(
     onPrivacyClicked: () -> Unit,
     onLicensesClicked: () -> Unit,
     xrEnabled: Boolean = false,
-    isMediumWindowSize: Boolean = isAtLeastMedium(),
+    isMediumWindowSize: Boolean = isWidthAtLeastMedium(),
 ) {
     val bottomButtons = @Composable {
         FooterButtons(

@@ -15,13 +15,27 @@
  */
 package com.android.developers.testing.data
 
+import android.graphics.Bitmap
+import com.android.developers.androidify.data.GeminiNanoDownloader
 import com.android.developers.androidify.data.GeminiNanoGenerationDataSource
+import com.android.developers.androidify.model.ValidatedDescription
+import com.android.developers.androidify.model.ValidatedImage
 
-class TestGeminiNanoGenerationDataSource(val promptOutput: String?) : GeminiNanoGenerationDataSource {
-    override suspend fun initialize() {
-    }
+class TestGeminiNanoGenerationDataSource(
+    val promptOutput: String?,
+    val geminiNanoDownloader: GeminiNanoDownloader,
+) : GeminiNanoGenerationDataSource {
 
     override suspend fun generatePrompt(prompt: String): String? {
         return promptOutput
+    }
+
+    override suspend fun validateImageHasEnoughInformation(image: Bitmap): ValidatedImage? {
+        return ValidatedImage(true, null)
+    }
+
+    override suspend fun generateDescriptivePromptFromImage(image: Bitmap): ValidatedDescription? {
+        if (!geminiNanoDownloader.isModelDownloaded()) return null
+        return ValidatedDescription(true, "Nano description")
     }
 }

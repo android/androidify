@@ -14,25 +14,15 @@
  * limitations under the License.
  */
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.androidify.androidComposeLibrary)
 }
 val fontName = properties["fontName"] as String?
 
 android {
     namespace = "com.android.developers.androidify.theme"
-    compileSdk = libs.versions.compileSdk.get().toInt()
-
-    defaultConfig {
-        minSdk = libs.versions.minSdk.get().toInt()
-    }
-
     buildFeatures {
-        compose = true
         buildConfig = true
     }
-
     buildTypes {
         debug {
             buildConfigField("String" , "fontName" , fontName ?: "\"Roboto Flex\"")
@@ -40,13 +30,6 @@ android {
         release {
             buildConfigField("String" , "fontName" , fontName ?: "\"Roboto Flex\"")
         }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.toVersion(libs.versions.javaVersion.get())
-        targetCompatibility = JavaVersion.toVersion(libs.versions.javaVersion.get())
-    }
-    kotlinOptions {
-        jvmTarget = libs.versions.jvmTarget.get()
     }
     // To avoid packaging conflicts when using bouncycastle
     packaging {

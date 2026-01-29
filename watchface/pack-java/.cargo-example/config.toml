@@ -1,0 +1,20 @@
+# The paths below are examples for a macOS (darwin-x86_64) host.
+# You will need to adjust them for your operating system and NDK installation.
+# Replace <NDK_PATH> with the absolute path to your Android NDK installation.
+
+# Real watch
+[target.armv7-linux-androideabi]
+linker = "<NDK_PATH>/toolchains/llvm/prebuilt/darwin-x86_64/bin/armv7a-linux-androideabi26-clang"
+ar = "<NDK_PATH>/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-ar"
+# Emulator
+[target.i686-linux-android]
+linker = "<NDK_PATH>/toolchains/llvm/prebuilt/darwin-x86_64/bin/i686-linux-android26-clang"
+ar = "<NDK_PATH>/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-ar"
+# Emulator on Apple Silicon MacBooks
+[target.aarch64-linux-android]
+linker = "<NDK_PATH>/toolchains/llvm/prebuilt/darwin-x86_64/bin/aarch64-linux-android26-clang"
+ar = "<NDK_PATH>/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-ar"
+# Emulator (64-bit x86_64)
+[target.x86_64-linux-android]
+linker = "<NDK_PATH>/toolchains/llvm/prebuilt/darwin-x86_64/bin/x86_64-linux-android26-clang"
+ar = "<NDK_PATH>/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-ar"

@@ -10,3 +10,5 @@
 /app/src/release/generated/*
 /core/build/
 /feature/build/
+/build-plugin/build
+/build-plugin/.gradle/*

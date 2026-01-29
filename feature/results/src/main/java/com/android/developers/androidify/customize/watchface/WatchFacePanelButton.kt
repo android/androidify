@@ -48,7 +48,7 @@ fun WatchFacePanelButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
     buttonText: String,
-    isSending: Boolean = false,
+    isInProgress: Boolean = false,
     iconResId: Int? = null,
     colors: ButtonColors = ButtonDefaults.buttonColors(
         contentColor = MaterialTheme.colorScheme.surface,
@@ -67,7 +67,7 @@ fun WatchFacePanelButton(
         Row(
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            if (isSending) {
+            if (isInProgress) {
                 ContainedLoadingIndicator(
                     modifier = Modifier.size(24.dp),
                     containerColor = colors.containerColor,
@@ -92,7 +92,7 @@ private fun WatchFaceInstallButtonPreview() {
         WatchFacePanelButton(
             onClick = { },
             buttonText = stringResource(R.string.send_to_watch),
-            isSending = false,
+            isInProgress = false,
             iconResId = R.drawable.watch_arrow_24,
         )
     }
@@ -105,7 +105,7 @@ private fun WatchFaceInstalledButtonPreview() {
         WatchFacePanelButton(
             onClick = { },
             buttonText = stringResource(R.string.watch_face_sent),
-            isSending = false,
+            isInProgress = false,
             iconResId = R.drawable.check_24,
             colors = ButtonDefaults.buttonColors(
                 contentColor = MaterialTheme.colorScheme.onSurface,
@@ -122,7 +122,7 @@ private fun WatchFaceInstallingButtonPreview() {
         WatchFacePanelButton(
             onClick = { },
             buttonText = stringResource(R.string.sending_to_watch),
-            isSending = true,
+            isInProgress = true,
             colors = ButtonDefaults.buttonColors(
                 contentColor = MaterialTheme.colorScheme.onSurface,
                 containerColor = MaterialTheme.colorScheme.secondaryContainer,

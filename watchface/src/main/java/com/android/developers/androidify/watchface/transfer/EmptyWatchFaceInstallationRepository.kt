@@ -48,4 +48,6 @@ class EmptyWatchFaceInstallationRepositoryImpl @Inject constructor() : WatchFace
     override suspend fun resetInstallationStatus() { }
 
     override suspend fun prepareForTransfer() { }
+
+    override suspend fun installAndroidify(nodeId: String) { }
 }

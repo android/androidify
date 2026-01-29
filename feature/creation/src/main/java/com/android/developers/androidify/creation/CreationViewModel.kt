@@ -78,10 +78,6 @@ class CreationViewModel @AssistedInject constructor(
 
     init {
         onImageSelected(originalImageUrl)
-        viewModelScope.launch {
-            imageGenerationRepository.initialize()
-            textGenerationRepository.initialize()
-        }
     }
 
     fun onImageSelected(uri: Uri?) {
@@ -132,7 +128,7 @@ class CreationViewModel @AssistedInject constructor(
         }
     }
 
-    fun startClicked() {
+    fun onStartClicked() {
         imageGenerationJob?.cancel()
         imageGenerationJob = viewModelScope.launch {
             if (internetConnectivityManager.isInternetAvailable()) {

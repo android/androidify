@@ -24,10 +24,11 @@
         android:required="true" />
 
     <!-- Androidify can use XR features if they're available; they're not required. -->
-    <uses-feature android:name="android.software.xr.api.spatial" android:required="false" />
+    <uses-feature
+        android:name="android.software.xr.api.spatial"
+        android:required="false" />
 
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-sdk tools:overrideLibrary="com.google.ai.edge.aicore" />
 
     <application
         android:name=".AndroidifyApplication"
@@ -68,6 +69,9 @@
             <meta-data
                 android:name="com.android.developers.androidify.startup.FirebaseRemoteConfigInitializer"
                 android:value="@string/androidx_startup" />
+            <meta-data
+                android:name="com.android.developers.androidify.startup.GeminiNanoDownloaderInitializer"
+                android:value="@string/androidx_startup" />
         </provider>
 
         <activity
@@ -84,10 +88,13 @@
             <!-- Required deeplink to make the app launchable from the watch -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="androidify"
-                    android:host="launch" />
+
+                <data
+                    android:host="launch"
+                    android:scheme="androidify" />
             </intent-filter>
         </activity>
         <!-- need to use Theme.AppCompat -->

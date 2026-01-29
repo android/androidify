@@ -80,6 +80,8 @@ class FakeWatchFaceInstallationRepository : WatchFaceInstallationRepository {
         _watchFaceInstallationStatus.value = WatchFaceInstallationStatus.Preparing
     }
 
+    override suspend fun installAndroidify(nodeId: String) { }
+
     private fun generateTransferId() = UUID.randomUUID().toString().take(8)
 
     public fun setWatchAsConnected() {

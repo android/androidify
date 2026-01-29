@@ -1,0 +1,120 @@
+{
+  "conditions": [],
+  "parameters": {
+    "watchface_feature_enabled": {
+      "defaultValue": {
+        "value": "false"
+      },
+      "valueType": "BOOLEAN"
+    },
+    "background_vibes_feature_enabled": {
+      "defaultValue": {
+        "value": "false"
+      },
+      "valueType": "BOOLEAN"
+    },
+    "xr_feature_enabled": {
+      "defaultValue": {
+        "value": "false"
+      },
+      "valueType": "BOOLEAN"
+    },
+    "bot_background_instruction_prompt": {
+      "defaultValue": {
+        "value": "Add the input image android bot as the main subject to the result, it should be the most prominent element of the resultant image, large and filling the foreground - more than 50% of the resultant frame, standing in the center of the frame with the central focus, and the background just underneath the content.\n\nAlways include the input Android Bot in the final result image as the subject of the image. It should be prominently featured in the foreground, center of the frame, without any adjustments other than the lighting of the surrounding environment. There should only be one of the bots in the image.\nstyle=\"3d animation style, simplified shapes, mouthless character, realistic physics simulation\"\n\nDo not alter the input Android Bot image, do not change its shape or add any hands, eyes, mouths etc. Do not change the characters color scheme.\n\nThe background is described as follows:"
+      },
+      "valueType": "STRING"
+    },
+    "use_imagen": {
+      "defaultValue": {
+        "value": "true"
+      },
+      "valueType": "BOOLEAN"
+    },
+    "prompt_image_validation": {
+      "defaultValue": {
+        "value": "You are to analyze the provided image and determine if it is acceptable and appropriate based on specific criteria. In the JSON response, respond with the result 'success' as set to true or false based on results. If the image is considered invalid, include the relevant reason as to why it is invalid in the 'error' property. A photo is only valid if:\n- it is a photo of a person, at least showing their shoulders and head, it can be a full body photo\n- it must be a photo of a person\n- the photo has a clear main person in it, if there are people in the background ignore them\n- it cannot contain nudity or explicit content\n- it cannot contain illegal weapons or violent references\n- it cannot contain references to drugs or other illicit substances\n- it cannot contain hate speech or other offensive language\n- it cannot contain blood or gore or violence."
+      },
+      "valueType": "STRING"
+    },
+    "use_gemini_nano": {
+      "defaultValue": {
+        "value": "false"
+      },
+      "valueType": "BOOLEAN"
+    },
+    "dancing_droid_gif_link": {
+      "defaultValue": {
+        "value": "https://services.google.com/fh/files/misc/android_dancing.gif"
+      },
+      "valueType": "STRING"
+    },
+    "system_prompt_image_description": {
+      "defaultValue": {
+        "value": "Extract detailed information from the provided image. THE GOAL is to using this information to recreate the image with image generation model.\n\n| Category | Attribute | Description (Focus on visual, descriptive language for image generation) |\n|---|---|---|\n| **Subject** | Type | The central figure in the image. |\n|  | Hair | The color, length, and style of the hair. Use concise, descriptive adjectives to detail its appearance. |\n|  | Facial Hair | The style, and color (if applicable) of any facial hair present. Be visually specific about its form and length (if applicable). |\n|  | Headwear | The type, color, material, and any visually distinct details of the headwear. Describe any patterns, textures, or embellishments, and its position on the head. |\n|  | Skin Color | The apparent color of the skin, using terms commonly associated with skin tones followed by the approximate hex code for accuracy. |\n|  | Clothing - Top | The type, color, and pattern of the upper garment. Describe its fit and any observable visual details such as closures, necklines, or textures. |\n|  | Clothing - Bottom | The type, color, and pattern of the lower garment. Describe its fit and any visual details like rips, pleats, or pockets. |\n|  | Footwear | The type, color, and material of the footwear. Be visually specific about any details such as laces, buckles, or straps. |\n|  | Accessories | The type, color, and material of any accessories. Explicitly state their position on or relative to the subject, as well as their arrangement if multiple items are present. |\n|  | Gadgets | The type, color, and material of any gadgets present. Be specific about their appearance and their position relative to the subject. |\n|  | Additional Notes | Any other visually distinct details of the subject that have not been covered in the above attributes. |\n\n* Remember to replace the bracketed information with your detailed visual analysis of a specific image.\n* Provide highly descriptive details for all attributes of the subject.\n* For accessories, ensure the descriptions are highly detailed and explicitly state their position on or relative to the subject, as well as their arrangement if applicable.\n* Describe hair and facial hair with rich visual detail, including color, style, and length.\n* Use color names that accurately reflect human visual perception and are commonly understood by image generation models.\n* Do not describe any text that appears in the image. Instead, make it as a placeholder and blur it.\n* ID badges or any accessories that include a person's face MUST be stated together with the phrase \"that has no image.\" For example, \"ID badge that has no image,\" etc.\n* If there is more than one person in the image, ALWAYS choose only the most prominent one.\n\n* Do not include any brand logos or brand names in your descriptions.\n* Do not include descriptions of any emblems present.\n* Do not include any reference to facial features or facial expressions in the description.\n* Do not include descriptions of anything that appears in the background. Only describe the appearance of the person and what the subject may be wearing or holding."
+      },
+      "valueType": "STRING"
+    },
+    "is_android_app_inactive": {
+      "defaultValue": {
+        "value": "false"
+      },
+      "valueType": "BOOLEAN"
+    },
+    "prompt_image_description": {
+      "defaultValue": {
+        "value": "Extract detailed information about the human subject included in the provided image. THE GOAL is to use this information to recreate the human's likeness with an image generation AI model.\n\n* Pay special attention to attributes that are important for describing human subjects. Provide rich visual detail for attributes such as:\n- Hair: Describe the hair in detail, including its style (e.g., layered bob, loose waves, tight curls), length (e.g., chin-length, shoulder-length, cascading), and color. For hair color, be specific about the particular shade of hair (e.g. light blonde, dark blonde, golden blonde, platinum blonde, and so on), including any highlights, lowlights, or variations. If applicable, meticulously describe any bangs (e.g., blunt, side-swept, wispy), braids (e.g., French braid, fishtail braid, single plait), or other distinctive features. Explicitly name the hairstyle if known (e.g., pixie cut, updo, ponytail). If the subject does not have hair, describe it as bald.\n- Facial hair (only if any exists): If the subject has facial hair, provide a detailed description of its style (e.g., goatee, full beard, mustache), length (e.g., stubble, short, long), texture (e.g., coarse, fine, wiry), and color (including any variations). Explicitly name the facial hair style if known. If the subject does not have facial hair, describe it as no facial hair.\n- Headwear (only if any exists): If the subject is wearing headwear, identify the type (e.g., baseball cap, fedora, beanie), color, and material. Describe any visually distinct details such as patterns (e.g., plaid, stripes, floral), textures (e.g., knit, leather, straw), or embellishments (e.g., embroidery, sequins, ribbons). Specify its position on the head (e.g., tilted back, covering the ears). Include the name of the headwear if possible.\n- Clothing: Provide a thorough description of the clothing worn on the subject's top and bottom. For each garment, detail the style (e.g., t-shirt, blouse, jeans, skirt), colors (including any gradients or color blocking), materials (e.g., cotton, silk, denim), patterns (e.g., polka dots, floral, paisley, geometric), embellishments (e.g., buttons, zippers, lace), and fit (e.g., tight, loose, tailored). Be visually specific about details such as sleeve length, neckline, hemline, and any unique cuts or features. Include the name of the clothing items if known (e.g., A-line skirt, Henley shirt). You MUST describe clothing that is covering the top and torso of the subject's body. You MUST describe clothing that is covering the bottom of the subject's body. If you are unable to determine a portion of the clothing, infer what clothing is most likely to be present there and describe it.\n- Footwear (only if they exist): If the subject is wearing footwear, identify the type (e.g., sneakers, boots, sandals), color, and style (e.g., running shoes, ankle boots, flip-flops). Be visually specific about any details such as laces (color, type of lacing), buckles (shape, material), or straps (number, placement).\n- Accessories: Describe any accessories worn by the subject, including jewelry (e.g., necklace, earrings, rings - specify material, color, and any notable features), hats (if not already described as headwear - reiterate key details), glasses (e.g., frame shape, color, lens type), watches (e.g., strap material, face color), and any other visible adornments (e.g., scarves, belts - describe color, material, and how they are worn). Detail the color, placement, position, and arrangement of each accessory on the subject.\n- Props or items: Describe any props or items the subject is holding or interacting with. This includes electronic devices (e.g., smartphone - color, screen details; laptop - color, open or closed), food or drinks (e.g., coffee cup - color, material; apple - color, size), sporting equipment (e.g., basketball - color, texture; tennis racket - color, grip details), or any other objects held in the hands, placed on the body (e.g., a backpack - color, material, details), or positioned next to the subject in a way that suggests interaction (e.g., a book lying open). For each item, describe its color, material, and any significant details. Prefer to be held on the hand if possible. Do not include furniture. Furniture is not considered a prop or item.\n- Any other special attributes or characteristics of the subject's body and style that provide further detail\n\n* If the person's clothing, accessories or items include photorealistic depictions of humans or animals, describe them as having a cartoon style.\n* If the person's clothing, accessories or items include artistic renderings, graphical depictions, or elaborate pictures describe them as having a cartoon style, portrayed in a simple manner.\n* Use color names that accurately reflect human visual perception and are commonly understood by image generation models.\n* DO NOT describe the background or setting that is behind or around the subject. Focus only on describing the main person in the foreground and items it is interacting with. If there is more than one person in the image, ALWAYS choose only the most prominent person in the foreground.\n* Do not describe the skin color of the subject in the image.\n* Do not infer ethnicity.\n* Do not infer gender. The description should always include gender neutral language when referring to the subject, such as \"it\" or \"the figure\".\n* Do not describe any permanent markings on the skin such as tattoos, scars, birthmarks, skin discolorations, or notable moles. It is only permissible to describe temporary paint or markings on the skin that are obviously part of a costume or cultural dress.\n* Do not describe any facial expressions. However, describing the subject's general mood is helpful.\n* DO NOT describe parts of the face such as the nose, mouth, lips, teeth, or tongue. The final rendered figure should not have these body parts.\n* Do not describe any body piercings such as nose piercings or naval piercings. Only describing earrings is permissible.\n* Do not describe nails, nail polish, or rings if present on the subject's fingers or toes. Avoid including the words \"fingers\" or \"toes\" in your description.\n* Do not describe any branded logos or icons or emblems that may be included in the image or as part of the subject.\n* DO NOT describe any text, slogans, typography or items that depict alphanumeric symbols that may be found in the image. Instead, describe it as a generic placeholder and blur it.\n* Do not describe any blood or gore or open wounds, if they are present on the subject.\n* Do not describe the pose that the subject is in, such as sitting, standing, dancing, or waving. Only describe what the subject looks like. The subject should always be described in a standing position facing forward, unless the subject is in a wheelchair or using a walking aid that may require its body to adapt to that.\n* Do not include any adult substances inappropriate for children, nor any actions directly related to their use. Specifically exclude cigarettes, drugs, drug paraphernalia, alcoholic beverages, and similar items, as well as activities such as smoking, injecting, drinking alcohol, or any other actions involving these substances.\n* If the subject is holding any weapon that suggests violence, only describe it if it is obviously a toy, a fake prop that won't actually cause harm, or is used in common sports. For example, do not ever describe a realistic gun, but it is permissible if the image shows a subject holding a plastic water squirt gun. Similarly, if the image shows the subject holding a baseball bat, that is permissible because it is primarily used in sports.\n* ID badges or any accessories or items that include a person's face MUST be stated together with the phrase \"that has no image.\" For example, \"ID badge that has no image,\" etc.\n\n\n* Your description should start with a high level overview of the new image starting with style. Then describe details of the subject, accessories and context with strong style influence. Then finish with details about the style.\n* Do not use the word \"Subject\" in description.\n* Never say \"the image\".\n* Never use the suffix \"-esque\" or \"-style\".\n* Do not say rendered, rendering, or digital.\n* Only respond with new image description as a paragraph."
+      },
+      "valueType": "STRING"
+    },
+    "promo_video_link": {
+      "defaultValue": {
+        "value": "https://services.google.com/fh/files/misc/androidfy_storyboard_b_v07.mp4"
+      },
+      "valueType": "STRING"
+    },
+    "image_generation_model_edits": {
+      "defaultValue": {
+        "value": "gemini-2.0-flash-preview-image-generation"
+      },
+      "valueType": "STRING"
+    },
+    "text_model_name": {
+      "defaultValue": {
+        "value": "gemini-2.5-flash"
+      },
+      "valueType": "STRING"
+    },
+    "generate_bot_prompt": {
+      "defaultValue": {
+        "value": "Generate 10 different random prompts as a comma separated list for a description of what a person looks like for android bot generation: include hair color texture and length, clothing including colors and details (like the persons shirt and pants or dress and collar types), with accessories. Make them, fun, safe and all different, dont include gender or ethnicity or dangerous content. For example \"wearing blue jeans, gray ruffly blouse, holding a magnifying glass with sparkly shoes and brown wavy hair.\"\n\nThe prompt should:\n- it cannot contain gender or ethnicity or dangerous content.\n- it cannot contain nudity or explicit content.\n- it cannot contain any weapons or violent references.\n- it cannot contain references to drugs or other illicit substances.\n- it cannot contain hate speech or other offensive language.\n- it cannot contain blood or gore or violence.\n- it cannot contain political symbolism."
+      },
+      "valueType": "STRING"
+    },
+    "fine_tuned_model_name": {
+      "defaultValue": {
+        "value": "androidify"
+      },
+      "valueType": "STRING"
+    },
+    "prompt_text_verify": {
+      "defaultValue": {
+        "value": "You are to evaluate the given text string, restructure it, and return it in a JSON format for use with a backend application. First, check that the text describes the attributes of a person and includes some attributes describing what they look like and are wearing. For example, valid attributes may include hair color and style, facial hair, clothing, shoes, and objects and accessories that the person is holding or wearing. If no valid attributes describing a person and their appearance exist in the text, set the value for the 'success' property in the JSON to 'false'.\n\nIf the text string includes a valid description of a person, set the value for the 'success' property in the JSON to 'true' and restructure the input text to be part of the response as 'user_description' in the following ways,:\n-strip out any phrases or descriptors that are inappropriate for a general audience such as racial or cultural stereotypes, political or hate symbols, sexual references, hateful comments, or inappropriate language.\n-strip out descriptions of weapons and guns, and references to drugs or drug paraphernalia\n-strip out descriptions of logos or brand names\n-strip out descriptions of anything that might describe the background behind or around the person or subject in the text\n\nKeep all words and descriptors that describe details such as colors, styles, size and materials of hair, clothing, shoes, accessories that do not allude to any of the inappropriate content listed above."
+      },
+      "valueType": "STRING"
+    },
+    "image_model_name": {
+      "defaultValue": {
+        "value": "imagen-4.0-ultra-generate-preview-06-06"
+      },
+      "valueType": "STRING"
+    },
+    "prompt_image_generation_skin_tone": {
+      "defaultValue": {
+        "value": "This 3D rendered, cartoonish Android mascot rendered in a photorealistic style, with the {skinTone} skin color and {prompt}. The figure is centered against a white background gives the figurine a unique and collectible appeal."
+      },
+      "valueType": "STRING"
+    }
+  },
+  "parameterGroups": {}
+}

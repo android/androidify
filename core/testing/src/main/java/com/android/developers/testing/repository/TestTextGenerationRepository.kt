@@ -18,9 +18,6 @@ package com.android.developers.testing.repository
 import com.android.developers.androidify.data.TextGenerationRepository
 
 class TestTextGenerationRepository : TextGenerationRepository {
-    override suspend fun initialize() {
-    }
-
     override suspend fun getNextGeneratedBotPrompt(): String? {
         return "Test prompt"
     }

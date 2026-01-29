@@ -24,27 +24,19 @@ package com.android.developers.androidify.creation
 
 import android.net.Uri
 import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerScope
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.FloatingToolbarColors
-import androidx.compose.material3.HorizontalFloatingToolbar
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.ToggleButton
-import androidx.compose.material3.ToggleButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -57,6 +49,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.android.developers.androidify.data.DropBehaviourFactory
 import com.android.developers.androidify.theme.AndroidifyTheme
+import com.android.developers.androidify.theme.SharedElementContextPreview
 import com.android.developers.androidify.theme.components.HorizontalToolbar
 import kotlinx.coroutines.launch
 
@@ -90,8 +83,8 @@ fun MainCreationPane(
                 // Workaround for https://issuetracker.google.com/432431393
                 val showTextPrompt by remember {
                     derivedStateOf {
-                        pagerState.currentPage == PromptType.TEXT.ordinal
-                                && pagerState.targetPage == pagerState.currentPage
+                        pagerState.currentPage == PromptType.TEXT.ordinal &&
+                            pagerState.targetPage == pagerState.currentPage
                     }
                 }
                 if (showTextPrompt) {
@@ -184,5 +177,24 @@ private fun PromptTypeToolbarPreview() {
             selectedOption = PromptType.PHOTO,
             onOptionSelected = {},
         )
+    }
+}
+
+@Preview
+@Composable
+private fun PromptTypeMainPreview() {
+    AndroidifyTheme {
+        SharedElementContextPreview {
+            MainCreationPane(
+                uiState = CreationState(),
+                dropBehaviourFactory = fakeDropBehaviourFactory,
+                onCameraPressed = { },
+                onChooseImageClicked = {},
+                onUndoPressed = {},
+                onPromptGenerationPressed = {},
+                onSelectedPromptOptionChanged = {},
+                onDropCallback = {},
+            )
+        }
     }
 }

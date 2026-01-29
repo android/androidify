@@ -30,18 +30,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.xr.compose.spatial.Subspace
+import androidx.xr.compose.subspace.MovePolicy
+import androidx.xr.compose.subspace.ResizePolicy
 import androidx.xr.compose.subspace.SpatialBox
 import androidx.xr.compose.subspace.SpatialBoxScope
 import androidx.xr.compose.subspace.SpatialPanel
 import androidx.xr.compose.subspace.SubspaceComposable
-import androidx.xr.compose.subspace.layout.MoveEvent
+import androidx.xr.compose.subspace.layout.SpatialMoveEvent
 import androidx.xr.compose.subspace.layout.SubspaceModifier
 import androidx.xr.compose.subspace.layout.aspectRatio
 import androidx.xr.compose.subspace.layout.fillMaxSize
 import androidx.xr.compose.subspace.layout.fillMaxWidth
-import androidx.xr.compose.subspace.layout.movable
 import androidx.xr.compose.subspace.layout.offset
-import androidx.xr.compose.subspace.layout.resizable
 import androidx.xr.compose.unit.DpVolumeSize
 import com.android.developers.androidify.theme.AndroidifyTheme
 
@@ -53,7 +53,7 @@ import com.android.developers.androidify.theme.AndroidifyTheme
 @Composable
 fun SquiggleBackgroundSubspace(
     minimumHeight: Dp,
-    onMove: ((MoveEvent) -> Boolean)? = null,
+    onMove: ((SpatialMoveEvent) -> Boolean)? = null,
     content:
     @SubspaceComposable @Composable
     SpatialBoxScope.() -> Unit,
@@ -72,7 +72,7 @@ fun BackgroundSubspace(
     aspectRatio: Float,
     @DrawableRes drawable: Int,
     minimumHeight: Dp,
-    onMove: ((MoveEvent) -> Boolean)? = null,
+    onMove: ((SpatialMoveEvent) -> Boolean)? = null,
     content:
     @SubspaceComposable @Composable
     SpatialBoxScope.() -> Unit,
@@ -80,13 +80,13 @@ fun BackgroundSubspace(
     Subspace {
         SpatialPanel(
             SubspaceModifier
-                .movable(onMove = onMove)
-                .resizable(
-                    minimumSize = DpVolumeSize(0.dp, minimumHeight, 0.dp),
-                    maintainAspectRatio = true,
-                )
                 .fillMaxWidth()
                 .aspectRatio(aspectRatio),
+            dragPolicy = MovePolicy(onMove = onMove),
+            resizePolicy = ResizePolicy(
+                minimumSize = DpVolumeSize(0.dp, minimumHeight, 0.dp),
+                shouldMaintainAspectRatio = true,
+            ),
         ) {
             FillBackground(drawable)
             Subspace {

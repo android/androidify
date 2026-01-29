@@ -2,88 +2,85 @@
 # build
 appVersionCode = "10"
 appVersionName = "1.3.0"
-agp = "8.11.1"
-bcpkixJdk18on = "1.81"
-compileSdk = "36"
-core = "1.5.0"
-extensionsXr = "1.0.0"
+appVersionWearOffset = "60000000"
+agp = "8.13.1"
+bcpkixJdk18on = "1.83"
+core = "1.7.0"
+extensionsXr = "1.1.0"
 leakcanaryAndroid = "2.14"
-minSdk = "26"
 javaVersion = "17"
-jvmTarget = "17"
-wearMinSdk = "36"
 
 #dependencies
 accompanist = "0.37.3"
-activityCompose = "1.10.1"
-adaptive = "1.1.0"
-animationAndroid = "1.8.3"
-apksig = "9.0.0-alpha02"
+activityCompose = "1.12.1"
+adaptive = "1.2.0"
+apksig = "9.0.0-alpha06"
 appcompat = "1.7.1"
-baselineprofile = "1.4.0"
-benchmarkMacroJunit4 = "1.4.0"
-camerax = "1.5.0-beta02"
+baselineprofile = "1.4.1"
+benchmarkMacroJunit4 = "1.4.1"
+camerax = "1.5.2"
 coilCompose = "3.3.0"
 coilGif = "3.3.0"
-composeBom = "2025.08.00"
-concurrent = "1.2.0"
+composeBom = "2025.12.00"
+concurrent = "1.3.0"
 converterGson = "2.11.0"
-coreKtx = "1.16.0"
+coreKtx = "1.17.0"
 coreSplashscreen = "1.0.1"
-crashlytics = "3.0.4"
+crashlytics = "3.0.6"
 datastore = "1.1.7"
-espressoCore = "3.6.1"
-firebaseBom = "34.2.0"
-googleServices = "4.4.3"
-googleOss = "17.2.0"
-googleOssPlugin = "0.10.6"
-guava = "33.4.8-android"
-hiltAndroid = "2.56.2"
+espressoCore = "3.7.0"
+firebaseBom = "34.4.0"
+genaiPrompt = "1.0.0-alpha1"
+googleServices = "4.4.4"
+googleOss = "17.3.0"
+googleOssPlugin = "0.10.9"
+guava = "33.5.0-android"
+hiltAndroid = "2.57.2"
 hiltLifecycleViewmodel = "1.0.0-alpha03"
-hiltNavigationCompose = "1.2.0"
+hiltNavigationCompose = "1.3.0"
 horologist = "0.7.15"
 junit = "4.13.2"
 junitVersion = "1.3.0"
-kotlin = "2.2.0"
-ksp = "2.2.0-2.0.2"
+kotlin = "2.2.21"
+ksp = "2.2.20-2.0.3"
 kotlinxCoroutines = "1.10.2"
-kotlinxSerialization = "2.2.0"
+kotlinxSerialization = "2.2.21"
 kotlinxSerializationJson = "1.9.0"
-kotlinxSerializationProtobuf = "1.8.1"
+kotlinxSerializationProtobuf = "1.9.0"
 ktlint = "1.5.0"
-lifecycleRuntimeKtx = "2.9.1"
-lifecycleViewmodelNavigation3 = "1.0.0-alpha03"
-loggingInterceptor = "5.1.0"
-material = "1.12.0"
-media3 = "1.7.1"
-navigation3 = "1.0.0-alpha05"
+lifecycleRuntimeKtx = "2.10.0"
+lifecycleViewmodelNavigation3 = "1.0.0-alpha04"
+loggingInterceptor = "5.3.2"
+material3 = "1.5.0-alpha10"
+media3 = "1.8.0"
+navigation3 = "1.0.0"
 okhttp = "4.12.0"
 playServicesWearable = "19.0.0"
-playServicesBaseTesting = "16.1.0"
+playServicesBaseTesting = "16.2.0"
 poseDetection = "18.0.0-beta5"
 profileinstaller = "1.4.1"
 retrofit = "2.11.0"
-robolectric = "4.14.1"
-spotless = "7.0.2"
+robolectric = "4.16"
+spotless = "8.0.0"
 startup = "1.2.0"
-runner = "1.6.2"
-uiTextGoogleFonts = "1.8.3"
-uiautomator = "2.4.0-alpha05"
-uiTooling = "1.8.3"
+runner = "1.7.0"
+uiTextGoogleFonts = "1.9.3"
+uiautomator = "2.4.0-alpha07"
+uiTooling = "1.10.0"
 validatorPush = "1.0.0-alpha08"
 watchFacePush = "1.0.0-alpha01"
 wear = "1.3.0"
 wearCompose = "1.5.0"
 wearComposeTooling = "1.4.1"
 wearRemoteInteractions = "1.1.0"
-window = "1.4.0"
-aiEdge = "0.0.1-exp02"
-lifecycleProcess = "2.9.1"
+window = "1.5.0"
+lifecycleProcess = "2.9.4"
 mlkitCommon = "18.11.0"
 mlkitSegmentation = "16.0.0-beta1"
-playServicesBase = "18.7.2"
+playServicesBase = "18.9.0"
 timber = "5.0.1"
-xr-compose = "1.0.0-alpha06"
+workRuntimeKtx = "2.10.5"
+xr-compose = "1.0.0-alpha07"
 
 [libraries]
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanist" }
@@ -91,14 +88,14 @@ androidx-activity-compose = { group = "androidx.activity", name = "activity-comp
 androidx-adaptive = { module = "androidx.compose.material3.adaptive:adaptive", version.ref = "adaptive" }
 androidx-adaptive-layout = { module = "androidx.compose.material3.adaptive:adaptive-layout", version.ref = "adaptive" }
 androidx-adaptive-navigation = { module = "androidx.compose.material3.adaptive:adaptive-navigation", version.ref = "adaptive" }
-androidx-animation-android = { group = "androidx.compose.animation", name = "animation-android", version.ref = "animationAndroid" }
+androidx-animation-android = { group = "androidx.compose.animation", name = "animation-android" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 androidx-app-startup = { group = "androidx.startup", name = "startup-runtime", version.ref = "startup" }
 androidx-camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "camerax" }
 androidx-camera-compose = { module = "androidx.camera:camera-compose", version.ref = "camerax" }
 androidx-camera-core = { module = "androidx.camera:camera-core", version.ref = "camerax" }
 androidx-camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "camerax" }
-androidx-compose-bom = { group = "androidx.compose", name = "compose-bom-alpha", version.ref = "composeBom" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 androidx-concurrent-futures-ktx = { module = "androidx.concurrent:concurrent-futures-ktx", version.ref = "concurrent" }
 androidx-core = { module = "androidx.test:core", version.ref = "core" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -111,7 +108,7 @@ androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "j
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-lifecycle-viewmodel-navigation3 = { module = "androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "lifecycleViewmodelNavigation3" }
-androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 androidx-media3-exoplayer = { group = "androidx.media3", name = "media3-exoplayer", version.ref = "media3" }
 androidx-media3-ui = { group = "androidx.media3", name = "media3-ui", version.ref = "media3" }
 androidx-media3-ui-compose = { group = "androidx.media3", name = "media3-ui-compose", version.ref = "media3" }
@@ -132,6 +129,7 @@ androidx-wear-compose-ui-tooling = { group = "androidx.wear.compose", name = "co
 androidx-wear-remote-interactions = { module = "androidx.wear:wear-remote-interactions", version.ref = "wearRemoteInteractions" }
 androidx-window = { module = "androidx.window:window", version.ref = "window" }
 androidx-window-core = { module = "androidx.window:window-core", version.ref = "window" }
+androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "workRuntimeKtx" }
 apksig = { module = "com.android.tools.build:apksig", version.ref = "apksig" }
 bcpkix-jdk18on = { module = "org.bouncycastle:bcpkix-jdk18on", version.ref = "bcpkixJdk18on" }
 coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coilCompose" }
@@ -145,6 +143,7 @@ firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "fir
 firebase-config = { module = "com.google.firebase:firebase-config" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 firebase-ai = { module = "com.google.firebase:firebase-ai" }
+genai-prompt = { module = "com.google.mlkit:genai-prompt", version.ref = "genaiPrompt" }
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hiltAndroid" }
 hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hiltAndroid" }
@@ -170,7 +169,6 @@ ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref =
 androidx-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "uiautomator" }
 androidx-benchmark-macro-junit4 = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "benchmarkMacroJunit4" }
 androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "profileinstaller" }
-ai-edge = { group = "com.google.ai.edge.aicore", name = "aicore", version.ref = "aiEdge" }
 google-oss-licenses = { group = "com.google.android.gms", name = "play-services-oss-licenses", version.ref = "googleOss" }
 google-oss-licenses-plugin = { group = "com.google.android.gms", name = "oss-licenses-plugin", version.ref = "googleOssPlugin" }
 androidx-lifecycle-process = { group = "androidx.lifecycle", name = "lifecycle-process", version.ref = "lifecycleProcess" }
@@ -183,7 +181,14 @@ google-firebase-appcheck-debug = { group = "com.google.firebase", name = "fireba
 androidx-xr-compose = { group = "androidx.xr.compose", name="compose", version.ref = "xr-compose"}
 androidx-xr-extensions = { module = "com.android.extensions.xr:extensions-xr", version.ref = "extensionsXr" }
 
+# Dependencies of the included build-logic
+android-gradlePluginApi = { group = "com.android.tools.build", name = "gradle-api", version.ref = "agp" }
+kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+
 [plugins]
+androidify-androidLibrary = { id = "androidify.androidLibrary" }
+androidify-androidComposeLibrary = { id = "androidify.androidComposeLibrary" }
+androidify-androidApplication = { id = "androidify.androidApplication" }
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlytics" }
@@ -195,5 +200,4 @@ kotlin-ksp = { id ="com.google.devtools.ksp", version.ref = "ksp" }
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinxSerialization" }
 android-test = { id = "com.android.test", version.ref = "agp" }
 baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineprofile" }
-composeScreenshot = { id = "com.android.compose.screenshot", version = "0.0.1-alpha10" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }

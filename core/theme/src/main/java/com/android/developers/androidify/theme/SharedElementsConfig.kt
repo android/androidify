@@ -87,14 +87,7 @@ val LocalAnimateBoundsScope = compositionLocalOf<LookaheadScope?> {
 )
 val MotionScheme.sharedElementTransitionBounds: BoundsTransform
     @Composable
-    get() = object : BoundsTransform {
-        override fun transform(
-            initialBounds: Rect,
-            targetBounds: Rect,
-        ): FiniteAnimationSpec<Rect> {
-            return sharedElementTransitionSpec()
-        }
-    }
+    get() = BoundsTransform { _, _ -> sharedElementTransitionSpec() }
 
 fun <T> MotionScheme.sharedElementTransitionSpec(): FiniteAnimationSpec<T> {
     return tween(600)

@@ -21,7 +21,6 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 interface TextGenerationRepository {
-    suspend fun initialize()
     suspend fun getNextGeneratedBotPrompt(): String?
 }
 
@@ -34,10 +33,6 @@ class TextGenerationRepositoryImpl @Inject constructor(
 
     private var currentPrompts: List<String>? = null
     private var currentPromptIndex = 0
-
-    override suspend fun initialize() {
-        geminiNanoDataSource.initialize()
-    }
 
     override suspend fun getNextGeneratedBotPrompt(): String? {
         val prompts = currentPrompts

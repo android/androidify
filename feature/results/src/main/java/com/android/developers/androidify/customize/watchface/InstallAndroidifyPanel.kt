@@ -15,7 +15,6 @@
  */
 package com.android.developers.androidify.customize.watchface
 
-import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,24 +23,33 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.net.toUri
 import com.android.developers.androidify.results.R
 import com.android.developers.androidify.theme.AndroidifyTheme
 import com.android.developers.androidify.watchface.WatchFaceAsset
+import kotlinx.coroutines.launch
 
 @Composable
 fun InstallAndroidifyPanel(
+    onInstallClick: suspend () -> Boolean,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
+    var isPlayLaunched by remember { mutableStateOf(false) }
     val placeholderWatchFace = WatchFaceAsset(
         id = "watch_face_1",
         previewPath = R.drawable.watch_app_placeholder,
@@ -60,21 +68,47 @@ fun InstallAndroidifyPanel(
         ) {
             WatchFacePreviewItem(
                 watchFace = placeholderWatchFace,
-                isSelected = false,
+                isSelected = true,
                 onClick = { },
             )
         }
 
         Spacer(modifier = Modifier.height(24.dp))
+
+        val buttonText = if (isPlayLaunched) {
+            stringResource(R.string.continue_on_watch)
+        } else {
+            stringResource(R.string.install_androidify)
+        }
+        val launchedColors = ButtonDefaults.buttonColors(
+            contentColor = MaterialTheme.colorScheme.onSurface,
+            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+        )
+        val installColors = ButtonDefaults.buttonColors(
+            contentColor = MaterialTheme.colorScheme.surface,
+            containerColor = MaterialTheme.colorScheme.onSurface,
+        )
+        val scope = rememberCoroutineScope()
         WatchFacePanelButton(
             modifier = modifier.padding(horizontal = 16.dp),
-            buttonText = stringResource(R.string.install_androidify),
+            buttonText = buttonText,
             iconResId = R.drawable.watch_arrow_24,
             onClick = {
-                val uri = "market://details?id=${context.packageName}".toUri()
-                val intent = Intent(Intent.ACTION_VIEW, uri)
-                context.startActivity(intent)
+                if (!isPlayLaunched) {
+                    scope.launch {
+                        val launchResult = onInstallClick()
+                        if (launchResult) {
+                            isPlayLaunched = true
+                        }
+                    }
+                }
             },
+            colors = if (isPlayLaunched) {
+                launchedColors
+            } else {
+                installColors
+            },
+            isInProgress = isPlayLaunched,
         )
     }
 }
@@ -84,6 +118,6 @@ fun InstallAndroidifyPanel(
 @Composable
 private fun InstallAndroidifyPanelPreview() {
     AndroidifyTheme {
-        InstallAndroidifyPanel()
+        InstallAndroidifyPanel({ true })
     }
 }

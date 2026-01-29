@@ -77,5 +77,14 @@
                 <data android:scheme="wear" android:host="*" android:pathPrefix="/transfer_apk" />
             </intent-filter>
         </service>
+
+        <receiver
+            android:name=".updater.UpdateReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>

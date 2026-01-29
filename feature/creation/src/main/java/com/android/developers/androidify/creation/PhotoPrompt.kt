@@ -84,6 +84,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.graphics.shapes.RoundedPolygon
 import androidx.graphics.shapes.rectangle
+import androidx.window.core.layout.WindowSizeClass
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
@@ -97,6 +98,7 @@ import com.android.developers.androidify.theme.components.ScaleIndicationNodeFac
 import com.android.developers.androidify.theme.components.SecondaryOutlinedButton
 import com.android.developers.androidify.theme.sharedBoundsRevealWithShapeMorph
 import com.android.developers.androidify.theme.sharedBoundsWithDefaults
+import com.android.developers.androidify.util.calculateWindowSizeClass
 import com.android.developers.androidify.util.dashedRoundedRectBorder
 import com.android.developers.androidify.creation.R as CreationR
 
@@ -137,15 +139,18 @@ fun PhotoPrompt(
                     cornerRadius = 28.dp,
                 )
                 .run {
-                    if (externalAppCallback == null) this
-                    else dragAndDropTarget(
-                        shouldStartDragAndDrop = { event ->
-                            dropBehaviourFactory.shouldStartDragAndDrop(
-                                event,
-                            )
-                        },
-                        target = externalAppCallback,
-                    )
+                    if (externalAppCallback == null) {
+                        this
+                    } else {
+                        dragAndDropTarget(
+                            shouldStartDragAndDrop = { event ->
+                                dropBehaviourFactory.shouldStartDragAndDrop(
+                                    event,
+                                )
+                            },
+                            target = externalAppCallback,
+                        )
+                    }
                 }
                 .fillMaxSize()
                 .padding(2.dp),
@@ -170,6 +175,40 @@ private fun UploadEmptyState(
     onChooseImagePress: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    if (shouldShowHorizontalPhotoPrompt()) {
+        HorizontallyAlignedUploadEmptyState(
+            onCameraPressed = onCameraPressed,
+            onChooseImagePress = onChooseImagePress,
+            modifier = modifier,
+        )
+    } else {
+        VerticallyAlignedUploadEmptyState(
+            onCameraPressed = onCameraPressed,
+            onChooseImagePress = onChooseImagePress,
+            modifier = modifier,
+        )
+    }
+}
+
+/***
+ * This function is useful to understand if the window is too small to show the vertically stacked
+ * photo empty state. It should align items horizontally only if the window is horizontal and
+ * if the amount of vertical space is smaller than medium
+ */
+@Composable
+fun shouldShowHorizontalPhotoPrompt(): Boolean {
+    val sizeClass = calculateWindowSizeClass()
+    val isHorizontalWindow = sizeClass.minWidthDp >= sizeClass.minHeightDp
+    val isHeightSmallerThanMedium = !sizeClass.isHeightAtLeastBreakpoint(WindowSizeClass.HEIGHT_DP_MEDIUM_LOWER_BOUND)
+    return isHorizontalWindow && isHeightSmallerThanMedium
+}
+
+@Composable
+private fun VerticallyAlignedUploadEmptyState(
+    onCameraPressed: () -> Unit,
+    onChooseImagePress: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Column(
         modifier = modifier
             .verticalScroll(rememberScrollState())
@@ -188,6 +227,45 @@ private fun UploadEmptyState(
         Spacer(modifier = Modifier.height(16.dp))
         TakePhotoButton(onCameraPressed)
         Spacer(modifier = Modifier.height(32.dp))
+        SecondaryOutlinedButton(
+            onClick = {
+                onChooseImagePress()
+            },
+            leadingIcon = {
+                Image(
+                    painterResource(CreationR.drawable.choose_picture_image),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .padding(end = 8.dp)
+                        .size(24.dp),
+                )
+            },
+            buttonText = stringResource(CreationR.string.photo_picker_choose_photo_label),
+        )
+    }
+}
+
+@Composable
+private fun HorizontallyAlignedUploadEmptyState(
+    onCameraPressed: () -> Unit,
+    onChooseImagePress: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier
+            .padding(16.dp),
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        TakePhotoButton(onCameraPressed)
+        Text(
+            stringResource(CreationR.string.photo_picker_title),
+            fontSize = 28.sp,
+            textAlign = TextAlign.Center,
+            lineHeight = 40.sp,
+            minLines = 2,
+            maxLines = 2,
+        )
         SecondaryOutlinedButton(
             onClick = {
                 onChooseImagePress()

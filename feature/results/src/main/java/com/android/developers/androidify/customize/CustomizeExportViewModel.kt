@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.application
 import androidx.lifecycle.viewModelScope
 import com.android.developers.androidify.RemoteConfigDataSource
 import com.android.developers.androidify.customize.watchface.WatchFaceSelectionState
@@ -365,6 +366,19 @@ class CustomizeExportViewModel @AssistedInject constructor(
                 ),
             )
         }
+    }
+
+    suspend fun launchPlayInstallOnWatch(): Boolean {
+        try {
+            val watch = state.value.connectedWatch
+            watch?.let {
+                watchfaceInstallationRepository.installAndroidify(it.nodeId)
+            }
+            return true
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to open Play Store on watch")
+        }
+        return false
     }
 
     fun installWatchFace() {

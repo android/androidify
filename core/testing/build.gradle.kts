@@ -14,34 +14,18 @@
  * limitations under the License.
  */
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.androidify.androidComposeLibrary)
     alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.hilt)
 }
 
 android {
     namespace = "com.android.developers.androidify.testing"
-    compileSdk = libs.versions.compileSdk.get().toInt()
-
-    defaultConfig {
-        minSdk = libs.versions.minSdk.get().toInt()
-        testInstrumentationRunner = "com.android.developers.testing.AndroidifyTestRunner"
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.toVersion(libs.versions.javaVersion.get())
-        targetCompatibility = JavaVersion.toVersion(libs.versions.javaVersion.get())
-    }
-    kotlinOptions {
-        jvmTarget = libs.versions.jvmTarget.get()
-    }
 }
 
 // Explicitly disable the connectedAndroidTest task for this module
 androidComponents {
-    beforeVariants(selector().all()) { variant ->
+    beforeVariants { variant ->
         variant.enableAndroidTest = false
     }
 }
@@ -61,11 +45,5 @@ dependencies {
     implementation(projects.feature.results)
     implementation(projects.watchface)
     implementation(projects.wear.common)
-
     ksp(libs.hilt.compiler)
-
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    androidTestImplementation(libs.hilt.android.testing)
-    kspAndroidTest(libs.hilt.compiler)
 }

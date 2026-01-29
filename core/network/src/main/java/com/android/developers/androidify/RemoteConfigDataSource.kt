@@ -27,8 +27,11 @@ interface RemoteConfigDataSource {
     fun isBackgroundVibesFeatureEnabled(): Boolean
     fun promptTextVerify(): String
     fun promptImageValidation(): String
+    fun promptImageValidationNano(): String
     fun promptImageDescription(): String
+    fun promptImageDescriptionNano(): String
     fun useGeminiNano(): Boolean
+    fun enabledGeminiNanoModelVersions(): String
     fun generateBotPrompt(): String
     fun promptImageGenerationWithSkinTone(): String
 
@@ -77,12 +80,24 @@ class RemoteConfigDataSourceImpl @Inject constructor() : RemoteConfigDataSource 
         return remoteConfig.getString("prompt_image_validation")
     }
 
+    override fun promptImageValidationNano(): String {
+        return remoteConfig.getString("prompt_image_validation_nano")
+    }
+
     override fun promptImageDescription(): String {
         return remoteConfig.getString("prompt_image_description")
     }
 
+    override fun promptImageDescriptionNano(): String {
+        return remoteConfig.getString("prompt_image_description_nano")
+    }
+
     override fun useGeminiNano(): Boolean {
         return remoteConfig.getBoolean("use_gemini_nano")
+    }
+
+    override fun enabledGeminiNanoModelVersions(): String {
+        return remoteConfig.getString("enabled_gemini_nano_model_versions")
     }
 
     override fun generateBotPrompt(): String {

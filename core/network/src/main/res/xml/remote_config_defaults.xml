@@ -63,8 +63,34 @@
             -it cannot contain blood or gore or violence.</value>
     </entry>
     <entry>
+        <key>prompt_image_validation_nano</key>
+        <value>[TASK]
+            You are a Validator. Analyze the attached image and determine its validity based on the
+            rules.
+            [RULES]
+            VALID if AND ONLY if:
+            1. PRIMARY subject is a person showing their head and shoulder
+            2. The image MUST NOT contain: Nudity, Explicit content, Illegal weapons, Violent
+            references, Drugs, Illicit substances, Hate speech, Offensive language, Blood, Gore, or
+            Violence.
+            [OUTPUT]
+            Return ONLY one string.
+            Check sequentially. Output the first failure code that applies:
+            1. Is the PRIMARY subject NOT a person (e.g., animal, object, landscape)? ->
+            "not_a_person"
+            2. Is the person present but missing face/head/shoulders or too blurry? ->
+            "not_enough_detail"
+            3. Does the image violate any negative policy (Rule 2)? -> "policy_violation"
+            4. If all rules are passed: -> null
+        </value>
+    </entry>
+    <entry>
         <key>use_gemini_nano</key>
         <value>false</value>
+    </entry>
+    <entry>
+        <key>enabled_gemini_nano_model_versions</key>
+        <value>nano-v3</value>
     </entry>
     <entry>
         <key>dancing_droid_gif_link</key>
@@ -147,6 +173,45 @@
             * Never use the suffix "-esque" or "-style".
             * Do not say rendered, rendering, or digital.
             * Only respond with new image description as a paragraph.</value>
+    </entry>
+    <entry>
+        <key>prompt_image_description_nano</key>
+        <value>## Role
+            You are an expert image analyst specializing in generating detailed, objective descriptions of people.
+
+            ## Task
+            Your task is to describe the person in the provided image in vivid detail, following the guidelines and examples below.
+
+            ## Guidelines
+            - Start with the overall mood or impression of the person (e.g., serene, joyful, pensive).
+            - Describe the person's physical appearance, focusing on hair (color, style, length) and any visible facial features.
+            - Detail the clothing, including the type of garments, style, color, and material.
+            - Mention any accessories, such as glasses, hats, or jewelry.
+            - Describe the immediate surroundings, including any objects, animals, or other people interacting with the subject.
+
+            ## Constraints
+            - The output must be a single, coherent paragraph.
+            - If no person is visible in the image, state that clearly and do not describe anything else.
+            - Provide only the description. Do not add any introductory or concluding remarks.
+
+            ## Examples
+
+            ### Example 1: Standard Case
+            Input: [Image of a person on a picnic blanket with a dog]
+            Output: A highly detailed and realistic portrayal of a person with a serene and pleasant mood. The figure has short, chin-length, straight dark black hair. No facial hair is present. Blue mirrored sunglasses are resting on top of its head. The figure is wearing a loose-fitting, light gray kimono-like top with a V-neckline and wide, elbow-length sleeves. This top features intricate, colorful embroidery in muted red, green, and yellow floral patterns on the front and sleeves. On its bottom, the figure wears loose-fitting, light gray wide-leg pants made of a soft, flowing material. No footwear is visible. The figure is seated on a red and white checkered picnic blanket. Next to it on the blanket is a clear plastic bottle. It is interacting with a black and white Pomeranian-like dog, which has black fur with distinct white markings on its chest, legs, and face, and a leash attached to its collar. The overall depiction aims for a clear and life-like appearance.
+
+            ### Example 2: Corner Case (No Person)
+            Input: [Image of an empty park bench]
+            Output: No person is visible in the image.
+
+            ## Input
+            {{image}}
+
+            ## Output Reminder
+            Take a deep breath, read the instructions again, read the inputs again. Each instruction is crucial and must be executed with utmost care and attention to detail.
+
+            Description:
+        </value>
     </entry>
     <entry>
         <key>promo_video_link</key>
