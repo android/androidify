@@ -42,7 +42,6 @@ fun CallToActionScreen(
     onCallToActionClick: () -> Unit,
 ) {
     val listState = rememberTransformingLazyColumnState()
-    val transformationSpec = rememberTransformationSpec()
     ScreenScaffold(
         scrollState = listState,
     ) { contentPadding ->

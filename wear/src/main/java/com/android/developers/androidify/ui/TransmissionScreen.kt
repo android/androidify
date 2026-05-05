@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.wear.compose.foundation.lazy.TransformingLazyColumn
 import androidx.wear.compose.foundation.lazy.rememberTransformingLazyColumnState
 import androidx.wear.compose.material3.CircularProgressIndicator
+import androidx.wear.compose.material3.IconButtonDefaults
 import androidx.wear.compose.material3.MaterialTheme
 import androidx.wear.compose.material3.ProgressIndicatorDefaults
 import androidx.wear.compose.material3.ScreenScaffold
@@ -67,6 +68,7 @@ fun TransmissionScreen(modifier: Modifier = Modifier) {
             item {
                 Image(
                     modifier = Modifier
+                        .minimumVerticalContentPadding(IconButtonDefaults.minimumVerticalListContentPadding)
                         .fillMaxWidth(0.3f),
                     painter = painterResource(id = R.drawable.logo),
                     contentDescription = stringResource(R.string.logo_description),
