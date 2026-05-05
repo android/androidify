@@ -24,11 +24,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.wear.compose.foundation.lazy.TransformingLazyColumn
 import androidx.wear.compose.foundation.lazy.rememberTransformingLazyColumnState
+import androidx.wear.compose.material3.IconButtonDefaults
 import androidx.wear.compose.material3.MaterialTheme
 import androidx.wear.compose.material3.ScreenScaffold
 import androidx.wear.compose.material3.Text
-import androidx.wear.compose.material3.lazy.ResponsiveTransformingLazyColumn
+import androidx.wear.compose.material3.lazy.rememberTransformationSpec
 import androidx.wear.compose.ui.tooling.preview.WearPreviewDevices
 import com.android.developers.androidify.R
 import com.android.developers.androidify.ui.theme.AndroidifyWearTheme
@@ -40,16 +42,19 @@ fun CallToActionScreen(
     onCallToActionClick: () -> Unit,
 ) {
     val listState = rememberTransformingLazyColumnState()
+    val transformationSpec = rememberTransformationSpec()
     ScreenScaffold(
         scrollState = listState,
     ) { contentPadding ->
-        ResponsiveTransformingLazyColumn(
+        TransformingLazyColumn(
             state = listState,
             contentPadding = contentPadding,
         ) {
             item {
                 Image(
-                    modifier = Modifier.fillMaxWidth(0.3f),
+                    modifier = Modifier
+                        .minimumVerticalContentPadding(IconButtonDefaults.minimumVerticalListContentPadding)
+                        .fillMaxWidth(0.3f),
                     painter = painterResource(id = R.drawable.logo),
                     contentDescription = stringResource(R.string.logo_description),
                 )
