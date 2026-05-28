@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.xr.compose.spatial.ContentEdge
 import androidx.xr.compose.spatial.Orbiter
 import androidx.xr.compose.subspace.SpatialColumn
-import androidx.xr.compose.subspace.SpatialLayoutSpacer
+import androidx.xr.compose.subspace.SpatialSpacer
 import androidx.xr.compose.subspace.SpatialPanel
 import androidx.xr.compose.subspace.SpatialRow
 import androidx.xr.compose.subspace.layout.SubspaceModifier
@@ -142,7 +142,7 @@ fun EditScreenSpatial(
                             }
                         }
                     }
-                    SpatialLayoutSpacer(SubspaceModifier.width(48.dp))
+                    SpatialSpacer(SubspaceModifier.width(48.dp))
                     SpatialPanel(
                         modifier = SubspaceModifier
                             .offset(z = 10.dp)

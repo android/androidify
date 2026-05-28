@@ -23,7 +23,7 @@ set -e
 # Get the script's directory.
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # Define the Android SDK version you want to target.
-ANDROID_SDK_VERSION="37"
+ANDROID_SDK_VERSION="37.0"
 ANDROID_BUILD_TOOLS_VERSION="37.0.0"
 
 # Switched from 'google_apis' to 'google_atd' (Google Automated Test Device).

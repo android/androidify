@@ -41,10 +41,10 @@ hiltLifecycleViewmodel = "1.0.0-alpha03"
 hiltNavigationCompose = "1.3.0"
 junit = "4.13.2"
 junitVersion = "1.3.0"
-kotlin = "2.3.0"
-ksp = "2.3.4"
+kotlin = "2.3.21"
+ksp = "2.3.6"
 kotlinxCoroutines = "1.11.0"
-kotlinxSerialization = "2.3.0"
+kotlinxSerialization = "2.3.21"
 kotlinxSerializationJson = "1.11.0"
 kotlinxSerializationProtobuf = "1.11.0"
 ktlint = "1.5.0"
@@ -65,10 +65,10 @@ spotless = "8.6.0"
 startup = "1.2.0"
 runner = "1.7.0"
 uiTextGoogleFonts = "1.11.2"
-uiautomator = "2.4.0-alpha07"
+uiautomator = "2.4.0-beta02"
 uiTooling = "1.11.2"
 validatorPush = "1.0.0-alpha09"
-watchFacePush = "1.0.0-beta01"
+watchFacePush = "1.0.0"
 wear = "1.4.0"
 wearCompose = "1.6.2"
 wearComposeTooling = "1.6.2"
@@ -95,7 +95,7 @@ androidx-camera-camera2 = { module = "androidx.camera:camera-camera2", version.r
 androidx-camera-compose = { module = "androidx.camera:camera-compose", version.ref = "camerax" }
 androidx-camera-core = { module = "androidx.camera:camera-core", version.ref = "camerax" }
 androidx-camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "camerax" }
-androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "foundation" }
+androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 androidx-concurrent-futures-ktx = { module = "androidx.concurrent:concurrent-futures-ktx", version.ref = "concurrent" }
 androidx-core = { module = "androidx.test:core", version.ref = "core" }
