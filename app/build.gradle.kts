@@ -43,7 +43,6 @@ android {
             initWith(buildTypes.getByName("release"))
             matchingFallbacks += listOf("release")
             isDebuggable = false
-            baselineProfile.automaticGenerationDuringBuild = false
         }
         release {
             isShrinkResources = true
@@ -52,7 +51,6 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
-            baselineProfile.automaticGenerationDuringBuild = false
             configure<CrashlyticsExtension> {
                 mappingFileUploadEnabled = true
             }

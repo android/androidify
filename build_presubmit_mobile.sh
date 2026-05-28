@@ -24,14 +24,14 @@ set -e
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 echo DIR
 # Define the Android SDK version you want to target.
-ANDROID_SDK_VERSION="36"
-ANDROID_BUILD_TOOLS_VERSION="36.0.0"
+ANDROID_SDK_VERSION="37"
+ANDROID_BUILD_TOOLS_VERSION="37.0.0"
 
 # Switched from 'google_apis' to 'google_atd' (Google Automated Test Device).
 # This system image is designed for headless, automated testing in CI environments
 # and is more compatible with software rendering. It will be installed but may not
 # be used by the new build command.
-# 36 not available yet as per b/432143095
+# 37 not available yet as per b/432143095
 EMULATOR_IMAGE="system-images;android-35;google_atd;x86_64"
 
 # --- Environment Setup ---
