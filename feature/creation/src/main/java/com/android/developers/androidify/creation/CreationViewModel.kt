@@ -42,6 +42,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -77,6 +78,7 @@ class CreationViewModel @AssistedInject constructor(
     private var imageGenerationJob: Job? = null
 
     init {
+        Timber.d("CreationViewModel init. hashCode: ${hashCode()}")
         onImageSelected(originalImageUrl)
     }
 
@@ -103,6 +105,7 @@ class CreationViewModel @AssistedInject constructor(
 
     fun onPromptGenerationClicked() {
         promptGenerationJob?.cancel()
+        Timber.d("CreationViewModel onPrompt. hashCode: ${hashCode()} ${viewModelScope.isActive}")
         promptGenerationJob = viewModelScope.launch {
             Timber.d("Generating prompt...")
             _uiState.update {
@@ -237,6 +240,11 @@ class CreationViewModel @AssistedInject constructor(
         _uiState.update {
             it.copy(resultBitmapUri = null)
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        Timber.d("CreationViewModel onCleared. hashCode: ${hashCode()}")
     }
 }
 

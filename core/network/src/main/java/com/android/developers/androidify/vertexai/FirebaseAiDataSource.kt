@@ -23,14 +23,10 @@ import com.android.developers.androidify.model.ValidatedDescription
 import com.android.developers.androidify.model.ValidatedImage
 import com.google.firebase.Firebase
 import com.google.firebase.ai.GenerativeModel
-import com.google.firebase.ai.ImagenModel
 import com.google.firebase.ai.ai
 import com.google.firebase.ai.type.GenerativeBackend
 import com.google.firebase.ai.type.HarmBlockThreshold
 import com.google.firebase.ai.type.HarmCategory
-import com.google.firebase.ai.type.ImagenPersonFilterLevel
-import com.google.firebase.ai.type.ImagenSafetyFilterLevel
-import com.google.firebase.ai.type.ImagenSafetySettings
 import com.google.firebase.ai.type.PublicPreviewAPI
 import com.google.firebase.ai.type.ResponseModality
 import com.google.firebase.ai.type.SafetySetting
@@ -81,15 +77,20 @@ class FirebaseAiDataSourceImpl @Inject constructor(
         )
     }
 
-    private fun createGenerativeImageModel(): ImagenModel {
-        return Firebase.ai(backend = GenerativeBackend.vertexAI()).imagenModel(
-            remoteConfigDataSource.imageModelName(),
-            safetySettings =
-            ImagenSafetySettings(
-                safetyFilterLevel = ImagenSafetyFilterLevel.BLOCK_LOW_AND_ABOVE,
-                // Uses `ALLOW_ADULT` filter since `ALLOW_ALL` requires a special approval
-                // See https://cloud.google.com/vertex-ai/generative-ai/docs/image/responsible-ai-imagen#person-face-gen
-                personFilterLevel = ImagenPersonFilterLevel.ALLOW_ADULT,
+    private fun createGenerativeImageModel(): GenerativeModel {
+        return Firebase.ai(backend = GenerativeBackend.vertexAI()).generativeModel(
+            modelName = remoteConfigDataSource.imageModelName(),
+            generationConfig = generationConfig {
+                responseModalities = listOf(
+                    ResponseModality.IMAGE,
+                )
+            },
+            safetySettings = listOf(
+                SafetySetting(HarmCategory.HARASSMENT, HarmBlockThreshold.LOW_AND_ABOVE),
+                SafetySetting(HarmCategory.HATE_SPEECH, HarmBlockThreshold.LOW_AND_ABOVE),
+                SafetySetting(HarmCategory.SEXUALLY_EXPLICIT, HarmBlockThreshold.LOW_AND_ABOVE),
+                SafetySetting(HarmCategory.DANGEROUS_CONTENT, HarmBlockThreshold.LOW_AND_ABOVE),
+                SafetySetting(HarmCategory.CIVIC_INTEGRITY, HarmBlockThreshold.LOW_AND_ABOVE),
             ),
         )
     }
@@ -227,11 +228,13 @@ class FirebaseAiDataSourceImpl @Inject constructor(
     }
 
     private suspend fun executeImageGeneration(
-        generativeModel: ImagenModel,
+        generativeModel: GenerativeModel,
         prompt: String,
     ): Bitmap {
-        val response = generativeModel.generateImages(prompt)
-        return response.images.first().asBitmap()
+        val response = generativeModel.generateContent(prompt)
+        val image = response.candidates.firstOrNull()
+            ?.content?.parts?.firstNotNullOfOrNull { it.asImageOrNull() }
+        return image ?: throw IllegalStateException("Could not extract image from model response")
     }
 
     override suspend fun generatePrompt(prompt: String): GeneratedPrompt {

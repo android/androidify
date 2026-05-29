@@ -36,10 +36,10 @@ plugins {
 
 android {
     compileSdk {
-        version = release(36)
+        version = release(37)
     }
     targetSdk {
-        version = release(36)
+        version = release(37)
     }
     minSdk {
         version = release(26)
