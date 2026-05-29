@@ -21,17 +21,27 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.wear.compose.foundation.lazy.TransformingLazyColumnItemScope
+import androidx.wear.compose.material3.ButtonDefaults
 import androidx.wear.compose.material3.FilledTonalButton
+import androidx.wear.compose.material3.SurfaceTransformation
 import androidx.wear.compose.material3.Text
+import androidx.wear.compose.material3.lazy.rememberTransformationSpec
+import androidx.wear.compose.material3.lazy.transformedHeight
 
 @Composable
-fun CallToActionButton(
+fun TransformingLazyColumnItemScope.CallToActionButton(
     modifier: Modifier = Modifier,
     buttonText: String,
     onClick: () -> Unit,
 ) {
+    val transformationSpec = rememberTransformationSpec()
     FilledTonalButton(
-        modifier = Modifier.fillMaxWidth(0.85f),
+        modifier = Modifier
+            .fillMaxWidth(0.85f)
+            .transformedHeight(this, transformationSpec)
+            .minimumVerticalContentPadding(ButtonDefaults.minimumVerticalListContentPadding),
+        transformation = SurfaceTransformation(transformationSpec),
         onClick = onClick,
     ) {
         Text(
