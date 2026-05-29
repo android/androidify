@@ -24,7 +24,7 @@ plugins {
     alias(libs.plugins.crashlytics)
     alias(libs.plugins.baselineprofile)
     id("com.google.android.gms.oss-licenses-plugin")
-    id("org.spdx.sbom") version "0.9.0"
+    id("org.spdx.sbom") version "0.11.0"
 }
 
 android {
