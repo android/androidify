@@ -35,9 +35,9 @@ import androidx.xr.compose.spatial.Orbiter
 import androidx.xr.compose.spatial.OrbiterOffsetType
 import androidx.xr.compose.subspace.SpatialBox
 import androidx.xr.compose.subspace.SpatialColumn
-import androidx.xr.compose.subspace.SpatialLayoutSpacer
 import androidx.xr.compose.subspace.SpatialPanel
 import androidx.xr.compose.subspace.SpatialRow
+import androidx.xr.compose.subspace.SpatialSpacer
 import androidx.xr.compose.subspace.layout.SubspaceModifier
 import androidx.xr.compose.subspace.layout.fillMaxHeight
 import androidx.xr.compose.subspace.layout.fillMaxWidth
@@ -109,7 +109,7 @@ fun CustomizeExportLayoutSpatial(
                             }
                         }
                     }
-                    SpatialLayoutSpacer(SubspaceModifier.width(48.dp))
+                    SpatialSpacer(SubspaceModifier.width(48.dp))
                     SpatialBox(SubspaceModifier.fillMaxHeight(0.7f)) {
                         SpatialPanel(
                             modifier = SubspaceModifier.offset(z = 10.dp).fillMaxWidth(0.3f),

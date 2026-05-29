@@ -42,6 +42,7 @@ android {
 dependencies {
     implementation(libs.androidx.ui.text.google.fonts)
     implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.compose.foundation)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(projects.core.util)
