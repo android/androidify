@@ -36,10 +36,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onLayoutRectChanged
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.xr.compose.spatial.ContentEdge
 import androidx.xr.compose.spatial.Orbiter
-import androidx.xr.compose.spatial.OrbiterOffsetType
-import androidx.xr.compose.subspace.MovePolicy
+import androidx.xr.compose.spatial.OrbiterAnchorPoint
 import androidx.xr.compose.subspace.ResizePolicy
 import androidx.xr.compose.subspace.SpatialPanel
 import androidx.xr.compose.subspace.layout.SpatialAlignment
@@ -50,6 +48,8 @@ import androidx.xr.compose.subspace.layout.fillMaxSize
 import androidx.xr.compose.subspace.layout.fillMaxWidth
 import androidx.xr.compose.subspace.layout.offset
 import androidx.xr.compose.subspace.layout.rotate
+import androidx.xr.compose.subspace.layout.transformingMovable
+import androidx.xr.compose.unit.DpVolumeOffset
 import com.android.developers.androidify.home.HomePageButton
 import com.android.developers.androidify.home.MainHomeContent
 import com.android.developers.androidify.home.VideoPlayer
@@ -73,10 +73,8 @@ fun HomeScreenContentsSpatial(
         MainPanelWorkaround()
         SquiggleBackgroundSubspace(minimumHeight = 600.dp) {
             Orbiter(
-                position = ContentEdge.Top,
-                offsetType = OrbiterOffsetType.OuterEdge,
-                offset = 32.dp,
-                alignment = Alignment.End,
+                anchorPoint = OrbiterAnchorPoint.TopEnd,
+                offset = DpVolumeOffset(x = (-32).dp, y = 32.dp),
             ) {
                 RequestHomeSpaceIconButton(
                     modifier = Modifier
@@ -97,9 +95,9 @@ fun HomeScreenContentsSpatial(
                     .aspectRatio(0.77f)
                     .align(SpatialAlignment.CenterEnd)
                     .offset(z = 10.dp)
-                    .rotate(0f, 0f, 5f),
+                    .rotate(0f, 0f, 5f)
+                    .transformingMovable(),
                 resizePolicy = ResizePolicy(shouldMaintainAspectRatio = true),
-                dragPolicy = MovePolicy(),
             ) {
                 VideoPlayer(videoLink)
             }

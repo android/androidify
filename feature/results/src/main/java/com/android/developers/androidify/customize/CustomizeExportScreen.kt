@@ -43,11 +43,12 @@ import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarDefaults
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.material3.rememberBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -162,8 +163,9 @@ private fun CustomizeExportContents(
     onWatchFaceSelect: (WatchFaceAsset) -> Unit,
 ) {
     var showWatchFaceBottomSheet by remember { mutableStateOf(false) }
-    val watchFaceSheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true,
+    val watchFaceSheetState = rememberBottomSheetState(
+        initialValue = SheetValue.Hidden,
+        enabledValues = setOf(SheetValue.Hidden, SheetValue.Expanded),
     )
     val imageResult = remember(state.showImageEditProgress) {
         movableContentWithReceiverOf<ExportImageCanvas> {

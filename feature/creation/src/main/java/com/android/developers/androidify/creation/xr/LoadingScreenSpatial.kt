@@ -27,14 +27,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.xr.compose.spatial.ContentEdge
 import androidx.xr.compose.spatial.Orbiter
-import androidx.xr.compose.spatial.OrbiterOffsetType
+import androidx.xr.compose.spatial.OrbiterAnchorPoint
 import androidx.xr.compose.subspace.SpatialPanel
 import androidx.xr.compose.subspace.layout.SubspaceModifier
 import androidx.xr.compose.subspace.layout.fillMaxHeight
 import androidx.xr.compose.subspace.layout.fillMaxWidth
 import androidx.xr.compose.subspace.layout.offset
+import androidx.xr.compose.unit.DpVolumeOffset
 import com.android.developers.androidify.creation.LoadingScreenContents
 import com.android.developers.androidify.creation.LoadingScreenScaffold
 import com.android.developers.androidify.theme.AndroidifyTheme
@@ -59,10 +59,8 @@ fun LoadingScreenSpatial(
         drawable = CreationR.drawable.squiggle_light,
     ) {
         Orbiter(
-            position = ContentEdge.Top,
-            offsetType = OrbiterOffsetType.OuterEdge,
-            offset = 32.dp,
-            alignment = Alignment.End,
+            anchorPoint = OrbiterAnchorPoint.TopEnd,
+            offset = DpVolumeOffset(x = (-32).dp, y = 32.dp),
         ) {
             RequestHomeSpaceIconButton(
                 modifier = Modifier

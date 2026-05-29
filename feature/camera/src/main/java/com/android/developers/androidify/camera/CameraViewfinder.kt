@@ -69,7 +69,7 @@ internal fun CameraViewfinder(
             }
             .transformable(
                 rememberTransformableState(
-                    onTransformation = { zoomChange, _, _ ->
+                    onTransformation = { _, zoomChange, _, _ ->
                         onScaleCurrentZoom(zoomChange)
                     },
                 ),

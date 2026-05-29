@@ -30,9 +30,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.LookaheadScope
 import androidx.compose.ui.unit.dp
-import androidx.xr.compose.spatial.ContentEdge
 import androidx.xr.compose.spatial.Orbiter
-import androidx.xr.compose.spatial.OrbiterOffsetType
+import androidx.xr.compose.spatial.OrbiterAnchorPoint
 import androidx.xr.compose.subspace.SpatialBox
 import androidx.xr.compose.subspace.SpatialColumn
 import androidx.xr.compose.subspace.SpatialPanel
@@ -43,6 +42,7 @@ import androidx.xr.compose.subspace.layout.fillMaxHeight
 import androidx.xr.compose.subspace.layout.fillMaxWidth
 import androidx.xr.compose.subspace.layout.offset
 import androidx.xr.compose.subspace.layout.width
+import androidx.xr.compose.unit.DpVolumeOffset
 import com.android.developers.androidify.customize.CustomizeExportScreenScaffold
 import com.android.developers.androidify.customize.CustomizeExportState
 import com.android.developers.androidify.customize.ExportImageCanvas
@@ -67,7 +67,7 @@ fun CustomizeExportLayoutSpatial(
         SquiggleBackgroundSubspace(minimumHeight = 600.dp) {
             MainPanelWorkaround()
             SpatialColumn(SubspaceModifier.fillMaxWidth()) {
-                Orbiter(position = ContentEdge.Bottom, alignment = Alignment.End) {
+                Orbiter(anchorPoint = OrbiterAnchorPoint.BottomEnd) {
                     actionButtons(Modifier)
                 }
                 SpatialPanel(
@@ -116,8 +116,8 @@ fun CustomizeExportLayoutSpatial(
                         ) {
                             toolDetail(Modifier, false)
                             Orbiter(
-                                position = ContentEdge.End,
-                                offsetType = OrbiterOffsetType.InnerEdge,
+                                anchorPoint = OrbiterAnchorPoint.End,
+                                offset = DpVolumeOffset(x = (-16).dp),
                             ) {
                                 toolSelector(Modifier, false)
                             }

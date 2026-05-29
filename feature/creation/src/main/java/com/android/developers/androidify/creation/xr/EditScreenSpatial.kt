@@ -26,12 +26,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.xr.compose.spatial.ContentEdge
 import androidx.xr.compose.spatial.Orbiter
+import androidx.xr.compose.spatial.OrbiterAnchorPoint
 import androidx.xr.compose.subspace.SpatialColumn
 import androidx.xr.compose.subspace.SpatialPanel
 import androidx.xr.compose.subspace.SpatialRow
@@ -41,6 +40,7 @@ import androidx.xr.compose.subspace.layout.fillMaxHeight
 import androidx.xr.compose.subspace.layout.fillMaxWidth
 import androidx.xr.compose.subspace.layout.offset
 import androidx.xr.compose.subspace.layout.width
+import androidx.xr.compose.unit.DpVolumeOffset
 import com.android.developers.androidify.creation.AndroidBotColorPicker
 import com.android.developers.androidify.creation.BotColor
 import com.android.developers.androidify.creation.CreationState
@@ -165,9 +165,8 @@ fun EditScreenSpatial(
                     }
 
                     Orbiter(
-                        position = ContentEdge.Bottom,
-                        alignment = Alignment.End,
-                        offset = 16.dp,
+                        anchorPoint = OrbiterAnchorPoint.BottomEnd,
+                        offset = DpVolumeOffset(x = (-16).dp, y = (-16).dp),
                     ) {
                         TransformButton(
                             buttonText = stringResource(CreationR.string.start_transformation_button),
