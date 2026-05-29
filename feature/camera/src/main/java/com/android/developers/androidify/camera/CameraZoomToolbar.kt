@@ -78,7 +78,6 @@ internal fun ZoomToolbar(
             }
         }
     }
-    val textMeasurer = rememberTextMeasurer()
 
     ButtonGroup(
         overflowIndicator = {},
@@ -95,9 +94,7 @@ internal fun ZoomToolbar(
                     colors = ToggleButtonDefaults.toggleButtonColors(),
                     modifier = Modifier,
                 ) {
-                    val textLayoutResult = textMeasurer.measure("M.MX", LocalTextStyle.current)
-                    val width = with(LocalDensity.current) { textLayoutResult.size.width.toDp() }
-                    Text(options[0], Modifier.widthIn(min = width), textAlign = TextAlign.Center)
+                    Text(options[0], Modifier, textAlign = TextAlign.Center)
                 }
             },
             menuContent = {},
@@ -111,9 +108,7 @@ internal fun ZoomToolbar(
                     colors = ToggleButtonDefaults.toggleButtonColors(),
                     modifier = Modifier,
                 ) {
-                    val textLayoutResult = textMeasurer.measure("M.MX", LocalTextStyle.current)
-                    val width = with(LocalDensity.current) { textLayoutResult.size.width.toDp() }
-                    Text(options[1], Modifier.widthIn(min = width), textAlign = TextAlign.Center)
+                    Text(options[1], Modifier, textAlign = TextAlign.Center)
                 }
             },
             menuContent = {},
