@@ -16,6 +16,8 @@
 package com.android.developers.androidify.home
 
 import androidx.activity.ComponentActivity
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
@@ -47,15 +49,17 @@ class HomeScreenTest {
             // Directly render HomeScreenContents, passing a lambda to track the click
 
             SharedElementContextPreview {
-                HomeScreenContents(
-                    layoutType = HomeScreenLayoutType.Compact, // Provide a default or mock value
-                    onClickLetsGo = { offset: IntOffset -> // Match the lambda signature
-                        wasClicked = true
-                    },
-                    onAboutClicked = {}, // Provide a default or mock value,
-                    videoLink = "",
-                    dancingBotLink = "",
-                )
+                CompositionLocalProvider(LocalInspectionMode provides true) {
+                    HomeScreenContents(
+                        layoutType = HomeScreenLayoutType.Compact, // Provide a default or mock value
+                        onClickLetsGo = { offset: IntOffset -> // Match the lambda signature
+                            wasClicked = true
+                        },
+                        onAboutClicked = {}, // Provide a default or mock value,
+                        videoLink = "",
+                        dancingBotLink = "",
+                    )
+                }
             }
         }
 
@@ -73,13 +77,15 @@ class HomeScreenTest {
 
         composeTestRule.setContent {
             SharedElementContextPreview {
-                HomeScreenContents(
-                    layoutType = HomeScreenLayoutType.Compact, // Ensure compact mode for pager
-                    onClickLetsGo = { },
-                    onAboutClicked = {},
-                    videoLink = "",
-                    dancingBotLink = "",
-                )
+                CompositionLocalProvider(LocalInspectionMode provides true) {
+                    HomeScreenContents(
+                        layoutType = HomeScreenLayoutType.Compact, // Ensure compact mode for pager
+                        onClickLetsGo = { },
+                        onAboutClicked = {},
+                        videoLink = "",
+                        dancingBotLink = "",
+                    )
+                }
             }
         }
 
