@@ -226,9 +226,8 @@ private fun WatchFaceModalSheetPreview() {
         previewPath = R.drawable.watch_face_preview,
     )
     val sheetState = SheetState(
+        enabledValues = setOf(SheetValue.Expanded),
         initialValue = SheetValue.Expanded,
-        skipHiddenState = true,
-        skipPartiallyExpanded = true,
         positionalThreshold = { 0f },
         velocityThreshold = { 0f },
     )

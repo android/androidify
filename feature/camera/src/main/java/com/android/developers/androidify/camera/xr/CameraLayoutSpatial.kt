@@ -26,14 +26,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.xr.compose.spatial.ContentEdge
 import androidx.xr.compose.spatial.Orbiter
-import androidx.xr.compose.spatial.OrbiterOffsetType
+import androidx.xr.compose.spatial.OrbiterAnchorPoint
 import androidx.xr.compose.spatial.Subspace
 import androidx.xr.compose.subspace.SpatialPanel
 import androidx.xr.compose.subspace.layout.SubspaceModifier
 import androidx.xr.compose.subspace.layout.aspectRatio
 import androidx.xr.compose.subspace.layout.fillMaxSize
+import androidx.xr.compose.unit.DpVolumeOffset
 import com.android.developers.androidify.xr.MainPanelWorkaround
 import com.android.developers.androidify.xr.RequestHomeSpaceIconButton
 
@@ -55,10 +55,8 @@ fun CameraLayoutSpatial(
                 .aspectRatio(surfaceAspectRatio),
         ) {
             Orbiter(
-                position = ContentEdge.Top,
-                offsetType = OrbiterOffsetType.InnerEdge,
-                offset = 32.dp,
-                alignment = Alignment.End,
+                anchorPoint = OrbiterAnchorPoint.TopEnd,
+                offset = DpVolumeOffset(x = (-32).dp, y = (-32).dp),
             ) {
                 RequestHomeSpaceIconButton(
                     modifier = Modifier
@@ -69,13 +67,19 @@ fun CameraLayoutSpatial(
                     ),
                 )
             }
-            Orbiter(ContentEdge.Start, offsetType = OrbiterOffsetType.InnerEdge, offset = 16.dp) {
+            Orbiter(
+                anchorPoint = OrbiterAnchorPoint.Start,
+                offset = DpVolumeOffset(x = 16.dp),
+            ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     captureButton(Modifier)
                     flipCameraButton(Modifier)
                 }
             }
-            Orbiter(ContentEdge.Bottom, offsetType = OrbiterOffsetType.InnerEdge) {
+            Orbiter(
+                anchorPoint = OrbiterAnchorPoint.Bottom,
+                offset = DpVolumeOffset(y = 16.dp),
+            ) {
                 zoomButton(Modifier)
             }
             Box(Modifier.fillMaxSize()) {

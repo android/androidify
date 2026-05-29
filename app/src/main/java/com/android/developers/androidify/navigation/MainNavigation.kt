@@ -48,7 +48,7 @@ import com.android.developers.androidify.home.HomeScreen
 import com.android.developers.androidify.results.ResultsScreen
 import com.android.developers.androidify.results.ResultsViewModel
 import com.android.developers.androidify.theme.transitions.ColorSplashTransitionScreen
-import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
+import com.google.android.gms.oss.licenses.v2.OssLicensesMenuActivity
 
 @ExperimentalMaterial3ExpressiveApi
 @Composable

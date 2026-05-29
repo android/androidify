@@ -19,13 +19,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.xr.compose.spatial.ContentEdge
 import androidx.xr.compose.spatial.Orbiter
-import androidx.xr.compose.spatial.OrbiterOffsetType
+import androidx.xr.compose.spatial.OrbiterAnchorPoint
 import androidx.xr.compose.subspace.SpatialPanel
+import androidx.xr.compose.unit.DpVolumeOffset
 import com.android.developers.androidify.home.AboutScreenMedium
 import com.android.developers.androidify.home.BackButton
 import com.android.developers.androidify.xr.MainPanelWorkaround
@@ -37,10 +36,8 @@ fun AboutScreenSpatial(onBackPressed: () -> Unit, bottomButtons: @Composable () 
     SquiggleBackgroundSubspace(500.dp) {
         SpatialPanel {
             Orbiter(
-                ContentEdge.Top,
-                offset = 16.dp,
-                offsetType = OrbiterOffsetType.InnerEdge,
-                alignment = Alignment.Start,
+                anchorPoint = OrbiterAnchorPoint.TopStart,
+                offset = DpVolumeOffset(x = 16.dp, y = (-16).dp),
             ) {
                 BackButton(onBackPressed)
             }
@@ -50,10 +47,8 @@ fun AboutScreenSpatial(onBackPressed: () -> Unit, bottomButtons: @Composable () 
                 bottomButtons = null,
             )
             Orbiter(
-                position = ContentEdge.Bottom,
-                offset = 48.dp,
-                offsetType = OrbiterOffsetType.InnerEdge,
-                elevation = 0.dp,
+                anchorPoint = OrbiterAnchorPoint.Bottom,
+                offset = DpVolumeOffset(y = 48.dp, z = 0.dp),
             ) {
                 bottomButtons()
             }

@@ -81,32 +81,43 @@ internal fun ZoomToolbar(
     val textMeasurer = rememberTextMeasurer()
 
     ButtonGroup(
+        overflowIndicator = {},
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween),
         expandedRatio = 0f,
     ) {
-        ToggleButton(
-            checked = selectedOptionIndex == 0,
-            onCheckedChange = { onZoomLevelSelected(defaultZoomOptions[0]) },
-            shapes = ButtonGroupDefaults.connectedLeadingButtonShapes(),
-            colors = ToggleButtonDefaults.toggleButtonColors(),
-            modifier = Modifier,
-        ) {
-            val textLayoutResult = textMeasurer.measure("M.MX", LocalTextStyle.current)
-            val width = with(LocalDensity.current) { textLayoutResult.size.width.toDp() }
-            Text(options[0], Modifier.widthIn(min = width), textAlign = TextAlign.Center)
-        }
-        ToggleButton(
-            checked = selectedOptionIndex == 1,
-            onCheckedChange = { onZoomLevelSelected(defaultZoomOptions[1]) },
-            shapes = ButtonGroupDefaults.connectedTrailingButtonShapes(),
-            colors = ToggleButtonDefaults.toggleButtonColors(),
-            modifier = Modifier,
-        ) {
-            val textLayoutResult = textMeasurer.measure("M.MX", LocalTextStyle.current)
-            val width = with(LocalDensity.current) { textLayoutResult.size.width.toDp() }
-            Text(options[1], Modifier.widthIn(min = width), textAlign = TextAlign.Center)
-        }
+        customItem(
+            buttonGroupContent = {
+                ToggleButton(
+                    checked = selectedOptionIndex == 0,
+                    onCheckedChange = { onZoomLevelSelected(defaultZoomOptions[0]) },
+                    shapes = ButtonGroupDefaults.connectedLeadingButtonShapes(),
+                    colors = ToggleButtonDefaults.toggleButtonColors(),
+                    modifier = Modifier,
+                ) {
+                    val textLayoutResult = textMeasurer.measure("M.MX", LocalTextStyle.current)
+                    val width = with(LocalDensity.current) { textLayoutResult.size.width.toDp() }
+                    Text(options[0], Modifier.widthIn(min = width), textAlign = TextAlign.Center)
+                }
+            },
+            menuContent = {},
+        )
+        customItem(
+            buttonGroupContent = {
+                ToggleButton(
+                    checked = selectedOptionIndex == 1,
+                    onCheckedChange = { onZoomLevelSelected(defaultZoomOptions[1]) },
+                    shapes = ButtonGroupDefaults.connectedTrailingButtonShapes(),
+                    colors = ToggleButtonDefaults.toggleButtonColors(),
+                    modifier = Modifier,
+                ) {
+                    val textLayoutResult = textMeasurer.measure("M.MX", LocalTextStyle.current)
+                    val width = with(LocalDensity.current) { textLayoutResult.size.width.toDp() }
+                    Text(options[1], Modifier.widthIn(min = width), textAlign = TextAlign.Center)
+                }
+            },
+            menuContent = {},
+        )
     }
 }
 

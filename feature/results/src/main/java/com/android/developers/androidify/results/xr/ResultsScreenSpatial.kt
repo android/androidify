@@ -25,15 +25,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import androidx.xr.compose.spatial.ContentEdge
 import androidx.xr.compose.spatial.Orbiter
-import androidx.xr.compose.spatial.OrbiterOffsetType
+import androidx.xr.compose.spatial.OrbiterAnchorPoint
 import androidx.xr.compose.spatial.Subspace
 import androidx.xr.compose.subspace.SpatialBox
 import androidx.xr.compose.subspace.SpatialPanel
@@ -42,6 +40,7 @@ import androidx.xr.compose.subspace.layout.fillMaxHeight
 import androidx.xr.compose.subspace.layout.fillMaxWidth
 import androidx.xr.compose.subspace.layout.offset
 import androidx.xr.compose.subspace.layout.rotate
+import androidx.xr.compose.unit.DpVolumeOffset
 import androidx.xr.runtime.math.Pose
 import androidx.xr.runtime.math.Vector3
 import com.android.developers.androidify.results.ResultsScreenScaffold
@@ -77,10 +76,12 @@ fun ResultsScreenSpatial(
                     minimumHeight = 500.dp,
                     onMove = { moveEvent ->
                         offsetPose = moveEvent.pose
-                        false
                     },
                 ) {
-                    Orbiter(ContentEdge.Top, offsetType = OrbiterOffsetType.InnerEdge) {
+                    Orbiter(
+                        anchorPoint = OrbiterAnchorPoint.Top,
+                        offset = DpVolumeOffset(y = (-16).dp),
+                    ) {
                         Box(
                             Modifier
                                 .background(
@@ -106,9 +107,8 @@ fun ResultsScreenSpatial(
                     }
 
                     Orbiter(
-                        position = ContentEdge.Bottom,
-                        offsetType = OrbiterOffsetType.InnerEdge,
-                        alignment = Alignment.End,
+                        anchorPoint = OrbiterAnchorPoint.BottomEnd,
+                        offset = DpVolumeOffset(y = 16.dp),
                     ) {
                         buttonRow(Modifier)
                     }
