@@ -32,6 +32,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Button
@@ -251,12 +252,18 @@ fun StatelessCameraPreviewContent(
         },
         guideText = { guideTextModifier ->
             AnimatedVisibility(
-                !detectedPose,
+                visible = !detectedPose,
                 enter = fadeIn(MaterialTheme.motionScheme.slowEffectsSpec()),
                 exit = fadeOut(MaterialTheme.motionScheme.slowEffectsSpec()),
                 modifier = guideTextModifier,
             ) {
-                CameraGuideText()
+                CameraGuideText(
+                    modifier = Modifier.padding(
+                        start = 10.dp,
+                        end = 10.dp,
+                        bottom = 10.dp,
+                    ),
+                )
             }
         },
         guide = { guideModifier ->
@@ -267,12 +274,12 @@ fun StatelessCameraPreviewContent(
             )
         },
         rearCameraButton = (
-            if (shouldShowRearCameraFeature()) {
-                rearCameraButton
-            } else {
-                emptyComposable
-            }
-            ),
+                if (shouldShowRearCameraFeature()) {
+                    rearCameraButton
+                } else {
+                    emptyComposable
+                }
+                ),
         isTabletop = isTableTopPosture(foldingFeature),
         modifier = modifier.onSizeChanged { size ->
             if (size.height > 0) {
