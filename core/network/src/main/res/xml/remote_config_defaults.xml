@@ -256,6 +256,33 @@
             Keep all words and descriptors that describe details such as colors, styles, size and materials of hair, clothing, shoes, accessories that do not allude to any of the inappropriate content listed above.</value>
     </entry>
     <entry>
+        <key>prompt_text_verify_nano</key>
+        <value>[TASK]
+            You are a Validator. Analyze the provided text prompt and determine if it contains a valid description of a person's appearance.
+            [RULES]
+            VALID if the text includes attributes describing what a person looks like, such as:
+            - Hair (color, style, length)
+            - Facial hair
+            - Clothing (type, color, style)
+            - Footwear
+            - Accessories (glasses, hats, jewelry, etc.)
+            - Items they are holding
+
+            INVALID if the text:
+            - Does not describe a person's appearance
+            - Contains inappropriate content (racial stereotypes, hate symbols, sexual references, hateful comments)
+            - Contains weapons, guns, drugs, or drug paraphernalia
+            - Contains brand names or logos
+            - Only describes background or setting
+
+            [OUTPUT]
+            Return ONLY one of these responses:
+            - "valid" if the prompt contains a sufficient description of a person's appearance
+            - "invalid" if the prompt does not meet the criteria
+
+            Input prompt: </value>
+    </entry>
+    <entry>
         <key>image_model_name</key>
         <value>imagen-4.0-ultra-generate-preview-06-06</value>
     </entry>
