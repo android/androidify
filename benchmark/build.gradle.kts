@@ -47,6 +47,7 @@ android {
 
     defaultConfig {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments["androidx.benchmark.suppressErrors"] = "EMULATOR"
     }
 
     buildTypes {
@@ -62,14 +63,6 @@ android {
 
     targetProjectPath = ":app"
     experimentalProperties["android.experimental.self-instrumenting"] = true
-
-    testOptions.managedDevices.allDevices {
-        create("pixel6Api34", ManagedVirtualDevice::class.java) {
-            device = "Pixel 6"
-            apiLevel = 34
-            systemImageSource = "google"
-        }
-    }
 }
 
 kotlin {
@@ -81,8 +74,6 @@ kotlin {
 // This is the configuration block for the Baseline Profile plugin.
 // You can specify to run the generators on a managed devices or connected devices.
 baselineProfile {
-    managedDevices += "pixel6Api34"
-    skipBenchmarksOnEmulator = true
     useConnectedDevices = true
 }
 

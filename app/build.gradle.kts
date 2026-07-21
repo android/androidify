@@ -33,6 +33,8 @@ android {
         applicationId = "com.android.developers.androidify"
         versionCode = libs.versions.appVersionCode.get().toInt()
         versionName = libs.versions.appVersionName.get()
+
+        testInstrumentationRunnerArguments["androidx.benchmark.suppressErrors"] = "EMULATOR"
     }
 
     buildTypes {
@@ -45,29 +47,17 @@ android {
             isDebuggable = false
         }
         release {
-            isShrinkResources = true
             isMinifyEnabled = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro",
-            )
+            isShrinkResources = true
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             configure<CrashlyticsExtension> {
                 mappingFileUploadEnabled = true
             }
+            signingConfig = signingConfigs.getByName("debug")
+
             // Conditionally apply signingConfig for release builds
             // If the 'CI_BUILD' project property is set to 'true', do not assign a signingConfig.
             // Otherwise, (e.g., for local Android Studio builds), sign with the debug key.
-            if (project.findProperty("CI_BUILD")?.toString()?.toBoolean() == true) {
-                // For CI builds, we want an unsigned artifact.
-                // No signingConfig is assigned here.
-                // The bundleRelease task will produce an unsigned AAB.
-                println("CI_BUILD property detected. Release build will be unsigned by Gradle.")
-            } else {
-                // For local builds (not CI), sign with the debug key to allow easy deployment.
-                // This ensures you can select the "release" variant in Android Studio and run it.
-                println("Not a CI_BUILD or CI_BUILD property not set. Signing release build with debug key.")
-                signingConfig = signingConfigs.getByName("debug")
-            }
         }
     }
     testOptions {
@@ -83,8 +73,9 @@ android {
     }
 }
 
-baselineProfile() {
+baselineProfile {
     dexLayoutOptimization = true
+    automaticGenerationDuringBuild = true
 }
 
 spdxSbom {

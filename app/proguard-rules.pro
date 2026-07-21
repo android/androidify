@@ -19,12 +19,7 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
--keep class com.firebase.** { *; }
--keep interface com.firebase.** { *; }
--keep class org.apache.** { *; }
--keepnames class com.fasterxml.jackson.** { *; }
--keepnames class javax.servlet.** { *; }
--keepnames class org.ietf.jgss.** { *; }
+
 -dontwarn org.w3c.dom.**
 -dontwarn org.joda.time.**
 -dontwarn org.shaded.apache.**
@@ -43,25 +38,16 @@
 
 # Ignore missing Java SE annotation processing classes, often from libraries like AutoValue
 -dontwarn javax.lang.model.**
-
+-dontoptimize
+-dontobfuscate
 # OkHttp
--keep class okhttp3.** { *; }
--keep interface okhttp3.** { *; }
--dontwarn okhttp3.**
+-dontwarn okhttp3.internal.Util
+
 
 # Ignore SAX parser warning
 -dontwarn org.xml.sax.**
 
 # WorkManager / Room R8 Full Mode keep rules
 -keep class androidx.work.impl.WorkDatabase_Impl { *; }
--keep class androidx.work.impl.** { *; }
 -dontwarn androidx.work.impl.**
-
-# Keep list of constructors used by reflection (Workers)
--keep class * extends androidx.work.ListenableWorker {
-    <init>(android.content.Context, androidx.work.WorkerParameters);
-}
--keep class * extends androidx.work.Worker {
-    <init>(android.content.Context, androidx.work.WorkerParameters);
-}
 

@@ -17,6 +17,8 @@ package com.android.developers.androidify.benchmark
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.benchmark.macro.ArtMetric
+import androidx.benchmark.macro.BaselineProfileMode
 import androidx.benchmark.macro.CompilationMode
 import androidx.benchmark.macro.ExperimentalMetricApi
 import androidx.benchmark.macro.FrameTimingMetric
@@ -50,12 +52,26 @@ class PromptBenchmark {
     @Test
     fun promptBenchmarkFullCompilation() = promptBenchmark(CompilationMode.Full())
 
+    @Test
+    fun speedProfileBaselineProfile() = promptBenchmark(
+        CompilationMode.Partial(BaselineProfileMode.Require)
+    )
+
+    @Test
+    fun speedProfileWarmup() = promptBenchmark(
+        CompilationMode.Partial(BaselineProfileMode.Disable, warmupIterations = 3)
+    )
+
+
+
+
     @OptIn(ExperimentalMetricApi::class)
     private fun promptBenchmark(compilationMode: CompilationMode) {
         benchmarkRule.measureRepeated(
             packageName = "com.android.developers.androidify",
             compilationMode = compilationMode,
             metrics = listOf(
+                ArtMetric(),
                 StartupTimingMetric(),
                 FrameTimingMetric(),
                 MemoryUsageMetric(MemoryUsageMetric.Mode.Max),

@@ -17,6 +17,8 @@ package com.android.developers.androidify.benchmark
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.benchmark.macro.ArtMetric
+import androidx.benchmark.macro.BaselineProfileMode
 import androidx.benchmark.macro.CompilationMode
 import androidx.benchmark.macro.ExperimentalMetricApi
 import androidx.benchmark.macro.FrameTimingMetric
@@ -41,23 +43,33 @@ class StartupBenchmark {
     fun startupNoPrecompilation() = startup(CompilationMode.None())
 
     @Test
-    fun startupBaselineProfile() = startup(CompilationMode.DEFAULT)
+    fun startUpProfileBaselineProfileUseIfAvailable() = startup(
+        CompilationMode.Partial(BaselineProfileMode.UseIfAvailable, warmupIterations = 3)
+    )
 
     @Test
-    fun startupFullCompilation() = startup(CompilationMode.Full())
+    fun startUpProfileBaselineProfileRequired() = startup(
+        CompilationMode.Partial(BaselineProfileMode.Require, warmupIterations = 3)
+    )
+
+    @Test
+    fun startProfileBaselineProfile() = startup(
+        CompilationMode.Partial(BaselineProfileMode.Disable, warmupIterations = 3)
+    )
 
     @OptIn(ExperimentalMetricApi::class)
     private fun startup(compilationMode: CompilationMode) = benchmarkRule.measureRepeated(
         packageName = "com.android.developers.androidify",
         metrics = listOf(
             StartupTimingMetric(),
-            FrameTimingMetric(),
-            MemoryUsageMetric(MemoryUsageMetric.Mode.Max),
-            PowerMetric(PowerMetric.Type.Power()),
+            ArtMetric(),
         ),
-        iterations = 10,
+        iterations = 5,
         compilationMode = compilationMode,
         startupMode = StartupMode.COLD,
+        setupBlock = {
+            killProcess()
+        }
     ) {
         uiAutomator {
             startApp(packageName = packageName)
