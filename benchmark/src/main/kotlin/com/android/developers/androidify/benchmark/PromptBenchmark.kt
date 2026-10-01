@@ -67,7 +67,7 @@ class PromptBenchmark {
             iterations = 5,
             setupBlock = {
                 killProcess()
-            }
+            },
         ) {
             uiAutomator {
                 startApp(packageName = packageName)

@@ -17,15 +17,20 @@ package com.android.developers.androidify.benchmark
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.benchmark.ExperimentalBenchmarkConfigApi
+import androidx.benchmark.ExperimentalConfig
+import androidx.benchmark.MemoryProfilingConfig
+import androidx.benchmark.macro.ArtMetric
 import androidx.benchmark.macro.CompilationMode
 import androidx.benchmark.macro.ExperimentalMetricApi
 import androidx.benchmark.macro.FrameTimingMetric
 import androidx.benchmark.macro.MemoryUsageMetric
-import androidx.benchmark.macro.PowerMetric
 import androidx.benchmark.macro.StartupMode
 import androidx.benchmark.macro.StartupTimingMetric
 import androidx.benchmark.macro.junit4.MacrobenchmarkRule
+import androidx.benchmark.perfetto.ExperimentalPerfettoCaptureApi
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.filters.SdkSuppress
 import androidx.test.uiautomator.uiAutomator
 import com.android.developers.androidify.classInitMetric
 import com.android.developers.androidify.jitCompilationMetric
@@ -34,7 +39,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-@RequiresApi(Build.VERSION_CODES.Q)
+@SdkSuppress(minSdkVersion = Build.VERSION_CODES.Q)
 class StartupBenchmark {
     @get:Rule
     val benchmarkRule = MacrobenchmarkRule()
@@ -44,15 +49,23 @@ class StartupBenchmark {
 
     @Test
     fun startupBaselineProfile() = startup(CompilationMode.DEFAULT)
-    @OptIn(ExperimentalMetricApi::class)
+
+    @OptIn(
+        ExperimentalMetricApi::class, ExperimentalBenchmarkConfigApi::class,
+        ExperimentalPerfettoCaptureApi::class,
+    )
     private fun startup(compilationMode: CompilationMode) = benchmarkRule.measureRepeated(
         packageName = "com.android.developers.androidify",
         metrics = listOf(
             StartupTimingMetric(),
             FrameTimingMetric(),
             MemoryUsageMetric(MemoryUsageMetric.Mode.Max, subMetrics = MemoryUsageMetric.SubMetric.entries),
-            jitCompilationMetric,
-            classInitMetric,
+        ),
+        experimentalConfig = ExperimentalConfig(
+            memoryProfilingConfig = MemoryProfilingConfig(
+                isSampleArtHeapEnabled = true,
+                isSampleNativeHeapEnabled = true,
+            ),
         ),
         setupBlock = {
             killProcess()
