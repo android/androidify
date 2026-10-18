@@ -77,11 +77,11 @@ echo "INFO: Accepting licenses for newly installed packages..."
 yes | sdkmanager --licenses
 
 echo "Copying google-services.json"
-cp /tmpfs/src/git/androidify-prebuilts/google-services.json ${DIR}/app
+cp "${KOKORO_ARTIFACTS_DIR}/git/androidify-prebuilts/google-services.json" ${DIR}/app
 
 echo "Copying gradle.properties"
 echo "" >> ${DIR}/gradle.properties # add a new line to the file
-cat /tmpfs/src/git/androidify-prebuilts/gradle.properties >> ${DIR}/gradle.properties
+cat "${KOKORO_ARTIFACTS_DIR}/git/androidify-prebuilts/gradle.properties" >> ${DIR}/gradle.properties
 ls
 
 # --- Build Process ---
