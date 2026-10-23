@@ -1,0 +1,30 @@
+{
+  "optimization": {
+    "bundleAnalysisResult": {
+      "packageName": "com.android.developers.androidify",
+      "agpVersion": "9.3.2",
+      "r8Json": {
+        "version": "9.3.16",
+        "options": {
+          "isRepackageClassesEnabled": true,
+          "isProguardCompatibilityModeEnabled": false
+        },
+        "stats": {
+          "shrinkingRatio": 0.7028,
+          "optimizationRatio": 0.7012,
+          "obfuscationRatio": 0.7027
+        },
+        "resourceOptimizationStatus": "R8_RESOURCE_OPTIMIZATION_STATUS_OPTIMIZED",
+        "r8DexChecksumStatus": "EXACT_MATCH"
+      },
+      "r8DexMarkerMetadata": {
+        "r8Enabled": true,
+        "d8Enabled": false,
+        "fullModeEnabled": true
+      },
+      "mappingObfuscationRatio": 0.7842,
+      "dexHeuristicObfuscationRatio": 0.7865,
+      "uncompressedDexSizeBytes": "15204352"
+    }
+  }
+}

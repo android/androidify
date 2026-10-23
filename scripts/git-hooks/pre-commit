@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+# Copyright 2026 Google LLC
+#
+# Git pre-commit hook: runs R8 keep-rule lint + `android analyze` regression gate
+# whenever ProGuard/R8 rules or Gradle build files are staged.
+#
+# Install once per clone:
+#   git config core.hooksPath scripts/git-hooks
+
+set -euo pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd "${REPO_ROOT}"
+
+CHANGED_R8_FILES="$(git diff --cached --name-only --diff-filter=ACMR -- \
+  '*.pro' '*.gradle.kts' 'gradle/libs.versions.toml' 'gradle.properties' 'r8-baseline.json')"
+
+if [[ -z "${CHANGED_R8_FILES}" ]]; then
+  exit 0
+fi
+
+echo "==> [pre-commit] R8/build configuration changes detected:"
+echo "${CHANGED_R8_FILES}" | sed 's/^/    • /'
+echo ""
+
+DIFF_FAILED=0
+
+# 1. Fast diff check: flag disabling R8 Full Mode or adding unrestricted package-wide `-keep class pkg.** { *; }`
+ADDED_PRO_LINES="$(git diff --cached -U0 -- '*.pro' 'gradle.properties' | grep -E '^\+[^+]' || true)"
+
+if echo "${ADDED_PRO_LINES}" | grep -Eq 'android\.enableR8\.fullMode[[:space:]]*=[[:space:]]*false'; then
+  echo "❌ [pre-commit] Staged diff disables R8 Full Mode (android.enableR8.fullMode=false)."
+  DIFF_FAILED=1
+fi
+
+BROAD_KEEP_RULES="$(echo "${ADDED_PRO_LINES}" | grep -E '^\+[[:space:]]*-keep[[:space:]]+(class|interface)[[:space:]]+[a-zA-Z0-9_.]+\.\*\*[[:space:]]*\{[[:space:]]*\*;[[:space:]]*\}' || true)"
+if [[ -n "${BROAD_KEEP_RULES}" ]]; then
+  echo "❌ [pre-commit] Broad package-wide keep rule(s) introduced in staged changes:"
+  echo "${BROAD_KEEP_RULES}" | sed 's/^\+/    /'
+  echo "💡 Narrow the rule to specific classes/members or add allowshrinking,allowobfuscation."
+  echo ""
+  DIFF_FAILED=1
+fi
+
+# 2. Run `android analyze` R8 score & library shrinking gate
+EXTRA_FLAGS=()
+if [[ "${R8_GATE_BUILD:-0}" == "1" ]]; then
+  EXTRA_FLAGS+=(--build)
+fi
+if [[ -n "${R8_GATE_AAB:-}" ]]; then
+  EXTRA_FLAGS+=(--aab "${R8_GATE_AAB}")
+fi
+
+GATE_FAILED=0
+python3 ./scripts/check_r8_regression.py \
+  "${EXTRA_FLAGS[@]+"${EXTRA_FLAGS[@]}"}" \
+  --scan-libraries \
+  --fail-on-package-wide-rules || GATE_FAILED=$?
+
+if [[ "${DIFF_FAILED}" -ne 0 || "${GATE_FAILED}" -ne 0 ]]; then
+  exit 1
+fi

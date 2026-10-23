@@ -1,0 +1,251 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+name: R8 Regression Gate
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+on:
+  push:
+    branches: [ 'main' ]
+    paths:
+      - '**/proguard-rules.pro'
+      - '**/consumer-rules.pro'
+      - '**/*.pro'
+      - '**/build.gradle.kts'
+      - 'gradle/libs.versions.toml'
+      - 'gradle.properties'
+      - 'scripts/check_r8_regression.py'
+  pull_request:
+    branches: [ '*' ]
+    paths:
+      - '**/proguard-rules.pro'
+      - '**/consumer-rules.pro'
+      - '**/*.pro'
+      - '**/build.gradle.kts'
+      - 'gradle/libs.versions.toml'
+      - 'gradle.properties'
+      - 'r8-baseline.json'
+      - 'scripts/check_r8_regression.py'
+      - '.github/workflows/r8_regression_check.yml'
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'Pull request number to review (leave empty to check the latest commit)'
+        required: false
+        type: string
+      max_score_drop:
+        description: 'Max allowed drop in R8 scores (percentage points)'
+        required: false
+        default: '2.0'
+        type: string
+      max_dex_growth_pct:
+        description: 'Max allowed uncompressed DEX growth (%)'
+        required: false
+        default: '5.0'
+        type: string
+      min_lib_shrinking_pct:
+        description: 'Min required library DEX shrinking percentage (%)'
+        required: false
+        default: '90.0'
+        type: string
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  r8-regression-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    if: github.repository == 'android/androidify' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event.pull_request.head.repo.fork == false)
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      with:
+        token: ${{ secrets.PAT || github.token }}
+        fetch-depth: 0
+        persist-credentials: ${{ github.event_name == 'push' }}
+
+    - name: Prepare Review Context
+      id: context
+      env:
+        GH_TOKEN: ${{ secrets.PAT || github.token }}
+        PR_NUMBER: ${{ inputs.pr_number || github.event.pull_request.number }}
+        BASE_REF: ${{ github.base_ref }}
+      run: |
+        set -euo pipefail
+        if [[ -n "${PR_NUMBER}" ]]; then
+          if [[ -z "${BASE_REF}" ]]; then
+            BASE_REF=$(gh pr view "${PR_NUMBER}" --json baseRefName --jq '.baseRefName')
+            gh pr checkout "${PR_NUMBER}"
+            git fetch origin "${BASE_REF}"
+          fi
+          DIFF_RANGE="origin/${BASE_REF}...HEAD"
+          echo "mode=pr" >> "${GITHUB_OUTPUT}"
+          echo "pr_number=${PR_NUMBER}" >> "${GITHUB_OUTPUT}"
+        else
+          DIFF_RANGE="HEAD~1...HEAD"
+          echo "mode=commit" >> "${GITHUB_OUTPUT}"
+          echo "pr_number=" >> "${GITHUB_OUTPUT}"
+        fi
+        if [[ -f .gitignore ]]; then
+          sed -i '/^\.gemini\/$/d; /^\.agents\/$/d' .gitignore
+        fi
+        mkdir -p .gemini
+        git diff --name-only --diff-filter=ACMRT "${DIFF_RANGE}" -- '*.pro' '*.gradle.kts' 'gradle/libs.versions.toml' 'gradle.properties' > .gemini/target_files.txt
+        git diff -U5 --diff-filter=ACMRT "${DIFF_RANGE}" -- '*.pro' '*.gradle.kts' 'gradle/libs.versions.toml' 'gradle.properties' > .gemini/pr_diff.patch
+
+    - name: Set up JDK 21
+      uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@ed408507eac070d1f99cc633dbcf757c94c7933a # v4
+
+    - name: Install Android CLI & R8 Analyzer Skill
+      run: |
+        set -euo pipefail
+        curl -fsSL https://dl.google.com/android/cli/latest/linux_x86_64/install.sh | bash
+        echo "${HOME}/.local/bin" >> "${GITHUB_PATH}"
+        export PATH="${HOME}/.local/bin:${PATH}"
+        android skills add --agent=gemini --project=. r8-analyzer
+
+    - name: Decode google-services.json
+      env:
+        DEBUG_GOOGLE_SERVICES_JSON_BASE64: ${{ secrets.DEBUG_GOOGLE_SERVICES_JSON_BASE64 }}
+      run: |
+        if [[ -z "${DEBUG_GOOGLE_SERVICES_JSON_BASE64}" ]]; then
+          cp test-google-services.json app/google-services.json
+        else
+          echo "${DEBUG_GOOGLE_SERVICES_JSON_BASE64}" | base64 --decode > app/google-services.json
+        fi
+
+    - name: Build Release App Bundle (.aab) & Module Libraries (.aar)
+      run: ./gradlew :app:bundleRelease assembleRelease -x test -x uploadCrashlyticsMappingFileRelease --no-configuration-cache
+
+    - name: Run R8 Score, Library Shrinking & DEX Regression Gate
+      id: r8_gate
+      env:
+        ANDROID_CLI_ANALYZE: '1'
+      run: |
+        set +e
+        python3 ./scripts/check_r8_regression.py \
+          --aab app/build/outputs/bundle/release/app-release.aab \
+          --baseline r8-baseline.json \
+          --max-score-drop "${{ inputs.max_score_drop || '2.0' }}" \
+          --max-dex-growth-pct "${{ inputs.max_dex_growth_pct || '5.0' }}" \
+          --scan-libraries \
+          --min-lib-shrinking-pct "${{ inputs.min_lib_shrinking_pct || '90.0' }}" \
+          --fail-on-package-wide-rules \
+          --markdown-summary .gemini/r8_summary.md
+        EXIT_CODE=$?
+        set -e
+        if [[ ${EXIT_CODE} -eq 0 ]]; then
+          echo "passed=true" >> "${GITHUB_OUTPUT}"
+        else
+          echo "passed=false" >> "${GITHUB_OUTPUT}"
+        fi
+
+    - name: Update R8 Baseline on Merge to main
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.r8_gate.outputs.passed == 'true'
+      env:
+        ANDROID_CLI_ANALYZE: '1'
+      run: |
+        python3 ./scripts/check_r8_regression.py \
+          --aab app/build/outputs/bundle/release/app-release.aab \
+          --baseline r8-baseline.json \
+          --save-baseline
+
+    - name: Commit Updated R8 Baseline
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.r8_gate.outputs.passed == 'true'
+      uses: stefanzweifel/git-auto-commit-action@b863ae1933cb653a53c021fe36dbb774e1fb9403 # v5
+      with:
+        commit_message: "🤖 Update r8-baseline.json after merge [skip ci]"
+        file_pattern: 'r8-baseline.json'
+
+    - name: Run R8 Configuration Analyzer & Skill Review (on Regression)
+      if: steps.r8_gate.outputs.passed == 'false'
+      id: gemini_review
+      uses: google-github-actions/run-gemini-cli@f77273f4c914e4bf38440cf36a0369cb64a37489 # v0.1.22
+      continue-on-error: true
+      env:
+        GEMINI_CLI_TRUST_WORKSPACE: 'true'
+        GITHUB_TOKEN: ${{ secrets.PAT || github.token }}
+      with:
+        gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
+        github_pr_number: ${{ steps.context.outputs.pr_number }}
+        upload_artifacts: 'true'
+        settings: |
+          {
+            "model": {
+              "maxSessionTurns": 50
+            },
+            "context": {
+              "fileFiltering": {
+                "respectGitIgnore": false,
+                "respectGeminiIgnore": false
+              }
+            },
+            "fileFiltering": {
+              "respectGitIgnore": false,
+              "respectGeminiIgnore": false
+            }
+          }
+        prompt: |
+          An R8 score, library shrinking, or DEX size regression was detected by `android analyze` (see `.gemini/r8_summary.md`).
+          Use the `r8-analyzer` skill located at `.agents/skills/r8-analyzer/SKILL.md` to review the ProGuard/R8 and build configuration changes in `.gemini/pr_diff.patch` and identify which keep rules or dependency changes caused the regression, along with concrete recommendations to remove or refine them.
+
+    - name: Post Findings on Pull Request
+      if: steps.context.outputs.pr_number != '' && always()
+      env:
+        GH_TOKEN: ${{ secrets.PAT || github.token }}
+        PR_NUMBER: ${{ steps.context.outputs.pr_number }}
+        REVIEW_SUMMARY: ${{ steps.gemini_review.outputs.summary }}
+      run: |
+        set -euo pipefail
+        if [[ ! -f .gemini/r8_summary.md ]]; then
+          exit 0
+        fi
+        COMMENT_FILE="$(mktemp)"
+        cat .gemini/r8_summary.md > "${COMMENT_FILE}"
+        if [[ -n "${REVIEW_SUMMARY}" ]]; then
+          {
+            echo ""
+            echo "---"
+            echo ""
+            printf '%s\n' "${REVIEW_SUMMARY}"
+          } >> "${COMMENT_FILE}"
+        fi
+        gh pr comment "${PR_NUMBER}" --body-file "${COMMENT_FILE}"
+        rm -f "${COMMENT_FILE}"
+
+    - name: Upload R8 Configuration Analyzer HTML Report
+      if: steps.r8_gate.outputs.passed == 'false'
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+      with:
+        name: r8-config-analyzer-report
+        path: app/build/reports/r8/r8-config-analyzer-release.html
+        if-no-files-found: ignore
+
+    - name: Enforce R8 Regression Gate
+      if: steps.r8_gate.outputs.passed == 'false'
+      run: |
+        echo "::error::R8 Regression Gate failed. See step summary or PR comment for details."
+        exit 1

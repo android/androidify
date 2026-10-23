@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+# Copyright 2026 Google LLC
+#
+# Git pre-push hook: runs `check_r8_regression.py` before pushing commits that
+# modify ProGuard/R8 rules or Gradle build configurations.
+#
+# Install once per clone:
+#   git config core.hooksPath scripts/git-hooks
+
+set -euo pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd "${REPO_ROOT}"
+
+CHANGED_R8_FILES="$({
+  git diff --name-only origin/main -- '*.pro' '*.gradle.kts' 'gradle/libs.versions.toml' 'gradle.properties' 'r8-baseline.json' 2>/dev/null || true
+  git ls-files --others --exclude-standard -- '*.pro' 'r8-baseline.json' 2>/dev/null || true
+} | sort -u)"
+
+if [[ -z "${CHANGED_R8_FILES}" ]]; then
+  exit 0
+fi
+
+echo "==> [pre-push] R8/build changes detected relative to origin/main; running R8 Regression Gate..."
+
+BUILD_FLAG=()
+if [[ "${R8_GATE_BUILD:-0}" == "1" ]]; then
+  BUILD_FLAG=(--build)
+fi
+
+python3 ./scripts/check_r8_regression.py \
+  "${BUILD_FLAG[@]+"${BUILD_FLAG[@]}"}" \
+  --scan-libraries \
+  --fail-on-package-wide-rules
