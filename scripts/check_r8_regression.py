@@ -64,9 +64,19 @@ def run_android_analyze(artifact_path: Path) -> dict[str, Any]:
     return json.loads(stdout[json_start:])
 
 
+def _unwrap_optimization(data: dict[str, Any]) -> dict[str, Any]:
+    """Supports both `{"results": [{"optimization": ...}]}` and `{"optimization": ...}`."""
+    if "optimization" in data and isinstance(data["optimization"], dict):
+        return data["optimization"]
+    results = data.get("results", [])
+    if isinstance(results, list) and results and isinstance(results[0], dict):
+        return results[0].get("optimization", {})
+    return {}
+
+
 def extract_bundle_metrics(data: dict[str, Any]) -> dict[str, Any]:
     """Extracts R8 ratios, DEX size, and config flags from `android analyze` bundle JSON."""
-    bundle = data.get("optimization", {}).get("bundleAnalysisResult", {})
+    bundle = _unwrap_optimization(data).get("bundleAnalysisResult", {})
     if not bundle:
         raise ValueError(
             "No `bundleAnalysisResult` found in output. Make sure you pass a release `.aab` file."
@@ -95,7 +105,7 @@ def extract_bundle_metrics(data: dict[str, Any]) -> dict[str, Any]:
 
 def extract_library_metrics(artifact_path: Path, data: dict[str, Any]) -> dict[str, Any]:
     """Extracts library shrinking percentages and consumer keep-rule metrics from AAR/JAR JSON."""
-    lib = data.get("optimization", {}).get("libraryAnalysisResult", {})
+    lib = _unwrap_optimization(data).get("libraryAnalysisResult", {})
     if not lib:
         raise ValueError(
             f"No `libraryAnalysisResult` found for {artifact_path}. Make sure it is an `.aar` or `.jar`."

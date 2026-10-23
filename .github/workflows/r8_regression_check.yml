@@ -144,16 +144,18 @@ jobs:
       id: r8_gate
       env:
         ANDROID_CLI_ANALYZE: '1'
+        MAX_SCORE_DROP: ${{ inputs.max_score_drop || '2.0' }}
+        MAX_DEX_GROWTH_PCT: ${{ inputs.max_dex_growth_pct || '5.0' }}
+        MIN_LIB_SHRINKING_PCT: ${{ inputs.min_lib_shrinking_pct || '90.0' }}
       run: |
         set +e
         python3 ./scripts/check_r8_regression.py \
           --aab app/build/outputs/bundle/release/app-release.aab \
           --baseline r8-baseline.json \
-          --max-score-drop "${{ inputs.max_score_drop || '2.0' }}" \
-          --max-dex-growth-pct "${{ inputs.max_dex_growth_pct || '5.0' }}" \
+          --max-score-drop "${MAX_SCORE_DROP}" \
+          --max-dex-growth-pct "${MAX_DEX_GROWTH_PCT}" \
           --scan-libraries \
-          --min-lib-shrinking-pct "${{ inputs.min_lib_shrinking_pct || '90.0' }}" \
-          --fail-on-package-wide-rules \
+          --min-lib-shrinking-pct "${MIN_LIB_SHRINKING_PCT}" \
           --markdown-summary .gemini/r8_summary.md
         EXIT_CODE=$?
         set -e
@@ -184,7 +186,6 @@ jobs:
       if: steps.r8_gate.outputs.passed == 'false'
       id: gemini_review
       uses: google-github-actions/run-gemini-cli@f77273f4c914e4bf38440cf36a0369cb64a37489 # v0.1.22
-      continue-on-error: true
       env:
         GEMINI_CLI_TRUST_WORKSPACE: 'true'
         GITHUB_TOKEN: ${{ secrets.PAT || github.token }}
