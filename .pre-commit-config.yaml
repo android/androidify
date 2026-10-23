@@ -1,0 +1,32 @@
+# Copyright 2026 The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+repos:
+  - repo: local
+    hooks:
+      - id: r8-keep-rules-diff-check
+        name: R8 Keep Rules & FullMode Diff Check
+        entry: scripts/git-hooks/pre-commit
+        language: script
+        pass_filenames: false
+        files: '(\.pro$|gradle\.properties$|\.gradle\.kts$|libs\.versions\.toml$|r8-baseline\.json$)'
+        stages: [pre-commit]
+
+      - id: r8-regression-gate
+        name: R8 Regression & Library Shrinking Gate (android analyze)
+        entry: python3 scripts/check_r8_regression.py --scan-libraries --fail-on-package-wide-rules
+        language: system
+        pass_filenames: false
+        files: '(\.pro$|gradle\.properties$|\.gradle\.kts$|libs\.versions\.toml$|r8-baseline\.json$)'
+        stages: [pre-push]
