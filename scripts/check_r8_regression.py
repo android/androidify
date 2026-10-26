@@ -17,8 +17,10 @@
 from __future__ import annotations
 
 import argparse
+import glob
 import json
 import os
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -177,6 +179,88 @@ def discover_module_aars(root: Path) -> list[Path]:
     return sorted(root.glob("**/build/outputs/aar/*-release.aar"))
 
 
+def inspect_staged_changes() -> tuple[list[str], list[Path]]:
+    """
+    Inspects `git diff --cached` for:
+      1. Broad package-wide `-keep class <pkg>.** { *; }` rules or `android.enableR8.fullMode=false`
+      2. Newly added Maven dependencies (`group:artifact:version`) and resolves their `.aar`/`.jar`
+         from `~/.gradle/caches/modules-2/files-2.1`.
+    """
+    diff_failures: list[str] = []
+    dep_archives: list[Path] = []
+
+    try:
+        pro_diff = subprocess.check_output(
+            ["git", "diff", "--cached", "-U0", "--", "*.pro", "gradle.properties"],
+            text=True,
+            stderr=subprocess.DEVNULL,
+        )
+    except Exception:
+        pro_diff = ""
+
+    current_file = "staged file"
+    for line in pro_diff.splitlines():
+        if line.startswith("+++ b/"):
+            current_file = line[6:].strip()
+        elif line.startswith("+") and not line.startswith("+++"):
+            added = line[1:].strip()
+            if re.search(r"android\.enableR8\.fullMode\s*=\s*false", added):
+                diff_failures.append(
+                    f"Staged change in `{current_file}` disables R8 Full Mode (`{added}`)"
+                )
+            elif re.match(
+                r"^-keep\s+(class|interface)\s+[a-zA-Z0-9_.]+\.\*\*\s*\{\s*\*\s*;\s*\}",
+                added,
+            ):
+                diff_failures.append(
+                    f"Staged rule in `{current_file}` introduces broad package-wide keep rule: `{added}`"
+                )
+
+    try:
+        gradle_diff = subprocess.check_output(
+            [
+                "git",
+                "diff",
+                "--cached",
+                "-U0",
+                "--",
+                "*.gradle.kts",
+                "gradle/libs.versions.toml",
+            ],
+            text=True,
+            stderr=subprocess.DEVNULL,
+        )
+    except Exception:
+        gradle_diff = ""
+
+    coords: set[tuple[str, str, str]] = set()
+    for m in re.finditer(
+        r'^\+.*["\']([a-zA-Z0-9_.-]+):([a-zA-Z0-9_.-]+):([a-zA-Z0-9_.-]+)["\']',
+        gradle_diff,
+        re.M,
+    ):
+        coords.add((m.group(1), m.group(2), m.group(3)))
+    for m in re.finditer(
+        r'^\+.*group\s*=\s*"([^"]+)"\s*,\s*name\s*=\s*"([^"]+)"\s*,\s*version\s*=\s*"([^"]+)"',
+        gradle_diff,
+        re.M,
+    ):
+        coords.add((m.group(1), m.group(2), m.group(3)))
+
+    cache_root = Path.home() / ".gradle" / "caches" / "modules-2" / "files-2.1"
+    if cache_root.exists():
+        for group, name, version in sorted(coords):
+            pattern = str(cache_root / group / name / version / "*" / f"{name}-{version}.*")
+            for match in sorted(glob.glob(pattern)):
+                if match.endswith((".aar", ".jar")) and not match.endswith(
+                    ("-sources.jar", "-javadoc.jar")
+                ):
+                    dep_archives.append(Path(match))
+                    break
+
+    return diff_failures, dep_archives
+
+
 def build_markdown_summary(
     cur_bundle: dict[str, Any] | None,
     bundle_rows: list[tuple[str, str, str, str, str, bool]],
@@ -322,6 +406,11 @@ def main() -> int:
         help="Fail the gate if any analyzed library exports package-wide consumer keep rules (`-keep class pkg.** { *; }`)",
     )
     parser.add_argument(
+        "--check-staged",
+        action="store_true",
+        help="Inspect `git diff --cached` for broad keep rules and newly added Maven dependency AARs/JARs",
+    )
+    parser.add_argument(
         "--markdown-summary",
         type=Path,
         default=None,
@@ -336,6 +425,15 @@ def main() -> int:
     failures: list[str] = []
     summary_rows: list[tuple[str, str, str, str, str, bool]] = []
     cur_bundle: dict[str, Any] | None = None
+
+    staged_dep_archives: list[Path] = []
+    if args.check_staged:
+        staged_failures, staged_dep_archives = inspect_staged_changes()
+        failures.extend(staged_failures)
+        for dep_path in staged_dep_archives:
+            print(
+                f"{BOLD}==> Auditing newly staged dependency archive:{RESET} {dep_path.name}"
+            )
 
     # 1. App Bundle (.aab) R8 Score & DEX Check
     if not args.skip_app:
@@ -441,7 +539,7 @@ def main() -> int:
         print("-" * len(header))
 
     # 2. Library (.aar / .jar) Shrinking Percentage Check
-    lib_paths: list[Path] = list(args.library)
+    lib_paths: list[Path] = list(args.library) + staged_dep_archives
     if args.scan_libraries:
         for p in discover_module_aars(Path(".")):
             if p not in lib_paths:
