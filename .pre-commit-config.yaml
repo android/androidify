@@ -15,17 +15,25 @@
 repos:
   - repo: local
     hooks:
-      - id: r8-keep-rules-diff-check
-        name: R8 Keep Rules & FullMode Diff Check
-        entry: scripts/git-hooks/pre-commit
-        language: script
+      - id: r8-staged-diff-and-deps
+        name: R8 Keep-Rule Diff & Dependency Shrinking Check
+        entry: python3 scripts/check_staged_r8_diff.py
+        language: system
         pass_filenames: false
-        files: '(\.pro$|gradle\.properties$|\.gradle\.kts$|libs\.versions\.toml$|r8-baseline\.json$)'
+        files: '(\.pro$|gradle\.properties$|\.gradle\.kts$|libs\.versions\.toml$)'
         stages: [pre-commit]
 
-      - id: r8-regression-gate
-        name: R8 Regression & Library Shrinking Gate (android analyze)
-        entry: python3 scripts/check_r8_regression.py --scan-libraries --fail-on-package-wide-rules
+      - id: r8-library-shrinking-gate
+        name: R8 Module & Library Shrinking Percentage Gate (android analyze)
+        entry: python3 scripts/check_library_shrinking.py --scan-libraries
+        language: system
+        pass_filenames: false
+        files: '(\.pro$|\.gradle\.kts$|libs\.versions\.toml$)'
+        stages: [pre-push]
+
+      - id: r8-app-bundle-score-gate
+        name: R8 App Bundle Score & DEX Size Gate (android analyze)
+        entry: python3 scripts/check_app_r8_score.py
         language: system
         pass_filenames: false
         files: '(\.pro$|gradle\.properties$|\.gradle\.kts$|libs\.versions\.toml$|r8-baseline\.json$)'

@@ -28,7 +28,7 @@ on:
       - '**/build.gradle.kts'
       - 'gradle/libs.versions.toml'
       - 'gradle.properties'
-      - 'scripts/check_r8_regression.py'
+      - 'scripts/check_*.py'
   pull_request:
     branches: [ '*' ]
     paths:
@@ -39,7 +39,7 @@ on:
       - 'gradle/libs.versions.toml'
       - 'gradle.properties'
       - 'r8-baseline.json'
-      - 'scripts/check_r8_regression.py'
+      - 'scripts/check_*.py'
       - '.github/workflows/r8_regression_check.yml'
   workflow_dispatch:
     inputs:
@@ -140,22 +140,19 @@ jobs:
     - name: Build Release App Bundle (.aab) & Module Libraries (.aar)
       run: ./gradlew :app:bundleRelease assembleRelease -x test -x uploadCrashlyticsMappingFileRelease --no-configuration-cache
 
-    - name: Run R8 Score, Library Shrinking & DEX Regression Gate
-      id: r8_gate
+    - name: Check App Bundle R8 Scores & DEX Size
+      id: app_r8_gate
       env:
         ANDROID_CLI_ANALYZE: '1'
         MAX_SCORE_DROP: ${{ inputs.max_score_drop || '2.0' }}
         MAX_DEX_GROWTH_PCT: ${{ inputs.max_dex_growth_pct || '5.0' }}
-        MIN_LIB_SHRINKING_PCT: ${{ inputs.min_lib_shrinking_pct || '90.0' }}
       run: |
         set +e
-        python3 ./scripts/check_r8_regression.py \
+        python3 ./scripts/check_app_r8_score.py \
           --aab app/build/outputs/bundle/release/app-release.aab \
           --baseline r8-baseline.json \
           --max-score-drop "${MAX_SCORE_DROP}" \
           --max-dex-growth-pct "${MAX_DEX_GROWTH_PCT}" \
-          --scan-libraries \
-          --min-lib-shrinking-pct "${MIN_LIB_SHRINKING_PCT}" \
           --markdown-summary .gemini/r8_summary.md
         EXIT_CODE=$?
         set -e
@@ -165,25 +162,45 @@ jobs:
           echo "passed=false" >> "${GITHUB_OUTPUT}"
         fi
 
+    - name: Check Module & Library Shrinking Percentage
+      id: lib_r8_gate
+      env:
+        ANDROID_CLI_ANALYZE: '1'
+        MIN_LIB_SHRINKING_PCT: ${{ inputs.min_lib_shrinking_pct || '90.0' }}
+      run: |
+        set +e
+        python3 ./scripts/check_library_shrinking.py \
+          --scan-libraries \
+          --min-lib-shrinking-pct "${MIN_LIB_SHRINKING_PCT}" \
+          --markdown-summary .gemini/r8_summary.md \
+          --append-summary
+        EXIT_CODE=$?
+        set -e
+        if [[ ${EXIT_CODE} -eq 0 ]]; then
+          echo "passed=true" >> "${GITHUB_OUTPUT}"
+        else
+          echo "passed=false" >> "${GITHUB_OUTPUT}"
+        fi
+
     - name: Update R8 Baseline on Merge to main
-      if: github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.r8_gate.outputs.passed == 'true'
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.app_r8_gate.outputs.passed == 'true' && steps.lib_r8_gate.outputs.passed == 'true'
       env:
         ANDROID_CLI_ANALYZE: '1'
       run: |
-        python3 ./scripts/check_r8_regression.py \
+        python3 ./scripts/check_app_r8_score.py \
           --aab app/build/outputs/bundle/release/app-release.aab \
           --baseline r8-baseline.json \
           --save-baseline
 
     - name: Commit Updated R8 Baseline
-      if: github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.r8_gate.outputs.passed == 'true'
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.app_r8_gate.outputs.passed == 'true' && steps.lib_r8_gate.outputs.passed == 'true'
       uses: stefanzweifel/git-auto-commit-action@b863ae1933cb653a53c021fe36dbb774e1fb9403 # v5
       with:
         commit_message: "🤖 Update r8-baseline.json after merge [skip ci]"
         file_pattern: 'r8-baseline.json'
 
     - name: Run R8 Configuration Analyzer & Skill Review (on Regression)
-      if: steps.r8_gate.outputs.passed == 'false'
+      if: steps.app_r8_gate.outputs.passed == 'false' || steps.lib_r8_gate.outputs.passed == 'false'
       id: gemini_review
       uses: google-github-actions/run-gemini-cli@f77273f4c914e4bf38440cf36a0369cb64a37489 # v0.1.22
       env:
@@ -238,7 +255,7 @@ jobs:
         rm -f "${COMMENT_FILE}"
 
     - name: Upload R8 Configuration Analyzer HTML Report
-      if: steps.r8_gate.outputs.passed == 'false'
+      if: steps.app_r8_gate.outputs.passed == 'false' || steps.lib_r8_gate.outputs.passed == 'false'
       uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
       with:
         name: r8-config-analyzer-report
@@ -246,7 +263,7 @@ jobs:
         if-no-files-found: ignore
 
     - name: Enforce R8 Regression Gate
-      if: steps.r8_gate.outputs.passed == 'false'
+      if: steps.app_r8_gate.outputs.passed == 'false' || steps.lib_r8_gate.outputs.passed == 'false'
       run: |
         echo "::error::R8 Regression Gate failed. See step summary or PR comment for details."
         exit 1

@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Copyright 2026 Google LLC
 #
-# Git pre-commit hook: runs R8 keep-rule lint + `android analyze` regression gate
-# whenever ProGuard/R8 rules or Gradle build files are staged.
+# Git pre-commit hook: runs the fast staged R8 diff & newly added dependency check
+# (`check_staged_r8_diff.py`), plus `check_library_shrinking.py` on any modified module AAR.
 #
 # Install once per clone:
 #   git config core.hooksPath scripts/git-hooks
@@ -23,13 +23,16 @@ echo "==> [pre-commit] R8/build configuration changes detected:"
 echo "${CHANGED_R8_FILES}" | sed 's/^/    • /'
 echo ""
 
-# If a library module's .pro file was modified, rebuild that module's release AAR (~2s)
+# 1. If a library module's .pro file was modified, rebuild that module's release AAR (~2s)
 AAR_TASKS=()
+MODIFIED_AARS=()
 while IFS= read -r file; do
   if [[ "${file}" == *.pro && "${file}" != app/* ]]; then
     MODULE_DIR="$(dirname "${file}")"
+    MODULE_NAME="$(basename "${MODULE_DIR}")"
     GRADLE_MODULE=":${MODULE_DIR//\//:}"
     AAR_TASKS+=("${GRADLE_MODULE}:bundleReleaseAar")
+    MODIFIED_AARS+=("${MODULE_DIR}/build/outputs/aar/${MODULE_NAME}-release.aar")
   fi
 done <<< "${CHANGED_R8_FILES}"
 
@@ -38,15 +41,20 @@ if [[ ${#AAR_TASKS[@]} -gt 0 ]]; then
   ./gradlew "${AAR_TASKS[@]}" --quiet
 fi
 
-EXTRA_FLAGS=()
-if [[ "${R8_GATE_BUILD:-0}" == "1" ]]; then
-  EXTRA_FLAGS+=(--build)
-fi
-if [[ -n "${R8_GATE_AAB:-}" ]]; then
-  EXTRA_FLAGS+=(--aab "${R8_GATE_AAB}")
+# 2. Run fast staged diff & newly added dependency auditor
+DIFF_EXIT=0
+python3 ./scripts/check_staged_r8_diff.py || DIFF_EXIT=$?
+
+# 3. Audit modified module AAR(s) (or scan all module AARs if requested)
+LIB_EXIT=0
+if [[ ${#MODIFIED_AARS[@]} -gt 0 ]]; then
+  LIB_ARGS=()
+  for aar in "${MODIFIED_AARS[@]}"; do
+    LIB_ARGS+=(--library "${aar}")
+  done
+  python3 ./scripts/check_library_shrinking.py "${LIB_ARGS[@]}" || LIB_EXIT=$?
 fi
 
-python3 ./scripts/check_r8_regression.py \
-  "${EXTRA_FLAGS[@]+"${EXTRA_FLAGS[@]}"}" \
-  --check-staged \
-  --scan-libraries
+if [[ "${DIFF_EXIT}" -ne 0 || "${LIB_EXIT}" -ne 0 ]]; then
+  exit 1
+fi
