@@ -2,7 +2,7 @@
 # Copyright 2026 Google LLC
 #
 # Git pre-commit hook: runs the fast staged R8 diff & newly added dependency check
-# (`check_staged_r8_diff.py`), plus `check_library_shrinking.py` on any modified module AAR.
+# (`check_staged_r8_diff.py`), plus `check_library_shrinking.py` on every module AAR.
 #
 # Install once per clone:
 #   git config core.hooksPath scripts/git-hooks
@@ -12,48 +12,17 @@ set -euo pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd "${REPO_ROOT}"
 
-CHANGED_R8_FILES="$(git diff --cached --name-only --diff-filter=ACMR -- \
-  '*.pro' '*.gradle.kts' 'gradle/libs.versions.toml' 'gradle.properties' 'r8-baseline.json')"
-
-if [[ -z "${CHANGED_R8_FILES}" ]]; then
-  exit 0
-fi
-
-echo "==> [pre-commit] R8/build configuration changes detected:"
-echo "${CHANGED_R8_FILES}" | sed 's/^/    • /'
-echo ""
-
-# 1. If a library module's .pro file was modified, rebuild that module's release AAR (~2s)
-AAR_TASKS=()
-MODIFIED_AARS=()
-while IFS= read -r file; do
-  if [[ "${file}" == *.pro && "${file}" != app/* ]]; then
-    MODULE_DIR="$(dirname "${file}")"
-    MODULE_NAME="$(basename "${MODULE_DIR}")"
-    GRADLE_MODULE=":${MODULE_DIR//\//:}"
-    AAR_TASKS+=("${GRADLE_MODULE}:bundleReleaseAar")
-    MODIFIED_AARS+=("${MODULE_DIR}/build/outputs/aar/${MODULE_NAME}-release.aar")
-  fi
-done <<< "${CHANGED_R8_FILES}"
-
-if [[ ${#AAR_TASKS[@]} -gt 0 ]]; then
-  echo "==> [pre-commit] Rebuilding modified module AAR(s): ${AAR_TASKS[*]}..."
-  ./gradlew "${AAR_TASKS[@]}" --quiet
-fi
+# 1. Rebuild all module release AARs (incremental, so unchanged modules stay UP-TO-DATE)
+echo "==> [pre-commit] Rebuilding module release AARs..."
+./gradlew bundleReleaseAar --quiet
 
 # 2. Run fast staged diff & newly added dependency auditor
 DIFF_EXIT=0
 python3 ./scripts/check_staged_r8_diff.py || DIFF_EXIT=$?
 
-# 3. Audit modified module AAR(s) (or scan all module AARs if requested)
+# 3. Audit all module AARs
 LIB_EXIT=0
-if [[ ${#MODIFIED_AARS[@]} -gt 0 ]]; then
-  LIB_ARGS=()
-  for aar in "${MODIFIED_AARS[@]}"; do
-    LIB_ARGS+=(--library "${aar}")
-  done
-  python3 ./scripts/check_library_shrinking.py "${LIB_ARGS[@]}" || LIB_EXIT=$?
-fi
+python3 ./scripts/check_library_shrinking.py --scan-libraries || LIB_EXIT=$?
 
 if [[ "${DIFF_EXIT}" -ne 0 || "${LIB_EXIT}" -ne 0 ]]; then
   exit 1

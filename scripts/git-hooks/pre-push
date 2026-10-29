@@ -1,36 +1,19 @@
 #!/usr/bin/env bash
 # Copyright 2026 Google LLC
 #
-# Git pre-push hook: runs `check_app_r8_score.py` and `check_library_shrinking.py`
-# before pushing branches that touch ProGuard/R8 rules or Gradle build configs.
+# Git pre-push hook: rebuilds the release app bundle and module AARs, then runs
+# `check_app_r8_score.py` and `check_library_shrinking.py` before every push.
 
 set -euo pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd "${REPO_ROOT}"
 
-BASE_REF="origin/main"
-if ! git rev-parse --verify "${BASE_REF}" >/dev/null 2>&1; then
-  BASE_REF="HEAD~1"
-fi
-
-CHANGED_R8_FILES="$(git diff --name-only "${BASE_REF}...HEAD" -- \
-  '*.pro' '*.gradle.kts' 'gradle/libs.versions.toml' 'gradle.properties' 'r8-baseline.json' || true)"
-
-if [[ -z "${CHANGED_R8_FILES}" ]]; then
-  exit 0
-fi
-
-echo "==> [pre-push] R8/build changes detected relative to ${BASE_REF}:"
-echo "${CHANGED_R8_FILES}" | sed 's/^/    • /'
-
-BUILD_FLAG=()
-if [[ "${R8_GATE_BUILD:-0}" == "1" ]]; then
-  BUILD_FLAG=(--build)
-fi
+echo "==> [pre-push] Building release app bundle & module AARs..."
+./gradlew :app:bundleRelease bundleReleaseAar -x uploadCrashlyticsMappingFileRelease
 
 APP_EXIT=0
-python3 ./scripts/check_app_r8_score.py "${BUILD_FLAG[@]+"${BUILD_FLAG[@]}"}" || APP_EXIT=$?
+python3 ./scripts/check_app_r8_score.py || APP_EXIT=$?
 
 LIB_EXIT=0
 python3 ./scripts/check_library_shrinking.py --scan-libraries || LIB_EXIT=$?

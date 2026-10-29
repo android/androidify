@@ -25,7 +25,6 @@ import sys
 from typing import Any
 
 DEFAULT_AAB = "app/build/outputs/bundle/release/app-release.aab"
-FALLBACK_AAB = "app/app-release.aab"
 DEFAULT_BASELINE = "r8-baseline.json"
 
 RED = "\033[91m"
@@ -36,18 +35,15 @@ RESET = "\033[0m"
 
 
 def run_android_analyze(artifact_path: Path) -> dict[str, Any]:
-    """Invokes `android analyze --analysis=optimization --format=json` on an AAB."""
-    env = os.environ.copy()
-    env["ANDROID_CLI_ANALYZE"] = "1"
-
+    """Invokes `android analyze --analysis=basic,optimization --format=json` on an AAB."""
     cmd = [
         "android",
         "analyze",
-        "--analysis=optimization",
+        "--analysis=basic,optimization",
         "--format=json",
         str(artifact_path),
     ]
-    proc = subprocess.run(cmd, env=env, capture_output=True, text=True)
+    proc = subprocess.run(cmd, capture_output=True, text=True)
     if proc.returncode != 0:
         print(f"{RED}Error running `{' '.join(cmd)}`:{RESET}", file=sys.stderr)
         print(proc.stderr or proc.stdout, file=sys.stderr)
@@ -63,19 +59,10 @@ def run_android_analyze(artifact_path: Path) -> dict[str, Any]:
     return json.loads(stdout[json_start:])
 
 
-def _unwrap_optimization(data: dict[str, Any]) -> dict[str, Any]:
-    """Supports both `{"results": [{"optimization": ...}]}` and `{"optimization": ...}`."""
-    if "optimization" in data and isinstance(data["optimization"], dict):
-        return data["optimization"]
-    results = data.get("results", [])
-    if isinstance(results, list) and results and isinstance(results[0], dict):
-        return results[0].get("optimization", {})
-    return {}
-
-
 def extract_bundle_metrics(data: dict[str, Any]) -> dict[str, Any]:
     """Extracts R8 ratios, DEX size, and config flags from `android analyze` bundle JSON."""
-    bundle = _unwrap_optimization(data).get("bundleAnalysisResult", {})
+    result = data["results"][0]
+    bundle = result.get("optimization", {}).get("bundleAnalysisResult", {})
     if not bundle:
         raise ValueError(
             "No `bundleAnalysisResult` found in output. Make sure you pass a release `.aab` file."
@@ -87,7 +74,7 @@ def extract_bundle_metrics(data: dict[str, Any]) -> dict[str, Any]:
     marker = bundle.get("r8DexMarkerMetadata", {})
 
     return {
-        "package_name": bundle.get("packageName", "N/A"),
+        "package_name": result.get("basic", {}).get("appInfo", {}).get("packageName", "N/A"),
         "agp_version": bundle.get("agpVersion", "N/A"),
         "r8_version": r8_json.get("version", "N/A"),
         "r8_enabled": marker.get("r8Enabled", False),
@@ -142,8 +129,8 @@ def main() -> int:
     parser.add_argument(
         "--aab",
         type=Path,
-        default=None,
-        help=f"Path to release AAB (defaults to {DEFAULT_AAB} or {FALLBACK_AAB})",
+        default=Path(DEFAULT_AAB),
+        help=f"Path to release AAB (default: {DEFAULT_AAB})",
     )
     parser.add_argument(
         "--baseline",
@@ -155,11 +142,6 @@ def main() -> int:
         "--save-baseline",
         action="store_true",
         help="Write the current `android analyze` output as the new baseline and exit",
-    )
-    parser.add_argument(
-        "--build",
-        action="store_true",
-        help="Run `./gradlew :app:bundleRelease` before analyzing",
     )
     parser.add_argument(
         "--max-score-drop",
@@ -187,26 +169,16 @@ def main() -> int:
     )
     args = parser.parse_args()
 
-    if args.build:
-        print(f"{BOLD}==> Building release app bundle (:app:bundleRelease)...{RESET}")
-        subprocess.run(["./gradlew", ":app:bundleRelease"], check=True)
+    if not args.aab.exists():
+        print(
+            f"{RED}Error: No AAB found at {args.aab}. "
+            f"Run `./gradlew :app:bundleRelease` or pass --aab <path>.{RESET}",
+            file=sys.stderr,
+        )
+        return 2
 
-    aab_path = args.aab
-    if aab_path is None:
-        if Path(DEFAULT_AAB).exists():
-            aab_path = Path(DEFAULT_AAB)
-        elif Path(FALLBACK_AAB).exists():
-            aab_path = Path(FALLBACK_AAB)
-        else:
-            print(
-                f"{RED}Error: No AAB found at {DEFAULT_AAB} or {FALLBACK_AAB}. "
-                f"Pass --aab <path> or --build.{RESET}",
-                file=sys.stderr,
-            )
-            return 2
-
-    print(f"{BOLD}==> Running `ANDROID_CLI_ANALYZE=1 android analyze` on {aab_path}...{RESET}")
-    current_raw = run_android_analyze(aab_path)
+    print(f"{BOLD}==> Running `android analyze` on {args.aab}...{RESET}")
+    current_raw = run_android_analyze(args.aab)
 
     if args.save_baseline:
         args.baseline.write_text(json.dumps(current_raw, indent=2) + "\n")

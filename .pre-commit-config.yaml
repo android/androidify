@@ -20,21 +20,21 @@ repos:
         entry: python3 scripts/check_staged_r8_diff.py
         language: system
         pass_filenames: false
-        files: '(\.pro$|gradle\.properties$|\.gradle\.kts$|libs\.versions\.toml$)'
+        always_run: true
         stages: [pre-commit]
 
       - id: r8-library-shrinking-gate
         name: R8 Module & Library Shrinking Percentage Gate (android analyze)
-        entry: python3 scripts/check_library_shrinking.py --scan-libraries
+        entry: bash -c './gradlew bundleReleaseAar --quiet && python3 scripts/check_library_shrinking.py --scan-libraries'
         language: system
         pass_filenames: false
-        files: '(\.pro$|\.gradle\.kts$|libs\.versions\.toml$)'
+        always_run: true
         stages: [pre-push]
 
       - id: r8-app-bundle-score-gate
         name: R8 App Bundle Score & DEX Size Gate (android analyze)
-        entry: python3 scripts/check_app_r8_score.py
+        entry: bash -c './gradlew :app:bundleRelease -x uploadCrashlyticsMappingFileRelease --quiet && python3 scripts/check_app_r8_score.py'
         language: system
         pass_filenames: false
-        files: '(\.pro$|gradle\.properties$|\.gradle\.kts$|libs\.versions\.toml$|r8-baseline\.json$)'
+        always_run: true
         stages: [pre-push]

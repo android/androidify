@@ -21,26 +21,8 @@ permissions:
 on:
   push:
     branches: [ 'main' ]
-    paths:
-      - '**/proguard-rules.pro'
-      - '**/consumer-rules.pro'
-      - '**/*.pro'
-      - '**/build.gradle.kts'
-      - 'gradle/libs.versions.toml'
-      - 'gradle.properties'
-      - 'scripts/check_*.py'
   pull_request:
     branches: [ '*' ]
-    paths:
-      - '**/proguard-rules.pro'
-      - '**/consumer-rules.pro'
-      - '**/*.pro'
-      - '**/build.gradle.kts'
-      - 'gradle/libs.versions.toml'
-      - 'gradle.properties'
-      - 'r8-baseline.json'
-      - 'scripts/check_*.py'
-      - '.github/workflows/r8_regression_check.yml'
   workflow_dispatch:
     inputs:
       pr_number:
@@ -138,12 +120,11 @@ jobs:
         fi
 
     - name: Build Release App Bundle (.aab) & Module Libraries (.aar)
-      run: ./gradlew :app:bundleRelease assembleRelease -x test -x uploadCrashlyticsMappingFileRelease --no-configuration-cache
+      run: ./gradlew :app:bundleRelease assembleRelease -x test -x uploadCrashlyticsMappingFileRelease
 
     - name: Check App Bundle R8 Scores & DEX Size
       id: app_r8_gate
       env:
-        ANDROID_CLI_ANALYZE: '1'
         MAX_SCORE_DROP: ${{ inputs.max_score_drop || '2.0' }}
         MAX_DEX_GROWTH_PCT: ${{ inputs.max_dex_growth_pct || '5.0' }}
       run: |
@@ -165,7 +146,6 @@ jobs:
     - name: Check Module & Library Shrinking Percentage
       id: lib_r8_gate
       env:
-        ANDROID_CLI_ANALYZE: '1'
         MIN_LIB_SHRINKING_PCT: ${{ inputs.min_lib_shrinking_pct || '90.0' }}
       run: |
         set +e
@@ -184,8 +164,6 @@ jobs:
 
     - name: Update R8 Baseline on Merge to main
       if: github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.app_r8_gate.outputs.passed == 'true' && steps.lib_r8_gate.outputs.passed == 'true'
-      env:
-        ANDROID_CLI_ANALYZE: '1'
       run: |
         python3 ./scripts/check_app_r8_score.py \
           --aab app/build/outputs/bundle/release/app-release.aab \
@@ -234,6 +212,7 @@ jobs:
       if: steps.context.outputs.pr_number != '' && always()
       env:
         GH_TOKEN: ${{ secrets.PAT || github.token }}
+        HAS_PAT: ${{ secrets.PAT != '' }}
         PR_NUMBER: ${{ steps.context.outputs.pr_number }}
         REVIEW_SUMMARY: ${{ steps.gemini_review.outputs.summary }}
       run: |
@@ -241,17 +220,31 @@ jobs:
         if [[ ! -f .gemini/r8_summary.md ]]; then
           exit 0
         fi
+        MARKER='<!-- r8-regression-gate -->'
         COMMENT_FILE="$(mktemp)"
-        cat .gemini/r8_summary.md > "${COMMENT_FILE}"
-        if [[ -n "${REVIEW_SUMMARY}" ]]; then
-          {
+        {
+          echo "${MARKER}"
+          cat .gemini/r8_summary.md
+          if [[ -n "${REVIEW_SUMMARY}" ]]; then
             echo ""
             echo "---"
             echo ""
             printf '%s\n' "${REVIEW_SUMMARY}"
-          } >> "${COMMENT_FILE}"
+          fi
+        } > "${COMMENT_FILE}"
+        # Keep one comment per PR: edit this workflow's earlier comment instead of adding a new one.
+        AUTHOR='github-actions[bot]'
+        if [[ "${HAS_PAT}" == "true" ]]; then
+          AUTHOR="$(gh api user --jq .login)"
         fi
-        gh pr comment "${PR_NUMBER}" --body-file "${COMMENT_FILE}"
+        COMMENTS="repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments"
+        COMMENT_ID="$(gh api "${COMMENTS}" --paginate \
+          --jq ".[] | select(.user.login == \"${AUTHOR}\" and (.body | startswith(\"${MARKER}\"))) | .id" | sed -n '1p')"
+        if [[ -n "${COMMENT_ID}" ]]; then
+          gh api --method PATCH "repos/${GITHUB_REPOSITORY}/issues/comments/${COMMENT_ID}" -F body=@"${COMMENT_FILE}" > /dev/null
+        else
+          gh api --method POST "${COMMENTS}" -F body=@"${COMMENT_FILE}" > /dev/null
+        fi
         rm -f "${COMMENT_FILE}"
 
     - name: Upload R8 Configuration Analyzer HTML Report

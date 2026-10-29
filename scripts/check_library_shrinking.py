@@ -33,9 +33,6 @@ RESET = "\033[0m"
 
 def run_android_analyze(artifact_path: Path) -> dict[str, Any]:
     """Invokes `android analyze --analysis=optimization --format=json` on an AAR/JAR."""
-    env = os.environ.copy()
-    env["ANDROID_CLI_ANALYZE"] = "1"
-
     cmd = [
         "android",
         "analyze",
@@ -43,7 +40,7 @@ def run_android_analyze(artifact_path: Path) -> dict[str, Any]:
         "--format=json",
         str(artifact_path),
     ]
-    proc = subprocess.run(cmd, env=env, capture_output=True, text=True)
+    proc = subprocess.run(cmd, capture_output=True, text=True)
     if proc.returncode != 0:
         print(f"{RED}Error running `{' '.join(cmd)}`:{RESET}", file=sys.stderr)
         print(proc.stderr or proc.stdout, file=sys.stderr)
@@ -59,19 +56,9 @@ def run_android_analyze(artifact_path: Path) -> dict[str, Any]:
     return json.loads(stdout[json_start:])
 
 
-def _unwrap_optimization(data: dict[str, Any]) -> dict[str, Any]:
-    """Supports both `{"results": [{"optimization": ...}]}` and `{"optimization": ...}`."""
-    if "optimization" in data and isinstance(data["optimization"], dict):
-        return data["optimization"]
-    results = data.get("results", [])
-    if isinstance(results, list) and results and isinstance(results[0], dict):
-        return results[0].get("optimization", {})
-    return {}
-
-
 def extract_library_metrics(artifact_path: Path, data: dict[str, Any]) -> dict[str, Any]:
     """Extracts library shrinking percentages and consumer keep-rule metrics from AAR/JAR JSON."""
-    lib = _unwrap_optimization(data).get("libraryAnalysisResult", {})
+    lib = data["results"][0].get("optimization", {}).get("libraryAnalysisResult", {})
     if not lib:
         raise ValueError(
             f"No `libraryAnalysisResult` found for {artifact_path}. Make sure it is an `.aar` or `.jar`."
@@ -82,13 +69,12 @@ def extract_library_metrics(artifact_path: Path, data: dict[str, Any]) -> dict[s
     r8_compile = dex.get("r8CompileResult", {})
     r8_bytes = int(r8_compile.get("dexSizeBytes", 0))
 
-    keep_ratio_pct = (r8_bytes / d8_bytes * 100.0) if d8_bytes > 0 else 0.0
-    dex_shrinking_pct = 100.0 - keep_ratio_pct if d8_bytes > 0 else 100.0
+    dex_shrinking_pct = (1 - r8_bytes / d8_bytes) * 100.0 if d8_bytes > 0 else 100.0
 
     def _item_stats(section_name: str) -> tuple[int, int, float]:
         sec = r8_compile.get(section_name, {})
         total = int(sec.get("itemCount", 0))
-        kept = int(sec.get("keptCount", 0))
+        kept = int(sec.get("keptItemCount", 0))
         shrunk_pct = ((total - kept) / total * 100.0) if total > 0 else 100.0
         return total, kept, shrunk_pct
 
@@ -96,14 +82,13 @@ def extract_library_metrics(artifact_path: Path, data: dict[str, Any]) -> dict[s
     mth_total, mth_kept, mth_shrunk_pct = _item_stats("methods")
     fld_total, fld_kept, fld_shrunk_pct = _item_stats("fields")
 
-    validate = dex.get("validateConsumerKeepRulesResult", {})
-    used_pkg_wide = int(validate.get("usedPackageWideKeepRules", 0))
-    unused_pkg_wide = int(validate.get("unusedPackageWideKeepRules", 0))
-    total_pkg_wide = used_pkg_wide + unused_pkg_wide
-    blocked_rules = [r.get("value", "") for r in validate.get("blockedKeepRules", [])]
+    config = r8_compile.get("configuration", {})
+    used_pkg_wide = config.get("usedPackageWideKeepRules", [])
+    unused_pkg_wide = config.get("unusedPackageWideKeepRules", [])
+    pkg_wide_rules = [r.get("source", "") for r in used_pkg_wide + unused_pkg_wide]
 
-    config_files = r8_compile.get("configuration", {}).get("files", [])
-    keep_rules = [r.strip() for f in config_files for r in f.get("keepRules", []) if r.strip()]
+    validate = dex.get("validateConsumerKeepRulesResult", {})
+    blocked_rules = [r.get("source", "") for r in validate.get("blockedKeepRules", [])]
 
     return {
         "name": artifact_path.name,
@@ -111,7 +96,6 @@ def extract_library_metrics(artifact_path: Path, data: dict[str, Any]) -> dict[s
         "r8_version": lib.get("r8Version", "N/A"),
         "d8_bytes": d8_bytes,
         "r8_bytes": r8_bytes,
-        "keep_ratio_pct": keep_ratio_pct,
         "dex_shrinking_pct": dex_shrinking_pct,
         "cls_total": cls_total,
         "cls_kept": cls_kept,
@@ -122,15 +106,15 @@ def extract_library_metrics(artifact_path: Path, data: dict[str, Any]) -> dict[s
         "fld_total": fld_total,
         "fld_kept": fld_kept,
         "fld_shrunk_pct": fld_shrunk_pct,
-        "used_pkg_wide": used_pkg_wide,
-        "unused_pkg_wide": unused_pkg_wide,
-        "total_pkg_wide": total_pkg_wide,
-        "keep_rules": keep_rules,
+        "used_pkg_wide": len(used_pkg_wide),
+        "unused_pkg_wide": len(unused_pkg_wide),
+        "total_pkg_wide": len(pkg_wide_rules),
+        "pkg_wide_rules": pkg_wide_rules,
         "blocked_rules": blocked_rules,
     }
 
 
-def format_kb(num_bytes: int) -> str:
+def format_size(num_bytes: int) -> str:
     if num_bytes >= 1024 * 1024:
         return f"{num_bytes / (1024 * 1024):.2f} MB"
     return f"{num_bytes / 1024.0:.2f} KB"
@@ -164,7 +148,7 @@ def build_markdown_summary(
         cls_str = f"{lm['cls_shrunk_pct']:.1f}% ({lm['cls_total'] - lm['cls_kept']}/{lm['cls_total']})"
         mth_str = f"{lm['mth_shrunk_pct']:.1f}% ({lm['mth_total'] - lm['mth_kept']}/{lm['mth_total']})"
         lines.append(
-            f"| `{lm['name']}` | {format_kb(lm['d8_bytes'])} | {format_kb(lm['r8_bytes'])} | "
+            f"| `{lm['name']}` | {format_size(lm['d8_bytes'])} | {format_size(lm['r8_bytes'])} | "
             f"**{lm['dex_shrinking_pct']:.2f}%** | {cls_str} | {mth_str} | "
             f"{lm['total_pkg_wide']} | {icon} |"
         )
@@ -197,7 +181,7 @@ def main() -> int:
         "--min-lib-shrinking-pct",
         type=float,
         default=90.0,
-        help="Minimum required library DEX shrinking percentage (100%% - Keep Ratio) for .aar/.jar files (default: 90.0)",
+        help="Minimum required library DEX shrinking percentage, (1 - R8 DEX size / D8 DEX size) x 100, for .aar/.jar files (default: 90.0)",
     )
     parser.add_argument(
         "--fail-on-package-wide-rules",
@@ -233,8 +217,7 @@ def main() -> int:
     print()
     print(
         f"{BOLD}Library Shrinking Percentage Gate "
-        f"(Min Shrinking: {args.min_lib_shrinking_pct:.1f}%, "
-        f"Max Keep Ratio: {100.0 - args.min_lib_shrinking_pct:.1f}%){RESET}"
+        f"(Min Shrinking: {args.min_lib_shrinking_pct:.1f}%){RESET}"
     )
     lib_header = (
         f"{'Library':<28} {'D8 DEX':>10} {'R8 Kept':>10} "
@@ -269,7 +252,7 @@ def main() -> int:
             f"{lm['cls_shrunk_pct']:.1f}% ({lm['cls_total'] - lm['cls_kept']}/{lm['cls_total']})"
         )
         print(
-            f"{lm['name']:<28} {format_kb(lm['d8_bytes']):>10} {format_kb(lm['r8_bytes']):>10} "
+            f"{lm['name']:<28} {format_size(lm['d8_bytes']):>10} {format_size(lm['r8_bytes']):>10} "
             f"{lm['dex_shrinking_pct']:>12.2f}% {cls_shrunk_str:>18} "
             f"{lm['total_pkg_wide']:>15}  {status}"
         )
@@ -277,10 +260,10 @@ def main() -> int:
         if shrink_failed:
             failures.append(
                 f"Library `{lm['name']}` DEX shrinking is {lm['dex_shrinking_pct']:.2f}% "
-                f"(Keep Ratio: {lm['keep_ratio_pct']:.2f}%, required shrinking >= {args.min_lib_shrinking_pct:.1f}%)"
+                f"(required >= {args.min_lib_shrinking_pct:.1f}%)"
             )
         if pkg_rule_failed:
-            rules_preview = ", ".join(lm["keep_rules"][:3])
+            rules_preview = ", ".join(lm["pkg_wide_rules"][:3])
             failures.append(
                 f"Library `{lm['name']}` exports {lm['total_pkg_wide']} package-wide consumer keep rule(s)"
                 + (f": {rules_preview}" if rules_preview else "")
