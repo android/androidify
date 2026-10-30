@@ -47,11 +47,6 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-env:
-  # Optional: set to 'true' to skip the keep rule diff on PRs whose R8 scores (shrinking,
-  # optimization, obfuscation) are the same as main's in r8-baseline.json.
-  KEEP_RULE_DIFF_ONLY_IF_SCORES_CHANGED: 'false'
-
 jobs:
   r8-regression-gate:
     runs-on: ubuntu-latest
@@ -61,8 +56,6 @@ jobs:
       contents: write # commit the updated r8-baseline.json on main
       issues: write
       pull-requests: write # post the findings comment
-    outputs:
-      keep_rule_skip_reason: ${{ steps.r8_scores.outputs.skip_reason }}
 
     steps:
     - name: Checkout Repository
@@ -129,18 +122,7 @@ jobs:
         fi
 
     - name: Build Release App Bundle (.aab) & Module Libraries (.aar)
-      # With AGP 9.3.2, the release R8 run also writes the keep rule .pb file by default, to
-      # app/build/outputs/mapping/release/configanalyzer.pb. The keep-rule-diff job below reads it.
       run: ./gradlew :app:bundleRelease assembleRelease -x test -x uploadCrashlyticsMappingFileRelease
-
-    - name: Upload Keep Rule .pb File
-      # Jobs run on separate machines, so the keep-rule-diff job gets the .pb file as an artifact.
-      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
-      with:
-        name: r8-config-analyzer
-        path: app/build/outputs/mapping/release/configanalyzer.pb
-        if-no-files-found: warn
-        retention-days: 1
 
     - name: Check App Bundle R8 Scores & DEX Size
       id: app_r8_gate
@@ -180,19 +162,6 @@ jobs:
           echo "passed=true" >> "${GITHUB_OUTPUT}"
         else
           echo "passed=false" >> "${GITHUB_OUTPUT}"
-        fi
-
-    - name: Check Whether the R8 Scores Changed (optional)
-      id: r8_scores
-      if: github.event_name == 'pull_request' && env.KEEP_RULE_DIFF_ONLY_IF_SCORES_CHANGED == 'true'
-      run: |
-        set -euo pipefail
-        android analyze --analysis=optimization --format=json app/build/outputs/bundle/release/app-release.aab \
-          | sed -n '/^{/,$p' > "${RUNNER_TEMP}/scores.json"
-        STATS='.results[0].optimization.bundleAnalysisResult.r8Json.stats'
-        MAIN="$(jq -cS "${STATS}" r8-baseline.json)"
-        if [[ "${MAIN}" == "$(jq -cS "${STATS}" "${RUNNER_TEMP}/scores.json")" && "${MAIN}" != "null" ]]; then
-          echo "skip_reason=this PR's R8 scores are the same as main's (r8-baseline.json)" >> "${GITHUB_OUTPUT}"
         fi
 
     - name: Update R8 Baseline on Merge to main
@@ -293,101 +262,3 @@ jobs:
       run: |
         echo "::error::R8 Regression Gate failed. See step summary or PR comment for details."
         exit 1
-
-  keep-rule-diff:
-    # Diffs the keep rules against main, using the .pb file the release build above wrote, without
-    # building again. It also runs when the gate finds a regression, when the diff helps most.
-    needs: [ r8-regression-gate, seed-keep-rule-base ] # TEMPORARY: drop seed-keep-rule-base with that job
-    if: ${{ !cancelled() && needs.r8-regression-gate.result != 'skipped' }}
-    permissions:
-      contents: read
-      pull-requests: write
-    uses: ./.github/workflows/keep_rule_diff.yml
-    with:
-      path: app/build/outputs/mapping/release/configanalyzer.pb
-      skip-reason: ${{ needs.r8-regression-gate.outputs.keep_rule_skip_reason }}
-
-  seed-keep-rule-base:
-    # TEMPORARY, for PR #219 only. main doesn't run the keep rule diff yet, so the cache has no keep
-    # rules from main to compare against. This builds the PR's base commit once, with AGP 9.3.2 so
-    # that it writes the keep rule .pb file, and caches that under the key the keep-rule-diff job
-    # looks for. Later runs of this PR find the cache and skip the build. Remove this job once main
-    # has run the keep rule diff.
-    if: github.repository == 'android/androidify' && github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == false
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    permissions:
-      contents: read
-
-    steps:
-    - name: Checkout Repository
-      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      with:
-        fetch-depth: 0
-        persist-credentials: false
-
-    - name: Find the Cache Key for main's Keep Rules
-      id: key
-      env:
-        BASE_SHA: ${{ github.event.pull_request.base.sha }}
-      run: |
-        set -euo pipefail
-        # The same key the keep-rule-diff job computes.
-        SHA="$(git log -1 --first-parent --format=%H "${BASE_SHA}" -- . ':(exclude)r8-baseline.json')"
-        echo "sha=${SHA}" >> "${GITHUB_OUTPUT}"
-        echo "rules_key=r8-rules-${SHA}" >> "${GITHUB_OUTPUT}"
-
-    - name: Check Whether main's Keep Rules Are Cached
-      id: cached
-      uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-      with:
-        path: r8-base
-        key: ${{ steps.key.outputs.rules_key }}
-        lookup-only: true
-
-    - name: Check Out main's Commit with AGP 9.3.2
-      if: steps.cached.outputs.cache-hit != 'true'
-      env:
-        BASE: ${{ steps.key.outputs.sha }}
-      run: |
-        set -euo pipefail
-        git checkout --detach "${BASE}"
-        sed -i 's/^agp = .*/agp = "9.3.2"/' gradle/libs.versions.toml
-        grep '^agp ' gradle/libs.versions.toml
-
-    - name: Set up JDK 21
-      if: steps.cached.outputs.cache-hit != 'true'
-      uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4
-      with:
-        java-version: '21'
-        distribution: 'temurin'
-
-    - name: Setup Gradle
-      if: steps.cached.outputs.cache-hit != 'true'
-      uses: gradle/actions/setup-gradle@ed408507eac070d1f99cc633dbcf757c94c7933a # v4
-
-    - name: Decode google-services.json
-      if: steps.cached.outputs.cache-hit != 'true'
-      env:
-        DEBUG_GOOGLE_SERVICES_JSON_BASE64: ${{ secrets.DEBUG_GOOGLE_SERVICES_JSON_BASE64 }}
-      run: |
-        if [[ -z "${DEBUG_GOOGLE_SERVICES_JSON_BASE64}" ]]; then
-          cp test-google-services.json app/google-services.json
-        else
-          echo "${DEBUG_GOOGLE_SERVICES_JSON_BASE64}" | base64 --decode > app/google-services.json
-        fi
-
-    - name: Write main's Keep Rule .pb File
-      if: steps.cached.outputs.cache-hit != 'true'
-      run: |
-        set -euo pipefail
-        ./gradlew :app:analyzeReleaseR8Config
-        mkdir -p r8-base
-        cp app/build/reports/r8/r8-config-analyzer-release.pb r8-base/rules.pb
-
-    - name: Save main's Keep Rules
-      if: steps.cached.outputs.cache-hit != 'true'
-      uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-      with:
-        path: r8-base
-        key: ${{ steps.key.outputs.rules_key }}
