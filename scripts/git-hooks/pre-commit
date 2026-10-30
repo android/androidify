@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# Copyright 2026 Google LLC
+#
+# Git pre-commit hook: runs the fast staged R8 diff & newly added dependency check
+# (`check_staged_r8_diff.py`), plus `check_library_shrinking.py` on every module AAR.
+#
+# Install once per clone:
+#   git config core.hooksPath scripts/git-hooks
+
+set -euo pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd "${REPO_ROOT}"
+
+# 1. Rebuild all module release AARs (incremental, so unchanged modules stay UP-TO-DATE)
+echo "==> [pre-commit] Rebuilding module release AARs..."
+./gradlew bundleReleaseAar --quiet
+
+# 2. Run fast staged diff & newly added dependency auditor
+DIFF_EXIT=0
+python3 ./scripts/check_staged_r8_diff.py || DIFF_EXIT=$?
+
+# 3. Audit all module AARs
+LIB_EXIT=0
+python3 ./scripts/check_library_shrinking.py --scan-libraries || LIB_EXIT=$?
+
+if [[ "${DIFF_EXIT}" -ne 0 || "${LIB_EXIT}" -ne 0 ]]; then
+  exit 1
+fi
