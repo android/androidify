@@ -58,13 +58,16 @@ class PromptBenchmark {
             metrics = listOf(
                 StartupTimingMetric(),
                 FrameTimingMetric(),
-                MemoryUsageMetric(MemoryUsageMetric.Mode.Max),
+                MemoryUsageMetric(MemoryUsageMetric.Mode.Max, subMetrics = MemoryUsageMetric.SubMetric.entries),
                 PowerMetric(PowerMetric.Type.Power()),
                 jitCompilationMetric,
                 classInitMetric,
             ),
             startupMode = StartupMode.COLD,
             iterations = 5,
+            setupBlock = {
+                killProcess()
+            }
         ) {
             uiAutomator {
                 startApp(packageName = packageName)
