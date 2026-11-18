@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# Copyright 2026 Google LLC
+#
+# Git pre-push hook: rebuilds the release app bundle and module AARs, then runs
+# `check_app_r8_score.py` and `check_library_shrinking.py` before every push.
+
+set -euo pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd "${REPO_ROOT}"
+
+echo "==> [pre-push] Building release app bundle & module AARs..."
+./gradlew :app:bundleRelease bundleReleaseAar -x uploadCrashlyticsMappingFileRelease
+
+APP_EXIT=0
+python3 ./scripts/check_app_r8_score.py || APP_EXIT=$?
+
+LIB_EXIT=0
+python3 ./scripts/check_library_shrinking.py --scan-libraries || LIB_EXIT=$?
+
+if [[ "${APP_EXIT}" -ne 0 || "${LIB_EXIT}" -ne 0 ]]; then
+  exit 1
+fi
