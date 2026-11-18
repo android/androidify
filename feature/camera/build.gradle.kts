@@ -47,6 +47,7 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.kotlinx.coroutines.play.services)
     implementation(libs.mlkit.pose.detection)
+    implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.guava)
     implementation(libs.timber)
     ksp(libs.hilt.compiler)
