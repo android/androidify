@@ -53,7 +53,9 @@ def run_android_analyze(artifact_path: Path) -> dict[str, Any]:
         print(stdout, file=sys.stderr)
         sys.exit(2)
 
-    return json.loads(stdout[json_start:])
+    # Parse only the JSON. An outdated CLI prints an update notice after it on stdout.
+    data, _ = json.JSONDecoder().raw_decode(stdout, json_start)
+    return data
 
 
 def extract_library_metrics(artifact_path: Path, data: dict[str, Any]) -> dict[str, Any]:
@@ -65,6 +67,7 @@ def extract_library_metrics(artifact_path: Path, data: dict[str, Any]) -> dict[s
         )
 
     dex = lib.get("dex", {})
+    # The DEX sizes are int64, which newer CLI versions write to JSON as strings; int() reads both.
     d8_bytes = int(dex.get("d8CompileResult", {}).get("dexSizeBytes", 0))
     r8_compile = dex.get("r8CompileResult", {})
     r8_bytes = int(r8_compile.get("dexSizeBytes", 0))

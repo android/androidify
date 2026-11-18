@@ -56,7 +56,9 @@ def run_android_analyze(artifact_path: Path) -> dict[str, Any]:
         print(stdout, file=sys.stderr)
         sys.exit(2)
 
-    return json.loads(stdout[json_start:])
+    # Parse only the JSON. An outdated CLI prints an update notice after it on stdout.
+    data, _ = json.JSONDecoder().raw_decode(stdout, json_start)
+    return data
 
 
 def extract_bundle_metrics(data: dict[str, Any]) -> dict[str, Any]:
