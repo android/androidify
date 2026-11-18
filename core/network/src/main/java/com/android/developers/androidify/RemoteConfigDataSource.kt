@@ -26,6 +26,7 @@ interface RemoteConfigDataSource {
     fun imageModelName(): String
     fun isBackgroundVibesFeatureEnabled(): Boolean
     fun promptTextVerify(): String
+    fun promptTextVerifyNano(): String
     fun promptImageValidation(): String
     fun promptImageValidationNano(): String
     fun promptImageDescription(): String
@@ -74,6 +75,10 @@ class RemoteConfigDataSourceImpl @Inject constructor() : RemoteConfigDataSource 
 
     override fun promptTextVerify(): String {
         return remoteConfig.getString("prompt_text_verify")
+    }
+
+    override fun promptTextVerifyNano(): String {
+        return remoteConfig.getString("prompt_text_verify_nano")
     }
 
     override fun promptImageValidation(): String {
