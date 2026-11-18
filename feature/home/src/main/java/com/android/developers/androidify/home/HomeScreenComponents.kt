@@ -38,10 +38,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -57,6 +53,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.android.developers.androidify.theme.Blue
@@ -189,16 +186,14 @@ fun DancingBotHeadlineText(
             appendInlineContent(animatedBot)
             append(stringResource(R.string.into_an_android_bot))
         }
-        var placeHolderSize by remember {
-            mutableStateOf(220.sp)
-        }
         val inlineContent = mapOf(
             Pair(
                 animatedBot,
                 InlineTextContent(
                     Placeholder(
-                        width = placeHolderSize,
-                        height = placeHolderSize,
+                        // Sized relative to the auto-sized font, resolved during text layout.
+                        width = 3.5.em,
+                        height = 3.5.em,
                         placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter,
                     ),
                 ) {
@@ -219,9 +214,6 @@ fun DancingBotHeadlineText(
             style = MaterialTheme.typography.titleLarge,
             autoSize = TextAutoSize.StepBased(maxFontSize = 220.sp),
             maxLines = 5,
-            onTextLayout = { result ->
-                placeHolderSize = result.layoutInput.style.fontSize * 3.5f
-            },
             inlineContent = inlineContent,
         )
     }
