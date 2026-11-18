@@ -152,6 +152,17 @@ jobs:
           echo "passed=false" >> "${GITHUB_OUTPUT}"
         fi
 
+    - name: Report Third-Party Library Keep Ratios
+      continue-on-error: true
+      env:
+        SAVE_BASELINE: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.app_r8_gate.outputs.passed == 'true' && steps.lib_r8_gate.outputs.passed == 'true' }}
+      run: |
+        args=(--markdown-summary "${RUNNER_TEMP}/r8_summary.md" --append-summary)
+        if [[ "${SAVE_BASELINE}" == "true" ]]; then
+          args+=(--save-baseline)
+        fi
+        python3 ./scripts/report_library_keep_ratios.py "${args[@]}"
+
     - name: Update R8 Baseline on Merge to main
       if: github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.app_r8_gate.outputs.passed == 'true' && steps.lib_r8_gate.outputs.passed == 'true'
       run: |
@@ -164,8 +175,8 @@ jobs:
       if: github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.app_r8_gate.outputs.passed == 'true' && steps.lib_r8_gate.outputs.passed == 'true'
       uses: stefanzweifel/git-auto-commit-action@b863ae1933cb653a53c021fe36dbb774e1fb9403 # v5
       with:
-        commit_message: "🤖 Update r8-baseline.json after merge [skip ci]"
-        file_pattern: 'r8-baseline.json'
+        commit_message: "🤖 Update the R8 baselines after merge [skip ci]"
+        file_pattern: 'r8-baseline.json third-party-keep-ratios.json'
 
     - name: Post Findings on Pull Request
       if: steps.context.outputs.pr_number != '' && always()

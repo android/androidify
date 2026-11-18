@@ -1,0 +1,1599 @@
+{
+  "libraries": {
+    "androidx.activity:activity": {
+      "version": "1.13.0",
+      "d8DexSizeBytes": 181048,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.activity:activity-compose": {
+      "version": "1.13.0",
+      "d8DexSizeBytes": 66968,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.activity:activity-ktx": {
+      "version": "1.13.0",
+      "d8DexSizeBytes": 0,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.annotation:annotation-experimental": {
+      "version": "1.5.1",
+      "d8DexSizeBytes": 5900,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.annotation:annotation-jvm": {
+      "version": "1.10.0",
+      "d8DexSizeBytes": 25780,
+      "r8DexSizeBytes": 564
+    },
+    "androidx.appcompat:appcompat": {
+      "version": "1.7.1",
+      "d8DexSizeBytes": 595824,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.appcompat:appcompat-resources": {
+      "version": "1.7.1",
+      "d8DexSizeBytes": 57832,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.arch.core:core-common": {
+      "version": "2.2.0",
+      "d8DexSizeBytes": 8744,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.arch.core:core-runtime": {
+      "version": "2.2.0",
+      "d8DexSizeBytes": 5552,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.autofill:autofill": {
+      "version": "1.0.0",
+      "d8DexSizeBytes": 3964,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.camera.featurecombinationquery:featurecombinationquery": {
+      "version": "1.6.1",
+      "d8DexSizeBytes": 11868,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.camera.viewfinder:viewfinder-compose": {
+      "version": "1.6.1",
+      "d8DexSizeBytes": 63940,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.camera.viewfinder:viewfinder-core": {
+      "version": "1.6.1",
+      "d8DexSizeBytes": 78228,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.camera:camera-camera2": {
+      "version": "1.6.1",
+      "d8DexSizeBytes": 935756,
+      "r8DexSizeBytes": 5240
+    },
+    "androidx.camera:camera-camera2-pipe": {
+      "version": "1.6.1",
+      "d8DexSizeBytes": 1282012,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.camera:camera-compose": {
+      "version": "1.6.1",
+      "d8DexSizeBytes": 34836,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.camera:camera-core": {
+      "version": "1.6.1",
+      "d8DexSizeBytes": 864660,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.camera:camera-lifecycle": {
+      "version": "1.6.1",
+      "d8DexSizeBytes": 55848,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.cardview:cardview": {
+      "version": "1.0.0",
+      "d8DexSizeBytes": 21380,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.collection:collection-jvm": {
+      "version": "1.5.0",
+      "d8DexSizeBytes": 817952,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.collection:collection-ktx": {
+      "version": "1.5.0",
+      "d8DexSizeBytes": 0,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.compose.animation:animation-android": {
+      "version": "1.12.0-alpha03",
+      "d8DexSizeBytes": 500712,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.compose.animation:animation-core-android": {
+      "version": "1.12.0-alpha03",
+      "d8DexSizeBytes": 379988,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.compose.foundation:foundation": {
+      "version": "1.12.0-alpha03",
+      "d8DexSizeBytes": 0,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.compose.foundation:foundation-android": {
+      "version": "1.12.0-alpha03",
+      "d8DexSizeBytes": 3833340,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.compose.foundation:foundation-layout": {
+      "version": "1.12.0-alpha03",
+      "d8DexSizeBytes": 0,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.compose.foundation:foundation-layout-android": {
+      "version": "1.12.0-alpha03",
+      "d8DexSizeBytes": 623032,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.compose.material3.adaptive:adaptive": {
+      "version": "1.2.0",
+      "d8DexSizeBytes": 0,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.compose.material3.adaptive:adaptive-android": {
+      "version": "1.2.0",
+      "d8DexSizeBytes": 30976,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.compose.material3.adaptive:adaptive-layout-android": {
+      "version": "1.2.0",
+      "d8DexSizeBytes": 397920,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.compose.material3:material3": {
+      "version": "1.5.0-alpha20",
+      "d8DexSizeBytes": 0,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.compose.material3:material3-android": {
+      "version": "1.5.0-alpha20",
+      "d8DexSizeBytes": 5262392,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.compose.material:material-icons-core": {
+      "version": "1.7.8",
+      "d8DexSizeBytes": 0,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.compose.material:material-icons-core-android": {
+      "version": "1.7.8",
+      "d8DexSizeBytes": 458520,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.compose.material:material-ripple-android": {
+      "version": "1.12.0-alpha03",
+      "d8DexSizeBytes": 77760,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.compose.runtime:runtime": {
+      "version": "1.12.0-alpha03",
+      "d8DexSizeBytes": 0,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.compose.runtime:runtime-android": {
+      "version": "1.12.0-alpha03",
+      "d8DexSizeBytes": 1677552,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.compose.runtime:runtime-annotation-android": {
+      "version": "1.12.0-alpha03",
+      "d8DexSizeBytes": 2924,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.compose.runtime:runtime-retain-android": {
+      "version": "1.12.0-alpha03",
+      "d8DexSizeBytes": 49800,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.compose.runtime:runtime-saveable-android": {
+      "version": "1.12.0-alpha03",
+      "d8DexSizeBytes": 53872,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.compose.ui:ui": {
+      "version": "1.12.0-alpha03",
+      "d8DexSizeBytes": 0,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.compose.ui:ui-android": {
+      "version": "1.12.0-alpha03",
+      "d8DexSizeBytes": 2766176,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.compose.ui:ui-geometry-android": {
+      "version": "1.12.0-alpha03",
+      "d8DexSizeBytes": 62668,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.compose.ui:ui-graphics-android": {
+      "version": "1.12.0-alpha03",
+      "d8DexSizeBytes": 655180,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.compose.ui:ui-text-android": {
+      "version": "1.12.0-alpha03",
+      "d8DexSizeBytes": 814820,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.compose.ui:ui-text-google-fonts": {
+      "version": "1.12.0-alpha03",
+      "d8DexSizeBytes": 32676,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.compose.ui:ui-tooling-android": {
+      "version": "1.12.0-alpha03",
+      "d8DexSizeBytes": 208536,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.compose.ui:ui-tooling-data-android": {
+      "version": "1.12.0-alpha03",
+      "d8DexSizeBytes": 42468,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.compose.ui:ui-tooling-preview-android": {
+      "version": "1.12.0-alpha03",
+      "d8DexSizeBytes": 19256,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.compose.ui:ui-unit-android": {
+      "version": "1.12.0-alpha03",
+      "d8DexSizeBytes": 100112,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.compose.ui:ui-util-android": {
+      "version": "1.12.0-alpha03",
+      "d8DexSizeBytes": 22276,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.concurrent:concurrent-futures": {
+      "version": "1.3.0",
+      "d8DexSizeBytes": 21088,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.concurrent:concurrent-futures-ktx": {
+      "version": "1.3.0",
+      "d8DexSizeBytes": 11756,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.constraintlayout:constraintlayout": {
+      "version": "2.1.0",
+      "d8DexSizeBytes": 470952,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.constraintlayout:constraintlayout-core": {
+      "version": "1.0.0",
+      "d8DexSizeBytes": 385580,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.coordinatorlayout:coordinatorlayout": {
+      "version": "1.1.0",
+      "d8DexSizeBytes": 44764,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.core:core": {
+      "version": "1.19.0-alpha02",
+      "d8DexSizeBytes": 1237460,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.core:core-backported-fixes": {
+      "version": "1.0.0",
+      "d8DexSizeBytes": 17284,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.core:core-ktx": {
+      "version": "1.19.0-alpha02",
+      "d8DexSizeBytes": 0,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.core:core-splashscreen": {
+      "version": "1.2.0",
+      "d8DexSizeBytes": 25644,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.core:core-viewtree": {
+      "version": "1.0.0",
+      "d8DexSizeBytes": 1600,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.cursoradapter:cursoradapter": {
+      "version": "1.0.0",
+      "d8DexSizeBytes": 10716,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.customview:customview": {
+      "version": "1.1.0",
+      "d8DexSizeBytes": 36160,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.customview:customview-poolingcontainer": {
+      "version": "1.0.0",
+      "d8DexSizeBytes": 5388,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.datastore:datastore-android": {
+      "version": "1.2.1",
+      "d8DexSizeBytes": 25804,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.datastore:datastore-core-android": {
+      "version": "1.2.1",
+      "d8DexSizeBytes": 145288,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.datastore:datastore-core-okio-jvm": {
+      "version": "1.2.1",
+      "d8DexSizeBytes": 24128,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.datastore:datastore-preferences-android": {
+      "version": "1.2.1",
+      "d8DexSizeBytes": 15792,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.datastore:datastore-preferences-core-android": {
+      "version": "1.2.1",
+      "d8DexSizeBytes": 36564,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.datastore:datastore-preferences-external-protobuf": {
+      "version": "1.2.1",
+      "d8DexSizeBytes": 1002504,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.datastore:datastore-preferences-proto": {
+      "version": "1.2.1",
+      "d8DexSizeBytes": 28464,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.documentfile:documentfile": {
+      "version": "1.0.0",
+      "d8DexSizeBytes": 11860,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.drawerlayout:drawerlayout": {
+      "version": "1.1.1",
+      "d8DexSizeBytes": 34884,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.dynamicanimation:dynamicanimation": {
+      "version": "1.1.0",
+      "d8DexSizeBytes": 30368,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.emoji2:emoji2": {
+      "version": "1.4.0",
+      "d8DexSizeBytes": 66636,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.emoji2:emoji2-views-helper": {
+      "version": "1.4.0",
+      "d8DexSizeBytes": 16680,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.exifinterface:exifinterface": {
+      "version": "1.4.2",
+      "d8DexSizeBytes": 91016,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.fragment:fragment": {
+      "version": "1.5.4",
+      "d8DexSizeBytes": 251328,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.graphics:graphics-path": {
+      "version": "1.0.1",
+      "d8DexSizeBytes": 17996,
+      "r8DexSizeBytes": 1756
+    },
+    "androidx.graphics:graphics-shapes-android": {
+      "version": "1.0.1",
+      "d8DexSizeBytes": 77816,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.hilt:hilt-lifecycle-viewmodel": {
+      "version": "1.3.0",
+      "d8DexSizeBytes": 2084,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.hilt:hilt-lifecycle-viewmodel-compose": {
+      "version": "1.3.0",
+      "d8DexSizeBytes": 6196,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.hilt:hilt-navigation-compose": {
+      "version": "1.3.0",
+      "d8DexSizeBytes": 6944,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.interpolator:interpolator": {
+      "version": "1.0.0",
+      "d8DexSizeBytes": 4524,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.legacy:legacy-support-core-utils": {
+      "version": "1.0.0",
+      "d8DexSizeBytes": 2860,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.lifecycle:lifecycle-common-java8": {
+      "version": "2.11.0-beta02",
+      "d8DexSizeBytes": 0,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.lifecycle:lifecycle-common-jvm": {
+      "version": "2.11.0-beta02",
+      "d8DexSizeBytes": 49628,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.lifecycle:lifecycle-livedata": {
+      "version": "2.11.0-beta02",
+      "d8DexSizeBytes": 40212,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.lifecycle:lifecycle-livedata-core": {
+      "version": "2.11.0-beta02",
+      "d8DexSizeBytes": 10136,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.lifecycle:lifecycle-livedata-core-ktx": {
+      "version": "2.11.0-beta02",
+      "d8DexSizeBytes": 0,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.lifecycle:lifecycle-process": {
+      "version": "2.11.0-beta02",
+      "d8DexSizeBytes": 12616,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.lifecycle:lifecycle-runtime-android": {
+      "version": "2.11.0-beta02",
+      "d8DexSizeBytes": 49820,
+      "r8DexSizeBytes": 2232
+    },
+    "androidx.lifecycle:lifecycle-runtime-compose": {
+      "version": "2.11.0-beta02",
+      "d8DexSizeBytes": 0,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.lifecycle:lifecycle-runtime-compose-android": {
+      "version": "2.11.0-beta02",
+      "d8DexSizeBytes": 55616,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.lifecycle:lifecycle-runtime-ktx-android": {
+      "version": "2.11.0-beta02",
+      "d8DexSizeBytes": 0,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.lifecycle:lifecycle-service": {
+      "version": "2.11.0-beta02",
+      "d8DexSizeBytes": 4956,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.lifecycle:lifecycle-viewmodel": {
+      "version": "2.11.0-beta02",
+      "d8DexSizeBytes": 0,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.lifecycle:lifecycle-viewmodel-android": {
+      "version": "2.11.0-beta02",
+      "d8DexSizeBytes": 55832,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.lifecycle:lifecycle-viewmodel-compose": {
+      "version": "2.11.0-beta02",
+      "d8DexSizeBytes": 0,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.lifecycle:lifecycle-viewmodel-compose-android": {
+      "version": "2.11.0-beta02",
+      "d8DexSizeBytes": 40236,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.lifecycle:lifecycle-viewmodel-ktx": {
+      "version": "2.11.0-beta02",
+      "d8DexSizeBytes": 0,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.lifecycle:lifecycle-viewmodel-navigation3-android": {
+      "version": "2.11.0-beta02",
+      "d8DexSizeBytes": 14976,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.lifecycle:lifecycle-viewmodel-savedstate-android": {
+      "version": "2.11.0-beta02",
+      "d8DexSizeBytes": 74364,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.loader:loader": {
+      "version": "1.0.0",
+      "d8DexSizeBytes": 32356,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.localbroadcastmanager:localbroadcastmanager": {
+      "version": "1.0.0",
+      "d8DexSizeBytes": 6872,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.media3:media3-common": {
+      "version": "1.10.1",
+      "d8DexSizeBytes": 593516,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.media3:media3-common-ktx": {
+      "version": "1.10.1",
+      "d8DexSizeBytes": 11796,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.media3:media3-container": {
+      "version": "1.10.1",
+      "d8DexSizeBytes": 52220,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.media3:media3-database": {
+      "version": "1.10.1",
+      "d8DexSizeBytes": 6296,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.media3:media3-datasource": {
+      "version": "1.10.1",
+      "d8DexSizeBytes": 139368,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.media3:media3-decoder": {
+      "version": "1.10.1",
+      "d8DexSizeBytes": 16832,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.media3:media3-exoplayer": {
+      "version": "1.10.1",
+      "d8DexSizeBytes": 1483780,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.media3:media3-extractor": {
+      "version": "1.10.1",
+      "d8DexSizeBytes": 626472,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.media3:media3-ui": {
+      "version": "1.10.1",
+      "d8DexSizeBytes": 191068,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.media3:media3-ui-compose": {
+      "version": "1.10.1",
+      "d8DexSizeBytes": 131448,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.navigation3:navigation3-runtime": {
+      "version": "1.1.2",
+      "d8DexSizeBytes": 0,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.navigation3:navigation3-runtime-android": {
+      "version": "1.1.2",
+      "d8DexSizeBytes": 69408,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.navigation3:navigation3-ui": {
+      "version": "1.1.2",
+      "d8DexSizeBytes": 0,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.navigation3:navigation3-ui-android": {
+      "version": "1.1.2",
+      "d8DexSizeBytes": 112108,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.navigation:navigation-common-android": {
+      "version": "2.9.0",
+      "d8DexSizeBytes": 300500,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.navigation:navigation-compose-android": {
+      "version": "2.9.0",
+      "d8DexSizeBytes": 126944,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.navigation:navigation-runtime-android": {
+      "version": "2.9.0",
+      "d8DexSizeBytes": 161776,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.navigationevent:navigationevent-android": {
+      "version": "1.1.0",
+      "d8DexSizeBytes": 46520,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.navigationevent:navigationevent-compose-android": {
+      "version": "1.1.0",
+      "d8DexSizeBytes": 39748,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.print:print": {
+      "version": "1.0.0",
+      "d8DexSizeBytes": 14228,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.privacysandbox.ads:ads-adservices": {
+      "version": "1.1.0-beta11",
+      "d8DexSizeBytes": 150452,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.privacysandbox.ads:ads-adservices-java": {
+      "version": "1.1.0-beta11",
+      "d8DexSizeBytes": 47556,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.profileinstaller:profileinstaller": {
+      "version": "1.4.1",
+      "d8DexSizeBytes": 42996,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.recyclerview:recyclerview": {
+      "version": "1.3.0",
+      "d8DexSizeBytes": 340264,
+      "r8DexSizeBytes": 3760
+    },
+    "androidx.resourceinspection:resourceinspection-annotation": {
+      "version": "1.0.1",
+      "d8DexSizeBytes": 1804,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.room:room-common": {
+      "version": "2.2.5",
+      "d8DexSizeBytes": 11156,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.room:room-runtime": {
+      "version": "2.2.5",
+      "d8DexSizeBytes": 77120,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.savedstate:savedstate": {
+      "version": "1.4.0",
+      "d8DexSizeBytes": 0,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.savedstate:savedstate-android": {
+      "version": "1.4.0",
+      "d8DexSizeBytes": 139952,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.savedstate:savedstate-compose-android": {
+      "version": "1.4.0",
+      "d8DexSizeBytes": 12340,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.savedstate:savedstate-ktx": {
+      "version": "1.4.0",
+      "d8DexSizeBytes": 0,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.sqlite:sqlite": {
+      "version": "2.1.0",
+      "d8DexSizeBytes": 12048,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.sqlite:sqlite-framework": {
+      "version": "2.1.0",
+      "d8DexSizeBytes": 13580,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.startup:startup-runtime": {
+      "version": "1.2.0",
+      "d8DexSizeBytes": 7148,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.tracing:tracing-android": {
+      "version": "1.3.0",
+      "d8DexSizeBytes": 10508,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.tracing:tracing-ktx": {
+      "version": "1.3.0",
+      "d8DexSizeBytes": 0,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.transition:transition": {
+      "version": "1.5.0",
+      "d8DexSizeBytes": 140084,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.vectordrawable:vectordrawable": {
+      "version": "1.2.0",
+      "d8DexSizeBytes": 37644,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.vectordrawable:vectordrawable-animated": {
+      "version": "1.2.0",
+      "d8DexSizeBytes": 33124,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.versionedparcelable:versionedparcelable": {
+      "version": "1.1.1",
+      "d8DexSizeBytes": 35188,
+      "r8DexSizeBytes": 3016
+    },
+    "androidx.viewpager2:viewpager2": {
+      "version": "1.0.0",
+      "d8DexSizeBytes": 53424,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.viewpager:viewpager": {
+      "version": "1.0.0",
+      "d8DexSizeBytes": 52364,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.wear:wear-core": {
+      "version": "1.0.0",
+      "d8DexSizeBytes": 5912,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.wear:wear-remote-interactions": {
+      "version": "1.2.0",
+      "d8DexSizeBytes": 31436,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.window:window": {
+      "version": "1.5.1",
+      "d8DexSizeBytes": 414144,
+      "r8DexSizeBytes": 2496
+    },
+    "androidx.window:window-core-android": {
+      "version": "1.5.1",
+      "d8DexSizeBytes": 14396,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.work:work-multiprocess": {
+      "version": "2.7.0",
+      "d8DexSizeBytes": 72272,
+      "r8DexSizeBytes": 1916
+    },
+    "androidx.work:work-runtime": {
+      "version": "2.7.0",
+      "d8DexSizeBytes": 315652,
+      "r8DexSizeBytes": 5188
+    },
+    "androidx.work:work-runtime-ktx": {
+      "version": "2.7.0",
+      "d8DexSizeBytes": 22064,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.xr.arcore:arcore": {
+      "version": "1.0.0-alpha14",
+      "d8DexSizeBytes": 149448,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.xr.arcore:arcore-openxr": {
+      "version": "1.0.0-alpha14",
+      "d8DexSizeBytes": 99588,
+      "r8DexSizeBytes": 2140
+    },
+    "androidx.xr.arcore:arcore-play-services": {
+      "version": "1.0.0-alpha14",
+      "d8DexSizeBytes": 77392,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.xr.arcore:arcore-projected": {
+      "version": "1.0.0-alpha14",
+      "d8DexSizeBytes": 58948,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.xr.arcore:arcore-runtime": {
+      "version": "1.0.0-alpha14",
+      "d8DexSizeBytes": 36932,
+      "r8DexSizeBytes": 2440
+    },
+    "androidx.xr.compose:compose": {
+      "version": "1.0.0-alpha14",
+      "d8DexSizeBytes": 893440,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.xr.runtime:runtime": {
+      "version": "1.0.0-alpha14",
+      "d8DexSizeBytes": 178716,
+      "r8DexSizeBytes": 34104
+    },
+    "androidx.xr.runtime:runtime-interfaces": {
+      "version": "1.0.0-alpha14",
+      "d8DexSizeBytes": 12484,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.xr.runtime:runtime-manifest": {
+      "version": "1.0.0-alpha14",
+      "d8DexSizeBytes": 4168,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.xr.runtime:runtime-openxr": {
+      "version": "1.0.0-alpha14",
+      "d8DexSizeBytes": 10316,
+      "r8DexSizeBytes": 7616
+    },
+    "androidx.xr.scenecore:scenecore": {
+      "version": "1.0.0-alpha15",
+      "d8DexSizeBytes": 325492,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.xr.scenecore:scenecore-runtime": {
+      "version": "1.0.0-alpha15",
+      "d8DexSizeBytes": 145664,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.xr.scenecore:scenecore-spatial-core": {
+      "version": "1.0.0-alpha15",
+      "d8DexSizeBytes": 211124,
+      "r8DexSizeBytes": 0
+    },
+    "androidx.xr.scenecore:scenecore-spatial-rendering": {
+      "version": "1.0.0-alpha15",
+      "d8DexSizeBytes": 195028,
+      "r8DexSizeBytes": 0
+    },
+    "com.android.tools.apkparser:binary-resources": {
+      "version": "31.7.3",
+      "d8DexSizeBytes": 70304,
+      "r8DexSizeBytes": 0
+    },
+    "com.android.tools.build:aapt2-proto": {
+      "version": "8.7.3-12006047",
+      "d8DexSizeBytes": 672024,
+      "r8DexSizeBytes": 0
+    },
+    "com.android.tools.build:apksig": {
+      "version": "9.2.1",
+      "d8DexSizeBytes": 394424,
+      "r8DexSizeBytes": 0
+    },
+    "com.android.tools:annotations": {
+      "version": "31.7.3",
+      "d8DexSizeBytes": 4296,
+      "r8DexSizeBytes": 0
+    },
+    "com.github.bumptech.glide:annotations": {
+      "version": "4.16.0",
+      "d8DexSizeBytes": 2644,
+      "r8DexSizeBytes": 0
+    },
+    "com.github.bumptech.glide:disklrucache": {
+      "version": "4.16.0",
+      "d8DexSizeBytes": 21040,
+      "r8DexSizeBytes": 0
+    },
+    "com.github.bumptech.glide:gifdecoder": {
+      "version": "4.16.0",
+      "d8DexSizeBytes": 17588,
+      "r8DexSizeBytes": 0
+    },
+    "com.github.bumptech.glide:glide": {
+      "version": "4.16.0",
+      "d8DexSizeBytes": 524064,
+      "r8DexSizeBytes": 2684
+    },
+    "com.github.xgouchet:AXML": {
+      "version": "v1.0.1",
+      "d8DexSizeBytes": 10116,
+      "r8DexSizeBytes": 0
+    },
+    "com.github.zjupure:webpdecoder": {
+      "version": "2.7.4.16.0",
+      "d8DexSizeBytes": 63248,
+      "r8DexSizeBytes": 11004
+    },
+    "com.google.accompanist:accompanist-drawablepainter": {
+      "version": "0.37.3",
+      "d8DexSizeBytes": 13580,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.accompanist:accompanist-permissions": {
+      "version": "0.37.3",
+      "d8DexSizeBytes": 42048,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.android.datatransport:transport-api": {
+      "version": "3.2.0",
+      "d8DexSizeBytes": 11728,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.android.datatransport:transport-backend-cct": {
+      "version": "3.3.0",
+      "d8DexSizeBytes": 63172,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.android.datatransport:transport-runtime": {
+      "version": "3.3.0",
+      "d8DexSizeBytes": 145144,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.android.gms:play-services-ads-identifier": {
+      "version": "18.0.0",
+      "d8DexSizeBytes": 13192,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.android.gms:play-services-base": {
+      "version": "18.10.0",
+      "d8DexSizeBytes": 337736,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.android.gms:play-services-basement": {
+      "version": "18.10.0",
+      "d8DexSizeBytes": 271164,
+      "r8DexSizeBytes": 1164
+    },
+    "com.google.android.gms:play-services-measurement": {
+      "version": "23.2.0",
+      "d8DexSizeBytes": 350744,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.android.gms:play-services-measurement-api": {
+      "version": "23.2.0",
+      "d8DexSizeBytes": 34920,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.android.gms:play-services-measurement-base": {
+      "version": "23.2.0",
+      "d8DexSizeBytes": 198836,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.android.gms:play-services-measurement-impl": {
+      "version": "23.2.0",
+      "d8DexSizeBytes": 638760,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.android.gms:play-services-measurement-sdk": {
+      "version": "23.2.0",
+      "d8DexSizeBytes": 18632,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.android.gms:play-services-measurement-sdk-api": {
+      "version": "23.2.0",
+      "d8DexSizeBytes": 35000,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.android.gms:play-services-mlkit-subject-segmentation": {
+      "version": "16.0.0-beta1",
+      "d8DexSizeBytes": 304152,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.android.gms:play-services-oss-licenses": {
+      "version": "17.5.1",
+      "d8DexSizeBytes": 157772,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.android.gms:play-services-stats": {
+      "version": "17.0.2",
+      "d8DexSizeBytes": 10488,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.android.gms:play-services-tasks": {
+      "version": "18.4.1",
+      "d8DexSizeBytes": 28544,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.android.gms:play-services-wearable": {
+      "version": "20.0.1",
+      "d8DexSizeBytes": 417668,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.android.material:material": {
+      "version": "1.13.0",
+      "d8DexSizeBytes": 1611488,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.android.odml:image": {
+      "version": "1.0.0-beta1",
+      "d8DexSizeBytes": 10344,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.android.play:core-common": {
+      "version": "2.0.4",
+      "d8DexSizeBytes": 3316,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.android.play:integrity": {
+      "version": "1.4.0",
+      "d8DexSizeBytes": 70944,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.android.wearable.watchface.validator:validator-push-android": {
+      "version": "1.0.0-alpha09",
+      "d8DexSizeBytes": 118548,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.ar:core": {
+      "version": "1.53.0",
+      "d8DexSizeBytes": 183352,
+      "r8DexSizeBytes": 166952
+    },
+    "com.google.ar:impress": {
+      "version": "0.0.14",
+      "d8DexSizeBytes": 66188,
+      "r8DexSizeBytes": 50064
+    },
+    "com.google.auto.value:auto-value": {
+      "version": "1.10.4",
+      "d8DexSizeBytes": 4168772,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.auto.value:auto-value-annotations": {
+      "version": "1.10.4",
+      "d8DexSizeBytes": 2932,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.code.findbugs:jsr305": {
+      "version": "3.0.2",
+      "d8DexSizeBytes": 9052,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.code.gson:gson": {
+      "version": "2.13.1",
+      "d8DexSizeBytes": 205184,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.dagger:dagger": {
+      "version": "2.59.2",
+      "d8DexSizeBytes": 35804,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.dagger:dagger-lint-aar": {
+      "version": "2.59.2",
+      "d8DexSizeBytes": 0,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.dagger:hilt-android": {
+      "version": "2.59.2",
+      "d8DexSizeBytes": 63392,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.dagger:hilt-core": {
+      "version": "2.59.2",
+      "d8DexSizeBytes": 9024,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.errorprone:error_prone_annotations": {
+      "version": "2.47.0",
+      "d8DexSizeBytes": 7884,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.firebase:firebase-abt": {
+      "version": "21.1.1",
+      "d8DexSizeBytes": 12828,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.firebase:firebase-ai": {
+      "version": "17.12.1",
+      "d8DexSizeBytes": 1095864,
+      "r8DexSizeBytes": 570412
+    },
+    "com.google.firebase:firebase-ai-ondevice-interop": {
+      "version": "16.0.0-beta02",
+      "d8DexSizeBytes": 20372,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.firebase:firebase-analytics": {
+      "version": "23.2.0",
+      "d8DexSizeBytes": 0,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.firebase:firebase-annotations": {
+      "version": "17.0.0",
+      "d8DexSizeBytes": 1660,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.firebase:firebase-appcheck": {
+      "version": "19.1.0",
+      "d8DexSizeBytes": 39992,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.firebase:firebase-appcheck-debug": {
+      "version": "19.1.0",
+      "d8DexSizeBytes": 11016,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.firebase:firebase-appcheck-interop": {
+      "version": "17.1.0",
+      "d8DexSizeBytes": 2052,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.firebase:firebase-appcheck-playintegrity": {
+      "version": "19.1.0",
+      "d8DexSizeBytes": 11620,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.firebase:firebase-auth-interop": {
+      "version": "18.0.0",
+      "d8DexSizeBytes": 3948,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.firebase:firebase-common": {
+      "version": "22.0.1",
+      "d8DexSizeBytes": 124324,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.firebase:firebase-components": {
+      "version": "19.0.0",
+      "d8DexSizeBytes": 44508,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.firebase:firebase-config": {
+      "version": "23.1.0",
+      "d8DexSizeBytes": 106864,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.firebase:firebase-config-interop": {
+      "version": "16.0.1",
+      "d8DexSizeBytes": 9752,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.firebase:firebase-crashlytics": {
+      "version": "20.0.6",
+      "d8DexSizeBytes": 344316,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.firebase:firebase-datatransport": {
+      "version": "19.0.0",
+      "d8DexSizeBytes": 4704,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.firebase:firebase-encoders": {
+      "version": "17.0.0",
+      "d8DexSizeBytes": 7900,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.firebase:firebase-encoders-json": {
+      "version": "18.0.1",
+      "d8DexSizeBytes": 13664,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.firebase:firebase-encoders-proto": {
+      "version": "16.0.0",
+      "d8DexSizeBytes": 16600,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.firebase:firebase-installations": {
+      "version": "19.1.0",
+      "d8DexSizeBytes": 58092,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.firebase:firebase-installations-interop": {
+      "version": "17.3.0",
+      "d8DexSizeBytes": 5496,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.firebase:firebase-measurement-connector": {
+      "version": "20.0.1",
+      "d8DexSizeBytes": 3132,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.firebase:firebase-sessions": {
+      "version": "3.0.6",
+      "d8DexSizeBytes": 186688,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.guava:failureaccess": {
+      "version": "1.0.3",
+      "d8DexSizeBytes": 1248,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.guava:guava": {
+      "version": "33.6.0-android",
+      "d8DexSizeBytes": 2215480,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.guava:listenablefuture": {
+      "version": "9999.0-empty-to-avoid-conflict-with-guava",
+      "d8DexSizeBytes": 0,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.j2objc:j2objc-annotations": {
+      "version": "3.1",
+      "d8DexSizeBytes": 7868,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.mlkit:acceleration": {
+      "version": "16.0.0-beta2",
+      "d8DexSizeBytes": 249008,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.mlkit:common": {
+      "version": "18.11.0",
+      "d8DexSizeBytes": 331404,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.mlkit:genai-common": {
+      "version": "1.0.0-beta3",
+      "d8DexSizeBytes": 11988,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.mlkit:genai-prompt": {
+      "version": "1.0.0-beta2",
+      "d8DexSizeBytes": 661832,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.mlkit:mediapipe-internal": {
+      "version": "17.0.0-beta10",
+      "d8DexSizeBytes": 281928,
+      "r8DexSizeBytes": 122076
+    },
+    "com.google.mlkit:pose-detection": {
+      "version": "18.0.0-beta5",
+      "d8DexSizeBytes": 3048,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.mlkit:pose-detection-common": {
+      "version": "18.0.0-beta5",
+      "d8DexSizeBytes": 382408,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.mlkit:vision-common": {
+      "version": "17.3.0",
+      "d8DexSizeBytes": 209012,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.mlkit:vision-interfaces": {
+      "version": "16.3.0",
+      "d8DexSizeBytes": 2456,
+      "r8DexSizeBytes": 0
+    },
+    "com.google.protobuf:protobuf-java": {
+      "version": "4.29.3",
+      "d8DexSizeBytes": 1711800,
+      "r8DexSizeBytes": 0
+    },
+    "com.ibm.icu:icu4j": {
+      "version": "4.6",
+      "d8DexSizeBytes": 1464748,
+      "r8DexSizeBytes": 0
+    },
+    "com.jakewharton.timber:timber": {
+      "version": "5.0.1",
+      "d8DexSizeBytes": 19580,
+      "r8DexSizeBytes": 0
+    },
+    "com.rackspace.eclipse.webtools.sourceediting:org.eclipse.wst.xml.xpath2.processor": {
+      "version": "2.1.100",
+      "d8DexSizeBytes": 487160,
+      "r8DexSizeBytes": 0
+    },
+    "com.squareup.okhttp3:logging-interceptor": {
+      "version": "5.3.2",
+      "d8DexSizeBytes": 21668,
+      "r8DexSizeBytes": 0
+    },
+    "com.squareup.okhttp3:okhttp-android": {
+      "version": "5.3.2",
+      "d8DexSizeBytes": 735520,
+      "r8DexSizeBytes": 0
+    },
+    "com.squareup.okhttp3:okhttp-sse": {
+      "version": "4.12.0",
+      "d8DexSizeBytes": 12336,
+      "r8DexSizeBytes": 0
+    },
+    "com.squareup.okio:okio-jvm": {
+      "version": "3.16.4",
+      "d8DexSizeBytes": 338508,
+      "r8DexSizeBytes": 0
+    },
+    "com.squareup.retrofit2:converter-gson": {
+      "version": "3.0.0",
+      "d8DexSizeBytes": 5664,
+      "r8DexSizeBytes": 0
+    },
+    "com.squareup.retrofit2:converter-kotlinx-serialization": {
+      "version": "3.0.0",
+      "d8DexSizeBytes": 9620,
+      "r8DexSizeBytes": 0
+    },
+    "com.squareup.retrofit2:retrofit": {
+      "version": "3.0.0",
+      "d8DexSizeBytes": 93260,
+      "r8DexSizeBytes": 0
+    },
+    "com.twelvemonkeys.common:common-image": {
+      "version": "3.9.4",
+      "d8DexSizeBytes": 85012,
+      "r8DexSizeBytes": 0
+    },
+    "com.twelvemonkeys.common:common-io": {
+      "version": "3.9.4",
+      "d8DexSizeBytes": 91616,
+      "r8DexSizeBytes": 0
+    },
+    "com.twelvemonkeys.common:common-lang": {
+      "version": "3.9.4",
+      "d8DexSizeBytes": 110772,
+      "r8DexSizeBytes": 0
+    },
+    "com.twelvemonkeys.imageio:imageio-core": {
+      "version": "3.9.4",
+      "d8DexSizeBytes": 107560,
+      "r8DexSizeBytes": 0
+    },
+    "com.twelvemonkeys.imageio:imageio-metadata": {
+      "version": "3.9.4",
+      "d8DexSizeBytes": 82468,
+      "r8DexSizeBytes": 0
+    },
+    "com.twelvemonkeys.imageio:imageio-webp": {
+      "version": "3.9.4",
+      "d8DexSizeBytes": 98840,
+      "r8DexSizeBytes": 0
+    },
+    "commons-cli:commons-cli": {
+      "version": "1.5.0",
+      "d8DexSizeBytes": 45708,
+      "r8DexSizeBytes": 0
+    },
+    "edu.princeton.cup:java-cup": {
+      "version": "10k",
+      "d8DexSizeBytes": 102028,
+      "r8DexSizeBytes": 0
+    },
+    "io.coil-kt.coil3:coil-android": {
+      "version": "3.4.0",
+      "d8DexSizeBytes": 9024,
+      "r8DexSizeBytes": 0
+    },
+    "io.coil-kt.coil3:coil-compose-android": {
+      "version": "3.4.0",
+      "d8DexSizeBytes": 19544,
+      "r8DexSizeBytes": 0
+    },
+    "io.coil-kt.coil3:coil-compose-core-android": {
+      "version": "3.4.0",
+      "d8DexSizeBytes": 140336,
+      "r8DexSizeBytes": 0
+    },
+    "io.coil-kt.coil3:coil-core-android": {
+      "version": "3.4.0",
+      "d8DexSizeBytes": 394244,
+      "r8DexSizeBytes": 0
+    },
+    "io.coil-kt.coil3:coil-gif": {
+      "version": "3.4.0",
+      "d8DexSizeBytes": 38968,
+      "r8DexSizeBytes": 0
+    },
+    "io.coil-kt.coil3:coil-network-core-android": {
+      "version": "3.4.0",
+      "d8DexSizeBytes": 63272,
+      "r8DexSizeBytes": 0
+    },
+    "io.coil-kt.coil3:coil-network-okhttp-android": {
+      "version": "3.4.0",
+      "d8DexSizeBytes": 23952,
+      "r8DexSizeBytes": 0
+    },
+    "io.ktor:ktor-client-content-negotiation-jvm": {
+      "version": "3.0.3",
+      "d8DexSizeBytes": 22908,
+      "r8DexSizeBytes": 0
+    },
+    "io.ktor:ktor-client-core-jvm": {
+      "version": "3.0.3",
+      "d8DexSizeBytes": 607020,
+      "r8DexSizeBytes": 0
+    },
+    "io.ktor:ktor-client-logging-jvm": {
+      "version": "3.0.3",
+      "d8DexSizeBytes": 56952,
+      "r8DexSizeBytes": 0
+    },
+    "io.ktor:ktor-client-okhttp-jvm": {
+      "version": "3.0.3",
+      "d8DexSizeBytes": 60640,
+      "r8DexSizeBytes": 0
+    },
+    "io.ktor:ktor-client-websockets-jvm": {
+      "version": "3.0.3",
+      "d8DexSizeBytes": 1024,
+      "r8DexSizeBytes": 0
+    },
+    "io.ktor:ktor-events-jvm": {
+      "version": "3.0.3",
+      "d8DexSizeBytes": 6704,
+      "r8DexSizeBytes": 0
+    },
+    "io.ktor:ktor-http-jvm": {
+      "version": "3.0.3",
+      "d8DexSizeBytes": 386780,
+      "r8DexSizeBytes": 0
+    },
+    "io.ktor:ktor-io-jvm": {
+      "version": "3.0.3",
+      "d8DexSizeBytes": 186740,
+      "r8DexSizeBytes": 0
+    },
+    "io.ktor:ktor-serialization-jvm": {
+      "version": "3.0.3",
+      "d8DexSizeBytes": 18192,
+      "r8DexSizeBytes": 0
+    },
+    "io.ktor:ktor-serialization-kotlinx-json-jvm": {
+      "version": "3.0.3",
+      "d8DexSizeBytes": 23240,
+      "r8DexSizeBytes": 0
+    },
+    "io.ktor:ktor-serialization-kotlinx-jvm": {
+      "version": "3.0.3",
+      "d8DexSizeBytes": 28332,
+      "r8DexSizeBytes": 0
+    },
+    "io.ktor:ktor-sse-jvm": {
+      "version": "3.0.3",
+      "d8DexSizeBytes": 4812,
+      "r8DexSizeBytes": 0
+    },
+    "io.ktor:ktor-utils-jvm": {
+      "version": "3.0.3",
+      "d8DexSizeBytes": 293652,
+      "r8DexSizeBytes": 0
+    },
+    "io.ktor:ktor-websocket-serialization-jvm": {
+      "version": "3.0.3",
+      "d8DexSizeBytes": 7672,
+      "r8DexSizeBytes": 0
+    },
+    "io.ktor:ktor-websockets-jvm": {
+      "version": "3.0.3",
+      "d8DexSizeBytes": 139376,
+      "r8DexSizeBytes": 0
+    },
+    "jakarta.inject:jakarta.inject-api": {
+      "version": "2.0.1",
+      "d8DexSizeBytes": 1872,
+      "r8DexSizeBytes": 0
+    },
+    "javax.inject:javax.inject": {
+      "version": "1",
+      "d8DexSizeBytes": 1860,
+      "r8DexSizeBytes": 0
+    },
+    "org.bouncycastle:bcpkix-jdk18on": {
+      "version": "1.84",
+      "d8DexSizeBytes": 829200,
+      "r8DexSizeBytes": 0
+    },
+    "org.bouncycastle:bcprov-jdk18on": {
+      "version": "1.84",
+      "d8DexSizeBytes": 4354812,
+      "r8DexSizeBytes": 0
+    },
+    "org.bouncycastle:bcutil-jdk18on": {
+      "version": "1.84",
+      "d8DexSizeBytes": 520672,
+      "r8DexSizeBytes": 0
+    },
+    "org.checkerframework:checker-qual": {
+      "version": "3.43.0",
+      "d8DexSizeBytes": 77884,
+      "r8DexSizeBytes": 0
+    },
+    "org.exist-db.thirdparty.xerces:xercesImpl": {
+      "version": "2.12.0",
+      "d8DexSizeBytes": 1561260,
+      "r8DexSizeBytes": 0
+    },
+    "org.jetbrains.kotlin:kotlin-stdlib": {
+      "version": "2.3.21",
+      "d8DexSizeBytes": 2122104,
+      "r8DexSizeBytes": 0
+    },
+    "org.jetbrains.kotlin:kotlin-stdlib-jdk7": {
+      "version": "1.8.22",
+      "d8DexSizeBytes": 0,
+      "r8DexSizeBytes": 0
+    },
+    "org.jetbrains.kotlin:kotlin-stdlib-jdk8": {
+      "version": "1.8.22",
+      "d8DexSizeBytes": 0,
+      "r8DexSizeBytes": 0
+    },
+    "org.jetbrains.kotlinx:atomicfu-jvm": {
+      "version": "0.28.0",
+      "d8DexSizeBytes": 45412,
+      "r8DexSizeBytes": 0
+    },
+    "org.jetbrains.kotlinx:kotlinx-coroutines-android": {
+      "version": "1.11.0",
+      "d8DexSizeBytes": 15168,
+      "r8DexSizeBytes": 0
+    },
+    "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm": {
+      "version": "1.11.0",
+      "d8DexSizeBytes": 1147052,
+      "r8DexSizeBytes": 0
+    },
+    "org.jetbrains.kotlinx:kotlinx-coroutines-guava": {
+      "version": "1.11.0",
+      "d8DexSizeBytes": 21956,
+      "r8DexSizeBytes": 0
+    },
+    "org.jetbrains.kotlinx:kotlinx-coroutines-play-services": {
+      "version": "1.11.0",
+      "d8DexSizeBytes": 14296,
+      "r8DexSizeBytes": 0
+    },
+    "org.jetbrains.kotlinx:kotlinx-coroutines-reactive": {
+      "version": "1.11.0",
+      "d8DexSizeBytes": 60052,
+      "r8DexSizeBytes": 0
+    },
+    "org.jetbrains.kotlinx:kotlinx-coroutines-slf4j": {
+      "version": "1.11.0",
+      "d8DexSizeBytes": 3732,
+      "r8DexSizeBytes": 0
+    },
+    "org.jetbrains.kotlinx:kotlinx-io-bytestring-jvm": {
+      "version": "0.6.0",
+      "d8DexSizeBytes": 24220,
+      "r8DexSizeBytes": 0
+    },
+    "org.jetbrains.kotlinx:kotlinx-io-core-jvm": {
+      "version": "0.6.0",
+      "d8DexSizeBytes": 128648,
+      "r8DexSizeBytes": 0
+    },
+    "org.jetbrains.kotlinx:kotlinx-serialization-core-jvm": {
+      "version": "1.11.0",
+      "d8DexSizeBytes": 335836,
+      "r8DexSizeBytes": 0
+    },
+    "org.jetbrains.kotlinx:kotlinx-serialization-json-io-jvm": {
+      "version": "1.11.0",
+      "d8DexSizeBytes": 8160,
+      "r8DexSizeBytes": 0
+    },
+    "org.jetbrains.kotlinx:kotlinx-serialization-json-jvm": {
+      "version": "1.11.0",
+      "d8DexSizeBytes": 264820,
+      "r8DexSizeBytes": 0
+    },
+    "org.jetbrains.kotlinx:kotlinx-serialization-protobuf-jvm": {
+      "version": "1.11.0",
+      "d8DexSizeBytes": 118652,
+      "r8DexSizeBytes": 0
+    },
+    "org.jetbrains:annotations": {
+      "version": "23.0.0",
+      "d8DexSizeBytes": 13336,
+      "r8DexSizeBytes": 0
+    },
+    "org.jspecify:jspecify": {
+      "version": "1.0.0",
+      "d8DexSizeBytes": 1444,
+      "r8DexSizeBytes": 0
+    },
+    "org.reactivestreams:reactive-streams": {
+      "version": "1.0.4",
+      "d8DexSizeBytes": 7856,
+      "r8DexSizeBytes": 0
+    },
+    "org.slf4j:slf4j-api": {
+      "version": "2.0.17",
+      "d8DexSizeBytes": 66168,
+      "r8DexSizeBytes": 0
+    },
+    "org.slf4j:slf4j-nop": {
+      "version": "2.0.17",
+      "d8DexSizeBytes": 1648,
+      "r8DexSizeBytes": 0
+    },
+    "xml-apis:xml-apis": {
+      "version": "1.4.01",
+      "d8DexSizeBytes": 184588,
+      "r8DexSizeBytes": 0
+    }
+  }
+}
