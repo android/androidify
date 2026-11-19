@@ -65,6 +65,20 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        // Replicate a high foreground footprint of 350MB
+        com.android.developers.androidify.util.MemorySimulator.startNativeBitmapBloat(targetMegaBytes = 350)
+        // Simulate Java Heap Swap bloat
+        com.android.developers.androidify.util.MemorySimulator.startJavaHeapSwapBloat(targetMegaBytes = 200)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        // Prevent background LMK (Low Memory Kills) during local testing
+        com.android.developers.androidify.util.MemorySimulator.reset()
+    }
+
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
