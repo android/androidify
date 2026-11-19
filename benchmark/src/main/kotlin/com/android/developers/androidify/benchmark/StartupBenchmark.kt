@@ -27,6 +27,8 @@ import androidx.benchmark.macro.StartupTimingMetric
 import androidx.benchmark.macro.junit4.MacrobenchmarkRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.uiautomator.uiAutomator
+import com.android.developers.androidify.classInitMetric
+import com.android.developers.androidify.jitCompilationMetric
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -42,20 +44,20 @@ class StartupBenchmark {
 
     @Test
     fun startupBaselineProfile() = startup(CompilationMode.DEFAULT)
-
-    @Test
-    fun startupFullCompilation() = startup(CompilationMode.Full())
-
     @OptIn(ExperimentalMetricApi::class)
     private fun startup(compilationMode: CompilationMode) = benchmarkRule.measureRepeated(
         packageName = "com.android.developers.androidify",
         metrics = listOf(
             StartupTimingMetric(),
             FrameTimingMetric(),
-            MemoryUsageMetric(MemoryUsageMetric.Mode.Max),
-            PowerMetric(PowerMetric.Type.Power()),
+            MemoryUsageMetric(MemoryUsageMetric.Mode.Max, subMetrics = MemoryUsageMetric.SubMetric.entries),
+            jitCompilationMetric,
+            classInitMetric,
         ),
-        iterations = 10,
+        setupBlock = {
+            killProcess()
+        },
+        iterations = 5,
         compilationMode = compilationMode,
         startupMode = StartupMode.COLD,
     ) {
