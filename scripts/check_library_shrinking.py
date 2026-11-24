@@ -134,28 +134,29 @@ def build_markdown_summary(
     fail_on_pkg_rules: bool,
     failures: list[str],
 ) -> str:
-    lines: list[str] = [
-        f"### 📚 Library Shrinking Percentage (Min Threshold: `{min_lib_shrinking_pct:.1f}%`)",
-        "",
-        "| Library (`.aar` / `.jar`) | D8 DEX | R8 Kept DEX | DEX Shrinking % | Classes Shrunk | Methods Shrunk | Pkg-Wide Rules | Status |",
-        "| :--- | ---: | ---: | ---: | ---: | ---: | ---: | :---: |",
-    ]
+    # Summarize instead of listing every library, to keep the PR comment short. The console lists them all.
+    failed_count = 0
+    warn_count = 0
     for lm in lib_metrics_list:
         failed = (
             lm["dex_shrinking_pct"] < min_lib_shrinking_pct
             or (fail_on_pkg_rules and lm["total_pkg_wide"] > 0)
             or len(lm["blocked_rules"]) > 0
         )
-        warn = (not failed) and lm["total_pkg_wide"] > 0
-        icon = "❌ FAIL" if failed else ("⚠️ WARN" if warn else "✅ PASS")
-        cls_str = f"{lm['cls_shrunk_pct']:.1f}% ({lm['cls_total'] - lm['cls_kept']}/{lm['cls_total']})"
-        mth_str = f"{lm['mth_shrunk_pct']:.1f}% ({lm['mth_total'] - lm['mth_kept']}/{lm['mth_total']})"
-        lines.append(
-            f"| `{lm['name']}` | {format_size(lm['d8_bytes'])} | {format_size(lm['r8_bytes'])} | "
-            f"**{lm['dex_shrinking_pct']:.2f}%** | {cls_str} | {mth_str} | "
-            f"{lm['total_pkg_wide']} | {icon} |"
-        )
-    lines.append("")
+        if failed:
+            failed_count += 1
+        elif lm["total_pkg_wide"] > 0:
+            warn_count += 1
+    passed_count = len(lib_metrics_list) - failed_count - warn_count
+    lowest_pct = min(lm["dex_shrinking_pct"] for lm in lib_metrics_list)
+
+    lines: list[str] = [
+        f"### 📚 Library Shrinking Percentage (Min Threshold: `{min_lib_shrinking_pct:.1f}%`)",
+        f"- **Libraries Analyzed**: {len(lib_metrics_list)} (✅ {passed_count} passed, "
+        f"⚠️ {warn_count} with package-wide keep rules, ❌ {failed_count} failed)",
+        f"- **Lowest DEX Shrinking**: {lowest_pct:.2f}%",
+        "",
+    ]
 
     if failures:
         lines.append("### ❌ Library Shrinking Regressions")
