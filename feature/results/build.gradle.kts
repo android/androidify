@@ -21,6 +21,9 @@ plugins {
 
 android {
     namespace = "com.android.developers.androidify.results"
+    defaultConfig {
+        consumerProguardFiles("consumer-rules.pro")
+    }
     // To avoid packaging conflicts when using bouncycastle
     packaging {
         resources {

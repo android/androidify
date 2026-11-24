@@ -32,3 +32,6 @@
 -keep class org.xml.sax.** { *; }
 -keep class javax.xml.** { *; }
 -keep interface javax.xml.** { *; }
+
+# Keep the watch face classes that are loaded via reflection
+-keep class com.android.developers.androidify.watchface.** { *; }
