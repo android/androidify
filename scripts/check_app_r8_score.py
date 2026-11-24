@@ -74,14 +74,18 @@ def extract_bundle_metrics(data: dict[str, Any]) -> dict[str, Any]:
     stats = r8_json.get("stats", {})
     options = r8_json.get("options", {})
     marker = bundle.get("r8DexMarkerMetadata", {})
+    r8_version = r8_json.get("version", "N/A")
 
+    # r8.json only exists when R8 ran, so prefer it and fall back to the DEX marker.
     return {
         "package_name": result.get("basic", {}).get("appInfo", {}).get("packageName", "N/A"),
         "agp_version": bundle.get("agpVersion", "N/A"),
-        "r8_version": r8_json.get("version", "N/A"),
-        "r8_enabled": marker.get("r8Enabled", False),
-        "full_mode": marker.get(
-            "fullModeEnabled", not options.get("isProguardCompatibilityModeEnabled", True)
+        "r8_version": r8_version,
+        "r8_enabled": r8_version != "N/A" or marker.get("r8Enabled", False),
+        "full_mode": (
+            not options["isProguardCompatibilityModeEnabled"]
+            if "isProguardCompatibilityModeEnabled" in options
+            else marker.get("fullModeEnabled", False)
         ),
         "resource_opt": r8_json.get("resourceOptimizationStatus", "UNKNOWN"),
         "shrinking_pct": float(stats.get("shrinkingRatio", 0.0)) * 100.0,
