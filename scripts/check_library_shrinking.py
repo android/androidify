@@ -148,13 +148,11 @@ def build_markdown_summary(
         elif lm["total_pkg_wide"] > 0:
             warn_count += 1
     passed_count = len(lib_metrics_list) - failed_count - warn_count
-    lowest_pct = min(lm["dex_shrinking_pct"] for lm in lib_metrics_list)
 
     lines: list[str] = [
         f"### 📚 Library Shrinking Percentage (Min Threshold: `{min_lib_shrinking_pct:.1f}%`)",
         f"- **Libraries Analyzed**: {len(lib_metrics_list)} (✅ {passed_count} passed, "
         f"⚠️ {warn_count} with package-wide keep rules, ❌ {failed_count} failed)",
-        f"- **Lowest DEX Shrinking**: {lowest_pct:.2f}%",
         "",
     ]
 

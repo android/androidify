@@ -98,7 +98,7 @@ def format_mb(num_bytes: int) -> str:
 def build_markdown_summary(
     cur_bundle: dict[str, Any],
     bundle_rows: list[tuple[str, str, str, str, str, bool]],
-    failures: list[str],
+    other_failures: list[str],
     baseline_path: Path,
 ) -> str:
     lines: list[str] = [
@@ -117,9 +117,9 @@ def build_markdown_summary(
         lines.append(f"| **{label}** | {b_str} | {c_str} | `{d_str}` | `{t_str}` | {icon} |")
     lines.append("")
 
-    if failures:
+    if other_failures:
         lines.append("### ❌ App Bundle R8 Regressions")
-        for f in failures:
+        for f in other_failures:
             lines.append(f"- {f}")
         lines.append("")
 
@@ -267,13 +267,16 @@ def main() -> int:
             f"({format_mb(b_dex)} -> {format_mb(c_dex)})"
         )
 
+    # The table already marks the failing metrics, so the summary only lists failures it has no row for.
+    other_failures: list[str] = []
     if base["full_mode"] and not cur_bundle["full_mode"]:
-        failures.append("R8 Full Mode was disabled (regressed to ProGuard compatibility mode)")
+        other_failures.append("R8 Full Mode was disabled (regressed to ProGuard compatibility mode)")
+    failures += other_failures
 
     print("-" * len(header))
     print()
 
-    md_summary = build_markdown_summary(cur_bundle, summary_rows, failures, args.baseline)
+    md_summary = build_markdown_summary(cur_bundle, summary_rows, other_failures, args.baseline)
     step_summary_path = os.environ.get("GITHUB_STEP_SUMMARY")
     if step_summary_path:
         with open(step_summary_path, "a", encoding="utf-8") as f:
